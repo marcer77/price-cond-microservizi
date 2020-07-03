@@ -1,0 +1,47 @@
+spring:
+  profile: development
+  application:
+    name: "@project.artifactId@"
+    version: "@project.version@ (@env.GIT_COMMIT@)"
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
+    
+logging:
+  level:
+    root: INFO
+    com.intesasanpaolo.bear: INFO
+    com.intesasanpaolo.bear.config: INFO
+    com.intesasanpaolo.bear.connector.bearcore: INFO
+    org.keycloak: INFO
+
+error-manager:
+  enabled: true
+
+connectors:
+  #restConfigurations:
+  #  -
+  #    name: BitCoinRestConnector
+  #    url: https://api.blockchain.info/stats
+
+#### Security configuration: Everything allowed for test
+keycloak:
+  enabled: false
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
+  resource: bear-app
+  realm: bear
+  public-client: true
+  ssl-required: external
+  confidential-port: 0
+  use-resource-role-mappings: true
+  securityConstraints:
+    -
+      authRoles:
+        - users
+
+      securityCollections:
+        -
+          name: users reserved stuff
+          patterns:
+            - /preferences

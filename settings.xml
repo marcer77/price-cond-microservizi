@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd">
+
+   <localRepository>
+		C:\repo\.m2\repository
+   </localRepository>
+
+  <servers>
+     <server>
+          <id>artifactory-snapshots</id>
+          <username>snapshot-deployer</username>
+          <password>snapshot</password>
+    </server>
+    <server>
+          <id>ArtifactoryCentral</id>   
+          <username>snapshot-deployer</username>
+          <password>snapshot</password>
+    </server>
+    <server>
+          <id>Artifactory local-repos</id>  
+          <username>snapshot-deployer</username>
+          <password>snapshot</password>
+    </server>
+    <server>
+          <id>Artifactory remote-repos</id> 
+          <username>snapshot-deployer</username>
+          <password>snapshot</password>
+    </server>
+  </servers>
+
+  <mirrors>
+  <mirror>
+       <id>MavenCentral</id>
+       <mirrorOf>central</mirrorOf>
+       <name>Artifactory maven</name>
+       <url>https://repo.maven.apache.org/maven2</url>
+   </mirror>
+  <mirror>
+       <id>ArtifactoryCentral</id>
+       <mirrorOf>central</mirrorOf>
+       <name>Artifactory di Produzione</name>
+       <url>http://arti0.sede.corp.sanpaoloimi.com:8081/artifactory/remote-repos</url>
+     </mirror>
+</mirrors>
+
+  <profiles>
+      <profile>
+            <id>ISP</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+             </activation>
+             <repositories>   
+				<repository>
+					<id>Artifactory local-repos</id>
+					<url>http://arti0.sede.corp.sanpaoloimi.com:8081/artifactory/local-repos</url>
+				</repository>
+				<repository>
+					<id>Artifactory remote-repos</id>
+					<url>http://arti0.sede.corp.sanpaoloimi.com:8081/artifactory/remote-repos</url>
+				</repository>
+             </repositories>
+        </profile> 
+  </profiles>
+</settings>
