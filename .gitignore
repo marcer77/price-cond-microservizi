@@ -1,0 +1,12 @@
+.idea/
+/.metadata/
+*.fnm
+.classpath
+.settings/
+target/
+.project
+swagger.yaml
+*.bak
+*log.*
+/.gitignore
+/.sonarlint/*
