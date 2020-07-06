@@ -5,12 +5,12 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.PackagePrivate;
 
 @Data
 @AllArgsConstructor
-@PackagePrivate
-@Builder
+@NoArgsConstructor
 public class IntestatarioDTO {
 
 	

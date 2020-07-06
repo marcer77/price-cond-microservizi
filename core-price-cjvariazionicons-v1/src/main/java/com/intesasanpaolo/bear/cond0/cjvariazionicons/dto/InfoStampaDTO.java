@@ -5,14 +5,12 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.PackagePrivate;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@PackagePrivate
-@Builder
+@NoArgsConstructor
 public class InfoStampaDTO {
 	@JsonFormat
     (shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")

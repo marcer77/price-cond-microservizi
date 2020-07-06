@@ -2,14 +2,12 @@ package com.intesasanpaolo.bear.cond0.cjvariazionicons.dto;
 
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.PackagePrivate;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@PackagePrivate
-@Builder
+@NoArgsConstructor
 public class RapportoDTO {
 	
 	private String codFiliale;
