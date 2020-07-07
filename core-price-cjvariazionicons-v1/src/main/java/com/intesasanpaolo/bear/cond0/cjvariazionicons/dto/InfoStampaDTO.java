@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class InfoStampaDTO {
 	@JsonFormat
     (shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
-	private Date Data;
+	private Date data;
 	private String tipoStampa;
 	private String tipoOfferta;
 	private String tipoFirma;
