@@ -2,7 +2,7 @@ configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
        value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
-	ctg:
+    ctg:
      - name: COND0
        acronimo: COND0
        servizio: FL030FLA01
