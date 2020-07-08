@@ -16,9 +16,9 @@ import org.junit.runners.Parameterized.Parameter;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(Parameterized.class)
-public class InfoStampaDTOTestKO extends JUnitUtils {
+public class InfoStampaDTO_KO_Test extends JUnitUtils {
 
-	private Logger log = Logger.getLogger(InfoStampaDTOTestKO.class);
+	private Logger log = Logger.getLogger(InfoStampaDTO_KO_Test.class);
 	
 	private static Date data = new Date(System.currentTimeMillis());
 	private static String tipoStampa = "Stampa di test";

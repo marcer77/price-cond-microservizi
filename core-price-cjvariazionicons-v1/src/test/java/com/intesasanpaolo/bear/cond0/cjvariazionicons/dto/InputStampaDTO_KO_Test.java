@@ -17,18 +17,15 @@ import org.junit.runners.Parameterized.Parameter;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(Parameterized.class)
-public class InputStampaDTOTestOK extends JUnitUtils {
+public class InputStampaDTO_KO_Test extends JUnitUtils {
 
-	private Logger log = Logger.getLogger(InputStampaDTOTestOK.class);
-
-	private InputStampaDTO inputStampaDTO;
+	private Logger log = Logger.getLogger(InputStampaDTO_KO_Test.class);
 
 	private static String codAppl = "Codice appl di test";
 	private static String codProcesso = "Codice processo di test";
 	private static PraticaDTO pratica = new PraticaDTO();
 	private static RapportoDTO rapporto = new RapportoDTO();
 	private static IntestatarioDTO intestatario = new IntestatarioDTO();
-	private static List<FirmatarioDTO> listaFirmatari;
 	private static InfoStampaDTO infoStampa = new InfoStampaDTO();
 
 	@Before
@@ -75,38 +72,11 @@ public class InputStampaDTOTestOK extends JUnitUtils {
 	@Before
 	public void initMocks() throws Exception {
 
-		inputStampaDTO = new InputStampaDTO();
-		inputStampaDTO.setCodAppl(codAppl);
-		inputStampaDTO.setCodProcesso(codProcesso);
-
-		inputStampaDTO.setPratica(pratica);
-		inputStampaDTO.setRapporto(rapporto);
-		inputStampaDTO.setIntestatario(intestatario);
-
-		listaFirmatari = new ArrayList<FirmatarioDTO>();
-
-		for (int i = 0; i < 13; i++) {
-			listaFirmatari.add(new FirmatarioDTO());
-		}
-
-		inputStampaDTO.setFirmatari(listaFirmatari);
-
-		inputStampaDTO.setInfoStampa(infoStampa);
-
 		listaErrataFirmatari = new ArrayList<FirmatarioDTO>();
 
 		for (int i = 0; i < numFirmatari; i++) {
 			listaErrataFirmatari.add(new FirmatarioDTO());
 		}
-
-	}
-
-	@Test
-	public void testInputStampaCasoOK() {
-
-		log.info("testInputStampaCasoOK: " + inputStampaDTO.toString());
-
-		assertTrue(validaCampi(inputStampaDTO).isEmpty());
 
 	}
 

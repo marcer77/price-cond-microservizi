@@ -15,9 +15,9 @@ import org.junit.runners.Parameterized.Parameter;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(Parameterized.class)
-public class PraticaDTOTestKO extends JUnitUtils {
+public class PraticaDTO_KO_Test extends JUnitUtils {
 
-	private Logger log = Logger.getLogger(PraticaDTOTestKO.class);
+	private Logger log = Logger.getLogger(PraticaDTO_KO_Test.class);
 
 	private static String codSuperPratica = "1234561234560";
 	private static String codPratica = "1234561234560";

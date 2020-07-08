@@ -15,9 +15,9 @@ import org.junit.runners.Parameterized.Parameter;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(Parameterized.class)
-public class FirmatarioDTOTestKO extends JUnitUtils {
+public class FirmatarioDTO_KO_Test extends JUnitUtils {
 
-	private Logger log = Logger.getLogger(FirmatarioDTOTestKO.class);
+	private Logger log = Logger.getLogger(FirmatarioDTO_KO_Test.class);
 
 	private static String intestazione = "Intestazione di test";
 	private static String ndg = "1234561234560";

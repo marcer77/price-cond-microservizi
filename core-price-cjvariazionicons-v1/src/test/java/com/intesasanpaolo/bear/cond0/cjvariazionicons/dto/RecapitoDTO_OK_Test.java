@@ -11,9 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class RecapitoDTOTestOK extends JUnitUtils {
+public class RecapitoDTO_OK_Test extends JUnitUtils {
 
-	private Logger log = Logger.getLogger(RecapitoDTOTestOK.class);
+	private Logger log = Logger.getLogger(RecapitoDTO_OK_Test.class);
 
 	private RecapitoDTO recapitoDTO;
 
