@@ -17,7 +17,8 @@ logging:
     org.keycloak: INFO
 
 error-manager:
-  enabled: falsespring:
+  enabled: false
+  
   profile: development
   application:
     name: "@project.artifactId@"
@@ -36,7 +37,7 @@ logging:
     org.keycloak: INFO
 
 error-manager:
-  enabled: true
+  enabled: false
 
 #connectors:
   #restConfigurations:
