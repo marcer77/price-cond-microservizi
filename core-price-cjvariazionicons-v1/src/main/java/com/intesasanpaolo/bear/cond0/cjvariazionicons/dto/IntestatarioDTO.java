@@ -2,6 +2,7 @@ package com.intesasanpaolo.bear.cond0.cjvariazionicons.dto;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -20,6 +21,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Valid
 public class IntestatarioDTO {
 
 	@NotNull(message = "Il campo ndg non può essere vuoto!")

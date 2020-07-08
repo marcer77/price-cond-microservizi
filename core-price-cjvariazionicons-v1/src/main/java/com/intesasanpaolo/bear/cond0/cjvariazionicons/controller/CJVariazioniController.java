@@ -20,8 +20,8 @@ import com.intesasanpaolo.bear.core.controller.StatelessController;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@Validated
 @RequestMapping("cjvariazionicons")
+@Validated
 public class CJVariazioniController extends StatelessController {
 
 	@Autowired
@@ -29,7 +29,7 @@ public class CJVariazioniController extends StatelessController {
 
 	@PostMapping(value = "/stampa", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
-	public ResponseEntity<ResponseResource> stampa(@RequestBody @Valid InputStampaDTO inputStampaDTO) throws Exception {
+	public ResponseEntity<ResponseResource> stampa(@Valid @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 		logger.info("start EndPoint stampa");
 		ResponseResource calcoloRischioCambioResource = null;
 		try {

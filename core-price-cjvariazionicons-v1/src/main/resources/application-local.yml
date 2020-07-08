@@ -5,7 +5,7 @@ spring:
     version: "@project.version@ (@env.GIT_COMMIT@)"
 
 error-manager:
-  enabled: true
+  enabled: false
   
 logging:
   level:
