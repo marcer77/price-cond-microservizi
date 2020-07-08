@@ -18,26 +18,6 @@ logging:
 
 error-manager:
   enabled: false
-  
-  profile: development
-  application:
-    name: "@project.artifactId@"
-    version: "@project.version@ (@env.GIT_COMMIT@)"
-  jackson:
-    time-zone: Europe/Rome
-  profiles:
-    active: ${ISP_AMBIENTE}
-    
-logging:
-  level:
-    root: INFO
-    com.intesasanpaolo.bear: INFO
-    com.intesasanpaolo.bear.config: INFO
-    com.intesasanpaolo.bear.connector.bearcore: INFO
-    org.keycloak: INFO
-
-error-manager:
-  enabled: false
 
 #connectors:
   #restConfigurations:

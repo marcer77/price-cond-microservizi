@@ -25,7 +25,6 @@ public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<InputS
 		connector.INHEADER[0] = null;// input.getHeader();
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = null;// input.getBody();
-
 		CtgConnectorRequest<C_T1SFS00> ctgConnectorRequest = new CtgConnectorRequest<>();
 		ctgConnectorRequest.setConnectorClient(connector);
 

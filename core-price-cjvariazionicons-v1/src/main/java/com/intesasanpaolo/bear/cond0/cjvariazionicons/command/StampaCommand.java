@@ -36,5 +36,6 @@ public class StampaCommand extends BaseCommand<ResponseResource>{
 	}
 	
 	
+	
 
 }
