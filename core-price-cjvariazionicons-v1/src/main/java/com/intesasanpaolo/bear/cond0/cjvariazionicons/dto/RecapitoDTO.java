@@ -13,27 +13,27 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RecapitoDTO{
 	
-	@NotNull(message = "Il campo tipo non può essere vuoto!")
-	@NotBlank(message = "Il campo tipo non può essere stringa vuota!")
+	@NotNull(message = "Il campo tipo non può essere null")
+	@NotBlank(message = "Il campo tipo non può essere vuoto")
 	private String tipo;
 	
-	@NotNull(message = "Il campo indirizzo non può essere vuoto!")
-	@NotBlank(message = "Il campo indirizzo non può essere stringa vuota!")
+	@NotNull(message = "Il campo indirizzo non può essere null")
+	@NotBlank(message = "Il campo indirizzo non può essere vuoto")
 	private String indirizzo;
 	
-	@Pattern(regexp = "[0-9]{5,5}", message = "Il campo cap può solo numerico con lunghezza 5")
+	@Pattern(regexp = "[0-9]{5,5}", message = "Il campo cap può essere solo numerico con lunghezza 5")
 	private String cap;
 	
-	@NotNull(message = "Il campo comune non può essere vuoto!")
-	@NotBlank(message = "Il campo comune non può essere stringa vuota!")
+	@NotNull(message = "Il campo comune non può essere null")
+	@NotBlank(message = "Il campo comune non può essere vuoto")
 	@Pattern(regexp = "^.{0,32}", message = "Il campo comune può avere lunghezza massima 32")
 	private String comune;
 	
 	@Pattern(regexp = "^.{0,25}", message = "Il campo frazione può avere lunghezza massima 25")
 	private String frazione;
 	
-	@NotNull(message = "Il campo provincia non può essere vuoto!")
-	@NotBlank(message = "Il campo provincia non può essere stringa vuota!")
-	@Pattern(regexp = "^.{2,2}", message = "Il campo provincia può solo numerico con lunghezza 2")
+	@NotNull(message = "Il campo provincia non può essere null")
+	@NotBlank(message = "Il campo provincia non può essere vuoto")
+	@Pattern(regexp = "^.{2,2}", message = "Il campo provincia può essere solo numerico con lunghezza 2")
 	private String provincia;
 }

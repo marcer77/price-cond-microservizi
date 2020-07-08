@@ -19,27 +19,27 @@ import lombok.NoArgsConstructor;
 public class InfoStampaDTO {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
-	@NotNull(message = "Il campo data non può essere vuoto!")
+	@NotNull(message = "Il campo data non può essere vuoto")
 	private Date data;
 
-	@NotNull(message = "Il campo tipoStampa non può essere vuoto!")
-	@NotBlank(message = "Il campo tipoStampa non può essere stringa vuota!")
+	@NotNull(message = "Il campo tipoStampa non può essere null")
+	@NotBlank(message = "Il campo tipoStampa non può essere vuoto")
 	private String tipoStampa;
 
-	@NotNull(message = "Il campo tipoOfferta non può essere vuoto!")
-	@NotBlank(message = "Il campo tipoOfferta non può essere stringa vuota!")
+	@NotNull(message = "Il campo tipoOfferta non può essere null")
+	@NotBlank(message = "Il campo tipoOfferta non può essere vuoto")
 	private String tipoOfferta;
 
-	@NotNull(message = "Il campo tipoFirma non può essere vuoto!")
-	@NotBlank(message = "Il campo tipoFirma non può essere stringa vuota!")
+	@NotNull(message = "Il campo tipoFirma non può essere null")
+	@NotBlank(message = "Il campo tipoFirma non può essere vuoto")
 	private String tipoFirma;
 
-	@NotNull(message = "Il campo codLingua non può essere vuoto!")
-	@NotBlank(message = "Il campo codLingua non può essere stringa vuota!")
+	@NotNull(message = "Il campo codLingua non può essere null")
+	@NotBlank(message = "Il campo codLingua non può essere vuoto")
 	private String codLingua;
 
-	@NotNull(message = "Il campo keyOper non può essere vuoto!")
-	@NotBlank(message = "Il campo keyOper non può essere stringa vuota!")
+	@NotNull(message = "Il campo keyOper non può essere null")
+	@NotBlank(message = "Il campo keyOper non può essere vuoto")
 	@Pattern(regexp = "^.{30,30}", message = "Il campo keyOper deve avere lunghezza 30")
 	private String keyOper;
 }
