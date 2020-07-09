@@ -32,22 +32,22 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
-        	<groupId>com.dsi.business.SSA_FL.integration.jdo.P_FL03S00</groupId>
-        	<artifactId>FL03</artifactId>
-        	<version>00.00001</version>
-        	<scope>system</scope>
-        	<systemPath>${basedir}/src/main/lib/FL03-00.00001.jar</systemPath>
-    	</dependency>
-	    <dependency>
-	        <groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00</groupId>
-	        <artifactId>T1SF</artifactId>
-	        <version>00.00003</version>
-	        <scope>system</scope>
-	        <systemPath>${basedir}/src/main/lib/T1SF-00.00003.jar</systemPath>
-	    </dependency>
-		
+			<groupId>com.dsi.business.SSA_FL.integration.jdo.P_FL03S00</groupId>
+			<artifactId>FL03</artifactId>
+			<version>00.00001</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/lib/FL03-00.00001.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00</groupId>
+			<artifactId>T1SF</artifactId>
+			<version>00.00003</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/lib/T1SF-00.00003.jar</systemPath>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -77,6 +77,13 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
