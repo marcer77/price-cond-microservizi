@@ -19,12 +19,12 @@ public class InfoStampaDTO_OK_Test extends JUnitUtils {
 
 	private InfoStampaDTO infoStampaDTO;
 
-	private static Date data = new Date(System.currentTimeMillis());
-	private static String tipoStampa = "Stampa di test";
-	private static String tipoOfferta = "Offerta di test";
-	private static String tipoFirma = "Firma di test";
-	private static String codLingua = "Lingua di test";
-	private static String keyOper = "123456789012345678901234567890";
+	private Date data = new Date(System.currentTimeMillis());
+	private String tipoStampa = "Stampa di test";
+	private String tipoOfferta = "Offerta di test";
+	private String tipoFirma = "Firma di test";
+	private String codLingua = "Lingua di test";
+	private String keyOper = "123456789012345678901234567890";
 
 	@Before
 	public void setUp() {

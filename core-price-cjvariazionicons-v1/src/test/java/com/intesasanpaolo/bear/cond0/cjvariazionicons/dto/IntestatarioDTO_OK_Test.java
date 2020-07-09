@@ -13,19 +13,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 public class IntestatarioDTO_OK_Test extends JUnitUtils {
 
 	private Logger log = Logger.getLogger(FirmatarioDTO_KO_Test.class);
 
 	private IntestatarioDTO intestatarioDTO;
 
-	private static String intestazione = "Intestazione di test";
-	private static String ndg = "1234561234560";
-	private static String specieGiur = "PERSO";
-	private static String codFiscale = "RSSMRA80A01H703F";
-	private static String pIva = "12345678901";
-	private static List<RecapitoDTO> recapiti;
+	private String intestazione = "Intestazione di test";
+	private String ndg = "1234561234560";
+	private String specieGiur = "PERSO";
+	private String codFiscale = "RSSMRA80A01H703F";
+	private String pIva = "12345678901";
+	private List<RecapitoDTO> recapiti;
 
 	@Before
 	public void setUp() {
@@ -43,13 +43,20 @@ public class IntestatarioDTO_OK_Test extends JUnitUtils {
 
 		recapiti = new ArrayList<RecapitoDTO>();
 
-		recapiti.add(new RecapitoDTO());
+		RecapitoDTO recapitoDTO = new RecapitoDTO();
+		recapitoDTO.setTipo("test tipo");
+		recapitoDTO.setIndirizzo("via dei test");
+		recapitoDTO.setCap("00000");
+		recapitoDTO.setComune("Comune di test");
+		recapitoDTO.setFrazione("Frazione di test");
+		recapitoDTO.setProvincia("TE");
+		recapiti.add(recapitoDTO);
 
 		intestatarioDTO.setRecapiti(recapiti);
 
 	}
 
-	//@Test
+	@Test
 	public void testIntestatarioCasoOK() {
 
 		log.info("testIntestatarioCasoOK: " + intestatarioDTO.toString());

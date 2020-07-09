@@ -17,9 +17,9 @@ public class PraticaDTO_OK_Test extends JUnitUtils {
 
 	private PraticaDTO praticaDTO;
 
-	private static String codSuperPratica = "1234561234560";
-	private static String codPratica = "1234561234560";
-	private static String codPropostaComm = "1234561234560";
+	private String codSuperPratica = "1234561234560";
+	private String codPratica = "1234561234560";
+	private String codPropostaComm = "1234561234560";
 
 	@Before
 	public void setUp() {

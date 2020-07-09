@@ -17,17 +17,17 @@ public class RecapitoDTO_OK_Test extends JUnitUtils {
 
 	private RecapitoDTO recapitoDTO;
 
-	private static String tipo = "test tipo";
+	private String tipo = "test tipo";
 
-	private static String indirizzo = "via dei test";
+	private String indirizzo = "via dei test";
 
-	private static String cap = "00000";
+	private String cap = "00000";
 
-	private static String comune = "Comune di test";
+	private String comune = "Comune di test";
 
-	private static String frazione = "Frazione di test";
+	private String frazione = "Frazione di test";
 
-	private static String provincia = "TE";
+	private String provincia = "TE";
 
 	@Before
 	public void setUp() {
