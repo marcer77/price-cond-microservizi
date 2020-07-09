@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.Esito;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.ResponseResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;
@@ -56,17 +57,23 @@ public class CJVariazioniController extends CoreController {
 
 		logger.info("start EndPoint stampa");
 
-		ResponseResource calcoloRischioCambioResource = null;
+		ResponseResource responseResource = new ResponseResource();
 
 		try {
-			StampaCommand condizioneCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO);
-			ResponseResource condizioneObj = condizioneCommand.execute();
-
+			//StampaCommand condizioneCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO);
+			//responseResource = condizioneCommand.execute();
+			
+			Esito esito=new Esito();
+			esito.setCodErrore("00");
+			responseResource.setEsito(esito);
+			responseResource.setKeyOper("232323232323232");
+			responseResource.setDocumento("<xml></xml>");
+		
 		} catch (Exception e) {
 			logger.error("Errore in EndPoint stampa: ", e);
 			throw new BearDomainRuntimeException("Errore generico in Stampa", "", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return ResponseEntity.status(HttpStatus.OK).body(calcoloRischioCambioResource);
+		return ResponseEntity.status(HttpStatus.OK).body(responseResource);
 
 	}
 
