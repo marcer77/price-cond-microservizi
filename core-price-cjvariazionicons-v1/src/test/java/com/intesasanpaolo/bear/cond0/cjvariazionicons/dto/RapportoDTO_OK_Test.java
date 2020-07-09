@@ -17,9 +17,9 @@ public class RapportoDTO_OK_Test extends JUnitUtils {
 
 	private RapportoDTO rapportoDTO;
 
-	private static String codFiliale = "12345";
-	private static String codCategoria = "1234";
-	private static String codProgressivo = "12345678";
+	private String codFiliale = "12345";
+	private String codCategoria = "1234";
+	private String codProgressivo = "12345678";
 
 	@Before
 	public void setUp() {

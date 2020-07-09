@@ -45,7 +45,8 @@ public class IntestatarioDTO_KO_Test extends JUnitUtils {
 				{ intestazione, ndg, specieGiur, codFiscale, "123456789123", 1 },
 				{ intestazione, ndg, "123456", codFiscale, pIva, 1 },
 				{ intestazione, ndg, specieGiur, "RSSMRA0A01H703F0", pIva, 1 },
-				{ intestazione, ndg, specieGiur, codFiscale, pIva, 0 } });
+				{ intestazione, ndg, specieGiur, codFiscale, pIva, 0 },
+				{ intestazione, ndg, specieGiur, codFiscale, pIva, 1 }});
 	}
 
 	@Parameter(0)

@@ -17,8 +17,8 @@ public class FirmatarioDTO_OK_Test extends JUnitUtils {
 
 	private FirmatarioDTO firmatarioDTO;
 
-	private static String intestazione = "Intestazione di test";
-	private static String ndg = "1234561234560";
+	private String intestazione = "Intestazione di test";
+	private String ndg = "1234561234560";
 
 	@Before
 	public void setUp() {

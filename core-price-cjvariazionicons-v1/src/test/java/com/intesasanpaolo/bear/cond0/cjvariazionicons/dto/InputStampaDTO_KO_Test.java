@@ -43,7 +43,8 @@ public class InputStampaDTO_KO_Test extends JUnitUtils {
 				{ codAppl, codProcesso, null, rapporto, intestatario, 13, infoStampa },
 				{ codAppl, codProcesso, pratica, null, intestatario, 13, infoStampa },
 				{ codAppl, codProcesso, pratica, rapporto, null, 13, infoStampa },
-				{ codAppl, codProcesso, pratica, rapporto, intestatario, 13, null } });
+				{ codAppl, codProcesso, pratica, rapporto, intestatario, 13, null },
+				{ codAppl, codProcesso, pratica, rapporto, intestatario, 13, infoStampa }});
 	}
 
 	@Parameter(0)
