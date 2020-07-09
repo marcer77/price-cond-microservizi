@@ -58,7 +58,7 @@ public class CJVariazioniController extends CoreController {
 		logger.info("start EndPoint stampa");
 
 		ResponseResource responseResource = new ResponseResource();
-
+		//com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.INHEADER x;
 		try {
 			StampaCommand condizioneCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO);
 			responseResource = condizioneCommand.execute();

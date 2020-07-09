@@ -3,10 +3,11 @@ spring:
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
-
-error-manager:
-  enabled: false
-  
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
+    
 logging:
   level:
     root: INFO
@@ -14,6 +15,52 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
+
+error-manager:
+  enabled: false
+
+#connectors:
+  #restConfigurations:
+  #  -
+  #    name: BitCoinRestConnector
+  #    url: https://api.blockchain.info/stats
+
+
+
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+  y1j2cConfigFileProps:
+    #Y1.j2cConfigProperties: ""
+    Y1.StgY: StgA
+    Y1.ApiStage: "01"
+    Y1.Acronimo: COND0
+    Y1.ExecuteTimeout: 120000
+    Y1.displaycommArea: ${CTG_DISPLAY_COMMON_AREA:true}
+    Y1.CTGConnectionURL: ${CTG_COND0_HOSTNAME:ctxgga0.mframe.sanpaoloimi.com}
+    Y1.CTGPortNumberSSL: ${CTG_COND0_PORT:18617}
+    Y1.CTGPortNumberTcpIP: ${CTG_COND0_PORT:18617}
+    Y1.CTGCUserName: ${CTG_COND0_USERNAME:GACONNEC}
+    Y1.CTGPassword: ${CTG_COND0_PASSWORD:secret}
+    Y1.CTGSSL: ${CTG_COND0_SSL:false}
+  # added to mock CTG call
+  #servicesFileProps:
+  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.fileMode: true
+  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.file: classpath:mocks/CTG/Z3YC_out.txt
+  #  com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.file: classpath:mocks/CTG/AFDY_out.txt
+  #  com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.file: classpath:mocks/CTG/AFRJ_out.txt
+#  transportsFileProps:
+#    mqtestGroup.transport: MQ
+#    mqtestGroup.trials: 2
+#    mqtestGroup.resumetime: 1
+ # tracerFileProps:
+  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.traceClass.Name_0: connector.log.DefaultTraceClass
+   # com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.traceClass.Name_0: connector.log.DefaultTraceClass
+   # com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.traceClass.Name_0: connector.log.DefaultTraceClass
 
 connectors:
   #restConfigurations:
@@ -24,7 +71,7 @@ connectors:
 #### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
-  auth-server-url: ${AUTH_SERVER_ENDPOINT:dummy}
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
   resource: bear-app
   realm: bear
   public-client: true
