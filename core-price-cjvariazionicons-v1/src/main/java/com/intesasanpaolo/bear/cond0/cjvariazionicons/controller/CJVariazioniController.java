@@ -35,7 +35,7 @@ public class CJVariazioniController extends CoreController {
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
 	public ResponseEntity<ResponseResource> stampa(
 
-			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
+			/*@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false) String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false) String customerID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE, required = true) String callerCompanyIDCode,
@@ -52,16 +52,16 @@ public class CJVariazioniController extends CoreController {
 			// @RequestHeader(value=HeaderAttribute.ISP_HEADER_CALLER_SERVER_NAME,required=false)
 			// String callerServerName,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
-
-			@Valid @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
+ @Valid */
+			 @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 
 		logger.info("start EndPoint stampa");
 
 		ResponseResource responseResource = new ResponseResource();
 
 		try {
-			//StampaCommand condizioneCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO);
-			//responseResource = condizioneCommand.execute();
+			StampaCommand condizioneCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO);
+			responseResource = condizioneCommand.execute();
 			
 			Esito esito=new Esito();
 			esito.setCodErrore("00");

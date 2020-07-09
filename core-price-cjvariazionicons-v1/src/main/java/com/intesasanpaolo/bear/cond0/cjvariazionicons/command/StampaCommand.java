@@ -32,7 +32,7 @@ public class StampaCommand extends BaseCommand<ResponseResource>{
 
 	@Override
 	public ResponseResource execute() throws Exception {
-		return t1sfServiceBS.test(inputStampaDTO);
+		return fL03ServiceBS.test(inputStampaDTO);
 	}
 	
 	

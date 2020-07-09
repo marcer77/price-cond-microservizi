@@ -5,6 +5,6 @@ configuration:
     ctg:
      - name: COND0
        acronimo: COND0
-       servizio: FL030FLA01
+       servizio: COND0-CTGBS
        env: SVIL
        user: GACONNEC

@@ -22,9 +22,9 @@ public class FL03CtgRequestTrasformer implements ICtgRequestTransformer<InputSta
 		C_FL03S00 connector = beanFactory.getBean(C_FL03S00.class);
 
 		connector.INHEADER = new INHEADER[1];
-		connector.INHEADER[0] = null;// input.getHeader();
+		connector.INHEADER[0] = new INHEADER();// input.getHeader();
 		connector.INPBST = new INPBST[1];
-		connector.INPBST[0] = null;// input.getBody();
+		connector.INPBST[0] = new INPBST();// input.getBody();
 
 		CtgConnectorRequest<C_FL03S00> ctgConnectorRequest = new CtgConnectorRequest<>();
 		ctgConnectorRequest.setConnectorClient(connector);
