@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils;
+package com.intesasanpaolo.bear.cond0.cjvariazionicons.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
