@@ -14,7 +14,7 @@ public class ResponseResource {
 	
 	private Esito esito;
 	private String keyOper;
-	//@JsonSerialize(using = Base64Serializer.class)
+	@JsonSerialize(using = Base64Serializer.class)
 	private String documento;
 
 }
