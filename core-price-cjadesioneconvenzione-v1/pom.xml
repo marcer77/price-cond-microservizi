@@ -24,6 +24,19 @@
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
         </dependency>
+        <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+        <dependency>
+			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00</groupId>
+			<artifactId>T1SJ</artifactId>
+			<version>00.00002</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/lib/AD-T1SJSTCVNE-00.00002.jar</systemPath>
+		</dependency>
+        
     </dependencies>
 
 	<build>
@@ -54,6 +67,13 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<includeSystemScope>true</includeSystemScope>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
