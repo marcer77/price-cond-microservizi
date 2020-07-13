@@ -7,3 +7,5 @@ configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
        value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+     - name: DATASOURCE_COND0DB2_URI
+       value: db2y.mframe.sanpaoloimi.com

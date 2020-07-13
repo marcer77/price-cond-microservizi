@@ -1,0 +1,14 @@
+configuration:         
+  env: 
+   -  name: ABI_SDDA
+      value: "01025"
+   -  name: ABI_MDDA
+      value: "03296"
+   -  name: ABI_IDDA
+      value: "03249"
+   -  name: ABI_EDDA
+      value: "10637"
+   -  name: ABI_JDDA
+      value: "03239"
+   -  name: ABI_SDZA
+      value: "01025"
