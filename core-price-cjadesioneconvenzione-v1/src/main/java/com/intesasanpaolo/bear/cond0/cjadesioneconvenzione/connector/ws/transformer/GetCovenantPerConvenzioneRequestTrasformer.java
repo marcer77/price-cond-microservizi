@@ -29,7 +29,7 @@ public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestT
     public SoapConnectorRequest<JAXBElement<GetCovenantPerConvenzione>> transform(CovenantPerConvenzioniRequestDTO input, Object... args) {
     	
     	log.info("transform(  ) - START");
-    	GetCovenantPerConvenzione ob = objectFactory.createGetCovenantPerConvenzione();
+    	GetCovenantPerConvenzione getCovenantPerConvenzione = objectFactory.createGetCovenantPerConvenzione();
     	
     	CovenantPerConvenzioneRequest in = new CovenantPerConvenzioneRequest();
     	
@@ -46,9 +46,9 @@ public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestT
     	in.setRapportoFiliale(objectFactory.createCovenantPerConvenzioneRequestRapportoFiliale(input.getRapportoFiliale()));
     	in.setUserId(objectFactory.createCovenantPerConvenzioneRequestUserId(input.getUserId()));
     	
-    	ob.setInput(objectFactory.createGetCovenantPerConvenzioneInput(in));
+    	getCovenantPerConvenzione.setInput(objectFactory.createGetCovenantPerConvenzioneInput(in));
         SoapConnectorRequest<JAXBElement<GetCovenantPerConvenzione>> request = new SoapConnectorRequest<>();
-        request.setPayload(new JAXBElement(new QName("http://tempuri.org/","GetCovenantPerConvenzione"),GetCovenantPerConvenzione.class,ob));
+        request.setPayload(new JAXBElement(new QName("http://tempuri.org/","GetCovenantPerConvenzione"),GetCovenantPerConvenzione.class,getCovenantPerConvenzione));
         log.info("transform(  ) - END");
         return request;
     }
