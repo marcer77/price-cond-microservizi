@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.CTGConnectorFL03;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.ResponseResource;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgResponseTansformer;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.FL03Request;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.FL03Response;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -17,10 +19,16 @@ public class FL03ServiceBS extends BaseService{
 	@Autowired
 	private CTGConnectorFL03 ctgConnectorFL03;
 	
-	public ResponseResource test(InputStampaDTO inputStampaDTO) throws Exception {
-		
-		ResponseResource responseResource= this.ctgConnectorFL03.call(inputStampaDTO);
-		return responseResource;
+	
+	@Autowired
+	private FL03CtgRequestTrasformer requestTransformer;
+
+	@Autowired
+	private FL03CtgResponseTansformer responseTransformer;
+
+	public FL03Response callBS(FL03Request fl03Request) throws Exception {	
+		FL03Response fl03Response =this.ctgConnectorFL03.call(fl03Request, requestTransformer, responseTransformer, null);
+		return fl03Response;
 		
 	}
 	
