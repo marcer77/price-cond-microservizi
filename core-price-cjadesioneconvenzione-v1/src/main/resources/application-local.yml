@@ -10,22 +10,21 @@ spring:
     
 logging:
   level:
-    root: DEBUG
-    com.intesasanpaolo.bear: DEBUG
-    com.intesasanpaolo.bear.config: DEBUG
-    com.intesasanpaolo.bear.connector.bearcore: DEBUG
+    root: INFO
+    com.intesasanpaolo.bear: INFO
+    com.intesasanpaolo.bear.config: INFO
+    com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
 
 error-manager:
   enabled: false
 
-#connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
-
-
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
 
 hostbridge:
   # added to mock CTG call
@@ -61,6 +60,8 @@ hostbridge:
   #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.traceClass.Name_0: connector.log.DefaultTraceClass
    # com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.traceClass.Name_0: connector.log.DefaultTraceClass
    # com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.traceClass.Name_0: connector.log.DefaultTraceClass
+tracing:
+    enabled: true
 
 connectors:
   soapConfiguration:
@@ -77,6 +78,8 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
        enableMTOM: false
        mocked: false
+       enabledTracing: true
+       
      ConvenzioniServiceConnector:
        endpoint: ${CONVENZIONI_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc}
        timeout: 60000
@@ -89,6 +92,7 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniService/GetRequisitiAdesioneConvenzione"
        enableMTOM: false
        mocked: false
+       enabledTracing: true
 
 #### Security configuration: Everything allowed for test
 keycloak:

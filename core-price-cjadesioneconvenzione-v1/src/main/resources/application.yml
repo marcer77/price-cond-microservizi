@@ -19,11 +19,12 @@ logging:
 error-manager:
   enabled: false
 
-#connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
 
 
 
@@ -77,6 +78,7 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
        enableMTOM: false
        mocked: false
+       enabledTracing: true
      ConvenzioniServiceConnector:
        endpoint: ${CONVENZIONI_SERVICE_WS_URL}
        timeout: 60000
@@ -89,6 +91,7 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniService/GetRequisitiAdesioneConvenzione"
        enableMTOM: false
        mocked: false
+       enabledTracing: true
 
 #### Security configuration: Everything allowed for test
 keycloak:
