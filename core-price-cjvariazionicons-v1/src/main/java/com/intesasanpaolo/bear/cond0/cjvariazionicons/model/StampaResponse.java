@@ -1,7 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.model;
 
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.Esito;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

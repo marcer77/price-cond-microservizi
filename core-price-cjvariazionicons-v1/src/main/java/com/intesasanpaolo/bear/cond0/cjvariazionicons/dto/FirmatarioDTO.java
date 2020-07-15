@@ -1,6 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.dto;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

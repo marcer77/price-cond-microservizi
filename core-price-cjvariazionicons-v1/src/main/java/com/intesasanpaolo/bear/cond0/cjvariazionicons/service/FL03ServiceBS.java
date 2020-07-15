@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.CTGConnectorFL03;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgResponseTansformer;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.FL03Request;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.FL03Response;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.service.BaseService;
 

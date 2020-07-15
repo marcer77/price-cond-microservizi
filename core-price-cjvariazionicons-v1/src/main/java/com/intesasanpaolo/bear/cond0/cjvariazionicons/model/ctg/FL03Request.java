@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjvariazionicons.model;
+package com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg;
 
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
