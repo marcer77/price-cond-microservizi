@@ -41,7 +41,7 @@
 
 	</dependencies>
 	<profiles>
-	
+
 		<profile>
 			<id>default</id>
 			<activation>
@@ -82,7 +82,7 @@
 							<includeSystemScope>true</includeSystemScope>
 						</configuration>
 					</plugin>
-					</plugins>
+				</plugins>
 			</build>
 		</profile>
 		<profile>
@@ -91,53 +91,58 @@
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
-			<plugins>
-				<plugin>
-					<groupId>org.jvnet.jaxb2.maven2</groupId>
-					<artifactId>maven-jaxb2-plugin</artifactId>
-					<version>0.14.0</version>
-					<configuration>
-						<removeOldOutput>false</removeOldOutput>
-						<cleanPackageDirectories>false</cleanPackageDirectories>
-					</configuration>
-					<executions>
-						<execution>
-							<id>1</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-							<configuration>
-								<generateDirectory>src/main/java</generateDirectory>
-								<schemaLanguage>WSDL</schemaLanguage>
-								<generatePackage>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice</generatePackage>
-								<schemas>
-									<schema>
-										<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc?wsdl</url> online wsdl
-									</schema>
-								</schemas>
-							</configuration>
-						</execution>
-						<execution>
-							<id>2</id>
-							<goals>
-								<goal>generate</goal>
-							</goals>
-							<configuration>
-								<generateDirectory>src/main/java</generateDirectory>
-								<schemaLanguage>WSDL</schemaLanguage>
-								<generatePackage>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice</generatePackage>
-								<schemas>
-									<schema>
-										<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?wsdl</url> <!-- online wsdl -->
-									</schema>
-								</schemas>
-							</configuration>
-						</execution>
-					</executions>
-				</plugin>
+				<plugins>
+					<plugin>
+						<groupId>org.jvnet.jaxb2.maven2</groupId>
+						<artifactId>maven-jaxb2-plugin</artifactId>
+						<version>0.14.0</version>
+						<configuration>
+							<removeOldOutput>false</removeOldOutput>
+							<cleanPackageDirectories>false</cleanPackageDirectories>
+						</configuration>
+						<executions>
+							<execution>
+								<id>1</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<generateDirectory>src/main/java</generateDirectory>
+									<schemaLanguage>WSDL</schemaLanguage>
+									<generatePackage>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice</generatePackage>
+									<schemas>
+										<schema>
+											<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc?wsdl</url>
+										</schema>
+									</schemas>
+								</configuration>
+							</execution>
+							<execution>
+								<id>2</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<generateDirectory>src/main/java</generateDirectory>
+									<schemaLanguage>WSDL</schemaLanguage>
+									<generatePackage></generatePackage>
+									<schemas>
+										<schema>
+											<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?wsdl</url> <!-- online wsdl -->
+										</schema>
+									</schemas>
+									<bindingDirectory>${basedir}/src/main/resources/wsdl/</bindingDirectory>
+									<bindingIncludes>
+										<include>**/*.xjb</include>
+									</bindingIncludes>
+									<extension>true</extension>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
-		
+
 		</profile>
 	</profiles>
 </project>

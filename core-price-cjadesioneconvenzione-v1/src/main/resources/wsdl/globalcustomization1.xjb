@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings version="1.0"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd3">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.xsd3" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	 <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd0">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	<jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd1">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	<jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	
+    
+</jxb:bindings>

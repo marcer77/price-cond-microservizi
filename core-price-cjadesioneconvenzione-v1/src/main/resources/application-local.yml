@@ -10,10 +10,10 @@ spring:
     
 logging:
   level:
-    root: INFO
-    com.intesasanpaolo.bear: INFO
-    com.intesasanpaolo.bear.config: INFO
-    com.intesasanpaolo.bear.connector.bearcore: INFO
+    root: DEBUG
+    com.intesasanpaolo.bear: DEBUG
+    com.intesasanpaolo.bear.config: DEBUG
+    com.intesasanpaolo.bear.connector.bearcore: DEBUG
     org.keycloak: INFO
 
 error-manager:
@@ -63,10 +63,20 @@ hostbridge:
    # com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.traceClass.Name_0: connector.log.DefaultTraceClass
 
 connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
+  soapConfiguration:
+   items:
+     ConvenzioniHostServiceConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
+       enableMTOM: false
+       mocked: false
 
 #### Security configuration: Everything allowed for test
 keycloak:
