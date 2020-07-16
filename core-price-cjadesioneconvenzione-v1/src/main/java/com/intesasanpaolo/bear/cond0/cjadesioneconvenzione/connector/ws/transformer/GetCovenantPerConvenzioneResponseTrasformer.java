@@ -9,7 +9,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.conv
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorResponse;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer;
 @Service
-public class GetCovenantPerConvenzioneResponseTrasformer implements ISoapResponseTransformer<JAXBElement<ResponseGetCovenantPerConvenzione>,ResponseGetCovenantPerConvenzione> {
+public class GetCovenantPerConvenzioneResponseTrasformer implements ISoapResponseTransformer<ResponseGetCovenantPerConvenzione,ResponseGetCovenantPerConvenzione> {
 
 	 @Override
 	    public ResponseGetCovenantPerConvenzione transform(SoapConnectorResponse soapConnectorResponse) {

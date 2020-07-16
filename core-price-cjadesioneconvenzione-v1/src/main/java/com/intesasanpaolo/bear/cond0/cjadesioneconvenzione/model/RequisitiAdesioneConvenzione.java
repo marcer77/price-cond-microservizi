@@ -1,10 +1,10 @@
-package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.ws;
+package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model;
 
 import java.util.List;
 
 import lombok.Data;
 @Data
-public class RequisitiAdesioneConvenzioneDTO {
+public class RequisitiAdesioneConvenzione {
 	
 	private String abi;
 	private String applicativoId;

@@ -3,32 +3,23 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service;
 import java.util.List;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
 
 import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.ConvenzioniHostServiceConnector;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.ConvenzioniServiceConnector;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.CovenantPerConvenzioneRequest;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzioneResponse;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.GetRequisitiAdesioneConvenzioneConnector;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.AdesioneRequest;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.AdesioneResponse;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzioneResponse;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneRequestTrasformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneResponseTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneRequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneResponseTrasformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.ws.CovenantPerConvenzioniRequestDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.ws.RequisitiAdesioneConvenzioneDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.RequisitiAdesioneConvenzione;
 
 @Service
 public class ConvenzioniService {
 	
 	@Autowired
-	private ConvenzioniServiceConnector convenzioniServiceConnector;
+	private GetRequisitiAdesioneConvenzioneConnector<RequisitiAdesioneConvenzione,GetRequisitiAdesioneConvenzioneResponse,JAXBElement<AdesioneRequest>,GetRequisitiAdesioneConvenzioneResponse> convenzioniServiceConnector;
 	@Autowired
 	private GetRequisitiAdesioneConvenzioneResponseTrasformer getRequisitiAdesioneConvenzioneResponseTrasformer;
 	@Autowired
@@ -36,14 +27,14 @@ public class ConvenzioniService {
 	
 	public GetRequisitiAdesioneConvenzioneResponse getRequisitiAdesioneConvenzione() {
 		
-		RequisitiAdesioneConvenzioneDTO requisitiAdesioneConvenzioneDTO = new RequisitiAdesioneConvenzioneDTO();
+		RequisitiAdesioneConvenzione requisitiAdesioneConvenzioneDTO = new RequisitiAdesioneConvenzione();
 		
 		requisitiAdesioneConvenzioneDTO.setAbi("01025");
 		
 		List codiciFiscali = Arrays.asList(new String[] {"CRLRERD44","PEORDERFF"});
 		requisitiAdesioneConvenzioneDTO.setCodiciFiscali(codiciFiscali);
 		
-		GetRequisitiAdesioneConvenzioneResponse response = (GetRequisitiAdesioneConvenzioneResponse) convenzioniServiceConnector.call(requisitiAdesioneConvenzioneDTO, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
+		GetRequisitiAdesioneConvenzioneResponse response = convenzioniServiceConnector.call(requisitiAdesioneConvenzioneDTO, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
 		return response;
 	}
 

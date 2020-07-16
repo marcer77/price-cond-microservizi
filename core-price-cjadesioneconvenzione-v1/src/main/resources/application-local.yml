@@ -60,13 +60,10 @@ hostbridge:
   #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.traceClass.Name_0: connector.log.DefaultTraceClass
    # com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.traceClass.Name_0: connector.log.DefaultTraceClass
    # com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.traceClass.Name_0: connector.log.DefaultTraceClass
-tracing:
-    enabled: true
-
 connectors:
   soapConfiguration:
    items:
-     ConvenzioniHostServiceConnector:
+     GetCovenantPerConvenzioneConnector:
        endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc}
        timeout: 60000
        username: username
@@ -78,9 +75,8 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
        enableMTOM: false
        mocked: false
-       enabledTracing: true
-       
-     ConvenzioniServiceConnector:
+       enabledTracing: true      
+     GetRequisitiAdesioneConvenzioneConnector:
        endpoint: ${CONVENZIONI_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc}
        timeout: 60000
        username: username

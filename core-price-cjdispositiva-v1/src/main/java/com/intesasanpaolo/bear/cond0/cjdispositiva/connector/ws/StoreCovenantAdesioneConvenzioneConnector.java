@@ -1,14 +1,17 @@
-package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws;
 
-import org.springframework.oxm.Unmarshaller;
 import org.springframework.stereotype.Service;
 import org.springframework.ws.soap.SoapMessage;
+import org.springframework.oxm.Unmarshaller;
+
 
 import com.intesasanpaolo.bear.connector.ws.connector.BaseDataPowerSoapConnector;
 
 @Service
-public class ConvenzioniServiceConnector<INPUT,OUTPUT,DTO,RESOURCE> extends BaseDataPowerSoapConnector<INPUT,OUTPUT,DTO,RESOURCE> {
-
+public class StoreCovenantAdesioneConvenzioneConnector<INPUT,OUTPUT,DTO,RESOURCE> extends BaseDataPowerSoapConnector<INPUT,OUTPUT,DTO,RESOURCE> {
+	
+	
+	
 	@Override
 	protected void handleSoapFault(SoapMessage soapMessage, Unmarshaller unmarshaller) throws RuntimeException {
 		logger.info("handleSoapFault(  ) - START");
@@ -16,4 +19,6 @@ public class ConvenzioniServiceConnector<INPUT,OUTPUT,DTO,RESOURCE> extends Base
 		logger.info("handleSoapFault(  ) - END");
 		throw new RuntimeException("Il servizio Soap ha restituito l'errore: " + soapMessage.getFaultReason());
 	}
+	
+	
 }
