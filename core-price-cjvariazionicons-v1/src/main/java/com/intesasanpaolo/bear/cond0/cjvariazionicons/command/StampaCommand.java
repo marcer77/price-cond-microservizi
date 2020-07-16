@@ -81,7 +81,7 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.build();
 
-		FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
+		//FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
 
 		
 		StampaResponse stampaResponse=new StampaResponse();

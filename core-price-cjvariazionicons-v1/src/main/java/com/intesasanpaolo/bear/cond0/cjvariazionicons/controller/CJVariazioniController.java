@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +17,6 @@ import com.intesasanpaolo.bear.cond0.cjvariazionicons.assembler.StampaResponseRe
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.EsitoStampaResource;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.ServiceUtil;
