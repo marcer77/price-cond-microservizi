@@ -20,9 +20,9 @@ public class ServiceUtil {
 	 * @param ispWebservicesHeaderType
 	 */
 	public static void setHeaders(Object header, ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		if (!header.getClass().getSimpleName().equals("INHEADER")) {
-			throw new ClassCastException();
-		}
+		//if (!header.getClass().getSimpleName().equals("INHEADER")) {
+		//	throw new ClassCastException();
+		//}
 		
 		setHeader(header, "COD_ABI", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
 		setHeader(header, "CODICE_UO_RICH", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
