@@ -27,8 +27,16 @@ public class FL03ServiceBS extends BaseService{
 	private FL03CtgResponseTansformer responseTransformer;
 
 	public FL03Response callBS(FL03Request fl03Request) throws Exception {	
-		FL03Response fl03Response =this.ctgConnectorFL03.call(fl03Request, requestTransformer, responseTransformer, null);
+		FL03Response fl03Response =null;
+		try {
+			fl03Response =this.ctgConnectorFL03.call(fl03Request, requestTransformer, responseTransformer, null);				
+		} catch (Exception e) {
+			logger.error("Errore",e);
+			//throw e;
+			// TODO: handle exception
+		}
 		return fl03Response;
+		
 		
 	}
 	

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -17,6 +18,7 @@ import org.junit.runners.Parameterized.Parameter;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(Parameterized.class)
+@Ignore
 public class IntestatarioDTO_KO_Test extends JUnitUtils {
 
 	private Logger log = Logger.getLogger(FirmatarioDTO_KO_Test.class);
