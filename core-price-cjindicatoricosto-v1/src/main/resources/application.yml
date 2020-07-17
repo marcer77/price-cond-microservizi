@@ -17,7 +17,24 @@ logging:
     org.keycloak: INFO
 
 error-manager:
+  enabled: false
+  
+tracing:
   enabled: true
+ #mocked: true
+
+controllers:
+  tracing:
+    enabled: true
+
+#connectors:
+  #restConfigurations:
+  #  -
+  #    name: BitCoinRestConnector
+  #    url: https://api.blockchain.info/stats
+
+
+
 
 connectors:
   #restConfigurations:
