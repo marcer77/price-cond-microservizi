@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Esito {
+public class EsitoStampaResource {
 	
 	private String codErrore;
 	private String descErrore;

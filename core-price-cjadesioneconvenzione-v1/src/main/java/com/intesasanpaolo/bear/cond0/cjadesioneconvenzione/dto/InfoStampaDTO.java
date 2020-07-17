@@ -9,6 +9,7 @@ import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,8 +19,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class InfoStampaDTO {
 
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
+	@JsonFormat( shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
 	@NotNull(message = "Il campo data non può essere vuoto")
+	@ApiModelProperty(value="Data di riferimento",example = "20201212",dataType = "java.lang.String")
 	private Date data;
 
 	@NotNull(message = "Il campo tipoStampa non può essere null")
