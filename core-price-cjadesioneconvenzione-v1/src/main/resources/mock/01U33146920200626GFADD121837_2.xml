@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+<Archiviazione>NO</Archiviazione>
+<infoPDF>
+<app>FL888</app>
+<template>FL_CONV.xdp</template>
+<version>3.0</version>
+<contenturi>FL888\3.0\TEMPLATE</contenturi>
+<out>PDF</out>
+</infoPDF>
+<SubformBlocchettoLungoColori>
+<codice_soaBlocchettoLungoCol>01</codice_soaBlocchettoLungoCol>
+</SubformBlocchettoLungoColori>
+<dataPDF>
+<SubformLogoColori>
+<codice_soaLogoCol>01</codice_soaLogoCol>
+</SubformLogoColori>
+<FLCNV01_STAMPA>ADE</FLCNV01_STAMPA>
+<FLCNV01_TIPO_STAMPA>V</FLCNV01_TIPO_STAMPA>
+<FLCNV01_COND_VAR> </FLCNV01_COND_VAR>
+<FLCNV01_COPIA>B</FLCNV01_COPIA>
+<flcnv01_st_cliente>ESPOSITO AMENDOLA EMANUELE</flcnv01_st_cliente>
+<FLCNV01_ALLEGATO>1C</FLCNV01_ALLEGATO>
+<flcnv01_st_indirizzo>VIA TAVERNERIO 46</flcnv01_st_indirizzo>
+<flcnv01_st_cap>00188</flcnv01_st_cap>
+<flcnv01_st_citta>ROMA</flcnv01_st_citta>
+<flcnv01_st_provincia>RM</flcnv01_st_provincia>
+<flcnv01_st_nome_rapporto>Apertura di Credito consumatori</flcnv01_st_nome_rapporto>
+<flcnv01_st_nr_conto>66298/0082/00000174</flcnv01_st_nr_conto>
+<flcnv01_st_controparte>dalla convenzione CC11000071 09/A/C DIP. C. D. (AMM. NE CD</flcnv01_st_controparte>
+<ITEMLOOP_FLCNC00>
+<LOOP_FLCNC00>
+<flcnv01_st_cond_1>S</flcnv01_st_cond_1>
+<flcnv01_st_desc_cond_1>Condizioni Agevolate</flcnv01_st_desc_cond_1>
+<ITEMLIST_flcnv01_ls_cond_1>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>   Tasso Debitore di interesse nominale annuo (T.A.N.)</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>0,5300 %</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>(1)</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>                                                                               Indice di riferimento</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>Media mensile Euribor 1m/365 mese in corso</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>
+</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>                                                         Valore dell'indice di riferimento in vigore</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>-0,4700 %</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>
+</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>                                                   Percentuale di applicazione indice di riferimento</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>100,0000 %</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>
+</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>                                                                       Spread (in punti percentuali)</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>+1,0000</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>
+</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1> PERIODICITA'</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>                                                                                          </flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>     </flcnv01_elst_nota_1>
+<flcnv01_elst_font_1> B  </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>   Periodicita' di liquidazione delle competenze diverse da interessi</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>SEMESTRALE</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>
+</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1> ALTRE SPESE.</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>                                                                                          </flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>     </flcnv01_elst_nota_1>
+<flcnv01_elst_font_1> B  </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>   Costo invio comunicazione di legge cartacea</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>0,00 euro</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>(2)</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_dt_dec_1>          </flcnv01_elst_dt_dec_1>
+<flcnv01_elst_voce_1>   Costo invio comunicazione di legge on line</flcnv01_elst_voce_1>
+<flcnv01_elst_valore_1>0,00 euro</flcnv01_elst_valore_1>
+<flcnv01_elst_nota_1>(3)</flcnv01_elst_nota_1>
+<flcnv01_elst_font_1>    </flcnv01_elst_font_1>
+</ITEM>
+</ITEMLIST_flcnv01_ls_cond_1>
+<ITEMLIST_flcnv01_ls_note_1>
+<ITEM>
+<flcnv01_elst_nr_nota_1>(1)</flcnv01_elst_nr_nota_1>
+<flcnv01_elst_de_nota_1> </flcnv01_elst_de_nota_1>
+<flcnv01n1>IL TASSO E' VARIABILE ED E' CALCOLATO COME SEGUE: (valore dell'indice di riferimento tempo per tempo vigente moltiplicato per la percentuale di applicazione indice di riferimento) + (spread). Il valore del tasso, dunque, varia in base al valore tempo per tempo vigente dell'indice di riferimento. Il valore riportato nel documento e' il tasso in vigore alla data ivi indicata - oppure - ove la data non sia espressa e nel caso di date future - e' calcolato sulla base del valore dell'indice di riferimento in vigore alla data di elaborazione del documento. Per conoscere i valori effettivamente applicati nel calcolo degli interessi il cliente puo' consultare la sezione 'Dettaglio competenze di chiusura' degli estratti conto contenente anche l'evidenza degli interessi tempo per tempo maturati. Nel caso di tasso a debito del cliente, qualora la somma algebrica tra il valore dell'indice di riferimento e dello spread determini un risultato di segno negativo, il tasso e'</flcnv01n1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_nr_nota_1>
+</flcnv01_elst_nr_nota_1>
+<flcnv01_elst_de_nota_1> </flcnv01_elst_de_nota_1>
+<flcnv01n1>comunque fissato a zero essendo in ogni caso il cliente tenuto a restituire le somme utilizzate. Il valore dell'indice di riferimento Euribor ACT/365 e' calcolato dalla Banca utilizzando l'Euribor ACT/360 (pubblicato sulla pagina EURIBOR01 del circuito Reuters), moltiplicato per il coefficiente 365/360. La formula applicata e' pertanto 'Euribor ACT/365 = Euribor ACT/360 * 365 /360'. Il tasso convertito ottenuto e' arrotondato al terzo decimale secondo la seguente convenzione: per difetto ove il quarto decimale sia da 1 a 4, per eccesso ove il quarto decimale sia da 5 a 9.</flcnv01n1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_nr_nota_1>(2)</flcnv01_elst_nr_nota_1>
+<flcnv01_elst_de_nota_1> </flcnv01_elst_de_nota_1>
+<flcnv01n1>Costo non percepito in quanto la comunicazione di legge e' inviata contestualmente a quella del conto corrente.</flcnv01n1>
+</ITEM>
+<ITEM>
+<flcnv01_elst_nr_nota_1>(3)</flcnv01_elst_nr_nota_1>
+<flcnv01_elst_de_nota_1> </flcnv01_elst_de_nota_1>
+<flcnv01n1>Per avere la rendicontazione on line e' necessario aderire ai servizi a distanza della Banca e utilizzare le relative credenziali di accesso; i servizi a distanza sono offerti nell'ambito del contratto denominato 'MyKey' e ai titolari dei contratti 'Servizi via internet, cellulare e telefono per aziende ed enti' oppure 'Inbiz'. Per maggiori informazioni sui servizi a distanza consultare i fogli informativi dedicati.</flcnv01n1>
+</ITEM>
+</ITEMLIST_flcnv01_ls_note_1>
+</LOOP_FLCNC00>
+</ITEMLOOP_FLCNC00>
+<FLCNV01_USURA>S</FLCNV01_USURA>
+<flcnv01_st_luogo>ROMA</flcnv01_st_luogo>
+<flcnv01_st_data>26.06.2020</flcnv01_st_data>
+<flcnv01_st_banca>INTESA SANPAOLO S.P.A.</flcnv01_st_banca>
+<flcnv01_st_filiale>ROMA MONTECITORIO</flcnv01_st_filiale>
+<ITEMLIST_flcnv01_ls_firme_c1c>
+<ITEM>
+<flcnv01_elst_firma_c1c>ESPOSITO AMENDOLA EMANUELE</flcnv01_elst_firma_c1c>
+<flcnv01_elst_fdig_c1c>àISPPC£FDC£093,025£°;6219888055000;001é£003è</flcnv01_elst_fdig_c1c>
+</ITEM>
+</ITEMLIST_flcnv01_ls_firme_c1c>
+<ITEMLIST_flcnv01_ls_firme_a1c>
+<ITEM>
+<flcnv01_elst_firma_a1c>ESPOSITO AMENDOLA EMANUELE</flcnv01_elst_firma_a1c>
+<flcnv01_elst_fdig_a1c>àISPPC£FDC£093,025£°;6219888055000;002é£004è</flcnv01_elst_fdig_a1c>
+</ITEM>
+</ITEMLIST_flcnv01_ls_firme_a1c>
+<aa_skeleton_data>26/06/2020</aa_skeleton_data>
+<aa_skeleton_ora>- 12:18</aa_skeleton_ora>
+<aa_skeleton_int>ESPOSITO AMENDOLA EMANUELE</aa_skeleton_int>
+<aa_skeleton_matricola>U331469</aa_skeleton_matricola>
+<aa_skeleton_copia>Copia Banca - Matr.</aa_skeleton_copia>
+</dataPDF>
+<ARCHIVIAZIONE>
+</ARCHIVIAZIONE>
+</root>
