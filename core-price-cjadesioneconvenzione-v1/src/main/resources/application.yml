@@ -18,6 +18,14 @@ logging:
 
 error-manager:
   enabled: false
+  
+tracing:
+  enabled: true
+ #mocked: true
+
+controllers:
+  tracing:
+    enabled: true
 
 #connectors:
   #restConfigurations:
