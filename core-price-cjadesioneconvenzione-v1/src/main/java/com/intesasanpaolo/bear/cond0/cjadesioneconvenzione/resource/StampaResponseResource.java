@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class StampaResponseResource extends BaseResource{
 	
+	@JsonProperty("esito")
 	private EsitoStampaResource esitoStampaResource;
 	private String keyOper;
 	
