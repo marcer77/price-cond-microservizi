@@ -36,8 +36,7 @@ public class JUnitUtils {
 
 		}
 
-		log.info("Fine validazione con " + violations.size() + " violazioni:");
-
+		
 		return violations;
 	}
 
