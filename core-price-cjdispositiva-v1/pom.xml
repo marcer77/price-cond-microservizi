@@ -24,8 +24,19 @@
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
         </dependency>
+        
+        <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
     </dependencies>
-
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 	<build>
         <directory>${project.basedir}/target/diraliases/OPENSHIFT/</directory>
         <plugins>
@@ -50,10 +61,57 @@
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
+			                            <excludes>
+						                	<exclude>com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos</exclude>
+						                	<exclude>com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme</exclude>
+						                	<exclude>*Test.java</exclude>
+						                </excludes>
+			                        </configuration>
+			                    </execution>
+			                </executions>
+			            </plugin>
+					</plugins>
+				</build>    
+			</profile> 
+			<profile>
+				<id>genera-ws</id>
+				<activation>
+					<activeByDefault>false</activeByDefault>
+				</activation>
+					<build>
+						<plugins>
+						<!-- INIZIO GENERAZIONE WSDL -->
+				        <plugin>
+						    <groupId>org.jvnet.jaxb2.maven2</groupId>
+						    <artifactId>maven-jaxb2-plugin</artifactId>
+						    <version>0.14.0</version>
+						    <configuration>
+						        <removeOldOutput>false</removeOldOutput>
+						        <cleanPackageDirectories>false</cleanPackageDirectories>
+						    </configuration>
+						    <executions>
+						        <execution>
+						            <id>1</id>
+						            <goals>
+						                <goal>generate</goal>
+						            </goals>
+						            <configuration>
+						                <generateDirectory>src/main/java</generateDirectory>
+						                <schemaLanguage>WSDL</schemaLanguage>
+						                <generatePackage>com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos</generatePackage>
+						                <schemas>
+						                    <schema>
+						                        <url>http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS?wsdl</url>
+						                    </schema>
+						 
+						                </schemas>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-		</plugins>
-	</build>
+						<!-- FINE GENERAZIONE WSDL -->
+			</plugins>
+		</build>
+		</profile>
+	</profiles>
 </project>
