@@ -4,6 +4,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class PraticaDTO_OK_Test extends JUnitUtils {
 
 	private Logger log = Logger.getLogger(PraticaDTO_OK_Test.class);

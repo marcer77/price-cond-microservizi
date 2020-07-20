@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjvariazionicons.model;
+package com.intesasanpaolo.bear.cond0.cjvariazionicons.utils;
 
 public class HeaderAttribute {
 	
@@ -22,7 +22,6 @@ public class HeaderAttribute {
 	
 	public static final String ISP_HEADER_APPLICATION_ID = "ISPWebservicesHeader.TechnicalInfo.ApplicationID";
 	public static final String ISP_HEADER_CALLER_PGM_NAME = "ISPWebservicesHeader.TechnicalInfo.CallerProgramName";
-	//public static final String ISP_HEADER_CALLER_SERVER_NAME = "ISPWebservicesHeader.TechnicalInfo.CallerServerName";
 	public static final String ISP_HEADER_CHANNEL_ID_CODE = "ISPWebservicesHeader.TechnicalInfo.ChannelIDCode";
 
 	
