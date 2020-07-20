@@ -3,10 +3,11 @@ spring:
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
-
-error-manager:
-  enabled: true
-  
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
+    
 logging:
   level:
     root: INFO
@@ -14,6 +15,26 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
+
+error-manager:
+  enabled: false
+  
+tracing:
+  enabled: true
+ #mocked: true
+
+controllers:
+  tracing:
+    enabled: true
+
+#connectors:
+  #restConfigurations:
+  #  -
+  #    name: BitCoinRestConnector
+  #    url: https://api.blockchain.info/stats
+
+
+
 
 connectors:
   #restConfigurations:
@@ -24,7 +45,7 @@ connectors:
 #### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
-  auth-server-url: ${AUTH_SERVER_ENDPOINT:dummy}
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
   resource: bear-app
   realm: bear
   public-client: true

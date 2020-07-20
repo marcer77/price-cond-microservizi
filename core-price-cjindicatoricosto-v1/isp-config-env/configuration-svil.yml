@@ -1,9 +1,4 @@
 configuration:
-    oracle:
-     - name: CONDDATA
-       acronimo: COND0
-       servizio: COND0
-       user: COND_APP
     env:
      - name: AUTH_SERVER_ENDPOINT
        value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
