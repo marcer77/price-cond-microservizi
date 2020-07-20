@@ -1,7 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.utils;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.AnagraficaPropostaCJPOS;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.CondizioneCJPOS;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.DatiCliente;
@@ -61,7 +59,7 @@ public class ProposteCJPOSWSUtils {
 		return inviaPropostaV2;
 
 	}
-	
+
 	public static RevocaProposta _buildMockRevocaProposta() {
 		RevocaProposta revocaProposta = new RevocaProposta();
 		RevocaPropostaRequest revocaPropostaRequest = new RevocaPropostaRequest();
@@ -229,7 +227,7 @@ public class ProposteCJPOSWSUtils {
 		header.setAdditionalBusinessInfo(additionalBusinessInfo);
 		return header;
 	}
-	
+
 	public static ISPWebservicesHeaderType _buildMockedHeaderRevocaProposta() {
 
 		ISPWebservicesHeaderType header = new ISPWebservicesHeaderType();

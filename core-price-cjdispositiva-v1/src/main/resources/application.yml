@@ -49,11 +49,6 @@ connectors:
       GestioneRestConnector:
         url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
         timeout: 120000
-#  bearCoreConfigurations:
-#    items:
-#      GestioneRestConnector:
-#        url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
-#        timeout: 120000
 #### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
