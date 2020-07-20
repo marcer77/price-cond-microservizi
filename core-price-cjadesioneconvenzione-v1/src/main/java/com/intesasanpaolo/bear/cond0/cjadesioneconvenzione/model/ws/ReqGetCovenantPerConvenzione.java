@@ -1,9 +1,9 @@
-package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model;
+package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws;
 
 import lombok.Data;
 
 @Data
-public class CovenantPerConvenzioniRequest {
+public class ReqGetCovenantPerConvenzione {
 	
 	private String abi;
 	private String applicativoId;

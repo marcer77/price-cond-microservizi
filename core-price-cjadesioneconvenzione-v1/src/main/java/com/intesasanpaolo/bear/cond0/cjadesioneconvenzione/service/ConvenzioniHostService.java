@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service;
 
+import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,24 +12,22 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.conv
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneResponseTrasformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.CovenantPerConvenzioniRequest;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
 
 @Service
 public class ConvenzioniHostService {
 	
 	@Autowired
-	private GetCovenantPerConvenzioneConnector<CovenantPerConvenzioniRequest,ResponseGetCovenantPerConvenzione,JAXBElement<GetCovenantPerConvenzione>,ResponseGetCovenantPerConvenzione> convenzioniHostServiceConnector;
+	private GetCovenantPerConvenzioneConnector convenzioniHostServiceConnector;
 	@Autowired
 	private GetCovenantPerConvenzioneResponseTrasformer getCovenantPerConvenzioneResponseTrasformer;
 	@Autowired
 	private GetCovenantPerConvenzioneRequestTrasformer getCovenantPerConvenzioneRequestTrasformer;
 	
-	public ResponseGetCovenantPerConvenzione getCovenantPerConvenzione() {
+	public List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovenantPerConvenzione(ReqGetCovenantPerConvenzione request) {
 		
-		CovenantPerConvenzioniRequest request = new CovenantPerConvenzioniRequest();
-		request.setAbi("01025");
-		
-		ResponseGetCovenantPerConvenzione response =convenzioniHostServiceConnector.call(request, getCovenantPerConvenzioneRequestTrasformer, getCovenantPerConvenzioneResponseTrasformer, null);
+		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> response =(List<RespGetCovenantPerConvenzioneCovenantDaAttivare>) convenzioniHostServiceConnector.call(request, getCovenantPerConvenzioneRequestTrasformer, getCovenantPerConvenzioneResponseTrasformer, null);
 		return response;
 	}
 

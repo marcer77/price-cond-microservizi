@@ -13,17 +13,17 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.conv
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.CodiceFiscale;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.ObjectFactory;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.RequisitiAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
 
 @Service
-public class GetRequisitiAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<RequisitiAdesioneConvenzione,JAXBElement<AdesioneRequest>>{
+public class GetRequisitiAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqGetRequisitiAdesioneConvenzione,JAXBElement<AdesioneRequest>>{
 	
 	private ObjectFactory objectFactory = new ObjectFactory();
 
 	@Override
-	public SoapConnectorRequest<JAXBElement<AdesioneRequest>> transform(RequisitiAdesioneConvenzione input, Object... args) {
+	public SoapConnectorRequest<JAXBElement<AdesioneRequest>> transform(ReqGetRequisitiAdesioneConvenzione input, Object... args) {
 				
 		GetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzione = objectFactory.createGetRequisitiAdesioneConvenzione();
 		

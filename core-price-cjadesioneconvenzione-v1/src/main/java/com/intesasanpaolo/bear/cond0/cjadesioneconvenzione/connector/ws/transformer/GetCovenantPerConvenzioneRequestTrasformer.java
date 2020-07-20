@@ -10,12 +10,12 @@ import org.slf4j.Logger;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.CovenantPerConvenzioneRequest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ObjectFactory;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.CovenantPerConvenzioniRequest;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
 
 @Service
-public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestTransformer<CovenantPerConvenzioniRequest,JAXBElement<GetCovenantPerConvenzione>>{
+public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestTransformer<ReqGetCovenantPerConvenzione,JAXBElement<GetCovenantPerConvenzione>>{
 	
 	private ObjectFactory objectFactory;
 	
@@ -26,7 +26,7 @@ public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestT
     }
 
     @Override
-    public SoapConnectorRequest<JAXBElement<GetCovenantPerConvenzione>> transform(CovenantPerConvenzioniRequest input, Object... args) {
+    public SoapConnectorRequest<JAXBElement<GetCovenantPerConvenzione>> transform(ReqGetCovenantPerConvenzione input, Object... args) {
     	
     	log.info("transform(  ) - START");
     	GetCovenantPerConvenzione getCovenantPerConvenzione = objectFactory.createGetCovenantPerConvenzione();

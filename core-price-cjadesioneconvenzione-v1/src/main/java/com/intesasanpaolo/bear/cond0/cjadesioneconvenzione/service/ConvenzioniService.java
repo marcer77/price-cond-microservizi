@@ -1,10 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service;
 
-import java.util.List;
-
 import javax.xml.bind.JAXBElement;
 
-import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,28 +10,22 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.conv
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzioneResponse;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneRequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneResponseTrasformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.RequisitiAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetRequisitiAdesioneConvenzione;
 
 @Service
 public class ConvenzioniService {
 	
 	@Autowired
-	private GetRequisitiAdesioneConvenzioneConnector<RequisitiAdesioneConvenzione,GetRequisitiAdesioneConvenzioneResponse,JAXBElement<AdesioneRequest>,GetRequisitiAdesioneConvenzioneResponse> convenzioniServiceConnector;
+	private GetRequisitiAdesioneConvenzioneConnector convenzioniServiceConnector;
 	@Autowired
 	private GetRequisitiAdesioneConvenzioneResponseTrasformer getRequisitiAdesioneConvenzioneResponseTrasformer;
 	@Autowired
 	private GetRequisitiAdesioneConvenzioneRequestTransformer getRequisitiAdesioneConvenzioneRequestTransformer;
 	
-	public GetRequisitiAdesioneConvenzioneResponse getRequisitiAdesioneConvenzione() {
+	public RespGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzione(ReqGetRequisitiAdesioneConvenzione request) {
 		
-		RequisitiAdesioneConvenzione requisitiAdesioneConvenzioneDTO = new RequisitiAdesioneConvenzione();
-		
-		requisitiAdesioneConvenzioneDTO.setAbi("01025");
-		
-		List codiciFiscali = Arrays.asList(new String[] {"CRLRERD44","PEORDERFF"});
-		requisitiAdesioneConvenzioneDTO.setCodiciFiscali(codiciFiscali);
-		
-		GetRequisitiAdesioneConvenzioneResponse response = convenzioniServiceConnector.call(requisitiAdesioneConvenzioneDTO, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
+		RespGetRequisitiAdesioneConvenzione response = (RespGetRequisitiAdesioneConvenzione) convenzioniServiceConnector.call(request, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
 		return response;
 	}
 
