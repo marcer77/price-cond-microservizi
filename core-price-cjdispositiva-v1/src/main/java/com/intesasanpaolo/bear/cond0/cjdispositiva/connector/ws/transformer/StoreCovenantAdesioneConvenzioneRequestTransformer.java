@@ -14,8 +14,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionih
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.RequestStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.RequestStoreCovenantAdesioneConvenzioneCovenantDaCessare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Covenant;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.StoreCovenantAdesioneConvenzioneRequest;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -26,7 +26,7 @@ import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
 
 @Service
-public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<StoreCovenantAdesioneConvenzioneRequest,JAXBElement<StoreCovenantAdesioneConvenzione>>{
+public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqStoreCovenantAdesioneConvenzione,JAXBElement<StoreCovenantAdesioneConvenzione>>{
 	
 	private ObjectFactory objectFactory;
 	
@@ -37,7 +37,7 @@ public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoap
     }
 
     @Override
-    public SoapConnectorRequest<JAXBElement<StoreCovenantAdesioneConvenzione>> transform(StoreCovenantAdesioneConvenzioneRequest input, Object... args) {
+    public SoapConnectorRequest<JAXBElement<StoreCovenantAdesioneConvenzione>> transform(ReqStoreCovenantAdesioneConvenzione input, Object... args) {
     	
 
     	StoreCovenantAdesioneConvenzione storeCovenantAdesioneConvenzione = objectFactory.createStoreCovenantAdesioneConvenzione();
@@ -50,7 +50,7 @@ public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoap
         return request;
     }
     
-    private RequestStoreCovenantAdesioneConvenzione _populateRequestStoreCovenantAdesioneConvenzione(StoreCovenantAdesioneConvenzioneRequest input) {
+    private RequestStoreCovenantAdesioneConvenzione _populateRequestStoreCovenantAdesioneConvenzione(ReqStoreCovenantAdesioneConvenzione input) {
     	RequestStoreCovenantAdesioneConvenzione in = new RequestStoreCovenantAdesioneConvenzione();
     	
     	in.setABI(objectFactory.createRequestStoreCovenantAdesioneConvenzioneABI(input.getAbi()));
@@ -79,11 +79,11 @@ public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoap
 				RequestStoreCovenantAdesioneConvenzioneCovenantDaCessare e = objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessare();
 				e.setCodCondizione(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareCodCondizione(covenant.getCodCondizione()));
 				e.setCodiceTemplate(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareCodiceTemplate(covenant.getCodiceTemplate()));
-				e.setProgressivo(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareProgressivo(covenant.getProgressivo()));
+				e.setProgressivo(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareProgressivo(covenant.getProgressivo()+""));
 				e.setRapportoCategoria(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareRapportoCategoria(covenant.getRapportoCategoria()));
 				e.setRapportoConto(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareRapportoConto(covenant.getRapportoConto()));
 				e.setRapportoFiliale(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareRapportoFiliale(covenant.getRapportoFiliale()));
-				e.setVersioneTemplate(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareVersioneTemplate(covenant.getVersioneTemplate()));
+				e.setVersioneTemplate(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaCessareVersioneTemplate(covenant.getVersioneTemplate()+""));
 				
 				arrayOfRequestStoreCovenantAdesioneConvenzioneCovenantDaCessare.getRequestStoreCovenantAdesioneConvenzioneCovenantDaCessare().add(e);
 			}
@@ -116,15 +116,16 @@ public class StoreCovenantAdesioneConvenzioneRequestTransformer implements ISoap
 				e.setCovenantDataInizio(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareCovenantDataInizio(covenant.getCovenantDataInizio()));
 				e.setFlagEntitaPrincipale(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareFlagEntitaPrincipale(covenant.getFlagEntitaPrincipale()));
 				e.setLivelloGerarchia(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareLivelloGerarchia(covenant.getLivelloGerarchia()));
-				e.setProgressivo(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareProgressivo(covenant.getProgressivo()));
+				e.setProgressivo(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareProgressivo(covenant.getProgressivo()+""));
 				e.setRapportoCategoria(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareRapportoCategoria(covenant.getRapportoCategoria()));
 				e.setRapportoConto(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareRapportoConto(covenant.getRapportoConto()));
 				e.setRapportoFiliale(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareRapportoFiliale(covenant.getRapportoFiliale()));
-				e.setVersioneTemplate(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareVersioneTemplate(covenant.getVersioneTemplate()));
+				e.setVersioneTemplate(objectFactory.createRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivareVersioneTemplate(covenant.getVersioneTemplate()+""));
 				
+				arrayOfRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivare.getRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivare().add(e);
 			}
 			
 		}
-		return null;
+		return arrayOfRequestStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
 	}
 }

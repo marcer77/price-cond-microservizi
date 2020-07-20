@@ -1,13 +1,13 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.model;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
-@Builder
-public class StoreCovenantAdesioneConvenzioneRequest {
+public class ReqStoreCovenantAdesioneConvenzione {
 	
 	private String abi;
 	private String applicativoId;

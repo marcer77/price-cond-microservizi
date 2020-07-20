@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.model;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

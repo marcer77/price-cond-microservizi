@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.model;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class StoreCovenantAdesioneConvenzioneResult {
+public class RespStoreCovenantAdesioneConvenzione {
 	
 	private List<ErrorCovenant> listaErroriCovenantDaAttivare;
 	private List<ErrorCovenant> listaErroriCovenantDaCessare;

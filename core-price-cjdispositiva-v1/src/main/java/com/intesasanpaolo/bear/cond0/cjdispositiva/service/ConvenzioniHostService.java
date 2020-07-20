@@ -11,8 +11,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionih
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzioneResponse;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformer.StoreCovenantAdesioneConvenzioneRequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformer.StoreCovenantAdesioneConvenzioneResponseTransformer;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.StoreCovenantAdesioneConvenzioneRequest;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.StoreCovenantAdesioneConvenzioneResult;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 
 @Service
 public class ConvenzioniHostService {
@@ -24,12 +24,9 @@ public class ConvenzioniHostService {
 	@Autowired
 	private StoreCovenantAdesioneConvenzioneRequestTransformer requestTrasformer;
 	
-	public StoreCovenantAdesioneConvenzioneResult storeCovenantAdesioneConvenzione() {
+	public RespStoreCovenantAdesioneConvenzione storeCovenantAdesioneConvenzione(ReqStoreCovenantAdesioneConvenzione request) {
 		
-		StoreCovenantAdesioneConvenzioneRequest request = StoreCovenantAdesioneConvenzioneRequest.builder().abi("01025").build();
-		
-		
-		StoreCovenantAdesioneConvenzioneResult response =(StoreCovenantAdesioneConvenzioneResult) connector.call(request, requestTrasformer, responseTransformer, null);
+		RespStoreCovenantAdesioneConvenzione response =(RespStoreCovenantAdesioneConvenzione) connector.call(request, requestTrasformer, responseTransformer, null);
 		return response;
 	}
 

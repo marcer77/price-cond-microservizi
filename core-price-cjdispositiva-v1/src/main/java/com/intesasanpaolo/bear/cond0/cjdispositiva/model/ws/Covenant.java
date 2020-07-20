@@ -1,8 +1,12 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.model;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @Builder
 public class Covenant {
@@ -21,13 +25,13 @@ public class Covenant {
 	private String covenantDataFine;
 	private String covenantDataInizio;
 	private String flagEntitaPrincipale;
-	private String progressivo;
+	private Integer progressivo;
 	private String rapportoCategoria;
 	private String rapportoConto;
 	private String rapportoFiliale;
 	private String codiceTemplate;
 	private String condizioniFiglie;
 	private String livelloGerarchia;
-	private String versioneTemplate;
+	private Integer versioneTemplate;
 
 }

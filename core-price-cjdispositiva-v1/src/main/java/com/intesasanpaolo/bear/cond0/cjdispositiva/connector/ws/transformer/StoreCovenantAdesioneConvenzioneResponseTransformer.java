@@ -13,22 +13,22 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionih
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzioneResponse;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ErrorCovenant;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.StoreCovenantAdesioneConvenzioneResult;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ErrorCovenant;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorResponse;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer;
 @Service
-public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoapResponseTransformer<StoreCovenantAdesioneConvenzioneResponse,StoreCovenantAdesioneConvenzioneResult> {
+public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoapResponseTransformer<StoreCovenantAdesioneConvenzioneResponse,RespStoreCovenantAdesioneConvenzione> {
 
 	@Override
-	public StoreCovenantAdesioneConvenzioneResult transform(SoapConnectorResponse<StoreCovenantAdesioneConvenzioneResponse> soapConnectorResponse) {
+	public RespStoreCovenantAdesioneConvenzione transform(SoapConnectorResponse<StoreCovenantAdesioneConvenzioneResponse> soapConnectorResponse) {
 
 		StoreCovenantAdesioneConvenzioneResponse resp = soapConnectorResponse.getResponse();
 
 		return toModel(resp.getStoreCovenantAdesioneConvenzioneResult().getValue());
 	}
 	
-	private StoreCovenantAdesioneConvenzioneResult toModel(ResponseStoreCovenantAdesioneConvenzione response) {
+	private RespStoreCovenantAdesioneConvenzione toModel(ResponseStoreCovenantAdesioneConvenzione response) {
 		ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione res = response
 				.getResponseStoreCovenantAdesioneConvenzione().getValue();
 		
@@ -46,14 +46,14 @@ public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoa
 		if(CollectionUtils.isNotEmpty(res.getErroriListaCovenantDaCessare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare())){
 			for (ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare element : res.getErroriListaCovenantDaCessare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare()) {
 				ErrorCovenant e = new ErrorCovenant(element.getProgressivo().getValue(),element.getErrorMessage().getValue());
-				listaErroriCovenantDaAttivare.add(e );
+				listaErroriCovenantDaCessare.add(e );
 			}
 			
 		}
 		
 		
 		
-		return StoreCovenantAdesioneConvenzioneResult.builder()
+		return RespStoreCovenantAdesioneConvenzione.builder()
 				.esitoResultCode(res.getEsito().getValue().getResultCode().getValue())
 				.esitoErrorMessage(res.getEsito().getValue().getErrorMessage().getValue())
 				.listaErroriCovenantDaAttivare(listaErroriCovenantDaAttivare)
