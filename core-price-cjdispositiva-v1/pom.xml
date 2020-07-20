@@ -61,6 +61,11 @@
 			                                    <filtering>true</filtering>
 			                                </resource>
 			                            </resources>
+			                            <excludes>
+						                	<exclude>com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos</exclude>
+						                	<exclude>com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme</exclude>
+						                	<exclude>*Test.java</exclude>
+						                </excludes>
 			                        </configuration>
 			                    </execution>
 			                </executions>
