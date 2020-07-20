@@ -2,6 +2,8 @@ package com.intesasanpaolo.bear.cond0.cjindicatoricosto.controller;
 
 import java.util.ArrayList;
 
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +12,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.assembler.IndicatoriCostoResourceAssembler;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.command.IndicatoriCostoCommand;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.AffidamentoResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.CondizioneResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.EsitoResource;
@@ -20,7 +25,10 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.ParametriResourc
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.PraticaResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.utils.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
+import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -28,6 +36,12 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("cjindicatoricosto")
 public class CJIndicatoriCostoController extends CoreController {
 
+	@Autowired
+	private BeanFactory beanFactory;
+	
+	@Autowired
+	private IndicatoriCostoResourceAssembler indicatoriCostoResourceAssembler;
+	
 	@PostMapping(value = "/calcolo", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
 	public ResponseEntity<IndicatoriCostoResource> calcolo(
@@ -50,31 +64,57 @@ public class CJIndicatoriCostoController extends CoreController {
 
 		IndicatoriCostoResource resource = new IndicatoriCostoResource();
 
-		logger.info(HeaderAttribute.ISP_HEADER_APPLICATION_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE);
-		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI);
-		logger.info(HeaderAttribute.ISP_HEADER_LANGUAGE);
-		logger.info(HeaderAttribute.ISP_HEADER_IS_VIRTUAL_USER);
-		logger.info(HeaderAttribute.ISP_HEADER_TRANCACTION_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE);
 
+		try {
+			
+			ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
+					.applicationID(applicationID)
+					.callerCompanyIDCode(callerCompanyIDCode)
+					.callerProgramName(callerProgramName)
+					.channelIDCode(channelIDCode)
+					.codABI(codABI)
+					.codUnitaOperativa(codUnitaOperativa)
+					.customerID(customerID)
+					.isVirtualUser(isVirtualUser)
+					.language(language)
+					.serviceCompanyIDCode(serviceCompanyIDCode)
+					.serviceID(serviceID)
+					.userID(userID)
+					.transactionId(transactionId)
+					.timestamp(timestamp)
+					.serviceVersion(serviceVersion).build();
+					
+			
+			IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto,ispWebservicesHeaderType);
+			IndicatoriCosto indicatoriCosto = cmd.execute();
+			
+			resource= indicatoriCostoResourceAssembler.toResource(indicatoriCosto);
+			
+			//mock response
+			resource=this.mockResponse();
+			
+		} catch (Exception e) {
+			logger.error("Errore in EndPoint stampa: ", e);
+			throw new BearDomainRuntimeException("Errore generico in Stampa", "", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(resource);
+
+		
+	}
+	
+	protected IndicatoriCostoResource mockResponse() {
+		IndicatoriCostoResource resource = new IndicatoriCostoResource();
 		//mock response
 		resource.setEsito(new EsitoResource());
 		resource.getEsito().setCodErrore("00");
 		resource.getEsito().setDescErrore("");
-		
 		resource.setPratica(new ArrayList<PraticaResource>());
 		resource.getPratica().add(mockPraticaResource("1","00001","00002","ft1","ft2"));
 		resource.getPratica().add(mockPraticaResource("2","00003","00004","ft1","ft2"));
-		
-		return ResponseEntity.status(HttpStatus.OK).body(resource);
-
+		return resource;
 	}
 	
-	
-	private PraticaResource mockPraticaResource(String codPratica,String codiceCondizione1,String codiceCondizione2,String formatecnica1,String formatecnica2) {
+	protected PraticaResource mockPraticaResource(String codPratica,String codiceCondizione1,String codiceCondizione2,String formatecnica1,String formatecnica2) {
 		PraticaResource praticaResource=new PraticaResource();
 		praticaResource.setCodPratica(codPratica);
 		praticaResource.setCondizioni(new ArrayList<CondizioneResource>());
