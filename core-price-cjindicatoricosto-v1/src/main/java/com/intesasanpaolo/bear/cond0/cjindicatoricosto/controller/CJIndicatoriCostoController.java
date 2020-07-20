@@ -60,7 +60,7 @@ public class CJIndicatoriCostoController extends CoreController {
 		logger.info(HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID);
 		logger.info(HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE);
 
-		//mopck response
+		//mock response
 		resource.setEsito(new EsitoResource());
 		resource.getEsito().setCodErrore("00");
 		resource.getEsito().setDescErrore("");
