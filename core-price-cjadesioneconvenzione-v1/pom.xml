@@ -20,7 +20,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version>1.0.0-SNAPSHOT</version>
 	</properties>
-
+	
+	<repositories>
+		<repository>
+			<id>maven-repository</id>
+			<url>file:///${basedir}/lib</url>
+		</repository>
+	</repositories>
+	
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
@@ -32,11 +40,14 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.dsi.business.SSA_FL.integration.jdo.P_FL03S00</groupId>
+			<artifactId>FL03</artifactId>
+			<version>00.00001</version>
+		</dependency>
+		<dependency>
 			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00</groupId>
 			<artifactId>T1SJ</artifactId>
-			<version>00.00002</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/lib/AD-T1SJSTCVNE-00.00002.jar</systemPath>
+			<version>00.00003</version>
 		</dependency>
 
 	</dependencies>
