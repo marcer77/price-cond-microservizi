@@ -27,20 +27,45 @@ controllers:
   tracing:
     enabled: true
 
-#connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
 
 
 
 
 connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
+  soapConfiguration:
+   items:
+     GetCovenantPerConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
+     GetRequisitiAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniService/GetRequisitiAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
 
 #### Security configuration: Everything allowed for test
 keycloak:
