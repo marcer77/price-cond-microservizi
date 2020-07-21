@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.dto;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.dto.ws.propostecjpos;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.dto;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.dto.ws.pcgestxme;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

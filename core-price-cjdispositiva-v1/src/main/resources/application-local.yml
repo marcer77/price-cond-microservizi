@@ -3,10 +3,11 @@ spring:
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
 
-error-manager:
-  enabled: true
-  
 logging:
   level:
     root: INFO
@@ -14,7 +15,10 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
- 
+
+error-manager:
+  enabled: true
+
 controllers:
     tracing:
         enabled: true
@@ -65,10 +69,9 @@ connectors:
       GestioneRestConnector:
         url: "http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione"
         timeout: 120000
-#### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
-  auth-server-url: ${AUTH_SERVER_ENDPOINT:dummy}
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
   resource: bear-app
   realm: bear
   public-client: true
