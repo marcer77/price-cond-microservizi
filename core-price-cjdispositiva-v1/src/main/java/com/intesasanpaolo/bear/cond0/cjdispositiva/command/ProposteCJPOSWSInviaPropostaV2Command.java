@@ -41,8 +41,7 @@ public class ProposteCJPOSWSInviaPropostaV2Command extends BaseCommand<EsitoOper
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
-
-		esitoControlli = inviaPropostaV2 != null;
+		esitoControlli = inviaPropostaV2 != null && header!=null;
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
