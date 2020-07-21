@@ -27,14 +27,39 @@ controllers:
   tracing:
     enabled: true
 
-#connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
-
-
-
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+  y1j2cConfigFileProps:
+    #Y1.j2cConfigProperties: ""
+    Y1.StgY: StgA
+    Y1.ApiStage: "01"
+    Y1.Acronimo: COND0
+    Y1.ExecuteTimeout: 120000
+    Y1.displaycommArea: ${CTG_DISPLAY_COMMON_AREA}
+    Y1.CTGConnectionURL: ${CTG_COND0_HOSTNAME}
+    Y1.CTGPortNumberSSL: ${CTG_COND0_PORT}
+    Y1.CTGPortNumberTcpIP: ${CTG_COND0_PORT}
+    Y1.CTGCUserName: ${CTG_COND0_USERNAME}
+    Y1.CTGPassword: ${CTG_COND0_PASSWORD}
+    Y1.CTGSSL: ${CTG_COND0_SSL}
+  # added to mock CTG call
+  #servicesFileProps:
+  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.fileMode: true
+  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.file: classpath:mocks/CTG/Z3YC_out.txt
+  #  com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.file: classpath:mocks/CTG/AFDY_out.txt
+  #  com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.file: classpath:mocks/CTG/AFRJ_out.txt
+#  transportsFileProps:
+#    mqtestGroup.transport: MQ
+#    mqtestGroup.trials: 2
+#    mqtestGroup.resumetime: 1
+  #tracerFileProps:
+  #  com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00.traceClass.Name_0: connector.log.DefaultTraceClass
+  #  com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.C_T1SFS00.traceClass.Name_0: connector.log.DefaultTraceClass
 
 connectors:
   #restConfigurations:

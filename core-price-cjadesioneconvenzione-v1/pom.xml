@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione</groupId>
@@ -13,60 +15,145 @@
 	</parent>
 
 	<properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version>1.0.0-SNAPSHOT</version>
-    </properties>
-
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
-        </dependency>
-        <dependency>
+	</properties>
+	
+	<repositories>
+		<repository>
+			<id>maven-repository</id>
+			<url>file:///${basedir}/lib</url>
+		</repository>
+	</repositories>
+	
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
-        
-    </dependencies>
+		<dependency>
+			<groupId>com.dsi.business.SSA_FL.integration.jdo.P_FL03S00</groupId>
+			<artifactId>FL03</artifactId>
+			<version>00.00001</version>
+		</dependency>
+		<dependency>
+			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00</groupId>
+			<artifactId>T1SJ</artifactId>
+			<version>00.00003</version>
+		</dependency>
 
-	<build>
-        <directory>${project.basedir}/target/diraliases/OPENSHIFT/</directory>
-        <plugins>
-            <plugin>
-                <groupId>com.github.kongchen</groupId>
-                <artifactId>swagger-maven-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-resources-ext</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/diraliases/OPENSHIFT/config</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>src/main/config</directory>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<includeSystemScope>true</includeSystemScope>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
+	</dependencies>
+	<profiles>
+
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<directory>${project.basedir}/target/diraliases/OPENSHIFT/</directory>
+				<plugins>
+					<plugin>
+						<groupId>com.github.kongchen</groupId>
+						<artifactId>swagger-maven-plugin</artifactId>
+					</plugin>
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>copy-resources-ext</id>
+								<phase>package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${basedir}/target/diraliases/OPENSHIFT/config</outputDirectory>
+									<resources>
+										<resource>
+											<directory>src/main/config</directory>
+											<filtering>true</filtering>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.springframework.boot</groupId>
+						<artifactId>spring-boot-maven-plugin</artifactId>
+						<configuration>
+							<includeSystemScope>true</includeSystemScope>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>generate-ws</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.jvnet.jaxb2.maven2</groupId>
+						<artifactId>maven-jaxb2-plugin</artifactId>
+						<version>0.14.0</version>
+						<configuration>
+							<removeOldOutput>false</removeOldOutput>
+							<cleanPackageDirectories>false</cleanPackageDirectories>
+						</configuration>
+						<executions>
+							<execution>
+								<id>1</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<generateDirectory>src/main/java</generateDirectory>
+									<schemaLanguage>WSDL</schemaLanguage>
+									<generatePackage>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice</generatePackage>
+									<schemas>
+										<schema>
+											<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc?wsdl</url>
+										</schema>
+									</schemas>
+								</configuration>
+							</execution>
+							<execution>
+								<id>2</id>
+								<goals>
+									<goal>generate</goal>
+								</goals>
+								<configuration>
+									<generateDirectory>src/main/java</generateDirectory>
+									<schemaLanguage>WSDL</schemaLanguage>
+									<generatePackage></generatePackage>
+									<schemas>
+										<schema>
+											<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?wsdl</url> <!-- online wsdl -->
+										</schema>
+									</schemas>
+									<bindingDirectory>${basedir}/src/main/resources/wsdl/</bindingDirectory>
+									<bindingIncludes>
+										<include>**/*.xjb</include>
+									</bindingIncludes>
+									<extension>true</extension>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+	</profiles>
 </project>
