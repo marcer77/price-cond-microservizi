@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer;
+package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers;
 
 import org.springframework.stereotype.Service;
 

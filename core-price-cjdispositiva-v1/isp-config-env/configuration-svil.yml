@@ -7,3 +7,7 @@ configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
        value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+     - name: CONVENZIONI_HOST_SERVICE_WS_URL
+       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
+     - name: CJPOSWS_WS_URL
+       value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS

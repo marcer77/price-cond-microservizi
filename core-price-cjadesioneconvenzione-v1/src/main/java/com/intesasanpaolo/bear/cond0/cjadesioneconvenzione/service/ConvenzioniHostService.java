@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.GetCovenantPerConvenzioneConnector;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneRequestTrasformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetCovenantPerConvenzioneResponseTrasformer;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetCovenantPerConvenzioneRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetCovenantPerConvenzioneResponseTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
 

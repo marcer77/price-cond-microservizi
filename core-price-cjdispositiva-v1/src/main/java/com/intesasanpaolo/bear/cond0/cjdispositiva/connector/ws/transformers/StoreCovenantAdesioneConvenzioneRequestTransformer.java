@@ -1,3 +1,4 @@
+package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers;
 //package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformer;
 //
 //import java.util.List;
