@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.GetRequisitiAdesioneConvenzioneConnector;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneRequestTransformer;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformer.GetRequisitiAdesioneConvenzioneResponseTrasformer;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetRequisitiAdesioneConvenzioneRequestTransformer;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetRequisitiAdesioneConvenzioneResponseTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetRequisitiAdesioneConvenzione;
 

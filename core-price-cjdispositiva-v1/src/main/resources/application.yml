@@ -30,7 +30,7 @@ connectors:
   soapConfiguration:
     items:
       ProposteCJPOSWSInviaPropostaV2Connector:
-        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
+        endpoint: ${CJPOSWS_WS_URL}
         timeout: 60000
         username: username
         password: password
@@ -41,7 +41,7 @@ connectors:
         enableMTOM: false
         mocked: false
       ProposteCJPOSWSRevocaPropostaConnector:
-        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
+        endpoint: ${CJPOSWS_WS_URL}
         timeout: 60000
         username: username
         password: password
@@ -51,6 +51,19 @@ connectors:
         soapVersion: 1.2
         enableMTOM: false
         mocked: false
+      StoreCovenantAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
   restConfigurations:
     items:
       GestioneRestConnector:
