@@ -41,7 +41,7 @@ public class ProposteCJPOSWSRevocaPropostaCommand extends BaseCommand<EsitoOpera
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = revocaProposta != null;
+		esitoControlli = revocaProposta != null && header!=null;
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
