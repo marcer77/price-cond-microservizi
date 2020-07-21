@@ -120,7 +120,7 @@
 								<configuration>
 									<generateDirectory>src/main/java</generateDirectory>
 									<schemaLanguage>WSDL</schemaLanguage>
-									<generatePackage>com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice</generatePackage>
+									<generatePackage>com.intesasanpaolo.connector.ws.gen.convenzioniservice</generatePackage>
 									<schemas>
 										<schema>
 											<url>http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc?wsdl</url>

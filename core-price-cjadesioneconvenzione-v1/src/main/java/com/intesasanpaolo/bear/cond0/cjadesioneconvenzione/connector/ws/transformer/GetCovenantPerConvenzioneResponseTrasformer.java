@@ -3,18 +3,15 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transfo
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBElement;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzioneResponse;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorResponse;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzioneResponse;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
 
 @Service
 public class GetCovenantPerConvenzioneResponseTrasformer implements
