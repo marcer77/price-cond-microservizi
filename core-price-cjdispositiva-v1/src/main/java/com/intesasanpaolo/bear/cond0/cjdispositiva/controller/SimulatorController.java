@@ -1,10 +1,9 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.controller;
 
-import java.util.HashMap;
-
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,14 +12,10 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.command.ProposteCJPOSWSInviaPropostaV2Command;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.command.ProposteCJPOSWSRevocaPropostaCommand;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ServiceUtil;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoOperazioneCJPOSV2Resource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -36,7 +31,7 @@ public class SimulatorController extends CoreController {
 
 	@PostMapping(value = "/wsProposteCJPOSinviaPropostaV2", produces = "application/json")
 	@ApiOperation(value = "WS ProposteCJPOS inviaPropostaV2")
-	public ResponseEntity<EsitoOperazioneCJPOSV2> inviaPropostaV2(
+	public ResponseEntity<EsitoOperazioneCJPOSV2Resource> inviaPropostaV2(
 			@RequestBody(required = false) InviaPropostaV2 inviaPropostaV2,
 
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.TransactionId", required = false, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
@@ -71,24 +66,21 @@ public class SimulatorController extends CoreController {
 	) throws Exception {
 		log.info(" - inviaPropostaV2 START: ");
 
-		ISPWebservicesHeaderType header = ServiceUtil.buildISPWebservicesHeader(transactionId, timestamp, serviceID,
-				serviceVersion, language, userID, isVirtualUser, ispCallerCompanyIDCode, ispBranchCode,
-				ispServiceCompanyIDCode, customerID, businessProcessName, businessProcessID, businessOperation,
-				businessFileID, channelIDCode, applicationID, callerServerName, callerProgramName, codAbi,
-				codUnitaOperativa, codOperativa, dataContabile);
-
-		ProposteCJPOSWSInviaPropostaV2Command proposteCJPOSWSInviaPropostaV2Command = beanFactory
-				.getBean(ProposteCJPOSWSInviaPropostaV2Command.class);
-		proposteCJPOSWSInviaPropostaV2Command.setInviaPropostaV2(inviaPropostaV2);
-		proposteCJPOSWSInviaPropostaV2Command.setHeader(header);
-		EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSInviaPropostaV2Command.execute();
+		// mock
+		EsitoOperazioneCJPOSV2Resource esito = new EsitoOperazioneCJPOSV2Resource();
+		esito.setCodiceProposta("2020001835R");
+		esito.setEsitoCodice("OK");
+		esito.setEsitoMessaggio("Proposta inserita correttamente.");
+		esito.setEsitoIter("D");
+		esito.setFaseIter("2");
+		esito.setStatoIter("S");
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
-		return ResponseEntity.ok(esito);
+		return ResponseEntity.status(HttpStatus.OK).body(esito);
 	}
 
 	@PostMapping(value = "/wsProposteCJPOSrevocaProposta", produces = "application/json")
 	@ApiOperation(value = "WS ProposteCJPOS revocaProposta")
-	public ResponseEntity<EsitoOperazioneCJPOSV2> revocaProposta(
+	public ResponseEntity<EsitoOperazioneCJPOSV2Resource> revocaProposta(
 			@RequestBody(required = false) RevocaProposta propostaV2,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.TransactionId", required = false, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.Timestamp", required = false, defaultValue = "1587135953280") String timestamp,
@@ -120,18 +112,21 @@ public class SimulatorController extends CoreController {
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.DATA_CONTABILE", required = false, defaultValue = "1007020") String dataContabile)
 			throws Exception {
 		log.info(" - inviaPropostaV2 START: ");
-		ProposteCJPOSWSRevocaPropostaCommand proposteCJPOSWSRevocaPropostaCommand = beanFactory
-				.getBean(ProposteCJPOSWSRevocaPropostaCommand.class);
 
-		ISPWebservicesHeaderType header = ServiceUtil.buildISPWebservicesHeader(transactionId, timestamp, serviceID,
-				serviceVersion, language, userID, isVirtualUser, ispCallerCompanyIDCode, ispBranchCode,
-				ispServiceCompanyIDCode, customerID, businessProcessName, businessProcessID, businessOperation,
-				businessFileID, channelIDCode, applicationID, callerServerName, callerProgramName, codAbi,
-				codUnitaOperativa, codOperativa, dataContabile);
+		// mock
+		EsitoOperazioneCJPOSV2Resource esito = new EsitoOperazioneCJPOSV2Resource();
 
-		proposteCJPOSWSRevocaPropostaCommand.setRevocaProposta(propostaV2);
-		proposteCJPOSWSRevocaPropostaCommand.setHeader(header);
-		EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSRevocaPropostaCommand.execute();
+		String codiceProposta = propostaV2 != null && propostaV2.getDatiProposta() != null
+				&& propostaV2.getDatiProposta().getCodiceProposta() != null
+						? propostaV2.getDatiProposta().getCodiceProposta()
+						: "";
+
+		esito.setCodiceProposta(codiceProposta);
+		esito.setEsitoCodice("OK");
+		esito.setEsitoMessaggio("PROPOSTA ANNULLATA CORRETTAMENTE. STATO: S ESITO: J");
+		esito.setEsitoIter("J");
+		esito.setFaseIter("2");
+		esito.setStatoIter("S");
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}

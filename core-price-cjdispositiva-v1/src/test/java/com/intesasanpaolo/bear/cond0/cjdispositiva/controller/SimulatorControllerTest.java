@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
@@ -16,20 +15,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 @RunWith(SpringRunner.class)
 public class SimulatorControllerTest extends BaseTest {
 
-	private HttpHeaders httpHeaders;
-	
 	@Before
 	public void initMocks() throws Exception {
-		
-		httpHeaders = new HttpHeaders();
-		httpHeaders.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", "01025");
-		httpHeaders.add("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode", "01");
-		httpHeaders.add("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode", "01");
-		httpHeaders.add("ISPWebservicesHeader.OperatorInfo.UserID", "U015886");
-		httpHeaders.add("ISPWebservicesHeader.RequestInfo.Timestamp", "0");
-		httpHeaders.add("ISPWebservicesHeader.RequestInfo.TransactionId", "0");
-		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
-		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 		
 	}
 	
