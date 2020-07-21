@@ -3,16 +3,16 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transfo
 import javax.xml.bind.JAXBElement;
 import javax.xml.namespace.QName;
 
-import org.springframework.stereotype.Service;
-import com.intesasanpaolo.bear.config.LoggerUtils;
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.CovenantPerConvenzioneRequest;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzione;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzionihostservice.ObjectFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.CovenantPerConvenzioneRequest;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzione;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ObjectFactory;
 
 @Service
 public class GetCovenantPerConvenzioneRequestTrasformer implements ISoapRequestTransformer<ReqGetCovenantPerConvenzione,JAXBElement<GetCovenantPerConvenzione>>{

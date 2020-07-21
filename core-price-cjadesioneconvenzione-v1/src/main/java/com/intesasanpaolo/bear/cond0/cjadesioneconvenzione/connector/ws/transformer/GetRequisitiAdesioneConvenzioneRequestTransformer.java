@@ -8,14 +8,14 @@ import javax.xml.namespace.QName;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.AdesioneRequest;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.ArrayOfCodiceFiscale;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.CodiceFiscale;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.gen.convenzioniservice.ObjectFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.AdesioneRequest;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ArrayOfCodiceFiscale;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.CodiceFiscale;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzione;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ObjectFactory;
 
 @Service
 public class GetRequisitiAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqGetRequisitiAdesioneConvenzione,JAXBElement<AdesioneRequest>>{
