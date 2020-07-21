@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EsitoOperazioneDTO {
-
-    protected String esitoCodice;
-    protected String codiceProposta;
-    protected String esitoMessaggio;
+public class PraticaDTO {
+	
+	private String codSuperPratica;
+	private String codPratica;
+	private String codPropostaComm;
 	
 }

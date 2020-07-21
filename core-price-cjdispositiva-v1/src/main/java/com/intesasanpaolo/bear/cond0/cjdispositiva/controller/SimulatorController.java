@@ -1,8 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.controller;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -12,9 +10,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoOperazioneCJPOSV2Resource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PropostaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 
 import io.swagger.annotations.ApiOperation;
@@ -26,13 +23,9 @@ public class SimulatorController extends CoreController {
 
 	private Logger log = Logger.getLogger(SimulatorController.class);
 
-	@Autowired
-	private BeanFactory beanFactory;
-
 	@PostMapping(value = "/wsProposteCJPOSinviaPropostaV2", produces = "application/json")
 	@ApiOperation(value = "WS ProposteCJPOS inviaPropostaV2")
-	public ResponseEntity<EsitoOperazioneCJPOSV2Resource> inviaPropostaV2(
-			@RequestBody(required = false) InviaPropostaV2 inviaPropostaV2,
+	public ResponseEntity<EsitoResource> inviaPropostaV2(@RequestBody(required = false) PropostaDTO proposta,
 
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.TransactionId", required = false, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.Timestamp", required = false, defaultValue = "1587135953280") String timestamp,
@@ -67,21 +60,16 @@ public class SimulatorController extends CoreController {
 		log.info(" - inviaPropostaV2 START: ");
 
 		// mock
-		EsitoOperazioneCJPOSV2Resource esito = new EsitoOperazioneCJPOSV2Resource();
-		esito.setCodiceProposta("2020001835R");
-		esito.setEsitoCodice("OK");
-		esito.setEsitoMessaggio("Proposta inserita correttamente.");
-		esito.setEsitoIter("D");
-		esito.setFaseIter("2");
-		esito.setStatoIter("S");
+		EsitoResource esito = new EsitoResource();
+		esito.setCodErrore("00");
+		esito.setDescErrore("");
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.status(HttpStatus.OK).body(esito);
 	}
 
 	@PostMapping(value = "/wsProposteCJPOSrevocaProposta", produces = "application/json")
 	@ApiOperation(value = "WS ProposteCJPOS revocaProposta")
-	public ResponseEntity<EsitoOperazioneCJPOSV2Resource> revocaProposta(
-			@RequestBody(required = false) RevocaProposta propostaV2,
+	public ResponseEntity<EsitoResource> revocaProposta(@RequestBody(required = false) PropostaDTO proposta,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.TransactionId", required = false, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.Timestamp", required = false, defaultValue = "1587135953280") String timestamp,
 			@RequestHeader(value = "ISPWebservicesHeader.RequestInfo.ServiceID", required = false, defaultValue = "PCGESTIXME") String serviceID,
@@ -114,19 +102,9 @@ public class SimulatorController extends CoreController {
 		log.info(" - inviaPropostaV2 START: ");
 
 		// mock
-		EsitoOperazioneCJPOSV2Resource esito = new EsitoOperazioneCJPOSV2Resource();
-
-		String codiceProposta = propostaV2 != null && propostaV2.getDatiProposta() != null
-				&& propostaV2.getDatiProposta().getCodiceProposta() != null
-						? propostaV2.getDatiProposta().getCodiceProposta()
-						: "";
-
-		esito.setCodiceProposta(codiceProposta);
-		esito.setEsitoCodice("OK");
-		esito.setEsitoMessaggio("PROPOSTA ANNULLATA CORRETTAMENTE. STATO: S ESITO: J");
-		esito.setEsitoIter("J");
-		esito.setFaseIter("2");
-		esito.setStatoIter("S");
+		EsitoResource esito = new EsitoResource();
+		esito.setCodErrore("00");
+		esito.setDescErrore("");
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}
