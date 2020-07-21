@@ -7,6 +7,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -21,6 +22,9 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.New
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
@@ -36,6 +40,9 @@ public class SimulatorController extends CoreController {
 
 	@Autowired
 	private BeanFactory beanFactory;
+
+	@Autowired
+	private ConvenzioniHostService convenzioniHostService;
 
 	@PostMapping(value = "/wsProposteCJPOSinviaPropostaV2", produces = "application/json")
 	@ApiOperation(value = "WS ProposteCJPOS inviaPropostaV2")
@@ -71,7 +78,7 @@ public class SimulatorController extends CoreController {
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.COD_OPERATIVITA", required = false, defaultValue = "0") String codOperativa,
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.DATA_CONTABILE", required = false, defaultValue = "1007020") String dataContabile
 
-	) throws Exception {
+			) throws Exception {
 		log.info(" - inviaPropostaV2 START: ");
 
 		ISPWebservicesHeaderType header = ServiceUtil.buildISPWebservicesHeader(transactionId, timestamp, serviceID,
@@ -121,7 +128,7 @@ public class SimulatorController extends CoreController {
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.COD_UNITA_OPERATIVA", required = false, defaultValue = "01383") String codUnitaOperativa,
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.COD_OPERATIVITA", required = false, defaultValue = "0") String codOperativa,
 			@RequestHeader(value = "ISPWebservicesHeader.AdditionalBusinessInfo.DATA_CONTABILE", required = false, defaultValue = "1007020") String dataContabile)
-			throws Exception {
+					throws Exception {
 		log.info(" - inviaPropostaV2 START: ");
 		ProposteCJPOSWSRevocaPropostaCommand proposteCJPOSWSRevocaPropostaCommand = beanFactory
 				.getBean(ProposteCJPOSWSRevocaPropostaCommand.class);
@@ -156,7 +163,7 @@ public class SimulatorController extends CoreController {
 			@RequestHeader(value = "ISPWebservicesHeader.TechnicalInfo.ApplicationID", required = false, defaultValue = "0") String applicationID,
 			@RequestHeader(value = "ISPWebservicesHeader.TechnicalInfo.CallerProgramName", required = false, defaultValue = "0") String callerProgramName,
 			@RequestHeader(value = "ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", required = false, defaultValue = "0") String channelIDCode)
-			throws Exception {
+					throws Exception {
 		log.info(" - gestione START: ");
 		HashMap<String, String> headerParams = new HashMap<String, String>();
 		headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID", "PCGESTIXME");
@@ -180,6 +187,17 @@ public class SimulatorController extends CoreController {
 		NewAccountOutput esito = wsGestioneCommand.execute();
 		log.info(" - gestione END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
+	}
+
+
+	@PostMapping(value="/call-StoreCovenantAdesioneConvenzione")
+	public ResponseEntity<RespStoreCovenantAdesioneConvenzione> callGetCovenantPerConvenzioni(@RequestBody ReqStoreCovenantAdesioneConvenzione request){
+
+		RespStoreCovenantAdesioneConvenzione response = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
+
+		return ResponseEntity.ok(response);
+
+
 	}
 
 }
