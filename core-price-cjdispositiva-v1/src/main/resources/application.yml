@@ -28,21 +28,34 @@ tracing:
 
 connectors:
   soapConfiguration:
-   items:
-     StoreCovenantAdesioneConvenzioneConnector:
-       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
-       timeout: 60000
-       username: username
-       password: password
-       authenticationType: none
-       timeToLive: 7000
-       contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.convenzionihostservice"
-       soapVersion: 1.1
-       soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
-       enableMTOM: false
-       mocked: false
-       enabledTracing: true
-
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      ProposteCJPOSWSRevocaPropostaConnector:
+        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
+        timeout: 120000
 #### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
