@@ -19,37 +19,14 @@ logging:
 error-manager:
   enabled: true
 
-connectors:
-  soapConfiguration:
-    items:
-      ProposteCJPOSWSInviaPropostaV2Connector:
-        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
-        timeout: 60000
-        username: username
-        password: password
-        authenticationType: none
-        timeToLive: 7000
-        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
-        soapVersion: 1.2
-        enableMTOM: false
-        mocked: false
-      ProposteCJPOSWSRevocaPropostaConnector:
-        endpoint: "http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS"
-        timeout: 60000
-        username: username
-        password: password
-        authenticationType: none
-        timeToLive: 7000
-        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
-        soapVersion: 1.2
-        enableMTOM: false
-        mocked: false
-#  restConfigurations:
-#    items:
-#      GestioneRestConnector:
-#        url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
-#        timeout: 120000
-#### Security configuration: Everything allowed for test
+tracing:
+  enabled: true
+  
+  
+controllers:
+  tracing:
+    enabled: true  
+  
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

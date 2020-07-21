@@ -21,14 +21,13 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@ActiveProfiles(profiles = "test")
+@ActiveProfiles(profiles = "unittests")
 @TestPropertySource({"classpath:application-unittests.yml"})
 @ContextConfiguration(classes = { CoreTestConfig.class })
 @WebAppConfiguration
 @EnableWebMvc
 public class BaseTest {
 	protected final Logger log=org.slf4j.LoggerFactory.getLogger(this.getClass());
-	protected String codiceProtocolloTest;
 	protected MockMvc mvc;
 
 	@Autowired
