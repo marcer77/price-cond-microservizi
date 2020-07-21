@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.controller;
 
+import javax.validation.Valid;
+
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +25,7 @@ public class CJDispositivaController extends CoreController {
 	private Logger log = Logger.getLogger(CJDispositivaController.class);
 
 	@PostMapping(value = "/inserimento", produces = "application/json")
-	public ResponseEntity<EsitoResource> inserimento(@RequestBody(required = false) DispositivaRequestDTO dispositivaRequestDTO,
+	public ResponseEntity<EsitoResource> inserimento(@Valid @RequestBody DispositivaRequestDTO dispositivaRequestDTO,
 			
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false) String codUnitaOperativa,
