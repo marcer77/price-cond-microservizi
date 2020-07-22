@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 12:10:20 PM CEST 
+// Generato il: 2020.07.22 alle 11:41:47 AM CEST 
 //
 
 
@@ -54,6 +54,7 @@ public class ObjectFactory {
     private final static QName _ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare");
     private final static QName _ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare");
     private final static QName _ClassEsito_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Class.Esito");
+    private final static QName _ResponseRollBackStoreCovenantAdesioneConvenzione_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Response_RollBackStoreCovenantAdesioneConvenzione");
     private final static QName _RequestPartiVariabiliPerAddendum_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Request_PartiVariabiliPerAddendum");
     private final static QName _ArrayOfRequestPartiVariabiliPerAddendumCovenantAttivato_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "ArrayOfRequest_PartiVariabiliPerAddendum.CovenantAttivato");
     private final static QName _RequestPartiVariabiliPerAddendumCovenantAttivato_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Request_PartiVariabiliPerAddendum.CovenantAttivato");
@@ -91,6 +92,7 @@ public class ObjectFactory {
     private final static QName _GetCovenantPerConvenzioneInput_QNAME = new QName("http://tempuri.org/", "input");
     private final static QName _GetCovenantPerConvenzioneResponseGetCovenantPerConvenzioneResult_QNAME = new QName("http://tempuri.org/", "GetCovenantPerConvenzioneResult");
     private final static QName _StoreCovenantAdesioneConvenzioneResponseStoreCovenantAdesioneConvenzioneResult_QNAME = new QName("http://tempuri.org/", "StoreCovenantAdesioneConvenzioneResult");
+    private final static QName _RollbackStoreCovenantAdesioneConvenzioneResponseRollbackStoreCovenantAdesioneConvenzioneResult_QNAME = new QName("http://tempuri.org/", "RollbackStoreCovenantAdesioneConvenzioneResult");
     private final static QName _GetPartiVariabiliPerAddendumResponseGetPartiVariabiliPerAddendumResult_QNAME = new QName("http://tempuri.org/", "GetPartiVariabiliPerAddendumResult");
     private final static QName _BaselinePerHostRequestParametriAdesione_QNAME = new QName("http://tempuri.org/", "parametriAdesione");
     private final static QName _ResponseBodyGetBaselineGetBaselineResponse_QNAME = new QName("http://tempuri.org/", "getBaselineResponse");
@@ -174,6 +176,7 @@ public class ObjectFactory {
     private final static QName _RequestPartiVariabiliPerAddendumFilialeUserId_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Filiale_UserId");
     private final static QName _RequestPartiVariabiliPerAddendumIDProdottoCovenant_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "ID_ProdottoCovenant");
     private final static QName _RequestPartiVariabiliPerAddendumNumeroProposta_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "NumeroProposta");
+    private final static QName _ResponseRollBackStoreCovenantAdesioneConvenzioneErrorDescription_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "ErrorDescription");
     private final static QName _ResponseStoreCovenantAdesioneConvenzioneResponseStoreCovenantAdesioneConvenzione_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "ResponseStoreCovenantAdesioneConvenzione");
     private final static QName _RequestStoreCovenantAdesioneConvenzioneApplicativoId_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "Applicativo_id");
     private final static QName _RequestStoreCovenantAdesioneConvenzioneCodConvenzioneOLD_QNAME = new QName("http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", "CodConvenzione_OLD");
@@ -260,6 +263,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link RollbackStoreCovenantAdesioneConvenzione }
+     * 
+     */
+    public RollbackStoreCovenantAdesioneConvenzione createRollbackStoreCovenantAdesioneConvenzione() {
+        return new RollbackStoreCovenantAdesioneConvenzione();
+    }
+
+    /**
+     * Create an instance of {@link RollbackStoreCovenantAdesioneConvenzioneResponse }
+     * 
+     */
+    public RollbackStoreCovenantAdesioneConvenzioneResponse createRollbackStoreCovenantAdesioneConvenzioneResponse() {
+        return new RollbackStoreCovenantAdesioneConvenzioneResponse();
+    }
+
+    /**
+     * Create an instance of {@link ResponseRollBackStoreCovenantAdesioneConvenzione }
+     * 
+     */
+    public ResponseRollBackStoreCovenantAdesioneConvenzione createResponseRollBackStoreCovenantAdesioneConvenzione() {
+        return new ResponseRollBackStoreCovenantAdesioneConvenzione();
+    }
+
+    /**
      * Create an instance of {@link GetPartiVariabiliPerAddendum }
      * 
      */
@@ -332,11 +359,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }
+     * Create an instance of {@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }
      * 
      */
-    public ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare createArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare() {
-        return new ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare();
+    public ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare createArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare() {
+        return new ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare();
     }
 
     /**
@@ -388,35 +415,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
+     * Create an instance of {@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
      * 
      */
-    public ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
-        return new ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare();
+    public ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare createArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
+        return new ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare();
     }
 
     /**
-     * Create an instance of {@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
+     * Create an instance of {@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
      * 
      */
-    public ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
-        return new ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare();
+    public ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare createResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
+        return new ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare();
     }
 
     /**
-     * Create an instance of {@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }
+     * Create an instance of {@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }
      * 
      */
-    public ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare() {
-        return new ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare();
+    public ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare createArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare() {
+        return new ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare();
     }
 
     /**
-     * Create an instance of {@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }
+     * Create an instance of {@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }
      * 
      */
-    public ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare() {
-        return new ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare();
+    public ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare createResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare() {
+        return new ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare();
     }
 
     /**
@@ -452,11 +479,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }
+     * Create an instance of {@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }
      * 
      */
-    public ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato() {
-        return new ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato();
+    public ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato createArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato() {
+        return new ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato();
     }
 
     /**
@@ -468,11 +495,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }
+     * Create an instance of {@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }
      * 
      */
-    public ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario() {
-        return new ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario();
+    public ArrayOfResponseGetPartiVariabiliPerAddendumGlossario createArrayOfResponseGetPartiVariabiliPerAddendumGlossario() {
+        return new ArrayOfResponseGetPartiVariabiliPerAddendumGlossario();
     }
 
     /**
@@ -552,16 +579,16 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ArrayOfResponse_GetCovenantPerConvenzione.RespGetCovenantPerConvenzione.CovenantDaAttivare")
-    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> createArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare(ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare value) {
-        return new JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare>(_ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare_QNAME, ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare.class, null, value);
+    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare> createArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare(ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare value) {
+        return new JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare>(_ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare_QNAME, ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare.class, null, value);
     }
 
     /**
@@ -669,55 +696,55 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare")
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare(ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
-        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, null, value);
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare(ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
+        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare")
-    public JAXBElement<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare(ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
-        return new JAXBElement<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare_QNAME, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, null, value);
+    public JAXBElement<ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare(ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
+        return new JAXBElement<ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare_QNAME, ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare")
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare(ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
-        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, null, value);
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> createArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare(ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
+        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, null, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare")
-    public JAXBElement<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare(ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
-        return new JAXBElement<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, null, value);
+    public JAXBElement<ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare(ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
+        return new JAXBElement<ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare_QNAME, ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, null, value);
     }
 
     /**
@@ -731,6 +758,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Class.Esito")
     public JAXBElement<ClassEsito> createClassEsito(ClassEsito value) {
         return new JAXBElement<ClassEsito>(_ClassEsito_QNAME, ClassEsito.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseRollBackStoreCovenantAdesioneConvenzione }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseRollBackStoreCovenantAdesioneConvenzione }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Response_RollBackStoreCovenantAdesioneConvenzione")
+    public JAXBElement<ResponseRollBackStoreCovenantAdesioneConvenzione> createResponseRollBackStoreCovenantAdesioneConvenzione(ResponseRollBackStoreCovenantAdesioneConvenzione value) {
+        return new JAXBElement<ResponseRollBackStoreCovenantAdesioneConvenzione>(_ResponseRollBackStoreCovenantAdesioneConvenzione_QNAME, ResponseRollBackStoreCovenantAdesioneConvenzione.class, null, value);
     }
 
     /**
@@ -799,16 +839,16 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ArrayOfResponse_GetPartiVariabiliPerAddendum.RespGetPartiVariabiliPerAddendum.CovenantAttivato")
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato> createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato(ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato value) {
-        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato>(_ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato.class, null, value);
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato> createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato(ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato value) {
+        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato>(_ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato.class, null, value);
     }
 
     /**
@@ -825,16 +865,16 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ArrayOfResponse_GetPartiVariabiliPerAddendum.RespGetPartiVariabiliPerAddendum.Glossario")
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario> createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario(ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario value) {
-        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario>(_ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario.class, null, value);
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario> createArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario(ArrayOfResponseGetPartiVariabiliPerAddendumGlossario value) {
+        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario>(_ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumGlossario.class, null, value);
     }
 
     /**
@@ -1225,6 +1265,32 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://tempuri.org/", name = "StoreCovenantAdesioneConvenzioneResult", scope = StoreCovenantAdesioneConvenzioneResponse.class)
     public JAXBElement<ResponseStoreCovenantAdesioneConvenzione> createStoreCovenantAdesioneConvenzioneResponseStoreCovenantAdesioneConvenzioneResult(ResponseStoreCovenantAdesioneConvenzione value) {
         return new JAXBElement<ResponseStoreCovenantAdesioneConvenzione>(_StoreCovenantAdesioneConvenzioneResponseStoreCovenantAdesioneConvenzioneResult_QNAME, ResponseStoreCovenantAdesioneConvenzione.class, StoreCovenantAdesioneConvenzioneResponse.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RequestStoreCovenantAdesioneConvenzione }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link RequestStoreCovenantAdesioneConvenzione }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "input", scope = RollbackStoreCovenantAdesioneConvenzione.class)
+    public JAXBElement<RequestStoreCovenantAdesioneConvenzione> createRollbackStoreCovenantAdesioneConvenzioneInput(RequestStoreCovenantAdesioneConvenzione value) {
+        return new JAXBElement<RequestStoreCovenantAdesioneConvenzione>(_GetCovenantPerConvenzioneInput_QNAME, RequestStoreCovenantAdesioneConvenzione.class, RollbackStoreCovenantAdesioneConvenzione.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ResponseRollBackStoreCovenantAdesioneConvenzione }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link ResponseRollBackStoreCovenantAdesioneConvenzione }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://tempuri.org/", name = "RollbackStoreCovenantAdesioneConvenzioneResult", scope = RollbackStoreCovenantAdesioneConvenzioneResponse.class)
+    public JAXBElement<ResponseRollBackStoreCovenantAdesioneConvenzione> createRollbackStoreCovenantAdesioneConvenzioneResponseRollbackStoreCovenantAdesioneConvenzioneResult(ResponseRollBackStoreCovenantAdesioneConvenzione value) {
+        return new JAXBElement<ResponseRollBackStoreCovenantAdesioneConvenzione>(_RollbackStoreCovenantAdesioneConvenzioneResponseRollbackStoreCovenantAdesioneConvenzioneResult_QNAME, ResponseRollBackStoreCovenantAdesioneConvenzione.class, RollbackStoreCovenantAdesioneConvenzioneResponse.class, value);
     }
 
     /**
@@ -1722,29 +1788,29 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ListaCovenantAttivati", scope = ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class)
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato> createResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaCovenantAttivati(ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato value) {
-        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaCovenantAttivati_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato.class, ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class, value);
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato> createResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaCovenantAttivati(ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato value) {
+        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaCovenantAttivati_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato.class, ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ListaGlossario", scope = ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class)
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario> createResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaGlossario(ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario value) {
-        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaGlossario_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario.class, ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class, value);
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario> createResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaGlossario(ArrayOfResponseGetPartiVariabiliPerAddendumGlossario value) {
+        return new JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumListaGlossario_QNAME, ArrayOfResponseGetPartiVariabiliPerAddendumGlossario.class, ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendum.class, value);
     }
 
     /**
@@ -1872,9 +1938,9 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Progressivo", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class)
-    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessareProgressivo(String value) {
-        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoProgressivo_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Progressivo", scope = ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class)
+    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneCovenantDaCessareProgressivo(String value) {
+        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoProgressivo_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, value);
     }
 
     /**
@@ -1885,9 +1951,9 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "errorMessage", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class)
-    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessareErrorMessage(String value) {
-        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoErrorMessage_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "errorMessage", scope = ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class)
+    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneCovenantDaCessareErrorMessage(String value) {
+        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoErrorMessage_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, value);
     }
 
     /**
@@ -1898,9 +1964,9 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Progressivo", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class)
-    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivareProgressivo(String value) {
-        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoProgressivo_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "Progressivo", scope = ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class)
+    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivareProgressivo(String value) {
+        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoProgressivo_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, value);
     }
 
     /**
@@ -1911,35 +1977,35 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
      */
-    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "errorMessage", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class)
-    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivareErrorMessage(String value) {
-        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoErrorMessage_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, value);
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "errorMessage", scope = ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class)
+    public JAXBElement<String> createResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivareErrorMessage(String value) {
+        return new JAXBElement<String>(_ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivatoErrorMessage_QNAME, String.class, ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ErroriListaCovenantDaAttivare", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class)
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaAttivare(ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
-        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaAttivare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class, value);
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaAttivare(ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare value) {
+        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaAttivare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ErroriListaCovenantDaCessare", scope = ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class)
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaCessare(ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
-        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaCessare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class, value);
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> createResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaCessare(ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare value) {
+        return new JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare>(_ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneErroriListaCovenantDaCessare_QNAME, ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare.class, ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione.class, value);
     }
 
     /**
@@ -2541,16 +2607,16 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      * 
      * @param value
      *     Java instance representing xml element's value.
      * @return
-     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     *     the new instance of {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      */
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ListaCovenantDaAttivare", scope = ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzione.class)
-    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> createResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneListaCovenantDaAttivare(ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare value) {
-        return new JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare>(_ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneListaCovenantDaAttivare_QNAME, ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare.class, ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzione.class, value);
+    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare> createResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneListaCovenantDaAttivare(ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare value) {
+        return new JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare>(_ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneListaCovenantDaAttivare_QNAME, ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare.class, ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzione.class, value);
     }
 
     /**
@@ -2915,6 +2981,19 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "UserId", scope = RequestPartiVariabiliPerAddendum.class)
     public JAXBElement<String> createRequestPartiVariabiliPerAddendumUserId(String value) {
         return new JAXBElement<String>(_GetBaselinePerHostRequestUserId_QNAME, String.class, RequestPartiVariabiliPerAddendum.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     * 
+     * @param value
+     *     Java instance representing xml element's value.
+     * @return
+     *     the new instance of {@link JAXBElement }{@code <}{@link String }{@code >}
+     */
+    @XmlElementDecl(namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", name = "ErrorDescription", scope = ResponseRollBackStoreCovenantAdesioneConvenzione.class)
+    public JAXBElement<String> createResponseRollBackStoreCovenantAdesioneConvenzioneErrorDescription(String value) {
+        return new JAXBElement<String>(_ResponseRollBackStoreCovenantAdesioneConvenzioneErrorDescription_QNAME, String.class, ResponseRollBackStoreCovenantAdesioneConvenzione.class, value);
     }
 
     /**

@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 11:01:02 AM CEST 
+// Generato il: 2020.07.22 alle 11:35:12 AM CEST 
 //
 
 
@@ -47,9 +47,9 @@ public class ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendu
     @XmlElementRef(name = "Esito", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
     protected JAXBElement<ClassEsito> esito;
     @XmlElementRef(name = "ListaCovenantAttivati", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
-    protected JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato> listaCovenantAttivati;
+    protected JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato> listaCovenantAttivati;
     @XmlElementRef(name = "ListaGlossario", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
-    protected JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario> listaGlossario;
+    protected JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario> listaGlossario;
 
     /**
      * Recupera il valore della proprietà esito.
@@ -80,10 +80,10 @@ public class ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendu
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      *     
      */
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato> getListaCovenantAttivati() {
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato> getListaCovenantAttivati() {
         return listaCovenantAttivati;
     }
 
@@ -92,10 +92,10 @@ public class ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendu
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato }{@code >}
      *     
      */
-    public void setListaCovenantAttivati(JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumCovenantAttivato> value) {
+    public void setListaCovenantAttivati(JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato> value) {
         this.listaCovenantAttivati = value;
     }
 
@@ -104,10 +104,10 @@ public class ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendu
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      *     
      */
-    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario> getListaGlossario() {
+    public JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario> getListaGlossario() {
         return listaGlossario;
     }
 
@@ -116,10 +116,10 @@ public class ResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendu
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetPartiVariabiliPerAddendumGlossario }{@code >}
      *     
      */
-    public void setListaGlossario(JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumRespGetPartiVariabiliPerAddendumGlossario> value) {
+    public void setListaGlossario(JAXBElement<ArrayOfResponseGetPartiVariabiliPerAddendumGlossario> value) {
         this.listaGlossario = value;
     }
 

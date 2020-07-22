@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 11:01:02 AM CEST 
+// Generato il: 2020.07.22 alle 11:35:12 AM CEST 
 //
 
 
@@ -41,17 +41,17 @@ import javax.xml.bind.annotation.XmlType;
 public class ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzione {
 
     @XmlElementRef(name = "ListaCovenantDaAttivare", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
-    protected JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> listaCovenantDaAttivare;
+    protected JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare> listaCovenantDaAttivare;
 
     /**
      * Recupera il valore della proprietà listaCovenantDaAttivare.
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      *     
      */
-    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> getListaCovenantDaAttivare() {
+    public JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare> getListaCovenantDaAttivare() {
         return listaCovenantDaAttivare;
     }
 
@@ -60,10 +60,10 @@ public class ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzione {
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare }{@code >}
      *     
      */
-    public void setListaCovenantDaAttivare(JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> value) {
+    public void setListaCovenantDaAttivare(JAXBElement<ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare> value) {
         this.listaCovenantDaAttivare = value;
     }
 

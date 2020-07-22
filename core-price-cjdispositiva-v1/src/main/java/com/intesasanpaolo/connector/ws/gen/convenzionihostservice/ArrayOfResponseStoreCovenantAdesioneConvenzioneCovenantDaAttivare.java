@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 12:10:20 PM CEST 
+// Generato il: 2020.07.22 alle 11:41:47 AM CEST 
 //
 
 
@@ -39,10 +39,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare", propOrder = {
     "responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare"
 })
-public class ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare {
+public class ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare {
 
     @XmlElement(name = "Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare", nillable = true)
-    protected List<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
+    protected List<ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
 
     /**
      * Gets the value of the responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare property.
@@ -62,13 +62,13 @@ public class ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAde
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
+     * {@link ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }
      * 
      * 
      */
-    public List<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
+    public List<ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare() {
         if (responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare == null) {
-            responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare = new ArrayList<ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare>();
+            responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare = new ArrayList<ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare>();
         }
         return this.responseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
     }

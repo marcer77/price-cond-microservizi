@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 12:10:20 PM CEST 
+// Generato il: 2020.07.22 alle 11:35:12 AM CEST 
 //
 
 
@@ -39,7 +39,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ArrayOfResponse_GetCovenantPerConvenzione.RespGetCovenantPerConvenzione.CovenantDaAttivare", propOrder = {
     "responseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare"
 })
-public class ArrayOfResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare {
+public class ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare {
 
     @XmlElement(name = "Response_GetCovenantPerConvenzione.RespGetCovenantPerConvenzione.CovenantDaAttivare", nillable = true)
     protected List<ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare> responseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
