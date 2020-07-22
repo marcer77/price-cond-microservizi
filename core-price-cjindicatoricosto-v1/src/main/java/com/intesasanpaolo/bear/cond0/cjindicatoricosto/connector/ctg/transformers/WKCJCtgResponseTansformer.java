@@ -154,7 +154,7 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 						.tipoSez(out.TIPO_SEZ)
 						.tipoStrut(out.TIPO_STRUT)
 						.outRC4List(outRC4List)
-						.outRCOList(outRNOList)
+						.outRNOList(outRNOList)
 						.outRCZList(outRCZList)
 						.outRPRList(outRPRList)
 						.outRTSList(outRTSList)
