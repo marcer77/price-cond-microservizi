@@ -21,7 +21,7 @@ public class OutSTP {
 
 	private List<OutRC4> outRC4List;
 	private List<OutRCZ> outRCZList;
-	private List<OutRNO> outRCOList;
+	private List<OutRNO> outRNOList;
 	private List<OutRPR> outRPRList;
 	private List<OutRTS> outRTSList;
 
