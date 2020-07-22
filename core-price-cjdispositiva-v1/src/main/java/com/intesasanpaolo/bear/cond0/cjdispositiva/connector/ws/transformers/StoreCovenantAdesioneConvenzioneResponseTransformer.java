@@ -11,9 +11,9 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAde
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorResponse;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
+import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare;
-import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzioneResponse;
 @Service
 public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoapResponseTransformer<StoreCovenantAdesioneConvenzioneResponse,RespStoreCovenantAdesioneConvenzione> {
@@ -34,7 +34,7 @@ public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoa
 		List<ErrorCovenant> listaErroriCovenantDaCessare = new ArrayList<>();
 		
 		if(CollectionUtils.isNotEmpty(res.getErroriListaCovenantDaAttivare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare())){
-			for (ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare element : res.getErroriListaCovenantDaAttivare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare()) {
+			for (ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare element : res.getErroriListaCovenantDaAttivare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare()) {
 				ErrorCovenant e = new ErrorCovenant(element.getProgressivo().getValue(),element.getErrorMessage().getValue());
 				listaErroriCovenantDaAttivare.add(e );
 			}
@@ -42,7 +42,7 @@ public class StoreCovenantAdesioneConvenzioneResponseTransformer implements ISoa
 		}
 		
 		if(CollectionUtils.isNotEmpty(res.getErroriListaCovenantDaCessare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare())){
-			for (ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare element : res.getErroriListaCovenantDaCessare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare()) {
+			for (ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare element : res.getErroriListaCovenantDaCessare().getValue().getResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare()) {
 				ErrorCovenant e = new ErrorCovenant(element.getProgressivo().getValue(),element.getErrorMessage().getValue());
 				listaErroriCovenantDaCessare.add(e );
 			}

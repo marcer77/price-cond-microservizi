@@ -2,7 +2,7 @@
 // Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
 // Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
 // Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
-// Generato il: 2020.07.21 alle 12:10:20 PM CEST 
+// Generato il: 2020.07.22 alle 11:41:47 AM CEST 
 //
 
 
@@ -45,9 +45,9 @@ import javax.xml.bind.annotation.XmlType;
 public class ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzione {
 
     @XmlElementRef(name = "ErroriListaCovenantDaAttivare", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
-    protected JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> erroriListaCovenantDaAttivare;
+    protected JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> erroriListaCovenantDaAttivare;
     @XmlElementRef(name = "ErroriListaCovenantDaCessare", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
-    protected JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> erroriListaCovenantDaCessare;
+    protected JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> erroriListaCovenantDaCessare;
     @XmlElementRef(name = "Esito", namespace = "http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities", type = JAXBElement.class, required = false)
     protected JAXBElement<ClassEsito> esito;
 
@@ -56,10 +56,10 @@ public class ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneCo
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      *     
      */
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> getErroriListaCovenantDaAttivare() {
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> getErroriListaCovenantDaAttivare() {
         return erroriListaCovenantDaAttivare;
     }
 
@@ -68,10 +68,10 @@ public class ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneCo
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare }{@code >}
      *     
      */
-    public void setErroriListaCovenantDaAttivare(JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaAttivare> value) {
+    public void setErroriListaCovenantDaAttivare(JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare> value) {
         this.erroriListaCovenantDaAttivare = value;
     }
 
@@ -80,10 +80,10 @@ public class ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneCo
      * 
      * @return
      *     possible object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      *     
      */
-    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> getErroriListaCovenantDaCessare() {
+    public JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> getErroriListaCovenantDaCessare() {
         return erroriListaCovenantDaCessare;
     }
 
@@ -92,10 +92,10 @@ public class ResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneCo
      * 
      * @param value
      *     allowed object is
-     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
+     *     {@link JAXBElement }{@code <}{@link ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare }{@code >}
      *     
      */
-    public void setErroriListaCovenantDaCessare(JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneRespStoreCovenantAdesioneConvenzioneCovenantDaCessare> value) {
+    public void setErroriListaCovenantDaCessare(JAXBElement<ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare> value) {
         this.erroriListaCovenantDaCessare = value;
     }
 
