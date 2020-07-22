@@ -2,6 +2,8 @@ package com.intesasanpaolo.bear.cond0.cjindicatoricosto.controller;
 
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -60,7 +62,7 @@ public class CJIndicatoriCostoController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true) String applicationID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false) String callerProgramName,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
-			@RequestBody IndicatoriCostoDTO dto)  {
+			@Valid @RequestBody IndicatoriCostoDTO dto)  {
 
 		IndicatoriCostoResource resource = new IndicatoriCostoResource();
 
