@@ -11,7 +11,13 @@ import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountOutput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -20,9 +26,13 @@ import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class WSGestioneCommand extends BaseCommand<NewAccountOutput> {
-	private Logger log = Logger.getLogger(WSGestioneCommand.class);
+public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 
+	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
+
+	private DispositivaRequestDTO dispositivaRequestDTO;
+	private RevocaProposta revocaProposta;
+	
 	private HashMap<String, String> headerParams;
 	private NewAccountInput newAccountInput;
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
@@ -30,8 +40,30 @@ public class WSGestioneCommand extends BaseCommand<NewAccountOutput> {
 	@Autowired
 	private GestioneService gestioneService;
 
+	@Autowired
+	private ProposteCJPOSWSService proposteCJPOSWSService;
+
 	@Override
-	public NewAccountOutput execute() throws Exception {
+	public EsitoResource execute() throws Exception {
+		log.info("- execute START");
+		if (canExecute()) {
+			log.info("- execute OK");
+			EsitoResource esitoResource = new EsitoResource();
+			revocaProposta = ProposteCJPOSWSUtils._buildMockRevocaProposta();
+			EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta, ispWebservicesHeaderType);
+			esitoResource.setCodErrore(esito.getEsitoCodice());
+			esitoResource.setDescErrore(esito.getEsitoMessaggio());
+			
+			callWsGestione();
+			
+			return esitoResource;
+		} else {
+			log.info("- execute ERROR");
+			throw new BearForbiddenException("Cannot execute command");
+		}
+	}
+	
+	private NewAccountOutput callWsGestione() throws Exception {
 		log.info("- execute START");
 		if (canExecute()) {
 			log.info("- execute OK");
@@ -72,18 +104,14 @@ public class WSGestioneCommand extends BaseCommand<NewAccountOutput> {
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
-
-		esitoControlli = (newAccountInput != null) && (ispWebservicesHeaderType != null);
+		esitoControlli = dispositivaRequestDTO != null && (newAccountInput != null) && (ispWebservicesHeaderType != null);
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
 
-	public void setHeaderParams(HashMap<String, String> headerParams) {
-		this.headerParams = headerParams;
-	}
 
-	public void setNewAccountInput(NewAccountInput newAccountInput) {
-		this.newAccountInput = newAccountInput;
+	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
+		this.dispositivaRequestDTO = dispositivaRequestDTO;
 	}
 
 	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {

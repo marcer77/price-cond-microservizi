@@ -26,11 +26,9 @@ public class ProposteCJPOSWSInviaPropostaV2RequestTransformer
 	@Override
 	public SoapConnectorRequest<JAXBElement<InviaPropostaV2>> transform(InviaPropostaV2 om, Object... args) {
 		SoapConnectorRequest<JAXBElement<InviaPropostaV2>> request = new SoapConnectorRequest<>();
-		if(om!=null && args!=null) {
-			log.info(" - transform InviaPropostaV2 {"+om.toString()+"}");
-			request.setPayload(objectFactory.createInviaPropostaV2(om));
-			request.setSoapHeader((ISPWebservicesHeaderType) args[0]);
-		}
+		log.info(" - transform InviaPropostaV2 {"+om.toString()+"}");
+		request.setPayload(objectFactory.createInviaPropostaV2(om));
+		request.setSoapHeader((ISPWebservicesHeaderType) args[0]);
 		return request;
 	}
 

@@ -23,9 +23,9 @@ import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class ProposteCJPOSWSInviaPropostaV2Command extends BaseCommand<EsitoResource> {
+public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> {
 
-	private Logger log = Logger.getLogger(ProposteCJPOSWSInviaPropostaV2Command.class);
+	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 
 	private ISPWebservicesHeaderType header;
 	private DispositivaRequestDTO inviaPropostaV2;
