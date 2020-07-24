@@ -63,8 +63,8 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 
 			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
 			newAccountInput = new NewAccountInput();
-			NewAccountOutput output = _callWsGestione();
-
+//			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
+ 
 			// return
 			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
 			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());

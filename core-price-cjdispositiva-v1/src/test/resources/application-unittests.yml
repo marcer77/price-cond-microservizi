@@ -16,5 +16,33 @@ logging:
     com.intesasanpaolo.bear.connector.bearcore: INFO
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
-
+    
+connectors:
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: http://localhost:4545/ProposteCJPOS.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        soapAction: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+      ProposteCJPOSWSRevocaPropostaConnector:
+        endpoint: http://localhost:4545/ProposteCJPOS.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
 

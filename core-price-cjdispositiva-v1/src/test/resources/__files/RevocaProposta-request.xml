@@ -1,0 +1,49 @@
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:int="http://intesasanpaolo.it/" xmlns:prop="http://ws.price.isp.com/proposteCJPOS/">
+   <soap:Header>
+         <int:ISPWebservicesHeader xmlns:ns0="http://ws.price.isp.com/proposteCJPOS/" xmlns:ns1="http://ws.price.isp.com/proposte/" xmlns:ns2="http://intesasanpaolo.it/">
+         <RequestInfo>
+            <TransactionId>NPUA020200417GEN00164904998</TransactionId>
+            <Timestamp>1587135953280</Timestamp>
+            <ServiceID>GESTCJPOSV</ServiceID>
+            <ServiceVersion>00</ServiceVersion>
+            <Language>I</Language>
+         </RequestInfo>
+         <OperatorInfo UserID="U004835" IsVirtualUser="false"/>
+         <CompanyInfo>
+            <ISPCallerCompanyIDCode>01</ISPCallerCompanyIDCode>
+            <ISPBranchCode>03126</ISPBranchCode>
+            <ISPServiceCompanyIDCode>01</ISPServiceCompanyIDCode>
+         </CompanyInfo>
+         <BusinessInfo>
+            <CustomerID>0004888305502000</CustomerID>
+            <BusinessProcessName>anonym</BusinessProcessName>
+            <BusinessProcessID>anonym</BusinessProcessID>
+            <BusinessOperation>anonym</BusinessOperation>
+            <BusinessFileID>anonym</BusinessFileID>
+         </BusinessInfo>
+         <TechnicalInfo>
+            <ChannelIDCode>31</ChannelIDCode>
+            <ApplicationID>NPUC0</ApplicationID>
+            <CallerServerName>salclp8940</CallerServerName>
+            <CallerProgramName>NPUC0</CallerProgramName>
+         </TechnicalInfo>
+         <AdditionalBusinessInfo>
+            <Param Name="CodABI" Value="01025"/>
+            <Param Name="CodUnitaOperativa" Value="03126"/>
+            <Param Name="CodOperativita" Value="0"/>
+            <Param Name="DataContabile" Value="17042020"/>
+         </AdditionalBusinessInfo>
+      </int:ISPWebservicesHeader>
+   </soap:Header>
+   <soap:Body>
+      <prop:revocaProposta>
+         <prop:datiProposta>
+            <prop:codiceAbiProposta>01025</prop:codiceAbiProposta>
+            <prop:annoProposta>2020</prop:annoProposta>
+            <prop:codiceProposta>001837R</prop:codiceProposta>
+            <prop:matricolaRespinta>U004835</prop:matricolaRespinta>
+            <prop:uoRespinta>03126</prop:uoRespinta>
+         </prop:datiProposta>
+      </prop:revocaProposta>
+   </soap:Body>
+</soap:Envelope>

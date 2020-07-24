@@ -54,7 +54,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 
 			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 			newAccountInput = new NewAccountInput();
-			NewAccountOutput output = _callWsGestione();
+//			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
 
 			// WS VDM StoreCovenantAdesioneConvenzione
 			// TODO
