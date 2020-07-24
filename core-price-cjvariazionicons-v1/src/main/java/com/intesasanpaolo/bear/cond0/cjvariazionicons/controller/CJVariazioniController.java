@@ -1,7 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.assembler.StampaResponseResourceAssembler;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.HeaderAttribute;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;

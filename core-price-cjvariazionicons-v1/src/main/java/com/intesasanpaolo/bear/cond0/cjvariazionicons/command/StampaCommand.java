@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.command;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -38,33 +40,33 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 
 	@Override
 	protected StampaResponse doExecute() throws Exception {
-		
 		//chiamata alla BS T1SF
 		T1SFRequest t1sfRequest = T1SFRequest.builder().
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.iCodCatRapp("")
-				.iCodFilRapp("")
+				.iCodCatRapp(inputStampaDTO.getRapporto().getCodCategoria())
+				.iCodFilRapp(inputStampaDTO.getRapporto().getCodFiliale())
 				.iCodFT("")
-				.iCodLingua("")
+				.iCodLingua(inputStampaDTO.getInfoStampa().getCodLingua())
 				.iCQCatRapp("")
 				.iCQFilRapp("")
 				.iCQNumRapp("")
 				.iDataDecorrenzaFido("")
-				.iDataRiferimento("")
+				//.iDataRiferimento(inputStampaDTO.getInfoStampa().getData())
+				.iDataRiferimento("")//TODO:FORMAT PER DATE
 				.iDataScadenzaFido("")
 				.iDivisaFido("")
-				.iFirma("")
+				.iFirma(inputStampaDTO.getInfoStampa().getTipoFirma())
 				.iFunzione("")
-				.iImportoFido(20d)
-				.iKeyOperazione("")
-				.iNrPratica(20)
-				.iNrSuperPratica(2)
-				.iNumProgRapp("")
-				.iProgFido(22)
-				.iPropostaComm(23)
+				.iImportoFido(0d)
+				.iKeyOperazione(inputStampaDTO.getInfoStampa().getKeyOper())
+				.iNrPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodPratica()):null)
+				.iNrSuperPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodSuperPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodSuperPratica()):null)
+				.iNumProgRapp(inputStampaDTO.getRapporto().getCodProgressivo())
+				.iProgFido(0)
+				.iPropostaComm(StringUtils.isNotEmpty(inputStampaDTO.getPratica().getCodPropostaComm())?Integer.valueOf(inputStampaDTO.getPratica().getCodPropostaComm()):null)
 				.iPropostaUsura("")
 				.iTipoFT("")
-				.iTipoOfferta("")
+				.iTipoOfferta(inputStampaDTO.getInfoStampa().getTipoOfferta())
 				.build();
 
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);

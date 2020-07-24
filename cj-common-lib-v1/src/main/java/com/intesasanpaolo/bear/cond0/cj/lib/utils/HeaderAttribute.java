@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjvariazionicons.utils;
+package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 public class HeaderAttribute {
 	

@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.INHEADER;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @RunWith(SpringRunner.class)

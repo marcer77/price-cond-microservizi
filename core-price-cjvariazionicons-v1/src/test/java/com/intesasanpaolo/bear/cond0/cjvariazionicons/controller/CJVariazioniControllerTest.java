@@ -22,6 +22,8 @@ import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.T1SFCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.PraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.RapportoDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFRequest;
@@ -77,6 +79,15 @@ public class CJVariazioniControllerTest extends BaseTest{
 		InfoStampaDTO infoStampaDTO=new InfoStampaDTO();
 		infoStampaDTO.setData(new Date());
 		inputStampaDTO.setInfoStampa(infoStampaDTO);
+		
+		inputStampaDTO.setRapporto(new RapportoDTO());
+		inputStampaDTO.getRapporto().setCodCategoria("1234");
+		
+		inputStampaDTO.setPratica(new PraticaDTO());
+		inputStampaDTO.getPratica().setCodPratica("1234");
+		inputStampaDTO.getPratica().setCodSuperPratica("1234");
+		
+		
 		String inputJson = mapToJson(inputStampaDTO);
 		String uri ="/cjvariazionicons/stampa";
 		   
