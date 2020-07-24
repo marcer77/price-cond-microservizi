@@ -1,24 +1,30 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.AnagraficaPropostaCJPOS;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountOutput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.CondizioneCJPOS;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.DatiCliente;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.PropostaCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.WrapperMap;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType.AdditionalBusinessInfo.Param;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
@@ -27,42 +33,130 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 
-	private ISPWebservicesHeaderType header;
-	private DispositivaRequestDTO inviaPropostaV2;
+	private ISPWebservicesHeaderType ispWebservicesHeaderType;
+	private DispositivaRequestDTO dispositivaRequestDTO;
+	private NewAccountInput newAccountInput;
+
+	@Autowired
+	private GestioneService gestioneService;
 
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
 
 	@Override
 	public EsitoResource execute() throws Exception {
-		log.info("- execute START");
+		log.info("execute START");
+		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore.");
 		if (canExecute()) {
-			log.info("- execute OK");
-			InviaPropostaV2 request = ProposteCJPOSWSUtils._buildMockInviaPropostaV2();
-			EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore.");
 
-			EsitoOperazioneCJPOSV2 esitoOperazione = proposteCJPOSWSService.inviaPropostaV2(request, header);
+			// BS PCMK Recupero informazioni superpratica (…)
+			// TODO
 
+			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
+			newAccountInput = new NewAccountInput();
+			NewAccountOutput output = _callWsGestione();
+
+			// WS VDM StoreCovenantAdesioneConvenzione
+			// TODO
+
+			// WS COND0 GESTCJPOSV.inviaPropostaV2
+			dispositivaRequestDTO = new DispositivaRequestDTO();
+			EsitoOperazioneCJPOSV2 esitoOperazione = _inviaPropostaV2();
+
+			// BS PCMK registrazione elenco cod.prop. “fittizie”
+			// TODO
+
+			// return
 			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
 			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
+			log.info("execute SUCCESS ");
 			return esitoResource;
 		} else {
-			log.info("- execute ERROR");
+			log.info("execute ERROR");
 			throw new BearForbiddenException("Cannot execute command");
 		}
 	}
 
+	private EsitoOperazioneCJPOSV2 _inviaPropostaV2() throws BearForbiddenException {
+		log.info("_inviaPropostaV2 START");
+
+		EsitoOperazioneCJPOSV2 esitoOperazione = new EsitoOperazioneCJPOSV2();
+		if (dispositivaRequestDTO != null) {
+			InviaPropostaV2 request = ProposteCJPOSWSUtils._buildMockInviaPropostaV2();
+//			InviaPropostaV2 request = _assemblaRequest(dispositivaRequestDTO);
+			log.info("_inviaPropostaV2 CAN EXECUTE");
+			esitoOperazione = proposteCJPOSWSService.inviaPropostaV2(request, ispWebservicesHeaderType);
+		} else {
+			log.info("_inviaPropostaV2 ERROR");
+			throw new BearForbiddenException("Cannot execute command");
+		}
+		log.info("_inviaPropostaV2 END");
+		return esitoOperazione;
+	}
+
 	@Override
 	public boolean canExecute() {
-		log.info("- canExecute START");
+		log.info("canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = inviaPropostaV2 != null && header != null;
-		log.info("- canExecute END - " + esitoControlli);
+		esitoControlli = ispWebservicesHeaderType != null;
+		log.info("canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
 
-	private InviaPropostaV2 assemblaRequest(String tipoChiamata, String codiceOrigine, String rapportoReale,
-			String attributoRapporto, AnagraficaPropostaCJPOS anagraficaPropostaCJPOS, DatiCliente datiCliente) {
+	private NewAccountOutput _callWsGestione() throws BearForbiddenException {
+		log.info("callWsGestione START");
+		if (newAccountInput != null) {
+			log.info("callWsGestione CAN EXECUTE");
+
+			HashMap<String, String> headerParams = new HashMap<String, String>();
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID",
+					ispWebservicesHeaderType.getRequestInfo().getServiceID());
+			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode",
+					ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
+			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode",
+					ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
+			List<Param> listParams = ispWebservicesHeaderType.getAdditionalBusinessInfo().getParam();
+			if (listParams != null && listParams.size() > 0) {
+				for (Param param : listParams) {
+					if (ParamList.COD_ABI.equals(param.getName().COD_ABI)) {
+						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", param.getValue());
+					}
+					if (ParamList.COD_UNITA_OPERATIVA.equals(param.getName().COD_UNITA_OPERATIVA)) {
+						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa",
+								param.getValue());
+					}
+				}
+			}
+			headerParams.put("ISPWebservicesHeader.BusinessInfo.CustomerID",
+					ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
+			headerParams.put("ISPWebservicesHeader.OperatorInfo.UserID",
+					ispWebservicesHeaderType.getOperatorInfo().getUserID());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.Language",
+					ispWebservicesHeaderType.getRequestInfo().getLanguage());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceVersion",
+					ispWebservicesHeaderType.getRequestInfo().getServiceVersion());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.Timestamp",
+					ispWebservicesHeaderType.getRequestInfo().getTimestamp() + "");
+			headerParams.put("ISPWebservicesHeader.RequestInfo.TransactionId",
+					ispWebservicesHeaderType.getRequestInfo().getTransactionId());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ApplicationID",
+					ispWebservicesHeaderType.getTechnicalInfo().getApplicationID());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.CallerProgramName",
+					ispWebservicesHeaderType.getTechnicalInfo().getCallerProgramName());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode",
+					ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+
+			log.info("- callWsGestione END");
+
+			return gestioneService.gestione(newAccountInput, headerParams);
+
+		} else {
+			log.info("callWsGestione ERROR");
+			throw new BearForbiddenException("Cannot execute command");
+		}
+	}
+
+	private InviaPropostaV2 _assemblaRequest(DispositivaRequestDTO dispositivaRequestDTO) {
 
 		InviaPropostaV2 inviaPropostaV2 = new InviaPropostaV2();
 		PropostaCJPOSV2 propostaCJPOSV2 = new PropostaCJPOSV2();
@@ -71,11 +165,11 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 		propostaCJPOSV2.setCodiceOrigine("IN"); // costante
 		propostaCJPOSV2.setRapportoReale("11653632401932571");
 		propostaCJPOSV2.setAttributoRapporto("RB6324");
-		propostaCJPOSV2.setDatiProposta(anagraficaPropostaCJPOS);
-		propostaCJPOSV2.setDatiCliente(datiCliente);
+//		propostaCJPOSV2.setDatiProposta(anagraficaPropostaCJPOS);
+//		propostaCJPOSV2.setDatiCliente(datiCliente);
 		propostaCJPOSV2.setAttributiPricing(new WrapperMap());
 		propostaCJPOSV2.getListaCondizioni().add(new CondizioneCJPOS());
-		inviaPropostaV2.setDatiProposta(propostaCJPOSV2);
+//		inviaPropostaV2.setDatiProposta(propostaCJPOSV2);
 
 //        <ns0:datiProposta>
 //        <ns0:tipoChiamata>INS</ns0:tipoChiamata>
@@ -111,12 +205,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 		return inviaPropostaV2;
 	}
 
-	public void setHeader(ISPWebservicesHeaderType header) {
-		this.header = header;
-	}
-
-	public void setInviaPropostaV2(DispositivaRequestDTO inviaPropostaV2) {
-		this.inviaPropostaV2 = inviaPropostaV2;
+	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
 	}
 
 }

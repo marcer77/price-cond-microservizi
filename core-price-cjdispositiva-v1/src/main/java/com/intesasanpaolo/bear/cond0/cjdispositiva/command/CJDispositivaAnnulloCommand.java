@@ -20,8 +20,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSServic
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType.AdditionalBusinessInfo.Param;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
@@ -31,12 +31,10 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
 
 	private DispositivaRequestDTO dispositivaRequestDTO;
-	private RevocaProposta revocaProposta;
-	
-	private HashMap<String, String> headerParams;
 	private NewAccountInput newAccountInput;
+
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
-	
+
 	@Autowired
 	private GestioneService gestioneService;
 
@@ -45,73 +43,111 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 
 	@Override
 	public EsitoResource execute() throws Exception {
-		log.info("- execute START");
+		log.info("execute START");
+		EsitoResource esitoResource = new EsitoResource("KO","Si è verificato un errore");
 		if (canExecute()) {
-			log.info("- execute OK");
-			EsitoResource esitoResource = new EsitoResource();
-			revocaProposta = ProposteCJPOSWSUtils._buildMockRevocaProposta();
-			EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta, ispWebservicesHeaderType);
-			esitoResource.setCodErrore(esito.getEsitoCodice());
-			esitoResource.setDescErrore(esito.getEsitoMessaggio());
-			
-			callWsGestione();
-			
+			log.info("execute OK");
+
+			// BS PCMK Recupero informazioni superpratica (…)
+			// TODO
+
+			// WS COND0 GESTCJPOSV.revocaProposta
+			dispositivaRequestDTO = new DispositivaRequestDTO();
+			EsitoOperazioneCJPOSV2 esitoOperazione = _revocaProposta();
+
+			// BS PCMK aggiorna elenco cod.prop. fittizie
+			// TODO
+
+			// WS VDM rollback storecovenant
+			// TODO
+
+			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
+			newAccountInput = new NewAccountInput();
+			NewAccountOutput output = _callWsGestione();
+
+			// return
+			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
+			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
 			return esitoResource;
 		} else {
-			log.info("- execute ERROR");
+			log.info("execute ERROR");
 			throw new BearForbiddenException("Cannot execute command");
 		}
 	}
-	
-	private NewAccountOutput callWsGestione() throws Exception {
-		log.info("- execute START");
-		if (canExecute()) {
-			log.info("- execute OK");
-			
-			headerParams = new HashMap<String, String>();
-			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID", ispWebservicesHeaderType.getRequestInfo().getServiceID());
-			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode", ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
-			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode", ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
+
+	private EsitoOperazioneCJPOSV2 _revocaProposta() throws BearForbiddenException {
+		log.info("_revocaProposta START");
+		if (dispositivaRequestDTO != null) {
+			log.info("- _revocaProposta CAN EXECUTE");
+			RevocaProposta revocaProposta = ProposteCJPOSWSUtils._buildMockRevocaProposta();
+			EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta,
+					ispWebservicesHeaderType);
+
+			log.info("_revocaProposta END");
+			return esito;
+		} else {
+			log.info("_revocaProposta ERROR");
+			throw new BearForbiddenException("Cannot execute command");
+		}
+	}
+
+	private NewAccountOutput _callWsGestione() throws Exception {
+		log.info("_callWsGestione START");
+		if (newAccountInput != null) {
+			log.info("_callWsGestione OK");
+
+			HashMap<String, String> headerParams = new HashMap<String, String>();
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID",
+					ispWebservicesHeaderType.getRequestInfo().getServiceID());
+			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode",
+					ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
+			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode",
+					ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
 			List<Param> listParams = ispWebservicesHeaderType.getAdditionalBusinessInfo().getParam();
-			if(listParams!=null && listParams.size()>0) {
-				for(Param param : listParams) {
-					if(ParamList.COD_ABI.equals(param.getName().COD_ABI)) {
+			if (listParams != null && listParams.size() > 0) {
+				for (Param param : listParams) {
+					if (ParamList.COD_ABI.equals(param.getName().COD_ABI)) {
 						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", param.getValue());
 					}
-					if(ParamList.COD_UNITA_OPERATIVA.equals(param.getName().COD_UNITA_OPERATIVA)) {
-						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa", param.getValue());
+					if (ParamList.COD_UNITA_OPERATIVA.equals(param.getName().COD_UNITA_OPERATIVA)) {
+						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa",
+								param.getValue());
 					}
 				}
 			}
-			headerParams.put("ISPWebservicesHeader.BusinessInfo.CustomerID", ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
-			headerParams.put("ISPWebservicesHeader.OperatorInfo.UserID", ispWebservicesHeaderType.getOperatorInfo().getUserID());
-			headerParams.put("ISPWebservicesHeader.RequestInfo.Language", ispWebservicesHeaderType.getRequestInfo().getLanguage());
-			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceVersion", ispWebservicesHeaderType.getRequestInfo().getServiceVersion());
-			headerParams.put("ISPWebservicesHeader.RequestInfo.Timestamp", ispWebservicesHeaderType.getRequestInfo().getTimestamp()+"");
-			headerParams.put("ISPWebservicesHeader.RequestInfo.TransactionId", ispWebservicesHeaderType.getRequestInfo().getTransactionId());
-			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ApplicationID", ispWebservicesHeaderType.getTechnicalInfo().getApplicationID());
-			headerParams.put("ISPWebservicesHeader.TechnicalInfo.CallerProgramName", ispWebservicesHeaderType.getTechnicalInfo().getCallerProgramName());
-			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-			
+			headerParams.put("ISPWebservicesHeader.BusinessInfo.CustomerID",
+					ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
+			headerParams.put("ISPWebservicesHeader.OperatorInfo.UserID",
+					ispWebservicesHeaderType.getOperatorInfo().getUserID());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.Language",
+					ispWebservicesHeaderType.getRequestInfo().getLanguage());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceVersion",
+					ispWebservicesHeaderType.getRequestInfo().getServiceVersion());
+			headerParams.put("ISPWebservicesHeader.RequestInfo.Timestamp",
+					ispWebservicesHeaderType.getRequestInfo().getTimestamp() + "");
+			headerParams.put("ISPWebservicesHeader.RequestInfo.TransactionId",
+					ispWebservicesHeaderType.getRequestInfo().getTransactionId());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ApplicationID",
+					ispWebservicesHeaderType.getTechnicalInfo().getApplicationID());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.CallerProgramName",
+					ispWebservicesHeaderType.getTechnicalInfo().getCallerProgramName());
+			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode",
+					ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+			log.info("_callWsGestione END");
 			return gestioneService.gestione(newAccountInput, headerParams);
 		} else {
-			log.info("- execute ERROR");
+			log.info("_callWsGestione ERROR");
 			throw new BearForbiddenException("Cannot execute command");
 		}
 	}
 
 	@Override
 	public boolean canExecute() {
-		log.info("- canExecute START");
+		log.info("canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = dispositivaRequestDTO != null && (newAccountInput != null) && (ispWebservicesHeaderType != null);
-		log.info("- canExecute END - " + esitoControlli);
+		esitoControlli = ispWebservicesHeaderType != null;
+		log.info("canExecute END - " + esitoControlli);
 		return esitoControlli;
-	}
-
-
-	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
-		this.dispositivaRequestDTO = dispositivaRequestDTO;
 	}
 
 	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {

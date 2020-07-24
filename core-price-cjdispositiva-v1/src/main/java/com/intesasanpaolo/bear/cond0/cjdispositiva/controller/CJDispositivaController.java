@@ -63,8 +63,7 @@ public class CJDispositivaController extends CoreController {
 
 		CJDispositivaInserimentoCommand proposteCJPOSWSInviaPropostaV2Command = beanFactory
 				.getBean(CJDispositivaInserimentoCommand.class);
-		proposteCJPOSWSInviaPropostaV2Command.setInviaPropostaV2(dispositivaRequestDTO);
-		proposteCJPOSWSInviaPropostaV2Command.setHeader(ispWebservicesHeaderType);
+		proposteCJPOSWSInviaPropostaV2Command.setIspWebservicesHeaderType(ispWebservicesHeaderType);
 		EsitoResource esito = proposteCJPOSWSInviaPropostaV2Command.execute();
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
@@ -100,7 +99,6 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
-		proposteCJPOSWSRevocaPropostaCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
 		proposteCJPOSWSRevocaPropostaCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
 		EsitoResource esito = proposteCJPOSWSRevocaPropostaCommand.execute();
 		log.info(" - annullo END: esito {" + esito.toString() + "}");
