@@ -1,0 +1,18 @@
+{
+  "request" : {
+    "urlPathPattern" : "/ConvenzioniHostService.svc",
+    "method" : "POST",
+    "headers" : {
+      "SOAPAction" : {
+        "contains" : "GetCovenantPerConvenzione"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "GetCovenantPerConvenzione_OK.xml",
+    "headers": {
+      "Content-Type": "application/xml"
+    }
+  }
+}

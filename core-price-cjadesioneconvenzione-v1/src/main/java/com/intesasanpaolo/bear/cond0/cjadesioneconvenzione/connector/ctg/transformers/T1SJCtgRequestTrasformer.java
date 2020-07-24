@@ -27,7 +27,7 @@ public class T1SJCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SJRe
 		connector.INHEADER = new INHEADER[1];
 		connector.INHEADER[0] = new INHEADER();	
 		ServiceUtil.setHeaders(connector.INHEADER[0], request.getIspWebservicesHeaderType());		
-		connector.INHEADER[0].ID_SERVIZIO = "??";
+		connector.INHEADER[0].ID_SERVIZIO = "T1SJSTCVNE";
 		
 		
 		//body

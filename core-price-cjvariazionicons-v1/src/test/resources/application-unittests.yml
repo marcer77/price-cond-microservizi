@@ -13,8 +13,9 @@ logging:
     root: INFO
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
-    com.intesasanpaolo.bear.connector.bearcore: INFO
+    com.intesasanpaolo.bear.connector.bearcore: DEBUG
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
+    com.intesasanpaolo.bear.connector.ws: DEBUG
     org.keycloak: INFO
 
 error-manager:

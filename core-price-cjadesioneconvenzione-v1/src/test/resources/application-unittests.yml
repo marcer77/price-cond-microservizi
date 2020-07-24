@@ -14,10 +14,18 @@ logging:
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
-    com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
-    
-    
+
+error-manager:
+  enabled: false
+
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
+
 hostbridge:
   # added to mock CTG call
   mocked: true
@@ -56,7 +64,7 @@ connectors:
   soapConfiguration:
    items:
      GetCovenantPerConvenzioneConnector:
-       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc}
+       endpoint: http://localhost:4545/ConvenzioniHostService.svc
        timeout: 60000
        username: username
        password: password
@@ -67,9 +75,12 @@ connectors:
        soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
        enableMTOM: false
        mocked: false
+       path: wdmMocks
+       files:
+         - GetCovenantPerConvenzione-response.xml
        enabledTracing: true      
      GetRequisitiAdesioneConvenzioneConnector:
-       endpoint: ${CONVENZIONI_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc}
+       endpoint: http://localhost:4545/ConvenzioniService.svc
        timeout: 60000
        username: username
        password: password
@@ -79,8 +90,26 @@ connectors:
        soapVersion: 1.1
        soapAction: "http://tempuri.org/IConvenzioniService/GetRequisitiAdesioneConvenzione"
        enableMTOM: false
-       mocked: true
+       mocked: false
        enabledTracing: true
 
+#### Security configuration: Everything allowed for test
+keycloak:
+  enabled: false
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
+  resource: bear-app
+  realm: bear
+  public-client: true
+  ssl-required: external
+  confidential-port: 0
+  use-resource-role-mappings: true
+  securityConstraints:
+    -
+      authRoles:
+        - users
 
-
+      securityCollections:
+        -
+          name: users reserved stuff
+          patterns:
+            - /preferences

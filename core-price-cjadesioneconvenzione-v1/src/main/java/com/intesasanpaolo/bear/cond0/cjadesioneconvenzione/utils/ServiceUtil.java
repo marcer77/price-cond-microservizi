@@ -50,7 +50,7 @@ public class ServiceUtil {
 		}
 	}
 	
-	private static String getAdditionalBusinessInfo(ISPWebservicesHeaderType obj, ParamList name) {
+	public static String getAdditionalBusinessInfo(ISPWebservicesHeaderType obj, ParamList name) {
 		for (Param param : obj.getAdditionalBusinessInfo().getParam()) {
 			if (param.getName() == name) {
 				return param.getValue();
