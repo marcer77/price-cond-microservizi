@@ -11,9 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.ServiceUtil;
 import com.intesasanpaolo.bear.connector.ctg.request.CtgConnectorRequest;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 

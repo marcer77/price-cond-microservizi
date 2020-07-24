@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.C_T1SFS00;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.INHEADER;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.INPBST;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFRequest;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.ServiceUtil;
 import com.intesasanpaolo.bear.connector.ctg.request.CtgConnectorRequest;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgRequestTransformer;
 
