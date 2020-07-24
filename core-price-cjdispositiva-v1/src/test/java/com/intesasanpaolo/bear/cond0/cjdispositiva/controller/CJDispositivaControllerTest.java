@@ -134,7 +134,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 
-		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("revocaProposta>"))
+		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("revocaProposta"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
 						.withBodyFile("RevocaProposta-response.xml")));
 		
