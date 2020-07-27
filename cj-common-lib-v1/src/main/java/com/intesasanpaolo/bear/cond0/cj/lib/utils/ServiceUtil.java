@@ -1,7 +1,13 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType.AdditionalBusinessInfo.Param;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ObjectFactory;
@@ -9,48 +15,155 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 import lombok.Builder;
 
-
 public class ServiceUtil {
-	private ServiceUtil() {}
 	
+	private static final Logger logger = LoggerUtils.getLogger(ServiceUtil.class);	
 	
-	/**
-	 * 
-	 * @param header Deve essere di un tipo che si chiama INHEADER e avere tutti campi public
-	 * @param ispWebservicesHeaderType
-	 */
-	public static void setHeaders(Object header, ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		//if (!header.getClass().getSimpleName().equals("INHEADER")) {
-		//	throw new ClassCastException();
-		//}
-		
-		setHeader(header, "COD_ABI", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
-		setHeader(header, "CODICE_UO_RICH", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
-		setHeader(header, "COD_CLI_RICH", ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
-		setHeader(header, "CODICE_SOCIETA", ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
-		setHeader(header, "COD_AZIENDA_DEST", ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
-		setHeader(header, "CODICE_SPORTELLO", ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode());
-		setHeader(header, "CODICE_USERID", ispWebservicesHeaderType.getOperatorInfo().getUserID());
-		setHeader(header, "COD_TIPO_LINGUA", ispWebservicesHeaderType.getRequestInfo().getLanguage());
-		setHeader(header, "COD_RICH_CANALE", ispWebservicesHeaderType.getRequestInfo().getTransactionId());
-		setHeader(header, "COD_RIS_RICH", ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
-		setHeader(header, "CODICE_TIPO_CANALE", ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+	private ServiceUtil() {
 	}
 	
-	private static void setHeader(Object header, String headerName, String value) {
-		if (value != null) {
-			try {
-				header.getClass().getField(headerName).set(header, value);
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-				// non dovrebbe mai succedere perché i campi sono tutti public
-				// eventualmente potrei aver sbagliato il nome del campo, ma in produzione non può succedere
-				// l'ho intercettato prima
-				throw new AssertionError(e);
-			}
+	public static void setBSHeaders(Object header,BSTypeCall bsTypeCall, ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		HeaderBS headerBS=buildHeaders(bsTypeCall, ispWebservicesHeaderType);
+		logger.debug("headerBS = {}",headerBS);
+		setHeaders(header,headerBS);
+	}
+
+	public static HeaderBS buildHeaders(BSTypeCall bsTypeCall, ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		HeaderBS headerBS = new HeaderBS();
+
+		headerBS.setIdServizio(bsTypeCall.getBsType().getIdServizio());
+		headerBS.setLunghezzaMsg(bsTypeCall.getLenArea());
+		headerBS.setCodRicTrac(bsTypeCall.getRecyclingVersion());
+		headerBS.setCodVersioneBs(bsTypeCall.getVersion());
+
+		// campi header nuovi per CTG
+		headerBS.setHspAcronimoProvider(bsTypeCall.getAcronimoOwnerBS());
+		headerBS.setHspAcronimo("COND0");
+		//
+		headerBS.setCodiceTipoCanale(bsTypeCall.getChannel());
+
+		// campi prelevati dall'HEADER HTTP del microservizio
+		headerBS.setCodAbi(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
+		headerBS.setCodiceUoRich(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
+		headerBS.setCodCliRich(ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
+		headerBS.setCodiceSocieta(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
+		headerBS.setCodAziendaDest(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
+		headerBS.setCodiceSportello(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
+		headerBS.setCodiceUserid(ispWebservicesHeaderType.getOperatorInfo().getUserID());
+		//headerBS.setCodTipoLingua(ispWebservicesHeaderType.getRequestInfo().getLanguage());
+		headerBS.setCodTipoLingua("I");
+		headerBS.setCodRichCanale(ispWebservicesHeaderType.getRequestInfo().getTransactionId());
+		headerBS.setCodRisRich(ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
+		// TODO: CodiceTipoCanale va preso dagli HEADER HTTP del microservizio o da
+		// BSTypeCall?
+		// headerBS.setCodiceTipoCanale(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+
+		headerBS.setDataCont(new SimpleDateFormat("ddMMyyyy").format(new Date()));
+
+		headerBS.setCodBsm("");
+		headerBS.setCodicestato("");
+		headerBS.setCodOperativita("");
+		headerBS.setCodSsaServizio("");
+		headerBS.setCodTermCics("");
+		headerBS.setCodVersSic("");
+		headerBS.setFlagPaperless("");
+		headerBS.setFlagRacf("");
+
+		// Campi nuovi specifici Header CTG
+		headerBS.setHspConvNull("");
+		headerBS.setHspFlag24X7("");
+		headerBS.setHspIndAtom("");
+		headerBS.setHspPgmAtom("");
+		headerBS.setHspTimeiib("");
+		headerBS.setHspTimeout("");
+		headerBS.setHspTrnAtom("");
+		//////
+
+		headerBS.setIndCompressInp("");
+		headerBS.setIndCompressOut("");
+		headerBS.setIndInoltroReply("");
+		headerBS.setIndMqSincrono("");
+		headerBS.setIndRoutingMsg("");
+		headerBS.setMqmNameDest("");
+		headerBS.setRetCode(0);
+		headerBS.setSicKey("");
+		headerBS.setSicMac("");
+		headerBS.setSicTimestamp("");
+		headerBS.setTipoSicApplInp("");
+		headerBS.setTipoSicApplOut("");
+
+		return headerBS;
+
+	}
+
+	public static void setHeaders(Object header, HeaderBS headerBS) {
+
+		setHeader(header, "ID_SERVIZIO", headerBS.getIdServizio());
+		setHeader(header, "COD_ABI", headerBS.getCodAbi());
+		setHeader(header, "CODICE_UO_RICH", ifNull(headerBS.getCodiceUoRich(), ""));
+		setHeader(header, "COD_CLI_RICH", ifNull(headerBS.getCodCliRich(), ""));
+		setHeader(header, "CODICE_SOCIETA", ifNull(headerBS.getCodiceSocieta(), ""));
+		setHeader(header, "COD_AZIENDA_DEST", ifNull(headerBS.getCodAziendaDest(), ""));
+		setHeader(header, "CODICE_SPORTELLO", ifNull(headerBS.getCodiceSportello(), ""));
+		setHeader(header, "CODICE_USERID", ifNull(headerBS.getCodiceUserid(), ""));
+		setHeader(header, "COD_TIPO_LINGUA", ifNull(headerBS.getCodTipoLingua(), ""));
+		setHeader(header, "COD_RICH_CANALE", ifNull(headerBS.getCodRichCanale(), ""));
+		setHeader(header, "COD_RIS_RICH", ifNull(headerBS.getCodRisRich(), ""));
+		setHeader(header, "CODICE_TIPO_CANALE", ifNull(headerBS.getCodiceTipoCanale(), ""));
+
+		setHeader(header, "COD_BSM", ifNull(headerBS.getCodBsm(), ""));
+		setHeader(header, "COD_OPERATIVITA", ifNull(headerBS.getCodOperativita(), ""));
+		setHeader(header, "COD_RIC_TRAC", ifNull(headerBS.getCodRicTrac(), ""));
+		setHeader(header, "COD_SSA_SERVIZIO", ifNull(headerBS.getCodSsaServizio(), ""));
+
+		setHeader(header, "COD_TERM_CICS", ifNull(headerBS.getCodTermCics(), ""));
+		setHeader(header, "COD_VERS_SIC", ifNull(headerBS.getCodVersSic(), ""));
+		setHeader(header, "COD_VERSIONE_BS", ifNull(headerBS.getCodVersioneBs(), ""));
+		setHeader(header, "CODICE_UO_RICH", ifNull(headerBS.getCodiceUoRich(), ""));
+		setHeader(header, "CODICESTATO", ifNull(headerBS.getCodicestato(), "0010"));
+
+		setHeader(header, "DATA_CONT", ifNull(headerBS.getDataCont(), ""));
+		setHeader(header, "FLAG_PAPERLESS", ifNull(headerBS.getFlagPaperless(), ""));
+		setHeader(header, "FLAG_RACF", ifNull(headerBS.getFlagRacf(), ""));
+		setHeader(header, "HSP_ACRONIMO", ifNull(headerBS.getHspAcronimo(), ""));
+		setHeader(header, "HSP_ACRONIMO_PROVIDER", ifNull(headerBS.getHspAcronimoProvider(), ""));
+		setHeader(header, "HSP_CONV_NULL", ifNull(headerBS.getHspConvNull(), ""));
+		setHeader(header, "HSP_FLAG24X7", ifNull(headerBS.getHspFlag24X7(), ""));
+		setHeader(header, "HSP_IND_ATOM", ifNull(headerBS.getHspIndAtom(), ""));
+		setHeader(header, "HSP_PGM_ATOM", ifNull(headerBS.getHspPgmAtom(), ""));
+		setHeader(header, "HSP_TIMEIIB", ifNull(headerBS.getHspTimeiib(), ""));
+		setHeader(header, "HSP_TIMEOUT", ifNull(headerBS.getHspTimeout(), ""));
+		setHeader(header, "HSP_TRN_ATOM", ifNull(headerBS.getHspTrnAtom(), ""));
+
+		setHeader(header, "IND_COMPRESS_INP", ifNull(headerBS.getIndCompressInp(), "N"));
+		setHeader(header, "IND_COMPRESS_OUT", ifNull(headerBS.getIndCompressOut(), "N"));
+		setHeader(header, "IND_INOLTRO_REPLY", ifNull(headerBS.getIndInoltroReply(), "S"));
+		setHeader(header, "IND_MQ_SINCRONO", ifNull(headerBS.getIndMqSincrono(), "S"));
+		setHeader(header, "IND_ROUTING_MSG", ifNull(headerBS.getIndRoutingMsg(), "N"));
+		setHeader(header, "LUNGHEZZA_MSG", ifNullAsInt(headerBS.getLunghezzaMsg(), 0));
+		setHeader(header, "MQM_NAME_DEST", ifNull(headerBS.getMqmNameDest(), ""));
+		setHeader(header, "RETCODE", ifNullAsInt(headerBS.getRetCode(), 0));
+		setHeader(header, "SIC_KEY", ifNull(headerBS.getSicKey(), ""));
+		setHeader(header, "SIC_MAC", ifNull(headerBS.getSicMac(), ""));
+		setHeader(header, "SIC_TIMESTAMP", ifNull(headerBS.getSicTimestamp(), ""));
+		setHeader(header, "TIPO_SIC_APPL_INP", ifNull(headerBS.getTipoSicApplInp(), "00"));
+		setHeader(header, "TIPO_SIC_APPL_OUT", ifNull(headerBS.getTipoSicApplOut(), "00"));
+
+	}
+
+	
+	
+	protected static void setHeader(Object header, String headerName, Object value) {
+		try {
+			header.getClass().getField(headerName).set(header, value);
+			//BeanUtils.setProperty(header, headerName, value);
+		} catch (Exception e) {
+			logger.error("Proprietà {} non trovata sull'oggetto {}",headerName,header.getClass());
+			throw new AssertionError();
 		}
 	}
-	
-	private static String getAdditionalBusinessInfo(ISPWebservicesHeaderType obj, ParamList name) {
+
+	public static String getAdditionalBusinessInfo(ISPWebservicesHeaderType obj, ParamList name) {
 		for (Param param : obj.getAdditionalBusinessInfo().getParam()) {
 			if (param.getName() == name) {
 				return param.getValue();
@@ -58,12 +171,12 @@ public class ServiceUtil {
 		}
 		return null;
 	}
-	
+
 	@Builder(builderMethodName = "buildISPWebservicesHeaderType")
-	public static ISPWebservicesHeaderType buildISPWebservicesHeader(String codABI, String codUnitaOperativa, String customerID,
-			String callerCompanyIDCode, String serviceCompanyIDCode, String userID, String isVirtualUser,
-			String language, String serviceID, String serviceVersion, String timestamp, String transactionId,
-			String applicationID, String callerProgramName, String channelIDCode) {
+	public static ISPWebservicesHeaderType buildISPWebservicesHeader(String codABI, String codUnitaOperativa,
+			String customerID, String callerCompanyIDCode, String serviceCompanyIDCode, String userID,
+			String isVirtualUser, String language, String serviceID, String serviceVersion, String timestamp,
+			String transactionId, String applicationID, String callerProgramName, String channelIDCode) {
 
 		ObjectFactory factory = new ObjectFactory();
 
@@ -75,49 +188,27 @@ public class ServiceUtil {
 		obj.setTechnicalInfo(factory.createISPWebservicesHeaderTypeTechnicalInfo());
 		obj.setAdditionalBusinessInfo(factory.createISPWebservicesHeaderTypeAdditionalBusinessInfo());
 
-		obj.getRequestInfo().setTransactionId(transactionId);
-		if (timestamp != null) {
-			obj.getRequestInfo().setTimestamp(Long.parseLong(timestamp));
-		}
-
-		obj.getRequestInfo().setServiceID(serviceID);
-		obj.getRequestInfo().setServiceVersion(serviceVersion);
-		obj.getRequestInfo().setLanguage(language);
+		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_ABI, codABI));
+		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),
+				createParam(ParamList.COD_UNITA_OPERATIVA, codUnitaOperativa));
+		obj.getBusinessInfo().setCustomerID(customerID);
+		obj.getCompanyInfo().setISPCallerCompanyIDCode(callerCompanyIDCode);
+		obj.getCompanyInfo().setISPServiceCompanyIDCode(serviceCompanyIDCode);
 		obj.getOperatorInfo().setUserID(userID);
 		if (isVirtualUser != null) {
 			obj.getOperatorInfo().setIsVirtualUser(Boolean.parseBoolean(isVirtualUser));
 		}
-		// obj.getOperatorInfo().setNotISPUserID(headers.getFirst("ISPWebservicesHeader.OperatorInfo.NotISPUserID"));
-		obj.getCompanyInfo().setISPCallerCompanyIDCode(callerCompanyIDCode);
-		// obj.getCompanyInfo().setNotISPCompanyIDCode(headers.getFirst("ISPWebservicesHeader.CompanyInfo.NotISPCompanyIDCode"));
-		// obj.getCompanyInfo().setISPBranchCode(headers.getFirst("ISPWebservicesHeader.CompanyInfo.ISPBranchCode"));
-		// obj.getCompanyInfo().setISPServiceCompanyIDCode();
-		obj.getBusinessInfo().setCustomerID(customerID);
-		// obj.getBusinessInfo().setBusinessProcessName(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessProcessName"));
-		// obj.getBusinessInfo().setBusinessProcessID(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessProcessID"));
-		// obj.getBusinessInfo().setBusinessOperation(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessOperation"));
-		// obj.getBusinessInfo().setBusinessFileID(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessFileID"));
-		obj.getTechnicalInfo().setChannelIDCode(channelIDCode);
+		obj.getRequestInfo().setLanguage(language);
+		obj.getRequestInfo().setServiceID(serviceID);
+		obj.getRequestInfo().setServiceVersion(serviceVersion);
+
+		if (timestamp != null) {
+			obj.getRequestInfo().setTimestamp(Long.parseLong(timestamp));
+		}
+		obj.getRequestInfo().setTransactionId(transactionId);
 		obj.getTechnicalInfo().setApplicationID(applicationID);
-		// obj.getTechnicalInfo().setCallerServerName(headers.getFirst("ISPWebservicesHeader.TechnicalInfo.CallerServerName"));
 		obj.getTechnicalInfo().setCallerProgramName(callerProgramName);
-
-		 
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),createParam(ParamList.COD_ABI,codABI));
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_UNITA_OPERATIVA, codUnitaOperativa));
-		// addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),
-		// createParam(ParamList.DATA_CONTABILE,
-		// headers.getFirst("ISPWebservicesHeader.AdditionalBusinessInfo.DataContabile")));
-		// addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),
-		// createParam(ParamList.FLAG_PAPERLESS,
-		// headers.getFirst("ISPWebservicesHeader.AdditionalBusinessInfo.FlagPaperless")));
-		// addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),
-		// createParam(ParamList.COD_OPERATIVITA,
-		// headers.getFirst("ISPWebservicesHeader.AdditionalBusinessInfo.CodOperativita")));
-		// addIfNonNull(obj.getAdditionalBusinessInfo().getParam(),
-		// createParam(ParamList.COD_TERMINALE_CICS,
-		// headers.getFirst("ISPWebservicesHeader.AdditionalBusinessInfo.CodTerminaleCics")));
-
+		obj.getTechnicalInfo().setChannelIDCode(channelIDCode);
 		return obj;
 	}
 
@@ -141,6 +232,31 @@ public class ServiceUtil {
 
 	}
 
-	
-	
+	public static String ifNull(String value, String defaultValue) {
+		if (value != null) {
+			return value;
+		} else {
+			return defaultValue;
+		}
+	}
+
+	public static int ifNullAsInt(Number value, int defValue) {
+		if (value != null) {
+			return value.intValue();
+		} else {
+			return defValue;
+		}
+	}
+
+	public static StringBuilder stampaOggetto(Object obj) {
+		StringBuilder buffer = new StringBuilder("[");
+		java.util.Arrays.asList(obj.getClass().getDeclaredFields()).forEach(f -> {
+			try {
+				buffer.append(f.getName() + " = " + f.get(obj)).append(" - ");
+			} catch (Exception e) {
+			}
+		});
+		buffer.append("]");
+		return buffer;
+	}
 }

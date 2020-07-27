@@ -24,7 +24,7 @@ public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SFRe
 
 		connector.INHEADER = new INHEADER[1];
 		connector.INHEADER[0] = new INHEADER();// input.getHeader();	
-		ServiceUtil.setHeaders(connector.INHEADER[0], t1sfRequest.getIspWebservicesHeaderType());		
+		//ServiceUtil.setHeaders(connector.INHEADER[0], t1sfRequest.getIspWebservicesHeaderType());		
 		connector.INHEADER[0].ID_SERVIZIO = "??";
 		
 		//body

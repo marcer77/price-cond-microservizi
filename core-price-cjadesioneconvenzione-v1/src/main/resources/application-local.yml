@@ -14,6 +14,7 @@ logging:
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
+    com.intesasanpaolo.bear.cond0.cjadesioneconvenzione: DEBUG
     org.keycloak: INFO
 
 error-manager:

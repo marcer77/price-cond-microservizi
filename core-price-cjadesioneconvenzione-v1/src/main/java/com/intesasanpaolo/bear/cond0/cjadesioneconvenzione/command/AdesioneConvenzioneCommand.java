@@ -3,8 +3,6 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +10,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
@@ -32,7 +31,6 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ConvenzioniSe
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.SuperPraticaService;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ctg.FL03ServiceBS;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ctg.T1SJServiceBS;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;

@@ -1,10 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.controller;
 
-import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,13 +10,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.command.AdesioneConvenzioneCommand;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.EsitoStampaResource;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.StampaResponseResource;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.HeaderAttribute;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
