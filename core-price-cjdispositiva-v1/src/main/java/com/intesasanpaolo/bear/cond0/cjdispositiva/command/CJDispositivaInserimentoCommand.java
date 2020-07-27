@@ -18,7 +18,10 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.PropostaCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.WrapperMap;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
@@ -43,6 +46,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
+	
+	@Autowired
+	private ConvenzioniHostService convenzioniHostService;
 
 	@Override
 	public EsitoResource execute() throws Exception {
@@ -58,7 +64,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
 
 			// WS VDM StoreCovenantAdesioneConvenzione
-			// TODO
+			ReqStoreCovenantAdesioneConvenzione request = new ReqStoreCovenantAdesioneConvenzione();
+			RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
 
 			// WS COND0 GESTCJPOSV.inviaPropostaV2
 			dispositivaRequestDTO = new DispositivaRequestDTO();
