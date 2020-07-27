@@ -45,4 +45,8 @@ connectors:
         enableMTOM: false
         mocked: false
         enabledTracing: true
-
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: http://localhost:4545/Gestione.svc
+        timeout: 120000

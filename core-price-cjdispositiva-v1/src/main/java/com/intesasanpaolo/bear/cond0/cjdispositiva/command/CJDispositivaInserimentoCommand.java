@@ -3,6 +3,7 @@ package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -54,7 +55,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 
 			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 			newAccountInput = new NewAccountInput();
-//			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
+			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
 
 			// WS VDM StoreCovenantAdesioneConvenzione
 			// TODO
@@ -98,7 +99,15 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 	public boolean canExecute() {
 		log.info("canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = ispWebservicesHeaderType != null;
+		esitoControlli = 
+				!StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceVersion())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}

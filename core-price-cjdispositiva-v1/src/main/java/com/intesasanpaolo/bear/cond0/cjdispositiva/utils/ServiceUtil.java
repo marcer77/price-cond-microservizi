@@ -160,7 +160,7 @@ public class ServiceUtil {
 		obj.getCompanyInfo().setISPCallerCompanyIDCode(callerCompanyIDCode);
 		// obj.getCompanyInfo().setNotISPCompanyIDCode(headers.getFirst("ISPWebservicesHeader.CompanyInfo.NotISPCompanyIDCode"));
 		// obj.getCompanyInfo().setISPBranchCode(headers.getFirst("ISPWebservicesHeader.CompanyInfo.ISPBranchCode"));
-		// obj.getCompanyInfo().setISPServiceCompanyIDCode();
+		obj.getCompanyInfo().setISPServiceCompanyIDCode(serviceCompanyIDCode);
 		obj.getBusinessInfo().setCustomerID(customerID);
 		// obj.getBusinessInfo().setBusinessProcessName(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessProcessName"));
 		// obj.getBusinessInfo().setBusinessProcessID(headers.getFirst("ISPWebservicesHeader.BusinessInfo.BusinessProcessID"));
