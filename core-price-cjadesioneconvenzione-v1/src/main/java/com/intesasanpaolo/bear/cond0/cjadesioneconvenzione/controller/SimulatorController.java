@@ -37,7 +37,7 @@ public class SimulatorController extends CoreController {
 
 	}
 
-	@GetMapping(value="/call-GetRequisitiAdesioneConvenzione")
+	@PostMapping(value="/call-GetRequisitiAdesioneConvenzione")
 	public ResponseEntity<RespGetRequisitiAdesioneConvenzione> callGetRequisitiAdesioneConvenzione(@RequestBody ReqGetRequisitiAdesioneConvenzione request){
 
 //		RequisitiAdesioneConvenzione request = new RequisitiAdesioneConvenzione();

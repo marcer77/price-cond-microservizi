@@ -12,6 +12,7 @@ import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzioneResponse;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.*;
 
 @Service
 public class GetCovenantPerConvenzioneResponseTrasformer implements
@@ -39,21 +40,21 @@ public class GetCovenantPerConvenzioneResponseTrasformer implements
 		for (ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare element : arrayListDaAtt) {
 			ret.add(
 			RespGetCovenantPerConvenzioneCovenantDaAttivare.builder()
-					.beneficioCondizionatoDataFine(element.getBeneficioCondizionatoDataFine().getValue())
-					.beneficioCondizionatoDataInizio(element.getBeneficioCondizionatoDataInizio().getValue())
-					.beneficioIncondizionatoDataFine(element.getBeneficioIncondizionatoDataFine().getValue())
-					.beneficioIncondizionatoDataInizio(element.getBeneficioIncondizionatoDataInizio().getValue())
-					.beneficioIncondizionatoNumRilevazioni(element.getBeneficioIncondizionatoNumRilevazioni().getValue())
-					.beneficioIncondizionatoPresente(element.getBeneficioIncondizionatoPresente().getValue())
-					.beneficioIngressoDataFine(element.getBeneficioIngressoDataFine().getValue())
-					.beneficioIngressoDataInizio(element.getBeneficioIngressoDataInizio().getValue())
-					.beneficioIngressoPresente(element.getBeneficioIngressoPresente().getValue())
-					.codCondizione(element.getCodCondizione().getValue())
-					.codiceTemplate(element.getCodiceTemplate().getValue())
-					.covenantDataFine(element.getCovenantDataFine().getValue())
-					.covenantDataInizio(element.getCovenantDataInizio().getValue())
-					.flagEffettoRilevato(element.getFlagEffettoRilevato().getValue())
-					.flagEventoEtaCliente(element.getFlagEventoEtaCliente().getValue()).build());
+					.beneficioCondizionatoDataFine(withNoException(()-> element.getBeneficioCondizionatoDataFine().getValue(),null))
+					.beneficioCondizionatoDataInizio(withNoException(()-> element.getBeneficioCondizionatoDataInizio().getValue(),null))
+					.beneficioIncondizionatoDataFine(withNoException(()-> element.getBeneficioIncondizionatoDataFine().getValue(),null))
+					.beneficioIncondizionatoDataInizio(withNoException(()-> element.getBeneficioIncondizionatoDataInizio().getValue(),null))
+					.beneficioIncondizionatoNumRilevazioni(withNoException(()-> element.getBeneficioIncondizionatoNumRilevazioni().getValue(),null))
+					.beneficioIncondizionatoPresente(withNoException(()-> element.getBeneficioIncondizionatoPresente().getValue(),null))
+					.beneficioIngressoDataFine(withNoException(()-> element.getBeneficioIngressoDataFine().getValue(),null))
+					.beneficioIngressoDataInizio(withNoException(()-> element.getBeneficioIngressoDataInizio().getValue(),null))
+					.beneficioIngressoPresente(withNoException(()-> element.getBeneficioIngressoPresente().getValue(),null))
+					.codCondizione(withNoException(()-> element.getCodCondizione().getValue(),null))
+					.codiceTemplate(withNoException(()-> element.getCodiceTemplate().getValue(),null))
+					.covenantDataFine(withNoException(()-> element.getCovenantDataFine().getValue(),null))
+					.covenantDataInizio(withNoException(()-> element.getCovenantDataInizio().getValue(),null))
+					.flagEffettoRilevato(withNoException(()-> element.getFlagEffettoRilevato().getValue(),null))
+					.flagEventoEtaCliente(withNoException(()-> element.getFlagEventoEtaCliente().getValue(),null)).build());
 					
 
 		}
