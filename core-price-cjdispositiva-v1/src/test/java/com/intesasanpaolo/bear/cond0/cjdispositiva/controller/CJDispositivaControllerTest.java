@@ -62,6 +62,14 @@ public class CJDispositivaControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "00");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
+		
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc")).withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("StoreCovenantAdesioneConvenzione-response.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
 
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")

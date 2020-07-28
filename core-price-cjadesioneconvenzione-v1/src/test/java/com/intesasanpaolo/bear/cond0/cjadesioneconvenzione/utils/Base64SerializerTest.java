@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.Base64Serializer;
 
 @RunWith(SpringRunner.class)
 public class Base64SerializerTest {

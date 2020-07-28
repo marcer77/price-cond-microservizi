@@ -1,6 +1,10 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 public class HeaderAttribute {
+		
+	private HeaderAttribute() {
+		super();
+	}
 	
 	
 	public static final String ISP_HEADER_COD_ABI = "ISPWebservicesHeader.AdditionalBusinessInfo.CodABI";

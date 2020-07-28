@@ -1,0 +1,18 @@
+{
+  "request" : {
+    "urlPathPattern" : "/ConvenzioniHostService.svc",
+    "method" : "POST",
+    "headers" : {
+      "SOAPAction" : {
+        "contains" : "StoreCovenantAdesioneConvenzione"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "StoreCovenantAdesioneConvenzione-response.xml",
+    "headers": {
+      "Content-Type": "text/xml"
+    }
+  }
+}

@@ -1,18 +1,22 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers;
 
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTBST;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTESI;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTSEG;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ctg.response.CtgConnectorResponse;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgResponseTransformer;
 
 @Service
 public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03S00, FL03Response>{
-
+	private static final Logger logger = LoggerUtils.getLogger(FL03CtgResponseTansformer.class);	
+	
 	private static <T> boolean hasSomething(T[] objArray) {
         return objArray != null && objArray.length > 0 && objArray[0] != null;
     }
@@ -26,7 +30,9 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
         OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
         OUTSEG outSeg = hasSomething(connector.OUTSEG) ? connector.OUTSEG[0] : new OUTSEG();
         
-        return FL03Response.builder()
+        logger.debug("\n outBody={} \n outEsi={} \n outSeg={}",ServiceUtil.stampaOggetto(outBody),ServiceUtil.stampaOggetto(outEsi),ServiceUtil.stampaOggetto(outSeg));
+        
+        FL03Response fl03Response= FL03Response.builder()
         		.codAppli(outBody.COD_APPLIC)
         		.codErr(outBody.COD_ERR)
         		.codSottoAppl(outBody.COD_SOTTOAPPLIC)
@@ -43,6 +49,9 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
         		.stringaOut(outBody.STRINGA_OUT)
         		.build();
   
+        logger.debug("fl03Response={}",fl03Response);
+        
+        return fl03Response;
        
     }
 
