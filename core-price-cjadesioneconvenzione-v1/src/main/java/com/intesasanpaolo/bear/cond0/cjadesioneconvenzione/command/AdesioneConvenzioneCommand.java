@@ -189,7 +189,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 				.codFunzione("UP")
 				.codSottoApplic("ORDIN")
 				.filler("")
-				.keyOper("01U01588620200710CMOD125914")
+				.keyOper(t1SJResponse.getT1SjOKeyOperazione())
 				.numStrKey(1)
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.build();
