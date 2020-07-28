@@ -25,4 +25,8 @@ public class ConvenzioniHostService {
 		return response;
 	}
 
+	public RespStoreCovenantAdesioneConvenzione rollbackCovenantAdesioneConvenzione(ReqStoreCovenantAdesioneConvenzione request) {
+		
+		return null;
+	}
 }

@@ -14,11 +14,16 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.New
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountOutput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType.AdditionalBusinessInfo.Param;
@@ -31,8 +36,7 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
 
-	private DispositivaRequestDTO dispositivaRequestDTO;
-	private NewAccountInput newAccountInput;
+	private PraticaDTO praticaDTO;
 
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 
@@ -42,30 +46,37 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
 
+	@Autowired
+	private RecuperoInformazioniService recuperoInformazioniService;
+
+	@Autowired
+	private ConvenzioniHostService convenzioniHostService;
+
+	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
+
 	@Override
 	public EsitoResource execute() throws Exception {
 		log.info("execute START");
-		EsitoResource esitoResource = new EsitoResource("KO","Si è verificato un errore");
+		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore");
 		if (canExecute()) {
 			log.info("execute OK");
 
 			// BS PCMK Recupero informazioni superpratica (…)
-			// TODO
+			InformazioniPraticaDTO informazioniPraticaDTO = recuperoInformazioniService.recuperaInformazioni(praticaDTO,
+					ispWebservicesHeaderType);
 
 			// WS COND0 GESTCJPOSV.revocaProposta
-			dispositivaRequestDTO = new DispositivaRequestDTO();
-			EsitoOperazioneCJPOSV2 esitoOperazione = _revocaProposta();
+			EsitoOperazioneCJPOSV2 esitoOperazione = callWsRevocaProposta(informazioniPraticaDTO);
 
 			// BS PCMK aggiorna elenco cod.prop. fittizie
-			// TODO
+			boolean esito = callAggiornaCodfittizie();
 
 			// WS VDM rollback storecovenant
-			// TODO
+			RespStoreCovenantAdesioneConvenzione resp = callRollbackConvenzioniHostService(informazioniPraticaDTO);
 
 			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
-			newAccountInput = new NewAccountInput();
-//			NewAccountOutput output = _callWsGestione(); //DA DECOMMENTARE APPENA FATTO IL MOCK DEL WS REST
- 
+			NewAccountOutput output = callWsGestione(informazioniPraticaDTO);
+
 			// return
 			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
 			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
@@ -76,11 +87,18 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 		}
 	}
 
-	private EsitoOperazioneCJPOSV2 _revocaProposta() throws BearForbiddenException {
+	private boolean callAggiornaCodfittizie() {
+		log.info("callAggiornaCodfittizie START");
+		log.info("callAggiornaCodfittizie END");
+		return recuperoInformazioniService.aggiornaCodFittizie();
+	}
+
+	private EsitoOperazioneCJPOSV2 callWsRevocaProposta(InformazioniPraticaDTO informazioniPraticaDTO)
+			throws BearForbiddenException {
 		log.info("_revocaProposta START");
-		if (dispositivaRequestDTO != null) {
+		if (informazioniPraticaDTO != null) {
 			log.info("- _revocaProposta CAN EXECUTE");
-			RevocaProposta revocaProposta = ProposteCJPOSWSUtils._buildMockRevocaProposta();
+			RevocaProposta revocaProposta = wsRequestFactory.assemblaRequestRevocaProposta(informazioniPraticaDTO);
 			EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta,
 					ispWebservicesHeaderType);
 
@@ -92,9 +110,9 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 		}
 	}
 
-	private NewAccountOutput _callWsGestione() throws Exception {
+	private NewAccountOutput callWsGestione(InformazioniPraticaDTO informazioniPraticaDTO) throws Exception {
 		log.info("_callWsGestione START");
-		if (newAccountInput != null) {
+		if (informazioniPraticaDTO != null) {
 			log.info("_callWsGestione OK");
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();
@@ -135,6 +153,9 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode",
 					ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			log.info("_callWsGestione END");
+
+			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(informazioniPraticaDTO);
+
 			return gestioneService.gestione(newAccountInput, headerParams);
 		} else {
 			log.info("_callWsGestione ERROR");
@@ -142,12 +163,21 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 		}
 	}
 
+	private RespStoreCovenantAdesioneConvenzione callRollbackConvenzioniHostService(
+			InformazioniPraticaDTO informazioniPraticaDTO) {
+		log.info("callStoreCovenantAdesioneConvenzione START");
+		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory
+				.assemblaRequestConvenzione(informazioniPraticaDTO);
+		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackCovenantAdesioneConvenzione(request);
+		log.info("callStoreCovenantAdesioneConvenzione END");
+		return resp;
+	}
+
 	@Override
 	public boolean canExecute() {
 		log.info("canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = 
-				!StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+		esitoControlli = !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
