@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jxb:bindings version="1.0"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd3">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.connector.ws.gen.convenzionihostservice.xsd3" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	 <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd0">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	<jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd1">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	<jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+        <jxb:schemaBindings>
+            <jxb:package name="com.intesasanpaolo.connector.ws.gen.convenzionihostservice" />
+        </jxb:schemaBindings>
+    </jxb:bindings>
+	
+	 <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='ArrayOfResponse_GetCovenantPerConvenzione.RespGetCovenantPerConvenzione.CovenantDaAttivare']">
+                <jxb:class name="ArrayOfResponseGetCovenantPerConvenzioneCovenantDaAttivare"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+     <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare']">
+                <jxb:class name="ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='ArrayOfResponse_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare']">
+                <jxb:class name="ArrayOfResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+     <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='ArrayOfResponse_GetPartiVariabiliPerAddendum.RespGetPartiVariabiliPerAddendum.CovenantAttivato']">
+                <jxb:class name="ArrayOfResponseGetPartiVariabiliPerAddendumCovenantAttivato"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='ArrayOfResponse_GetPartiVariabiliPerAddendum.RespGetPartiVariabiliPerAddendum.Glossario']">
+                <jxb:class name="ArrayOfResponseGetPartiVariabiliPerAddendumGlossario"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare']">
+                <jxb:class name="ResponseStoreCovenantAdesioneConvenzioneCovenantDaAttivare"/>
+            </jxb:bindings>
+    </jxb:bindings>
+    
+    <jxb:bindings schemaLocation="http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc?xsd=xsd2">
+            <jxb:bindings node="//xs:complexType[@name='Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare']">
+                <jxb:class name="ResponseStoreCovenantAdesioneConvenzioneCovenantDaCessare"/>
+            </jxb:bindings>
+    </jxb:bindings>
+
+    
+</jxb:bindings>
+

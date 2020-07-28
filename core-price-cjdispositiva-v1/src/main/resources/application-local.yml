@@ -3,10 +3,11 @@ spring:
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
 
-error-manager:
-  enabled: true
-  
 logging:
   level:
     root: INFO
@@ -15,7 +16,59 @@ logging:
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
 
+error-manager:
+  enabled: true
+
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
+
 connectors:
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: ${CJPOSWS_WS_URL:http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS}
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      ProposteCJPOSWSRevocaPropostaConnector:
+        endpoint: ${CJPOSWS_WS_URL:http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS}
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      StoreCovenantAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: "http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione"
+        timeout: 120000
   db2MultiDsConfigurations:
     items:
       MultiDataSourceDb2Connector:
@@ -63,11 +116,9 @@ connectors:
             readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
             writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
             writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-
-#### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
-  auth-server-url: ${AUTH_SERVER_ENDPOINT:dummy}
+  auth-server-url: ${AUTH_SERVER_ENDPOINT}
   resource: bear-app
   realm: bear
   public-client: true

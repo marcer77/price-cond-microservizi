@@ -18,12 +18,30 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version>1.0.0-SNAPSHOT</version>
     </properties>
+    
+    
+    <repositories>
+		<repository>
+			<id>maven-repository</id>
+			<url>file:///${basedir}/lib</url>
+		</repository>
+	</repositories>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.hateoas</groupId>
             <artifactId>spring-hateoas</artifactId>
         </dependency>
+        <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00</groupId>
+			<artifactId>WKCJ</artifactId>
+			<version>00.00003</version>
+		</dependency>
     </dependencies>
 
 	<build>

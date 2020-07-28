@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -13,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@Ignore
 public class InfoStampaDTO_OK_Test extends JUnitUtils {
 
 	private Logger log = Logger.getLogger(InfoStampaDTO_OK_Test.class);

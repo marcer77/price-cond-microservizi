@@ -1,0 +1,18 @@
+{
+  "request" : {
+    "urlPathPattern" : "/ProposteCJPOS.svc",
+    "method" : "POST",
+    "headers" : {
+      "SOAPAction" : {
+        "contains" : "inviaPropostaV2"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "InviaPropostaV2-response.xml",
+    "headers": {
+      "Content-Type": "application/xml"
+    }
+  }
+}

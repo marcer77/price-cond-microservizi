@@ -1,0 +1,65 @@
+spring:
+  profile: development
+  application:
+    name: "@project.artifactId@"
+    version: "@project.version@ (@env.GIT_COMMIT@)"
+  jackson:
+    time-zone: Europe/Rome
+  profiles:
+    active: ${ISP_AMBIENTE}
+    
+logging:
+  level:
+    root: INFO
+    com.intesasanpaolo.bear: INFO
+    com.intesasanpaolo.bear.config: INFO
+    com.intesasanpaolo.bear.connector.bearcore: INFO
+    com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
+    org.keycloak: INFO
+    
+connectors:
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: http://localhost:4545/ProposteCJPOS.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        soapAction: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+      ProposteCJPOSWSRevocaPropostaConnector:
+        endpoint: http://localhost:4545/ProposteCJPOS.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+      StoreCovenantAdesioneConvenzioneConnector:
+        endpoint: http://localhost:4545/ConvenzioniHostService.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+        soapVersion: 1.1
+        soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: http://localhost:4545/Gestione.svc
+        timeout: 120000

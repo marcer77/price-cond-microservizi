@@ -14,10 +14,19 @@ logging:
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
+    com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
 
 error-manager:
   enabled: false
+  
+tracing:
+  enabled: true
+ #mocked: true
+
+controllers:
+  tracing:
+    enabled: true
 
 #connectors:
   #restConfigurations:
@@ -57,11 +66,10 @@ hostbridge:
 #    mqtestGroup.transport: MQ
 #    mqtestGroup.trials: 2
 #    mqtestGroup.resumetime: 1
- # tracerFileProps:
-  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.traceClass.Name_0: connector.log.DefaultTraceClass
-   # com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.traceClass.Name_0: connector.log.DefaultTraceClass
-   # com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.traceClass.Name_0: connector.log.DefaultTraceClass
-
+  #tracerFileProps:
+  #  com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00.traceClass.Name_0: connector.log.DefaultTraceClass
+  #  com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.C_T1SFS00.traceClass.Name_0: connector.log.DefaultTraceClass
+    
 connectors:
   #restConfigurations:
   #  -

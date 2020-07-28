@@ -19,7 +19,56 @@ logging:
 error-manager:
   enabled: true
 
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
+
 connectors:
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: ${CJPOSWS_WS_URL}
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      ProposteCJPOSWSRevocaPropostaConnector:
+        endpoint: ${CJPOSWS_WS_URL}
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      StoreCovenantAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
+        timeout: 120000
   db2MultiDsConfigurations:
     items:
       MultiDataSourceDb2Connector:
@@ -58,7 +107,6 @@ connectors:
             readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
             readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
 
-#### Security configuration: Everything allowed for test
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

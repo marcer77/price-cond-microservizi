@@ -1,0 +1,26 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <StoreCovenantAdesioneConvenzioneResponse xmlns="http://tempuri.org/">
+         <StoreCovenantAdesioneConvenzioneResult xmlns:a="http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <a:ResponseStoreCovenantAdesioneConvenzione>
+               <a:ErroriListaCovenantDaAttivare>
+                  <a:Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare>
+                     <a:Progressivo>0</a:Progressivo>
+                     <a:errorMessage>Convenzione non trovata sulla condizione o convenzione o data operazione in input</a:errorMessage>
+                  </a:Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaAttivare>
+               </a:ErroriListaCovenantDaAttivare>
+               <a:ErroriListaCovenantDaCessare>
+                  <a:Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare>
+                     <a:Progressivo>0</a:Progressivo>
+                     <a:errorMessage>Covenant già estinto sulla base dati</a:errorMessage>
+                  </a:Response_StoreCovenantAdesioneConvenzione.RespStoreCovenantAdesioneConvenzione.CovenantDaCessare>
+               </a:ErroriListaCovenantDaCessare>
+               <a:Esito>
+                  <a:errorMessage>Errore nella lista dei covenant da cessare Errore nella lista dei covenant da attivare</a:errorMessage>
+                  <a:resultCode>KO</a:resultCode>
+               </a:Esito>
+            </a:ResponseStoreCovenantAdesioneConvenzione>
+         </StoreCovenantAdesioneConvenzioneResult>
+      </StoreCovenantAdesioneConvenzioneResponse>
+   </s:Body>
+</s:Envelope>

@@ -1,0 +1,10 @@
+<S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope">
+   <S:Body>
+      <ns2:esitoRevocaPropostaResponse xmlns:ns4="http://intesasanpaolo.it/" xmlns:ns3="http://ws.price.isp.com/proposte/" xmlns:ns2="http://ws.price.isp.com/proposteCJPOS/">
+         <ns2:esito>
+            <ns2:esitoCodice>OK</ns2:esitoCodice>
+            <ns2:esitoMessaggio>PROPOSTA ANNULLATA CORRETTAMENTE. STATO: S ESITO: J</ns2:esitoMessaggio>
+         </ns2:esito>
+      </ns2:esitoRevocaPropostaResponse>
+   </S:Body>
+</S:Envelope>

@@ -1,10 +1,10 @@
 configuration:
-    oracle:
-     - name: CONDDATA
-       acronimo: COND0
-       servizio: COND0
-       user: COND_APP
     env:
-     # PRICE
      - name: AUTH_SERVER_ENDPOINT
-       value: https://gwad0-test.syssede.systest.sanpaoloimi.com/auth/oauth
+       value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+    ctg:
+     - name: COND0
+       acronimo: COND0
+       servizio: COND0-CTGBS
+       env: TEST
+       user: GACONNEC
