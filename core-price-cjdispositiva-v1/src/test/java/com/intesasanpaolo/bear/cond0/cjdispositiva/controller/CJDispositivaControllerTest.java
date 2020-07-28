@@ -150,7 +150,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
 						.withBodyFile("RevocaProposta-response.xml")));
 
-		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+		log.info("Esito revoca proposta: " + stub.getResponse().getStatus());
 
 		Assert.assertEquals(200, stub.getResponse().getStatus());
 
