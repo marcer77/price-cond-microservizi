@@ -47,7 +47,7 @@ public class PCUJCtgRequestTrasformer implements ICtgRequestTransformer<PCUJRequ
 		inpbst.NR_PRATICA = request.getNrPratica();
 		inpbst.NR_SUPERPRATICA = request.getNrSuperpratica();
 		inpbst.NUM_PROG_RAPP = request.getNumProgRapp();
-		inpbst.PROPOSTA_COMM = request.getPropostaComm();
+		inpbst.PROPOSTA_COMM =ServiceUtil.ifNullAsInt(request.getPropostaComm(), 0)  ;
 		inpbst.SUB_EVENTO = request.getSubEvento();
 		inpbst.TIPO_FUNZIONE = request.getTipoFunzione();
 

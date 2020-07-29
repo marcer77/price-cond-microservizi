@@ -7,6 +7,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,7 @@ import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
 
 @RunWith(SpringRunner.class)
+@Ignore
 public class SimulatorControllerTest extends BaseTest {
 
 	@Rule

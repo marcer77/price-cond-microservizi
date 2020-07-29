@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -65,7 +66,8 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		// Recupero informazioni superpratica (elenco pratiche)
 		String abi =ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi, dto.getPratica().getCodSuperPratica());
-
+		//List<String> pratiche=new ArrayList<String>();
+		//pratiche.add("2323");
 		// invocazione WKCJ
 		for (String pratica:pratiche) {
 			
@@ -78,7 +80,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			
 			WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
 			//TODO:POPOLARE CONDIZIONI VARIATE
-			List<OutCNF> condizioniVariate=wkcjResponse.getOutCNFList();
+			//List<OutCNF> condizioniVariate=wkcjResponse.getOutCNFList();
 		}
 
 		for (String pratica:pratiche) {
