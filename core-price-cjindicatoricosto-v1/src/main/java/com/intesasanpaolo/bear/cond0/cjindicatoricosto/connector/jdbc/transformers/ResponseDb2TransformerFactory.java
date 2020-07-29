@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformer;
+package com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers;
 
 import com.intesasanpaolo.bear.connector.db2.transformer.IDB2ResponseTransformer;
 

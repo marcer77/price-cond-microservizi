@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformer;
+package com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers;
 
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.connector.db2.request.DB2Request;

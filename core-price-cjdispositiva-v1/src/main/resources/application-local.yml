@@ -115,7 +115,7 @@ connectors:
             readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
             readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
             writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

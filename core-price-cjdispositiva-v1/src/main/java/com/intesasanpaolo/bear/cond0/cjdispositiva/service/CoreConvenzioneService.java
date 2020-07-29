@@ -11,8 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.LetturaRRowMapper;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformer.RequestDb2TransformerFactory;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformer.ResponseDb2TransformerFactory;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ConvRiferimento;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
