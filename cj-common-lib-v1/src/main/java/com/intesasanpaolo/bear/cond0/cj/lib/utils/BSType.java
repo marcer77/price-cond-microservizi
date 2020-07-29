@@ -2,7 +2,8 @@ package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 public enum BSType {
 	FL03S00("FL03", "Stampa", "FL030FLA01"),
-	T1SJS00("T1SJ", "Stampa", "T1SJSTCVNE");
+	T1SJS00("T1SJ", "Stampa", "T1SJSTCVNE"),
+	PCUJS00("PCUJ", "Calcolo / Controllo TEG e TAEG", "PCUJCJAFFI");
 	
 	
 	private final String code;

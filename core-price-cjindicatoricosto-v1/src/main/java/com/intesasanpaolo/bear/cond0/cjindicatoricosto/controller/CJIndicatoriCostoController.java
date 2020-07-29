@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.assembler.IndicatoriCostoResourceAssembler;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.command.IndicatoriCostoCommand;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
@@ -26,8 +28,6 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriResour
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.ParametriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.PraticaResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.utils.HeaderAttribute;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;

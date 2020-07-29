@@ -3,8 +3,8 @@ package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.function.Supplier;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -258,5 +258,14 @@ public class ServiceUtil {
 		});
 		buffer.append("]");
 		return buffer;
+	}
+	
+	
+	public static <T> T withNoException(Supplier<? extends T> supplier, T defaultValue) {
+	    try {
+	        return supplier.get();
+	    } catch (Exception e) {
+	        return defaultValue;
+	    }
 	}
 }

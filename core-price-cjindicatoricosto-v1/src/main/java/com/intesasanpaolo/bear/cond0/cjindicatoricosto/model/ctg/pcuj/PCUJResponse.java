@@ -10,7 +10,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PCUJResponse {
-	//TODO:mappare i campi
-	private String test;
+	private String livelloSegnalazione;
+	private String txtSegnalazione;
+	private String mdwEsiAnom;
+	private String mdwEsiMsg;
+	private String mdwEsiRetc;
+	// body
+	private String codEsito;
+	private String msgEsito;
 
 }

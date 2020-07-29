@@ -12,8 +12,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PCUJRequest {
-	
-	private ISPWebservicesHeaderType ispWebservicesHeaderType;
-	//TODO:mappare i campi
-	
+	private ISPWebservicesHeaderType ispWebservicesHeaderType;	
+	private String classificCliente;
+	private String codCatRapp;
+	private String codEvento;
+	private String codFilRapp;
+	private String codUtente;
+	private String dataRiferimento;
+	private String filialeOper;
+	private Integer nrPratica;
+	private Integer nrSuperpratica;
+	private String numProgRapp;
+	private Integer propostaComm;
+	private String subEvento;
+	private String tipoFunzione;
 }

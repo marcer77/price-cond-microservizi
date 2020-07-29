@@ -7,8 +7,10 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.C_WKCJS00;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.INHEADER;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.INPBST;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSTypeCall;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderBS;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.utils.ServiceUtil;
 import com.intesasanpaolo.bear.connector.ctg.request.CtgConnectorRequest;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgRequestTransformer;
 
@@ -24,8 +26,10 @@ public class WKCJCtgRequestTrasformer implements ICtgRequestTransformer<WKCJRequ
 
 		connector.INHEADER = new INHEADER[1];
 		connector.INHEADER[0] = new INHEADER();
-		ServiceUtil.setHeaders(connector.INHEADER[0], wkcjRequest.getIspWebservicesHeaderType());
-		connector.INHEADER[0].ID_SERVIZIO = "WKCJCNTRZE";
+		//HeaderBS headerBS = ServiceUtil.buildHeaders(BSTypeCall.PCUJS00_CALL, request.getIspWebservicesHeaderType());
+		//ServiceUtil.setHeaders(connector.INHEADER[0], headerBS);
+
+		//connector.INHEADER[0].ID_SERVIZIO = "WKCJCNTRZE";
 	
 		INPBST inpbst = new INPBST();
 		inpbst.AMBITO_Q=wkcjRequest.getAmbitoQ();
