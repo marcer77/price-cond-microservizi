@@ -11,3 +11,5 @@ configuration:
        value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CJPOSWS_WS_URL
        value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS
+     - name: DATASOURCE_COND0DB2_URI
+       value: db2y.mframe.sanpaoloimi.com

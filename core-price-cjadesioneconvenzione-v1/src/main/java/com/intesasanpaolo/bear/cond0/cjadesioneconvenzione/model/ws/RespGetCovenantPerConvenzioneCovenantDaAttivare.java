@@ -1,7 +1,9 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Response del servizio GetCovenantPerConvenzione
@@ -10,6 +12,8 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class RespGetCovenantPerConvenzioneCovenantDaAttivare {
 	
     private String beneficioCondizionatoDataFine;

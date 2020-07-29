@@ -2,18 +2,15 @@ package com.intesasanpaolo.bear.cond0.cjindicatoricosto.command;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
-
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.SuperPraticaRequest;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.SuperPraticaResponse;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
@@ -21,14 +18,17 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRespon
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.SuperPraticaService;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.WKCJServiceBS;
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
+
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
-	private Logger log = Logger.getLogger(IndicatoriCostoCommand.class);
+	private Logger log = LoggerUtils.getLogger(IndicatoriCostoCommand.class);
 
 	@Autowired
 	private SuperPraticaService superPraticaService;
