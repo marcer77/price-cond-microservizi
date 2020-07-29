@@ -1,10 +1,14 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.command;
 
+import java.util.List;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
@@ -19,6 +23,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.WKCJServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -58,8 +63,8 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	protected IndicatoriCosto doExecute() throws Exception {
 
 		// Recupero informazioni superpratica (elenco pratiche)
-		SuperPraticaRequest superPraticaRequest = new SuperPraticaRequest();
-		SuperPraticaResponse superPraticaResponse = superPraticaService.recuperaInfoSuperPratica(superPraticaRequest);
+		String abi =ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi, dto.getPratica().getCodSuperPratica());
 
 		// invocazione WKCJ
 		WKCJRequest wkcjRequest = WKCJRequest.builder().ambitoQ("").attribBpay("").catRapp("").catRappAppo("")

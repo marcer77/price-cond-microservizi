@@ -42,6 +42,12 @@
 			<artifactId>WKCJ</artifactId>
 			<version>00.00003</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>com.intesasanpaolo.bear.cond0</groupId>
+    		<artifactId>cj-common-lib-v1</artifactId>
+			<version>1.0.0-SNAPSHOT</version>		
+		</dependency>
     </dependencies>
 
 	<build>

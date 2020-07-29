@@ -25,13 +25,7 @@ public class SuperPraticaService extends BaseService{
 	 @Autowired
 	 private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 	
-	
-
-	public SuperPraticaResponse recuperaInfoSuperPratica(SuperPraticaRequest superPraticaRequest) {
-		return new SuperPraticaResponse();
-	}
-
-	public List<String> recuperaPraticheBySuperPratica(String codAbi, String codSuperPratic){
+	public List<String> recuperaPraticheBySuperPratica(String codAbi, String codSuperPratica){
 		logger.info("START letturaRConvenzioneDiRifiremento");
 
 		String query = "SELECT DISTINCT" + 
@@ -41,7 +35,7 @@ public class SuperPraticaService extends BaseService{
 
 
 		Map<String, Object> paramMap = new TreeMap<>();
-		paramMap.put("codSuperPratic", codSuperPratic);
+		paramMap.put("codSuperPratic", codSuperPratica);
 		
 		List<String> resultList = convRifMultiDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
