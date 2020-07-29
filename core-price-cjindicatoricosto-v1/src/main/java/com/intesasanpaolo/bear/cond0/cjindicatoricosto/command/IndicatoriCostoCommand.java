@@ -13,6 +13,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.SuperPraticaService;
@@ -66,20 +67,32 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi, dto.getPratica().getCodSuperPratica());
 
 		// invocazione WKCJ
-		WKCJRequest wkcjRequest = WKCJRequest.builder().ambitoQ("").attribBpay("").catRapp("").catRappAppo("")
-				.catRappBpay("").catSecRapAppo("").catSecRapp("").dataRifer("").dtDecoRapp("").filRapp("")
-				.filRappAppo("").filRappBpay("").flBpay("").lingua("").ndg("").nroRapp("").nroRappAppo("")
-				.nroRappBpay("").partitaRapp("").pratica("").settRapp("").settRappAppo("").superpratica("")
-				.terminale("").tipoChiamata("").tipoStampa("").utente("")
-				.ispWebservicesHeaderType(ispWebservicesHeaderType).build();
+		for (String pratica:pratiche) {
+			
+			WKCJRequest wkcjRequest = WKCJRequest.builder()
+					.ispWebservicesHeaderType(ispWebservicesHeaderType)
+					.pratica(pratica)
+					.superpratica(dto.getPratica().getCodSuperPratica())
+					.tipoChiamata("A4")
+					.build();
+			
+			WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
+			//TODO:POPOLARE CONDIZIONI VARIATE
+			List<OutCNF> condizioniVariate=wkcjResponse.getOutCNFList();
+		}
 
-		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
+		for (String pratica:pratiche) {
+			PCUJRequest pcujRequest = PCUJRequest.builder()
+					.ispWebservicesHeaderType(ispWebservicesHeaderType)
+					.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
+					.nrPratica(Integer.valueOf(pratica))
+					.build();
 
-		// invocazione PCUJ
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).build();
-
-		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
-
+			PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
+			//TODO:POPOLARE AFFIDAMENTI
+			//pcujResponse.getOutRIPList().get(0).getOutTasList().get(0).;
+		}
+		
 		//
 		IndicatoriCosto indicatoriCosto = new IndicatoriCosto();
 		// TODO: costruire il modello di ritorno

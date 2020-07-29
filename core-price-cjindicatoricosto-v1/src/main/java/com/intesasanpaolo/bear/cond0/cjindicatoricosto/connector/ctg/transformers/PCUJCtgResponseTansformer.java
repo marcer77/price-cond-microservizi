@@ -10,14 +10,11 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.C_PCUJS00;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTBST;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTESI;
-import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTRIP;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTSEG;
-import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTTAS;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutRIP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutTAS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ctg.response.CtgConnectorResponse;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgResponseTransformer;
@@ -66,10 +63,15 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 			});
 		}
 
-		PCUJResponse response = PCUJResponse.builder().mdwEsiAnom(outEsi.MDW_ESI_ANOM).mdwEsiMsg(outEsi.MDW_ESI_MSG)
-				.mdwEsiRetc(outEsi.MDW_ESI_RETC).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
-				.txtSegnalazione(outSeg.TXT_SEGNALAZIONE).codEsito(outBody.COD_ESITO).msgEsito(outBody.MSG_ESITO)
-
+		PCUJResponse response = PCUJResponse.builder()
+				.mdwEsiAnom(outEsi.MDW_ESI_ANOM)
+				.mdwEsiMsg(outEsi.MDW_ESI_MSG)
+				.mdwEsiRetc(outEsi.MDW_ESI_RETC)
+				.livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
+				.txtSegnalazione(outSeg.TXT_SEGNALAZIONE)
+				.codEsito(outBody.COD_ESITO)
+				.msgEsito(outBody.MSG_ESITO)
+				.outRIPList(outRIPList)
 				.build();
 
 		logger.debug("response={}", response);
