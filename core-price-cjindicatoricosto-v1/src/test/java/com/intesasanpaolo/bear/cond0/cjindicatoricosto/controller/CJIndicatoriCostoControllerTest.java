@@ -1,6 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.controller;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 
 @RunWith(SpringRunner.class)
+@Ignore
 public class CJIndicatoriCostoControllerTest extends BaseTest {
 	@Test
 	public void testCalcola() throws Exception {
