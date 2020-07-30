@@ -14,9 +14,12 @@ import lombok.Singular;
 @Builder
 public class WKCJResponse {
 
-	private String esito;
 	private String livelloSegnalazione;
 	private String txtSegnalazione;
+	private String mdwEsiAnom;
+	private String mdwEsiMsg;
+	private String mdwEsiRetc;
+	
 	private String flCnf;
 	private String flRaf;
 	private String flRap;

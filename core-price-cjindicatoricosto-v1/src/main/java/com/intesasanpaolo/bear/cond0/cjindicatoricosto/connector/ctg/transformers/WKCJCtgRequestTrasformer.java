@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.transformers;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,11 +12,13 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSTypeCall;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderBS;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ctg.request.CtgConnectorRequest;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgRequestTransformer;
 
 @Service
 public class WKCJCtgRequestTrasformer implements ICtgRequestTransformer<WKCJRequest, C_WKCJS00> {
+	private static final Logger logger = LoggerUtils.getLogger(WKCJCtgRequestTrasformer.class);
 
 	@Autowired
 	private BeanFactory beanFactory;
@@ -26,11 +29,14 @@ public class WKCJCtgRequestTrasformer implements ICtgRequestTransformer<WKCJRequ
 
 		connector.INHEADER = new INHEADER[1];
 		connector.INHEADER[0] = new INHEADER();
-		//HeaderBS headerBS = ServiceUtil.buildHeaders(BSTypeCall.PCUJS00_CALL, request.getIspWebservicesHeaderType());
-		//ServiceUtil.setHeaders(connector.INHEADER[0], headerBS);
+		
+		HeaderBS headerBS = ServiceUtil.buildHeaders(BSTypeCall.WKCJS00_CALL, wkcjRequest.getIspWebservicesHeaderType());
+		ServiceUtil.setHeaders(connector.INHEADER[0], headerBS);
 
-		//connector.INHEADER[0].ID_SERVIZIO = "WKCJCNTRZE";
-	
+		logger.debug("headerBS = {}", headerBS);
+		logger.debug("INHEADER = {}", ServiceUtil.stampaOggetto(connector.INHEADER[0]));
+
+		
 		INPBST inpbst = new INPBST();
 		inpbst.AMBITO_Q=wkcjRequest.getAmbitoQ();
 		inpbst.ATTRIB_BPAY=wkcjRequest.getAttribBpay();
@@ -62,6 +68,8 @@ public class WKCJCtgRequestTrasformer implements ICtgRequestTransformer<WKCJRequ
 		
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = inpbst;
+		
+		logger.debug("INPBST = {}", ServiceUtil.stampaOggetto(connector.INPBST[0]));
 
 		CtgConnectorRequest<C_WKCJS00> ctgConnectorRequest = new CtgConnectorRequest<>();
 		ctgConnectorRequest.setConnectorClient(connector);

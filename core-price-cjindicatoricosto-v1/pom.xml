@@ -38,8 +38,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00</groupId>
-			<artifactId>WKCJ</artifactId>
+			 <groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00</groupId>
+ 			 <artifactId>AD-WKCJCNTRZE</artifactId>
 			<version>00.00003</version>
 		</dependency>
 		

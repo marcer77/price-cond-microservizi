@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00</groupId>
-  <artifactId>WKCJ</artifactId>
+  <artifactId>AD-WKCJCNTRZE</artifactId>
   <version>00.00003</version>
   <description>POM was created from install:install-file</description>
 </project>

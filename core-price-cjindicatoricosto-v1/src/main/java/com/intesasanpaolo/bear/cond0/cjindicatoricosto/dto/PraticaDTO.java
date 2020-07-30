@@ -15,7 +15,7 @@ public class PraticaDTO {
 	
 	@NotNull(message = "Il campo codSuperPratica non può essere null")
 	@NotBlank(message = "Il campo codSuperPratica non può essere vuoto")
-	@Pattern(regexp = "[0-9]{13,13}", message = "Il campo codSuperPratica può essere solo numerico con lunghezza 13")
+	@Pattern(regexp = "[0-9]{10,10}", message = "Il campo codSuperPratica può essere solo numerico con lunghezza 13")
 	private String codSuperPratica;
 	
 	private String codPratica;
