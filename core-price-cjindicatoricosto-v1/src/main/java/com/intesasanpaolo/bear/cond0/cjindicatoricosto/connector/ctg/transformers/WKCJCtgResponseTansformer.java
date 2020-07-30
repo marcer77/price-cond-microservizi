@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.C_WKCJS00;
@@ -11,6 +12,7 @@ import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.OUTBST;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.OUTESI;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.OUTHEADER;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00.OUTSEG;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAP;
@@ -21,11 +23,13 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRPR;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRTS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutSTP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
+import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ctg.response.CtgConnectorResponse;
 import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgResponseTransformer;
 
 @Service
 public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJS00, WKCJResponse> {
+	private static final Logger logger = LoggerUtils.getLogger(WKCJCtgResponseTansformer.class);
 
 	private static <T> boolean hasSomething(T[] objArray) {
 		return objArray != null && objArray.length > 0 && objArray[0] != null;
@@ -35,12 +39,16 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 	public WKCJResponse transform(CtgConnectorResponse<C_WKCJS00> ctgResponse) {
 		C_WKCJS00 connector = ctgResponse.getResult();
 
-		OUTHEADER outHeader = hasSomething(connector.OUTHEADER) ? connector.OUTHEADER[0] : new OUTHEADER();
+		//OUTHEADER outHeader = hasSomething(connector.OUTHEADER) ? connector.OUTHEADER[0] : new OUTHEADER();
 
 		OUTBST outBody = hasSomething(connector.OUTBST) ? connector.OUTBST[0] : new OUTBST();
 		OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
 		OUTSEG outSeg = hasSomething(connector.OUTSEG) ? connector.OUTSEG[0] : new OUTSEG();
 
+		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}", ServiceUtil.stampaOggetto(outBody),
+				ServiceUtil.stampaOggetto(outEsi), ServiceUtil.stampaOggetto(outSeg));
+
+		
 		List<OutCNF> outCNFList=new ArrayList<OutCNF>();
 		if (hasSomething(outBody.OUTCNF)) {
 			Arrays.asList(outBody.OUTCNF).forEach(out->{
@@ -170,8 +178,10 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 		
 		
 		
-		return WKCJResponse.builder()
-				.esito(outEsi.ESITO)
+		WKCJResponse response= WKCJResponse.builder()
+				.mdwEsiAnom(outEsi.MDW_ESI_ANOM)
+				.mdwEsiMsg(outEsi.MDW_ESI_MSG)
+				.mdwEsiRetc(outEsi.MDW_ESI_RETC)
 				.livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
 				.txtSegnalazione(outSeg.TXT_SEGNALAZIONE)
 				.flCnf(outBody.FL_CNF)
@@ -184,6 +194,12 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 				.outRAPList(outRAPList)
 				.outSTPList(outSTPList)
 				.build();
+		
+		
+		logger.debug("response={}", response);
+		
+		return response;
+
 	}
 
 }
