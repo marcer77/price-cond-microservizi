@@ -23,29 +23,13 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
 @Ignore
 public class SimulatorControllerTest extends BaseTest {
 
-	@Rule
-	public WireMockRule backendService = new WireMockRule(4545);
-
 	@Test
 	public void db2Test() throws Exception {
 		String codAbi = "10125";
 		String codSuperPratica = "0001161961";
-		String nrPratica = "0000655703";
+		String codEntita = "00700100000005749CC1000S0                         \",\"00700100000120230CC1000S0                         ";
 
 		String uri = "/cjindicatoricosto/pratiche?codAbi=" + codAbi + "&codSuperPratica=" + codSuperPratica;
-
-//		StubMapping stub = stubFor(get(urlEqualTo("/db2.svc")).withRequestBody(containing("inviaPropostaV2"))
-//				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
-//						.withBodyFile("InviaPropostaV2-response.xml")));
-//		
-		StubMapping stub = stubFor(get(urlEqualTo("/db2.svc"))
-	            .willReturn(aResponse()
-	                .withHeader("Content-Type", "text/plain")
-	                .withBody("0000655703")));
-
-		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
-
-		Assert.assertEquals(200, stub.getResponse().getStatus());
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 		String content = mvcResult.getResponse().getContentAsString();
@@ -53,7 +37,7 @@ public class SimulatorControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
-		Assert.assertEquals("[\"" + nrPratica + "\"]", content);
+		Assert.assertEquals("[\"" + codEntita + "\"]", content);
 
 	}
 
