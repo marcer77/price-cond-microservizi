@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
@@ -71,7 +72,7 @@ public class SimulatorController extends CoreController {
 	}
 	
 	@PostMapping(value="/insertDb2")
-	public ResponseEntity<Integer> insertdb2(@RequestParam String codAbi, @RequestParam String codSuperPratica,@RequestParam String numeroPratica,@RequestParam String idEntita, @RequestParam String stato, @RequestParam int progrEntita, @RequestParam int progDati,@RequestParam String codEntita, @RequestParam String datiEntita, @RequestParam String tipoAggiornamento, @RequestParam String codOpeUltModif) {
+	public ResponseEntity<Integer> insertdb2(@RequestBody TB59R009 entity,@RequestParam String codAbi ) {
 
 //		RequisitiAdesioneConvenzione request = new RequisitiAdesioneConvenzione();
 //
@@ -80,7 +81,7 @@ public class SimulatorController extends CoreController {
 //		List codiciFiscali = Arrays.asList(new String[] {"CRLRERD44","PEORDERFF"});
 //		requisitiAdesioneConvenzioneDTO.setCodiciFiscali(codiciFiscali);
 
-		superPraticaService.insertEntita(codAbi,codSuperPratica, numeroPratica, idEntita, stato, progrEntita,  progDati,codEntita,  datiEntita, tipoAggiornamento,codOpeUltModif);
+		superPraticaService.insertEntita(codAbi,entity);
 
 		return ResponseEntity.ok(Integer.parseInt("1"));
 
