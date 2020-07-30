@@ -21,8 +21,8 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
-@ActiveProfiles(profiles = "test")
-@TestPropertySource({"classpath:application-unittests.yml"/*, "classpath:env/settings-dev.yml"*/})
+@ActiveProfiles(profiles = "unittests")
+@TestPropertySource({"classpath:application-unittests.yml"})
 @ContextConfiguration(classes = { CoreTestConfig.class })
 @WebAppConfiguration
 @EnableWebMvc

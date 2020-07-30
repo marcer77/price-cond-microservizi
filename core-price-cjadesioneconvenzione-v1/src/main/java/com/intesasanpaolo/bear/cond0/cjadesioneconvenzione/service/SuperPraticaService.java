@@ -30,7 +30,7 @@ public class SuperPraticaService extends BaseService{
 		logger.info("START letturaRConvenzioneDiRifiremento");
 
 		String query = "SELECT DISTINCT" + 
-				" NR_PRATICA" + 
+				" COD_ENTITA " + 
 				" FROM FIATT.TB59R009" + 
 				" WHERE NR_SUPERPRATICA = :codSuperPratic";
 

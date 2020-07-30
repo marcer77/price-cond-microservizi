@@ -14,7 +14,7 @@ public class LetturaRRowMapper implements RowMapper<String> {
 	public String mapRow(ResultSet rs, int rowNum) {
 		String ret = null;
 		try {
-			ret = rs.getString("COD_ENTITA");		 
+			ret = rs.getString("NR_PRATICA");		 
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}

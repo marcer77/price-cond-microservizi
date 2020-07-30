@@ -22,32 +22,21 @@ DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjindicatoricosto-v1
 DATASOURCE_COND0DB2_CONNECTIONTIMEOUT: 10000
 DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE: 5
 ABI_SDDA: 10125
-DATASOURCE_COND0DB2_URI: db2y.mframe.sanpaoloimi.com
-#DATASOURCE_COND0DB2_URI: http://localhost:4545/db2.svc
-DATASOURCE_COND0DB2_PORT: 5250
-DATASOURCE_COND0DB2_DBNAME: DB2YTOSG
-DATASOURCE_COND0DB2_DB2_USERNAME: u0h7129
-DATASOURCE_COND0DB2_DB2_PASSWORD: Alma0720
 ABI_MDDA: 03296
 ABI_IDDA: 03249
 ABI_EDDA: 10637
 ABI_JDDA: 03239
+DATASOURCE_COND0DB2_URI: url.di.test
+DATASOURCE_COND0DB2_PORT: 5250
+DATASOURCE_COND0DB2_DBNAME: DB2YTOSG
+DATASOURCE_COND0DB2_DB2_USERNAME: u0h7129
+DATASOURCE_COND0DB2_DB2_PASSWORD: Alma0720
 
 connectors:
   db2MultiDsConfigurations:
     items:
       MultiDataSourceDb2Connector:
-        default:
-          mocked: true
-          sources:
-            - abi: ${ABI_SDDA:01025}
-              uri: ${DATASOURCE_COND0DB2_URI:http://localhost:4545/db2.svc}
-              port: ${DATASOURCE_COND0DB2_PORT:5250}
-              dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-              readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-              readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-              writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-              writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-          path: db2/
-          files:
-            - TB59R009.sql
+        mocked: true
+        path: db2/
+        files:
+          - TB59R009.sql
