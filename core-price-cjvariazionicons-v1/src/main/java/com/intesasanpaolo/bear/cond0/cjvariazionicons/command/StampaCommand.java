@@ -71,28 +71,41 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);
 
+		String docXML = "";
 		
-		//chiamata alla BS FL03
-		FL03Request fl03Request = FL03Request.builder()
-				.codApplic("ABC__")
-				.codFunzione("UP")
-				.codSottoApplic("ORDIN")
-				.filler("")
-				.keyOper("01U01588620200710CMOD125914")
-				.numStrKey(1)
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.build();
-
-		FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
-
+		String returnCode = "";
 		
+		for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
+			
+			if("06".equals(returnCode)) { //Esco dal ciclo quando il codice di risposta e' 06
+				break;
+			}else {
+				
+				//chiamata alla BS FL03
+				FL03Request fl03Request = FL03Request.builder()
+						.codApplic("ABC__")
+						.codFunzione("UP")
+						.codSottoApplic("ORDIN")
+						.filler("")
+						.keyOper("01U01588620200710CMOD125914")
+						.numStrKey(1)
+						.ispWebservicesHeaderType(ispWebservicesHeaderType)
+						.build();
+		
+				FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
+				
+				docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
+				
+				returnCode = fl03Response.getRc();
+			}
+		}
+				
 		StampaResponse stampaResponse=new StampaResponse();
-		stampaResponse.setDocumento("<xml></xml>");
+		stampaResponse.setDocumento(docXML);
 		stampaResponse.setKeyOper("");
 		stampaResponse.setEsitoStampa(new EsitoStampa());
 		stampaResponse.getEsitoStampa().setCodErrore("OK");
 		stampaResponse.getEsitoStampa().setDescErrore("");
-		
 		
 		return stampaResponse;
 	}

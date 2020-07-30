@@ -1,3 +1,5 @@
+DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjadesioneconvenzione-v1
 spring:
   profile: development
   application:

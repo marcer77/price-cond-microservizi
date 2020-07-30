@@ -20,16 +20,17 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import lombok.Builder;
 
 public class ServiceUtil {
-	
-	private static final Logger logger = LoggerUtils.getLogger(ServiceUtil.class);	
-	
+
+	private static final Logger logger = LoggerUtils.getLogger(ServiceUtil.class);
+
 	private ServiceUtil() {
 	}
-	
-	public static void setBSHeaders(Object header,BSTypeCall bsTypeCall, ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		HeaderBS headerBS=buildHeaders(bsTypeCall, ispWebservicesHeaderType);
-		logger.debug("headerBS = {}",headerBS);
-		setHeaders(header,headerBS);
+
+	public static void setBSHeaders(Object header, BSTypeCall bsTypeCall,
+			ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		HeaderBS headerBS = buildHeaders(bsTypeCall, ispWebservicesHeaderType);
+		logger.debug("headerBS = {}", headerBS);
+		setHeaders(header, headerBS);
 	}
 
 	public static HeaderBS buildHeaders(BSTypeCall bsTypeCall, ISPWebservicesHeaderType ispWebservicesHeaderType) {
@@ -54,7 +55,7 @@ public class ServiceUtil {
 		headerBS.setCodAziendaDest(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
 		headerBS.setCodiceSportello(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
 		headerBS.setCodiceUserid(ispWebservicesHeaderType.getOperatorInfo().getUserID());
-		//headerBS.setCodTipoLingua(ispWebservicesHeaderType.getRequestInfo().getLanguage());
+		// headerBS.setCodTipoLingua(ispWebservicesHeaderType.getRequestInfo().getLanguage());
 		headerBS.setCodTipoLingua("I");
 		headerBS.setCodRichCanale(ispWebservicesHeaderType.getRequestInfo().getTransactionId());
 		headerBS.setCodRisRich(ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
@@ -155,14 +156,12 @@ public class ServiceUtil {
 
 	}
 
-	
-	
 	protected static void setHeader(Object header, String headerName, Object value) {
 		try {
 			header.getClass().getField(headerName).set(header, value);
-			//BeanUtils.setProperty(header, headerName, value);
+			// BeanUtils.setProperty(header, headerName, value);
 		} catch (Exception e) {
-			logger.error("Proprietà {} non trovata sull'oggetto {}",headerName,header.getClass());
+			logger.error("Proprietà {} non trovata sull'oggetto {}", headerName, header.getClass());
 			throw new AssertionError();
 		}
 	}
@@ -263,28 +262,33 @@ public class ServiceUtil {
 		buffer.append("]");
 		return buffer;
 	}
-	
-	
+
 	public static <T> T withNoException(Supplier<? extends T> supplier, T defaultValue) {
-	    try {
-	        return supplier.get();
-	    } catch (Exception e) {
-	        return defaultValue;
-	    }
+		try {
+			return supplier.get();
+		} catch (Exception e) {
+			return defaultValue;
+		}
 	}
-	
-	public static String formattaNumero(Number number,String pattern) {
+
+	public static String formattaNumero(Number number, String pattern) {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("it", "IT"));
 		symbols.setDecimalSeparator('.');
-		if (pattern==null) 
+		if (pattern == null)
 			pattern = "###.#####";
-		
+
 		DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
 		decimalFormat.setRoundingMode(RoundingMode.DOWN);
 		return decimalFormat.format(number);
 	}
-	
+
 	public static String formattaNumero(Number number) {
-		return formattaNumero(number,"###.#####");
+		return formattaNumero(number, "###.#####");
+	}
+
+	public static String dateToString(Date date, String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.applyPattern(format);
+		return sdf.format(date);
 	}
 }

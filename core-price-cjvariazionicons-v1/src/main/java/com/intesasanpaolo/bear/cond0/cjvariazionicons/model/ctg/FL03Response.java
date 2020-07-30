@@ -25,5 +25,6 @@ public class FL03Response {
 	private String keyOper;
 	private String numRapporto;
 	private String stringaOut;
+	private String rc;
 
 }
