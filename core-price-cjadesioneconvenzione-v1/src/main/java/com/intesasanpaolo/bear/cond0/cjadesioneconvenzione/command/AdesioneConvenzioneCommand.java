@@ -105,11 +105,28 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 
 		//chiamata alla BS FL03 - recupero
-		FL03Request fl03Request = buildFL03Request(t1SJResponse);
-
-		FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
-
+		String docXML = "";
+		
+		String returnCode = "";
+		
+		for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
+			
+			if("06".equals(returnCode)) { //Esco dal ciclo quando il codice di risposta e' 06
+				break;
+			}else {
+				
+				FL03Request fl03Request = buildFL03Request(t1SJResponse);
+		
+				FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
+				
+				docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
+				
+				returnCode = fl03Response.getRc();
+			}
+		}
+		
 		StampaOutput stampaOutput = new StampaOutput();
+		stampaOutput.setDocXML(docXML);
 		// TODO: costruire il modello di ritorno
 		return stampaOutput;
 	}
@@ -193,6 +210,8 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 				.numStrKey(1)
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.build();
+
 		return fl03Request;
 	}
+
 }
