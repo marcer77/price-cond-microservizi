@@ -268,4 +268,10 @@ public class ServiceUtil {
 	        return defaultValue;
 	    }
 	}
+	
+	public static String dateToString(Date date,String format) {
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.applyPattern(format);
+		return sdf.format(date);
+	}
 }
