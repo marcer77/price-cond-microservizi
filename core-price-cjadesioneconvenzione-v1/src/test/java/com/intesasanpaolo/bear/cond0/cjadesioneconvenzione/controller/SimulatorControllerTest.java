@@ -20,7 +20,7 @@ public class SimulatorControllerTest extends BaseTest {
 		String codSuperPratica = "0001161961";
 		String codEntita = "00700100000005749CC1000S0";
 
-		String uri = "/cjadesioneconvenzione/pratiche?codAbi=" + codAbi + "&codSuperPratica=" + codSuperPratica;
+		String uri = "/cjadesioneconvenzione/codConvenzioni?codAbi=" + codAbi + "&codSuperPratica=" + codSuperPratica;
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri)).andReturn();
 		String content = mvcResult.getResponse().getContentAsString();

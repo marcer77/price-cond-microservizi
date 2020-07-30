@@ -101,9 +101,4 @@ public class SuperPraticaService extends BaseService {
 		logger.info("END insertEntita");
 	}
 
-	public void salvaInfoCovenantAndBenefici() {
-		// TODO Auto-generated method stub
-
-	}
-
 }

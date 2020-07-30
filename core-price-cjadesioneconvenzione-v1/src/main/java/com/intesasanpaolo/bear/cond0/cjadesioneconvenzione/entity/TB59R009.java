@@ -11,17 +11,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TB59R009 {
 	
-	private String NrSuperpratica;
-	private String NrPratica;
-	private String IdEntita;
-	private String Stato;
-	private int ProgrEntita;
-	private int ProgrDati;
-	private String CodEntita;
-	private String DatiEntita;
-	private String TipoAggiornamento;
-	private String CodOpeUltModif;
-	private String DataInser;
-	private String DtUltModifica;
+	private String nrSuperpratica;
+	private String nrPratica;
+	private String idEntita;
+	private String stato;
+	private int progrEntita;
+	private int progrDati;
+	private String codEntita;
+	private String datiEntita;
+	private String tipoAggiornamento;
+	private String codOpeUltModif;
+	private String dataInser;
+	private String dtUltModifica;
 
 }

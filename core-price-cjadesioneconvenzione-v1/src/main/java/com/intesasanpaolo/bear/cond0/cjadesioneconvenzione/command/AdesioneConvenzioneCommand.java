@@ -1,9 +1,12 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.command;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -14,6 +17,8 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InfoCovenantBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
@@ -68,90 +73,156 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = dto != null && ispWebservicesHeaderType != null;
+		esitoControlli = dto != null
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceVersion())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
 
 	@Override
 	protected StampaOutput doExecute() throws Exception {
-		
-		String abi =ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+
+		String abi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 
 		// Recupero informazioni superpratica (convenzione)
-		
-		List<String> codConvenzione = superPraticaService.recuperaCodConvenzione(abi, dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica());
 
-		
-
-		//invocazione VDM GetCovenantPerConvenzione
-
-//		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(abi,superPraticaResponse);
-//		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
-//
-//		//invocazione VDM GetRequisitiAdesioneConvenzione 
-//
-//		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(abi,superPraticaResponse,getCovPerConResp);
-//		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
-
-
-		//PCMK   registrazione info covenant e benefici
-
-		superPraticaService.salvaInfoCovenantAndBenefici();
-
-		//T1SJ   preparazione stampa
-		T1SJRequest t1SJRequest = buildT1SJRequest();
-		T1SJResponse t1SJResponse = t1SJServiceBS.callBS(t1SJRequest);
-
-
-		//chiamata alla BS FL03 - recupero
-		String docXML = "";
-		
-		String returnCode = "";
-		
-		for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
-			
-			if("06".equals(returnCode)) { //Esco dal ciclo quando il codice di risposta e' 06
-				break;
-			}else {
-				
-				FL03Request fl03Request = buildFL03Request(t1SJResponse);
-		
-				FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
-				
-				docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
-				
-				returnCode = fl03Response.getRc();
-			}
-		}
-		
+		List<String> codConvenzione = superPraticaService.recuperaCodConvenzione(abi,
+				dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica());
 		StampaOutput stampaOutput = new StampaOutput();
-		stampaOutput.setDocXML(docXML);
+		if (codConvenzione != null && codConvenzione.size() == 1) {
+			// invocazione VDM GetCovenantPerConvenzione
+
+			String codiceConvenzione = codConvenzione.get(0);
+
+			ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(abi,
+					codiceConvenzione);
+
+			List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService
+					.getCovenantPerConvenzione(getCovPerConRequest);
+
+			superPraticaService.deleteEntita(abi, dto.getPratica().getCodSuperPratica(),
+					dto.getPratica().getCodPratica(), "00003");
+
+			superPraticaService.deleteEntita(abi, dto.getPratica().getCodSuperPratica(),
+					dto.getPratica().getCodPratica(), "00004");
+
+			// invocazione VDM GetRequisitiAdesioneConvenzione
+
+			ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(
+					abi, codiceConvenzione);
+
+			RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService
+					.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
+
+			// PCMK registrazione info covenant e benefici
+			registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp);
+
+			// T1SJ preparazione stampa
+			T1SJRequest t1SJRequest = buildT1SJRequest();
+			T1SJResponse t1SJResponse = t1SJServiceBS.callBS(t1SJRequest);
+
+			// chiamata alla BS FL03 - recupero
+			String docXML = "";
+
+			String returnCode = "";
+
+			for (int i = 0; i < 20; i++) { // Ciclo per un massimo di 20 volte
+
+				if ("06".equals(returnCode)) { // Esco dal ciclo quando il codice di risposta e' 06
+					break;
+				} else {
+
+					FL03Request fl03Request = buildFL03Request(t1SJResponse);
+
+					FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
+
+					docXML = docXML + fl03Response.getStringaOut(); // Concatenazione delle response
+
+					returnCode = fl03Response.getRc();
+				}
+			}
+
+			stampaOutput.setDocXML(docXML);
+		} else {
+			log.error(" Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
+		}
+
 		// TODO: costruire il modello di ritorno
 		return stampaOutput;
 	}
 
-	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi) {
-		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder()
-				.abi(abi)
-				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				.filialeUserId("?")
-				.rapportoCategoria("?")
-				.rapportoAbi("?")
-				.rapportoConto("?")
-				.rapportoFiliale("?")
-				.applicativoId("?")
-				.build();//TODO Da completare
+	private void registrazioneInfoConventantAndBenefici(
+			List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp,
+			RespGetRequisitiAdesioneConvenzione getReqAdesConResp) {
 
+		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+
+		if (CollectionUtils.isNotEmpty(getCovPerConResp)) {
+
+			int progEntita = 1;
+			for (RespGetCovenantPerConvenzioneCovenantDaAttivare respGetCovenantPerConvenzioneCovenantDaAttivare : getCovPerConResp) {
+				InfoCovenantBuilder infoCovenantBuilder = new InfoCovenantBuilder(
+						respGetCovenantPerConvenzioneCovenantDaAttivare);
+				TB59R009 entity = TB59R009.builder()
+						.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+						.nrPratica(dto.getPratica().getCodPratica())
+						.idEntita("00003")
+						.stato("N")
+						.progrEntita(progEntita)
+						.datiEntita(infoCovenantBuilder.build())
+						.tipoAggiornamento("I")
+						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+						.build();
+				progEntita++;
+				superPraticaService.insertEntita(codAbi, entity);
+			}
+
+			//TODO IMPLEMENTARE INSERT PER getReqAdesConResp
+			
+		}
+
+	}
+
+	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi, String codConvenzione) {
+		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder().abi(abi)
+				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				.dataAdesione(ServiceUtil.dateToString(new Date(), "YYYYMMGG")) // TODO CHIEDERE FORMATO
+				.filialeUserId(
+						ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
+				.codConvenzione(codConvenzione).build();
 		return getCovPerConRequest;
 	}
 
-	private ReqGetRequisitiAdesioneConvenzione buildRequestGetRequisitiAdesioneConvenzione(String abi,List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp) {
+	private ReqGetRequisitiAdesioneConvenzione buildRequestGetRequisitiAdesioneConvenzione(String abi,
+			String codiceConvenzione) {
+
 		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = ReqGetRequisitiAdesioneConvenzione
-				.builder()
-				.abi(abi)
-				.applicativoId("")
-				.build(); //TODO Da completare
+				.builder().abi(abi).applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				.codiceConvenzione(codiceConvenzione)
+				.codiciFiscali(Arrays.asList(dto.getIntestatario().getCodFiscale()))
+				.dataAccensione(ServiceUtil.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
+																										// FORMATO
+				.dataAdesione(ServiceUtil.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
+																									// FORMATO
+				.filiale(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA)) // TODO
+																															// CHIEDERE
+																															// CONFERMA
+																															// SE
+																															// E'
+																															// QUESTO
+				.flagTipoCliente(dto.getIntestatario().getSpecieGiur()).ndg(dto.getIntestatario().getNdg())
+				.pIva(dto.getIntestatario().getPIva()).rapportoCategoria(dto.getRapporto().getCodCategoria())
+				.rapportoCodice(dto.getRapporto().getCodProgressivo())
+				.rapportoFiliale(dto.getRapporto().getCodFiliale()).tipoChiamata("?") // TODO DA CHIEDERE
+				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID()).build(); // TODO Da completare
 
 		return getRequisitiAdesioneConvenzioneRequest;
 	}
@@ -168,48 +239,56 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 						.t1SjINdgFirma(firmatario.getNdg()).build());
 			}
 		}
-		T1SJRequest t1SJRequest = T1SJRequest.builder()
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.t1SjICapRes(recapito.getCap()) 
-				.t1SjIChiamante("")//TODO
+		T1SJRequest t1SJRequest = T1SJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.t1SjICapRes(recapito.getCap()).t1SjIChiamante("")// TODO
 				.t1SjICodCatRapp(dto.getRapporto().getCodCategoria())
 				.t1SjICodFiscale(dto.getIntestatario().getCodFiscale())
 				.t1SjICodiceLingua(dto.getInfoStampa().getCodLingua())
 				.t1SjICodUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				.t1SjIComuneRes(recapito.getComune())
-				.t1SjIDataRiferimento(""/*dto.getInfoStampa().getData()*/) //TODO verificare formato.
-				.t1SjIFilialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, (ParamList.COD_UNITA_OPERATIVA)))
-				.t1SjIFirma(dto.getInfoStampa().getTipoFirma())
-				.t1SjIFrazione(recapito.getFrazione())
+				.t1SjIComuneRes(recapito.getComune()).t1SjIDataRiferimento(""/* dto.getInfoStampa().getData() */) // TODO
+																													// verificare
+																													// formato.
+				.t1SjIFilialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType,
+						(ParamList.COD_UNITA_OPERATIVA)))
+				.t1SjIFirma(dto.getInfoStampa().getTipoFirma()).t1SjIFrazione(recapito.getFrazione())
 				.t1SjIIntestaz(dto.getIntestatario().getIntestazione())
 				.t1SjIKeyOperazione(dto.getInfoStampa().getKeyOper())
 				.t1SjINdgIntestatario(dto.getIntestatario().getNdg())
 				.t1SjINrPratica(Double.valueOf(dto.getPratica().getCodPratica()))
 				.t1SjINrSuperpratica(Double.valueOf(dto.getPratica().getCodSuperPratica()))
-				.t1SjINumProgRapp(dto.getRapporto().getCodProgressivo())
-				.t1SjIProgStampa(Double.valueOf(0)) //TODO Come valorizzare questo campo? E’ obbligatorio? In output alla BS è presente un campo t1SjOProgStampa che potrebbe indicare il numero di chiamate da effettuare alla BS FL03 
+				.t1SjINumProgRapp(dto.getRapporto().getCodProgressivo()).t1SjIProgStampa(Double.valueOf(0)) // TODO Come
+																											// valorizzare
+																											// questo
+																											// campo? E’
+																											// obbligatorio?
+																											// In output
+																											// alla BS è
+																											// presente
+																											// un campo
+																											// t1SjOProgStampa
+																											// che
+																											// potrebbe
+																											// indicare
+																											// il numero
+																											// di
+																											// chiamate
+																											// da
+																											// effettuare
+																											// alla BS
+																											// FL03
 				.t1SjIPropostaComm(Double.valueOf(dto.getPratica().getCodPropostaComm()))
-				.t1SjIProvRes(recapito.getProvincia())
-				.t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
+				.t1SjIProvRes(recapito.getProvincia()).t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
 				.t1SjITipoOfferta(dto.getInfoStampa().getTipoOfferta())
-				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa())
-				.t1SjIViaRes(recapito.getIndirizzo())
-				.inpNDGList(inpNDGList )
-				.build();
+				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa()).t1SjIViaRes(recapito.getIndirizzo())
+				.inpNDGList(inpNDGList).build();
 
 		return t1SJRequest;
 	}
 
 	private FL03Request buildFL03Request(T1SJResponse t1SJResponse) {
-		FL03Request fl03Request = FL03Request.builder()
-				.codApplic("ABC__")
-				.codFunzione("UP")
-				.codSottoApplic("ORDIN")
-				.filler("")
-				.keyOper(t1SJResponse.getT1SjOKeyOperazione())
-				.numStrKey(1)
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.build();
+		FL03Request fl03Request = FL03Request.builder().codApplic("ABC__").codFunzione("UP").codSottoApplic("ORDIN")
+				.filler("").keyOper(t1SJResponse.getT1SjOKeyOperazione()).numStrKey(1)
+				.ispWebservicesHeaderType(ispWebservicesHeaderType).build();
 
 		return fl03Request;
 	}
