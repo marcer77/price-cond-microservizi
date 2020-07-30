@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class PCUJResponse {
 	// body
 	private String codEsito;
 	private String msgEsito;
-	private List<OutRIP> outRIPList;
+	@Builder.Default
+	private List<OutRIP> outRIPList=new ArrayList<>();
 
 }

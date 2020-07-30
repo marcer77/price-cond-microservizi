@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -19,10 +20,15 @@ public class OutSTP {
 	private String tipoSez;
 	private String tipoStrut;
 
-	private List<OutRC4> outRC4List;
-	private List<OutRCZ> outRCZList;
-	private List<OutRNO> outRNOList;
-	private List<OutRPR> outRPRList;
-	private List<OutRTS> outRTSList;
+	@Builder.Default
+	private List<OutRC4> outRC4List=new ArrayList<>();
+	@Builder.Default
+	private List<OutRCZ> outRCZList=new ArrayList<>();
+	@Builder.Default
+	private List<OutRNO> outRNOList=new ArrayList<>();
+	@Builder.Default
+	private List<OutRPR> outRPRList=new ArrayList<>();
+	@Builder.Default
+	private List<OutRTS> outRTSList=new ArrayList<>();
 
 }

@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -18,5 +19,6 @@ public class OutRIP {
 	private Integer importoFido;
 	private Integer importoFidoEur;
 	private String tipoFt;
-	private List<OutTAS> outTasList;
+	@Builder.Default
+	private List<OutTAS> outTasList=new ArrayList<>();
 }

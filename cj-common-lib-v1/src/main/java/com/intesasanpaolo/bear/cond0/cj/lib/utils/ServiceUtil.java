@@ -1,8 +1,12 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.Supplier;
 
 import org.slf4j.Logger;
@@ -267,5 +271,20 @@ public class ServiceUtil {
 	    } catch (Exception e) {
 	        return defaultValue;
 	    }
+	}
+	
+	public static String formattaNumero(Number number,String pattern) {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("it", "IT"));
+		symbols.setDecimalSeparator('.');
+		if (pattern==null) 
+			pattern = "###.#####";
+		
+		DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
+		decimalFormat.setRoundingMode(RoundingMode.DOWN);
+		return decimalFormat.format(number);
+	}
+	
+	public static String formattaNumero(Number number) {
+		return formattaNumero(number,"###.#####");
 	}
 }

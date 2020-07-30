@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -26,8 +27,12 @@ public class WKCJResponse {
 	private String flStp;
 	private String retCode;
 
-	private List<OutCNF> outCNFList;
-	private List<OutRAF> outRAFList;
-	private List<OutRAP> outRAPList;
-	private List<OutSTP> outSTPList;
+	@Builder.Default
+	private List<OutCNF> outCNFList=new ArrayList<>();
+	@Builder.Default
+	private List<OutRAF> outRAFList=new ArrayList<>();
+	@Builder.Default
+	private List<OutRAP> outRAPList=new ArrayList<>();
+	@Builder.Default
+	private List<OutSTP> outSTPList=new ArrayList<>();
 }

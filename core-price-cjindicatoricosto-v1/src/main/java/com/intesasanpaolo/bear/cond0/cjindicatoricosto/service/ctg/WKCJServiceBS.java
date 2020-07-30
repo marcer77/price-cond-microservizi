@@ -27,7 +27,7 @@ public class WKCJServiceBS extends BaseService{
 	private WKCJCtgResponseTansformer responseTransformer;
 
 	public WKCJResponse callBS(WKCJRequest wkcjRequest) throws Exception {	
-		WKCJResponse wkcjResponse =null;
+		WKCJResponse wkcjResponse =WKCJResponse.builder().build();
 		try {
 			wkcjResponse =this.ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, null);				
 		} catch (Exception e) {

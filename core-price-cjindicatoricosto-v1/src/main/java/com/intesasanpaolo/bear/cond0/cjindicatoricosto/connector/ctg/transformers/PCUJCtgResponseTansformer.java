@@ -42,6 +42,7 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
 		if (hasSomething(outBody.OUTRIP)) {
+			
 			Arrays.asList(outBody.OUTRIP).forEach(out -> {
 				List<OutTAS> outTasList = new ArrayList<OutTAS>();
 

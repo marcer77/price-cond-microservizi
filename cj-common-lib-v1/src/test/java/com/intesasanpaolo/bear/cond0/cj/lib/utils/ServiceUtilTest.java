@@ -1,5 +1,10 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -124,5 +129,14 @@ public class ServiceUtilTest {
 		//System.out.println(obj.getCOD_ABI());
 		// Assert.assertTrue(inheader.COD_ABI.equals("01025"));
 
+	}
+	@Test
+	public void testFormattaDouble() {
+		Double d=new Double(123.5677);
+		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(d, null));
+		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(10000.232, null));
+		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(0.23343, "#######.##"));
+		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(0.23343, "#######"));
+		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(10000.232, "#######"));
 	}
 }
