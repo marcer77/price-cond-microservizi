@@ -15,8 +15,6 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.SuperPraticaRequest;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.SuperPraticaResponse;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.InpNDG;
@@ -77,22 +75,24 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 	@Override
 	protected StampaOutput doExecute() throws Exception {
+		
+		String abi =ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 
 		// Recupero informazioni superpratica (convenzione)
-		SuperPraticaRequest superPraticaRequest = new SuperPraticaRequest();
-		SuperPraticaResponse superPraticaResponse = superPraticaService.recuperaInfoSuperPratica(superPraticaRequest);
+		
+		List<String> codConvenzione = superPraticaService.recuperaCodConvenzione(abi, dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica());
 
-		String abi =ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		
 
 		//invocazione VDM GetCovenantPerConvenzione
 
-		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(abi,superPraticaResponse);
-		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
-
-		//invocazione VDM GetRequisitiAdesioneConvenzione 
-
-		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(abi,superPraticaResponse,getCovPerConResp);
-		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
+//		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(abi,superPraticaResponse);
+//		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
+//
+//		//invocazione VDM GetRequisitiAdesioneConvenzione 
+//
+//		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(abi,superPraticaResponse,getCovPerConResp);
+//		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
 
 
 		//PCMK   registrazione info covenant e benefici
@@ -131,7 +131,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		return stampaOutput;
 	}
 
-	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi,SuperPraticaResponse superPraticaResponse) {
+	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi) {
 		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder()
 				.abi(abi)
 				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
@@ -146,7 +146,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		return getCovPerConRequest;
 	}
 
-	private ReqGetRequisitiAdesioneConvenzione buildRequestGetRequisitiAdesioneConvenzione(String abi,SuperPraticaResponse superPraticaResponse,List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp) {
+	private ReqGetRequisitiAdesioneConvenzione buildRequestGetRequisitiAdesioneConvenzione(String abi,List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp) {
 		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = ReqGetRequisitiAdesioneConvenzione
 				.builder()
 				.abi(abi)

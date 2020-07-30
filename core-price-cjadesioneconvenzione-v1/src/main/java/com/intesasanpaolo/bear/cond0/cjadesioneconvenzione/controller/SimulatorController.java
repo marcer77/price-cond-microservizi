@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,10 @@ public class SimulatorController extends CoreController {
 	@Autowired
 	private SuperPraticaService superPraticaService;
 
-	@GetMapping(value="/pratiche")
-	public ResponseEntity<List<String>> testDb2(@RequestParam String codAbi,@RequestParam String codSuperPratica){
+	@GetMapping(value="/codConvenzioni")
+	public ResponseEntity<List<String>> testDb2(@RequestParam String codAbi,@RequestParam String codSuperPratica, @RequestParam String nrEntita ){
 
-		List<String> response = superPraticaService.recuperaPraticheBySuperPratica(codAbi, codSuperPratica);
+		List<String> response = superPraticaService.recuperaCodConvenzione(codAbi, codSuperPratica,nrEntita);
 
 		return ResponseEntity.ok(response);
 
@@ -65,6 +66,40 @@ public class SimulatorController extends CoreController {
 		RespGetRequisitiAdesioneConvenzione response = convenzioniService.getRequisitiAdesioneConvenzione(request);
 
 		return ResponseEntity.ok(response);
+
+
+	}
+	
+	@PostMapping(value="/insertDb2")
+	public ResponseEntity<Integer> insertdb2(@RequestParam String codAbi, @RequestParam String codSuperPratica,@RequestParam String numeroPratica,@RequestParam String idEntita, @RequestParam String stato, @RequestParam int progrEntita, @RequestParam int progDati,@RequestParam String codEntita, @RequestParam String datiEntita, @RequestParam String tipoAggiornamento, @RequestParam String codOpeUltModif) {
+
+//		RequisitiAdesioneConvenzione request = new RequisitiAdesioneConvenzione();
+//
+//		requisitiAdesioneConvenzioneDTO.setAbi("01025");
+//
+//		List codiciFiscali = Arrays.asList(new String[] {"CRLRERD44","PEORDERFF"});
+//		requisitiAdesioneConvenzioneDTO.setCodiciFiscali(codiciFiscali);
+
+		superPraticaService.insertEntita(codAbi,codSuperPratica, numeroPratica, idEntita, stato, progrEntita,  progDati,codEntita,  datiEntita, tipoAggiornamento,codOpeUltModif);
+
+		return ResponseEntity.ok(Integer.parseInt("1"));
+
+
+	}
+	
+	@PostMapping(value="/deleteDb2")
+	public ResponseEntity<Integer> deletedb2(@RequestParam String codAbi, @RequestParam String codSuperPratica,@RequestParam String numeroPratica,@RequestParam String idEntita) {
+
+//		RequisitiAdesioneConvenzione request = new RequisitiAdesioneConvenzione();
+//
+//		requisitiAdesioneConvenzioneDTO.setAbi("01025");
+//
+//		List codiciFiscali = Arrays.asList(new String[] {"CRLRERD44","PEORDERFF"});
+//		requisitiAdesioneConvenzioneDTO.setCodiciFiscali(codiciFiscali);
+
+		superPraticaService.deleteEntita(codAbi, codSuperPratica, numeroPratica, idEntita);
+
+		return ResponseEntity.ok(Integer.parseInt("1"));
 
 
 	}

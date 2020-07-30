@@ -11,8 +11,6 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.MultiDataS
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.ResponseDb2TransformerFactory;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.SuperPraticaRequest;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.SuperPraticaResponse;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -22,11 +20,9 @@ public class SuperPraticaService extends BaseService{
 	 @Autowired
 	 private MultiDataSourceDb2Connector<String, Void, String> convRifMultiDataSourceConnector;
 	 
-	 @Autowired
-	 private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 	
 	public List<String> recuperaPraticheBySuperPratica(String codAbi, String codSuperPratica){
-		logger.info("START letturaRConvenzioneDiRifiremento");
+		logger.info("START recuperaPraticheBySuperPratica");
 
 		String query = "SELECT DISTINCT" + 
 				" NR_PRATICA " + 
