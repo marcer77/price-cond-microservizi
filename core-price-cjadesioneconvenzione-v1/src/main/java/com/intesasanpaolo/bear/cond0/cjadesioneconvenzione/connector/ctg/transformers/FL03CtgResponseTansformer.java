@@ -47,6 +47,7 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
         		.mdwEsiRetc(outEsi.MDW_ESI_RETC)
         		.numRapporto( outBody.NUM_RAPPORTO)
         		.stringaOut(outBody.STRINGA_OUT)
+        		.rc(outBody.RC)
         		.build();
   
         logger.debug("fl03Response={}",fl03Response);
