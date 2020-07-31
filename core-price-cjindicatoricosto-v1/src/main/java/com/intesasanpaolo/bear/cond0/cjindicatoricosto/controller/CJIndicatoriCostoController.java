@@ -122,7 +122,7 @@ public class CJIndicatoriCostoController extends CoreController {
 		affidamentoResource.getIndicatori().getTan().setParametri(new ParametriResource());
 		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("4");
 		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("121");
-		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("121");;
+		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");;
 		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("121");
 		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("12");
 		
