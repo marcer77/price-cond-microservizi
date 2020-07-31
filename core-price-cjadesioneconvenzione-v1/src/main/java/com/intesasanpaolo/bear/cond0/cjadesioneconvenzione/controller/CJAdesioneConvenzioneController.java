@@ -48,15 +48,14 @@ public class CJAdesioneConvenzioneController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
 			@RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 		
-		logger.info(HeaderAttribute.ISP_HEADER_APPLICATION_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE);
-		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI);
-		logger.info(HeaderAttribute.ISP_HEADER_LANGUAGE);
-		logger.info(HeaderAttribute.ISP_HEADER_IS_VIRTUAL_USER);
-		logger.info(HeaderAttribute.ISP_HEADER_TRANCACTION_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID);
-		logger.info(HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE);
+		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI+" "+codABI);
+		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE+" "+callerCompanyIDCode);
+		logger.info(HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE+" "+serviceCompanyIDCode);
+		logger.info(HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID+" "+userID);
+		logger.info(HeaderAttribute.ISP_HEADER_TIMESTAMP+" "+timestamp);
+		logger.info(HeaderAttribute.ISP_HEADER_TRANCACTION_ID+" "+transactionId);
+		logger.info(HeaderAttribute.ISP_HEADER_APPLICATION_ID+" "+applicationID);
+		logger.info(HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE+" "+channelIDCode);
 		
 		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
 				.applicationID(applicationID)

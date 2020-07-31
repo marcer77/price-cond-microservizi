@@ -11,10 +11,15 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.EventoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.PraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.CodApplEnum;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
 
 @RunWith(SpringRunner.class)
-@Ignore
+//@Ignore
 public class CJIndicatoriCostoControllerTest extends BaseTest {
 	@Test
 	public void testCalcola() throws Exception {
@@ -30,6 +35,19 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 
 		IndicatoriCostoDTO dto = new IndicatoriCostoDTO();
+		dto.setCodAppl(CodApplEnum.CARTE.toString());
+		dto.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		dto.setRichiesta(TipoRichiestaEnum.CALCOLA.toString());
+		dto.setClassificazione("test");
+		PraticaDTO pratica = new PraticaDTO();
+		pratica.setCodSuperPratica("1234567890");
+		dto.setPratica(pratica);
+		EventoDTO evento = new EventoDTO();
+		evento.setCodice("test");
+		evento.setSubCodice("test");
+		dto.setEvento(evento);
+
+		
 		String inputJson = mapToJson(dto);
 		String uri = "/cjindicatoricosto/calcolo";
 
@@ -38,8 +56,10 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
+		System.err.println(status);
 		//Assert.assertEquals(200, status);
 		log.info("content = {}", content);
+		System.err.println(content);
 
 	}
 

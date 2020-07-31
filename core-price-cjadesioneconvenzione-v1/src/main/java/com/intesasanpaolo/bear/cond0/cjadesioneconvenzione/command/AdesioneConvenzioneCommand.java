@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
@@ -73,12 +74,19 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
+		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI+" "+ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
+		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE+" "+ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
+		logger.info(HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE+" "+ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
+		logger.info(HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID+" "+ispWebservicesHeaderType.getOperatorInfo().getUserID());
+		logger.info(HeaderAttribute.ISP_HEADER_TIMESTAMP+" "+ispWebservicesHeaderType.getRequestInfo().getTimestamp());
+		logger.info(HeaderAttribute.ISP_HEADER_TRANCACTION_ID+" "+ispWebservicesHeaderType.getRequestInfo().getTransactionId());
+		logger.info(HeaderAttribute.ISP_HEADER_APPLICATION_ID+" "+ispWebservicesHeaderType.getTechnicalInfo().getApplicationID());
+		logger.info(HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE+" "+ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		esitoControlli = dto != null
+				&& !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceVersion())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
@@ -151,7 +159,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 			stampaOutput.setDocXML(docXML);
 		} else {
-			log.error(" Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
+			log.error("Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
 		}
 
 		// TODO: costruire il modello di ritorno
@@ -186,6 +194,8 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 			//TODO IMPLEMENTARE INSERT PER getReqAdesConResp
 			
+		}else {
+			logger.error("La Lista getCovPerConResp e' vuota.");
 		}
 
 	}
@@ -194,7 +204,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder().abi(abi)
 				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
-				.dataAdesione(ServiceUtil.dateToString(new Date(), "YYYYMMGG")) // TODO CHIEDERE FORMATO
+				.dataAdesione(ServiceUtil.dateToString(new Date(), "yyyyMMdd")) // TODO CHIEDERE FORMATO
 				.filialeUserId(
 						ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
 				.codConvenzione(codConvenzione).build();
@@ -276,12 +286,11 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 																											// effettuare
 																											// alla BS
 																											// FL03
-				.t1SjIPropostaComm(Double.valueOf(dto.getPratica().getCodPropostaComm()))
+				.t1SjIPropostaComm(Double.valueOf(StringUtils.isNotEmpty(dto.getPratica().getCodPropostaComm()) ? dto.getPratica().getCodPropostaComm() : "0"))
 				.t1SjIProvRes(recapito.getProvincia()).t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
 				.t1SjITipoOfferta(dto.getInfoStampa().getTipoOfferta())
 				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa()).t1SjIViaRes(recapito.getIndirizzo())
 				.inpNDGList(inpNDGList).build();
-
 		return t1SJRequest;
 	}
 

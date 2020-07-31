@@ -12,6 +12,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.CTGConnectorFL03;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.CTGConnectorT1SJ;
@@ -27,6 +30,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transfo
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers.FL03CtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers.T1SJCtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers.T1SJCtgResponseTansformer;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.IntestatarioDTO;
@@ -37,8 +41,13 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJRequest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJResponse;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ConvenzioniHostService;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.SuperPraticaService;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.hamcrest.CoreMatchers.any;
 
 
 
@@ -73,14 +82,108 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 	@MockBean
 	private FL03CtgResponseTansformer fl03CtgResponseTansformer;
 	
+	@MockBean
+	private SuperPraticaService superPraticaService;
+	
+	@MockBean
+	private ConvenzioniHostService convenzioniHostService;
+	
+	public InputStampaDTO inputStampaDTO = new InputStampaDTO();
+	
 	@Before
 	public void initMock() {
+
+		buildInputStampa();
+		
 		T1SJResponse t1sfResponse=new T1SJResponse();
 		FL03Response fl03Response=new FL03Response();
-		
+		fl03Response.setRc("06");
+		fl03Response.setStringaOut("<xml>Documento di test.</xml>");
 		Mockito.when(ctgConnectorT1SJ.call(t1SFRequest, requestTransformer, responseTransformer,new Object[] {})).thenReturn(t1sfResponse);
 		Mockito.when(ctgConnectorFL03.call(fL03Request, fl03CtgRequestTrasformer, fl03CtgResponseTansformer,new Object[] {})).thenReturn(fl03Response);
-		 
+		
+		List<String> codConvenzione = new ArrayList<String>();
+		codConvenzione.add("00700100000005749CC1000S0                         ");
+		Mockito.when(
+				superPraticaService.recuperaCodConvenzione(
+						"01025",inputStampaDTO.getPratica().getCodSuperPratica(),inputStampaDTO.getPratica().getCodPratica()
+						)
+				).thenReturn(codConvenzione);
+		
+		ReqGetCovenantPerConvenzione getCovPerConRequest = new ReqGetCovenantPerConvenzione();
+		getCovPerConRequest.setAbi("01025");
+		getCovPerConRequest.setApplicativoId("0");
+		getCovPerConRequest.setCodConvenzione("00700100000005749CC1000S0                         ");
+		getCovPerConRequest.setDataAdesione(ServiceUtil.dateToString(new Date(), "yyyyMMdd"));
+		getCovPerConRequest.setUserId("U015886");
+		
+		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = new ArrayList<RespGetCovenantPerConvenzioneCovenantDaAttivare>();
+		RespGetCovenantPerConvenzioneCovenantDaAttivare resp = new RespGetCovenantPerConvenzioneCovenantDaAttivare();
+		resp.setBeneficioCondizionatoDataFine("123");
+		resp.setBeneficioCondizionatoDataInizio("456");
+		getCovPerConResp.add(resp);
+		
+		Mockito.when(convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest)).thenReturn(getCovPerConResp);
+		
+		System.out.println("Inizio test");
+	}
+	
+	private void buildInputStampa() {
+		PraticaDTO pratica = new PraticaDTO();
+		pratica.setCodPratica("0000655703");
+		pratica.setCodPropostaComm("");
+		pratica.setCodSuperPratica("0001161961");
+		inputStampaDTO.setPratica(pratica);
+
+		inputStampaDTO.setCodAppl("X");
+		inputStampaDTO.setCodProcesso("CJCPG");
+		
+		RapportoDTO rapportoDTO = new RapportoDTO();
+		rapportoDTO.setCodFiliale("12345");
+		rapportoDTO.setCodCategoria("1234");
+		rapportoDTO.setCodProgressivo("12345678");
+		inputStampaDTO.setRapporto(rapportoDTO);
+		
+		IntestatarioDTO intestatarioDTO = new IntestatarioDTO();
+		
+		intestatarioDTO.setNdg("1234561234560");
+		intestatarioDTO.setIntestazione("Intestazione di test");
+		intestatarioDTO.setSpecieGiur("PERSO");
+		intestatarioDTO.setCodFiscale("RSSMRA80A01H703F");
+		intestatarioDTO.setPIva("12345678901");
+
+		ArrayList<RecapitoDTO> recapiti = new ArrayList<RecapitoDTO>();
+
+		RecapitoDTO recapitoDTO = new RecapitoDTO();
+		recapitoDTO.setTipo("test tipo");
+		recapitoDTO.setIndirizzo("via dei test");
+		recapitoDTO.setCap("00000");
+		recapitoDTO.setComune("Comune di test");
+		recapitoDTO.setFrazione("Frazione di test");
+		recapitoDTO.setProvincia("TE");
+		recapiti.add(recapitoDTO);
+
+		intestatarioDTO.setRecapiti(recapiti);
+		
+		inputStampaDTO.setIntestatario(intestatarioDTO);
+
+		ArrayList<FirmatarioDTO> listaFirmatari = new ArrayList<FirmatarioDTO>();
+
+		for (int i = 0; i < 13; i++) {
+			listaFirmatari.add(new FirmatarioDTO("1234561234560","Intestazione di test"));
+		}
+
+		inputStampaDTO.setFirmatari(listaFirmatari);
+
+		InfoStampaDTO infoStampa = new InfoStampaDTO();
+		infoStampa.setData(new Date(System.currentTimeMillis()));
+		infoStampa.setTipoStampa("Stampa di test");
+		infoStampa.setTipoOfferta("Offerta di test");
+		infoStampa.setTipoFirma("Firma di test");
+		infoStampa.setCodLingua("Lingua di test");
+		infoStampa.setKeyOper("123456789012345678901234567890");
+		infoStampa.setData(new Date());
+		inputStampaDTO.setInfoStampa(infoStampa);
 	}
 	
 	@Test
@@ -117,35 +220,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 
-		InputStampaDTO inputStampaDTO = new InputStampaDTO();
-		
-		IntestatarioDTO intestatario = new IntestatarioDTO();
-		
-		List<RecapitoDTO> recapiti = new ArrayList<>();
-		RecapitoDTO e = new RecapitoDTO();
-		recapiti.add(e);
-		
-		intestatario.setRecapiti(recapiti );
-		inputStampaDTO.setIntestatario(intestatario );
-		
-		InfoStampaDTO infoStampa = new InfoStampaDTO();
-		inputStampaDTO.setInfoStampa(infoStampa );
-		
-		
-		PraticaDTO pratica = new PraticaDTO();
-		inputStampaDTO.setPratica(pratica  );
-		
-		pratica.setCodPratica("11");
-		pratica.setCodPropostaComm("12");
-		pratica.setCodSuperPratica("12");
-		
-		RapportoDTO rapporto = new RapportoDTO();
-		inputStampaDTO.setRapporto(rapporto );
-		
-		
-		InfoStampaDTO infoStampaDTO = new InfoStampaDTO();
-		infoStampaDTO.setData(new Date());
-		inputStampaDTO.setInfoStampa(infoStampaDTO);
+
 		String inputJson = mapToJson(inputStampaDTO);
 		String uri = "/cjadesioneconvenzione/stampa";
 
@@ -156,6 +231,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("<xml>Documento di test.</xml>"));
 
 	}
 
