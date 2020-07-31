@@ -8,6 +8,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -19,6 +20,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.assembler.IndicatoriCostoResourceAssembler;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.command.IndicatoriCostoCommand;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception.CJBaseException;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.AffidamentoResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.CondizioneResource;
@@ -31,6 +33,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;
+import com.intesasanpaolo.bear.exceptions.MicroServiceException;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -62,12 +65,12 @@ public class CJIndicatoriCostoController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true) String applicationID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false) String callerProgramName,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
-			@Valid @RequestBody IndicatoriCostoDTO dto)  {
+			@Valid @RequestBody IndicatoriCostoDTO dto) throws Exception  {
 
 		IndicatoriCostoResource resource = new IndicatoriCostoResource();
 
 
-		try {
+		//try {
 			
 			ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
 					.applicationID(applicationID)
@@ -95,10 +98,10 @@ public class CJIndicatoriCostoController extends CoreController {
 			//mock response
 			resource=this.mockResponse();
 			
-		} catch (Exception e) {
+		/*} catch (Exception e) {
 			logger.error("Errore in EndPoint stampa: ", e);
 			throw new BearDomainRuntimeException("Errore generico in Stampa", "", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		}*/
 		return ResponseEntity.status(HttpStatus.OK).body(resource);
 
 		
@@ -173,5 +176,7 @@ public class CJIndicatoriCostoController extends CoreController {
 		return praticaResource;
 		
 	}
+	
+	
 
 }

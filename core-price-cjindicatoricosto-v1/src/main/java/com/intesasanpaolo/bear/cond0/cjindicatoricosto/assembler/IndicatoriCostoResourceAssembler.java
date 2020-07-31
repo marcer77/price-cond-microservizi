@@ -35,7 +35,7 @@ public class IndicatoriCostoResourceAssembler
 		esitoResource.setCodErrore(entity.getCodErrore());
 		esitoResource.setDescErrore(entity.getDescErrore());
 		
-		List<PraticaResource> praticaList=new ArrayList<PraticaResource>();
+		List<PraticaResource> praticaList=new ArrayList<>();
 		
 		entity.getIndicatoriCostoPraticaList().forEach(ent->{
 			List<CondizioneResource> condizioni=new ArrayList<>();
@@ -80,9 +80,9 @@ public class IndicatoriCostoResourceAssembler
 					indicatoriResource.setTan(tanResource);
 					
 				});
-				indicatoriResource.setTeg("");
-				indicatoriResource.setTaeg("");
-				indicatoriResource.setCdf("");
+				indicatoriResource.setTeg("");//TODO
+				indicatoriResource.setTaeg("");//TODO
+				indicatoriResource.setCdf("");//TODO
 					
 				
 				AffidamentoResource aff=AffidamentoResource.builder()
