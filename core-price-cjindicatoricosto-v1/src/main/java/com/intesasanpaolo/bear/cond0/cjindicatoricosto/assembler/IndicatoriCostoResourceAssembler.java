@@ -56,8 +56,7 @@ public class IndicatoriCostoResourceAssembler
 			//affidamenti
 			pcujResponse.getOutRIPList().forEach(outRip->{
 				IndicatoriResource indicatoriResource=new IndicatoriResource();
-
-						
+				
 				outRip.getOutTasList().forEach(tas->{
 					
 					ParametriResource parametriResource=ParametriResource
@@ -80,6 +79,7 @@ public class IndicatoriCostoResourceAssembler
 					indicatoriResource.setTan(tanResource);
 					
 				});
+				
 				indicatoriResource.setTeg("");//TODO
 				indicatoriResource.setTaeg("");//TODO
 				indicatoriResource.setCdf("");//TODO
