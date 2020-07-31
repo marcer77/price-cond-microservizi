@@ -66,8 +66,8 @@ public class CJIndicatoriCostoController extends CoreController {
 		resource.getEsito().setDescErrore("");
 		
 		resource.setPratica(new ArrayList<PraticaResource>());
-		resource.getPratica().add(mockPraticaResource("1","00001","00002","ft1","ft2"));
-		resource.getPratica().add(mockPraticaResource("2","00003","00004","ft1","ft2"));
+		resource.getPratica().add(mockPraticaResource("1012347865123","00001","00002","ft1","ft2"));
+		resource.getPratica().add(mockPraticaResource("2012347865119","00003","00004","ft1","ft2"));
 		
 		return ResponseEntity.status(HttpStatus.OK).body(resource);
 
@@ -87,44 +87,46 @@ public class CJIndicatoriCostoController extends CoreController {
 		//primo affidamento
 		AffidamentoResource affidamentoResource=new AffidamentoResource();
 		affidamentoResource.setFormaTecnica(formatecnica1);
-		affidamentoResource.setImporto("343");
-		affidamentoResource.setScadenza("20201220");
-		affidamentoResource.setTipoFTecnica("tipoFT");
+		affidamentoResource.setImporto("100100000");
+		affidamentoResource.setScadenza("31.07.2020");
+		affidamentoResource.setTipoFTecnica("T_FT_1");
 		affidamentoResource.setIndicatori(new IndicatoriResource());
-		affidamentoResource.getIndicatori().setCdf("");
-		affidamentoResource.getIndicatori().setTaeg("");
-		affidamentoResource.getIndicatori().setTeg("");
+		affidamentoResource.getIndicatori().setCdf("0000012.21");
+		affidamentoResource.getIndicatori().setTaeg("011.91567");
+		affidamentoResource.getIndicatori().setTeg("018.21981");
+		
 		affidamentoResource.getIndicatori().setTan(new TanResource());
 		affidamentoResource.getIndicatori().getTan().setFlUsura("S");
-		affidamentoResource.getIndicatori().getTan().setValore("");
+		affidamentoResource.getIndicatori().getTan().setValore("012.89786");
 		affidamentoResource.getIndicatori().getTan().setParametri(new ParametriResource());
-		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("5");
-		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("");
-		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("");;
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("");
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("");
+		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("005.50123");
+		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("-TAN-");
+		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("111.12221");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("17.81234");
 		
 		praticaResource.getAffidamenti().add(affidamentoResource);
 		
 		//secondo affidamento
 		affidamentoResource=new AffidamentoResource();
 		affidamentoResource.setFormaTecnica(formatecnica2);
-		affidamentoResource.setImporto("343");
-		affidamentoResource.setScadenza("20201220");
-		affidamentoResource.setTipoFTecnica("tipoFT");
+		affidamentoResource.setImporto("100100");
+		affidamentoResource.setScadenza("31.07.2020");
+		affidamentoResource.setTipoFTecnica("T_FT_2");
 		affidamentoResource.setIndicatori(new IndicatoriResource());
-		affidamentoResource.getIndicatori().setCdf("");
-		affidamentoResource.getIndicatori().setTaeg("");
-		affidamentoResource.getIndicatori().setTeg("");
+		affidamentoResource.getIndicatori().setCdf("0000010.21");
+		affidamentoResource.getIndicatori().setTaeg("010.91997");
+		affidamentoResource.getIndicatori().setTeg("010.21981");
+		
 		affidamentoResource.getIndicatori().setTan(new TanResource());
 		affidamentoResource.getIndicatori().getTan().setFlUsura("S");
-		affidamentoResource.getIndicatori().getTan().setValore("");
+		affidamentoResource.getIndicatori().getTan().setValore("013.89786");
 		affidamentoResource.getIndicatori().getTan().setParametri(new ParametriResource());
-		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("4");
-		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("121");
-		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");;
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("121");
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("12");
+		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("002.50123");
+		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("-TAN-");
+		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("021.12221");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("17.11234");
 		
 		praticaResource.getAffidamenti().add(affidamentoResource);
 		
