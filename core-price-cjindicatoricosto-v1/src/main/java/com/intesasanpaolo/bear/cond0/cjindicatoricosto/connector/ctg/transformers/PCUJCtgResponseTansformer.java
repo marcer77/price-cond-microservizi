@@ -39,7 +39,8 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 
 		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}", ServiceUtil.stampaOggetto(outBody),
 				ServiceUtil.stampaOggetto(outEsi), ServiceUtil.stampaOggetto(outSeg));
-
+		
+		
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
 		if (hasSomething(outBody.OUTRIP)) {
 			
