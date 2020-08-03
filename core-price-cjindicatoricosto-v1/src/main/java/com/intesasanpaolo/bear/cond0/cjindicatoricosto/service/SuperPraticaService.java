@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.MultiDataS
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.ResponseDb2TransformerFactory;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception.DB2Exception;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -38,6 +40,11 @@ public class SuperPraticaService extends BaseService{
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);	
 		
 		logger.debug("Founded:", resultList);
+		
+		if (CollectionUtils.isEmpty(resultList)) {
+			throw new DB2Exception();
+		}
+			
 
 		logger.info("END letturaRConvenzioneDiRifiremento");
 		return resultList;

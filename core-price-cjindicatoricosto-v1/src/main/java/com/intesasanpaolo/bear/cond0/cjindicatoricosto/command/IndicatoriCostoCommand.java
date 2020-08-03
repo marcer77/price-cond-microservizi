@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -75,7 +76,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				pratiche);
 
 		pratiche.forEach(pa -> {
-			IndicatoriCostoPratica indicatoriCostoPratica = new IndicatoriCostoPratica();
+			IndicatoriCostoPratica indicatoriCostoPratica =IndicatoriCostoPratica.builder().build();
 			indicatoriCostoPratica.setPratica(pa);
 			indicatoriCostoPraticaList.add(indicatoriCostoPratica);
 		});
@@ -87,7 +88,9 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			}
 		}
 
-		long count = indicatoriCostoPraticaList.stream().filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
+		long count = indicatoriCostoPraticaList.stream()
+				.filter(ele->ele.getWkcjResponse()!=null)
+				.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
 		boolean checkPresenzaCondizioniVariate = count > 0;
 
 		if (!checkPresenzaCondizioniVariate) {
@@ -115,10 +118,17 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private PCUJResponse callPCUJ(String pratica) throws Exception {
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+		PCUJRequest pcujRequest = 
+				PCUJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica)).build();
-
+				.nrPratica(Integer.valueOf(pratica))
+				.codEvento(dto.getEvento().getCodice())
+				.subEvento(dto.getEvento().getSubCodice())
+				.classificCliente(dto.getClassificazione())
+				.tipoFunzione("A4")
+				.build();
+		
 		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
 
 		return pcujResponse;

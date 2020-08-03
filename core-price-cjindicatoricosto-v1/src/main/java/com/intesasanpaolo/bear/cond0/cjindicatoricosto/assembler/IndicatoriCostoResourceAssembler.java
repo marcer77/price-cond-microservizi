@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.controller.CJIndicatoriCostoController;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutRIP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
@@ -42,10 +43,9 @@ public class IndicatoriCostoResourceAssembler
 			List<AffidamentoResource> affidamenti=new ArrayList<>();
 			
 			WKCJResponse wkcjResponse=ent.getWkcjResponse();
-			PCUJResponse pcujResponse=ent.getPcujResponse();
 			
 			//condizioni
-			List<OutCNF> outCNFList= wkcjResponse.getOutCNFList();
+			List<OutCNF> outCNFList=wkcjResponse!=null?wkcjResponse.getOutCNFList():new ArrayList<>();
 			outCNFList.forEach(cv->{
 				CondizioneResource cond=CondizioneResource.builder().
 						codice(cv.getCodCnd())
@@ -53,10 +53,19 @@ public class IndicatoriCostoResourceAssembler
 				condizioni.add(cond);
 			});
 			
+			
 			//affidamenti
-			pcujResponse.getOutRIPList().forEach(outRip->{
+			PCUJResponse pcujResponse=ent.getPcujResponse();
+			List<OutRIP> outRIPList=pcujResponse.getOutRIPList()!=null?pcujResponse.getOutRIPList():new ArrayList<>();
+			outRIPList.forEach(outRip->{
 				IndicatoriResource indicatoriResource=new IndicatoriResource();
 				
+				indicatoriResource.setTeg("");//TODO
+				indicatoriResource.setTaeg("");//TODO
+				indicatoriResource.setCdf("");//TODO
+				
+				//TAN: la lista OutTasList conterrà al più un elemento
+				//che servirà per valorizzare il campo composto TAN
 				outRip.getOutTasList().forEach(tas->{
 					
 					ParametriResource parametriResource=ParametriResource
@@ -71,23 +80,17 @@ public class IndicatoriCostoResourceAssembler
 						
 					TanResource tanResource=TanResource.builder()
 							.flUsura(tas.getFlUsura())
-							.valore(ServiceUtil.formattaNumero(tas.getValParametro()))
+							.valore(ServiceUtil.formattaNumero(tas.getTassoDebitore()))
 							.parametri(parametriResource)
 							.build();
 					
-					//indicatoriResource.setCdf("");
-					indicatoriResource.setTan(tanResource);
-					
+					indicatoriResource.setTan(tanResource);				
 				});
 				
-				indicatoriResource.setTeg("");//TODO
-				indicatoriResource.setTaeg("");//TODO
-				indicatoriResource.setCdf("");//TODO
-					
-				
+									
 				AffidamentoResource aff=AffidamentoResource.builder()
 						.formaTecnica(outRip.getCodFt())
-						 .importo(ServiceUtil.formattaNumero(outRip.getImportoFido()))
+						 .importo(ServiceUtil.formattaNumero(outRip.getImportoFidoEur()))
 						.scadenza(outRip.getDataScadenzaFido())
 						.tipoFTecnica(outRip.getTipoFt())
 						.indicatori(indicatoriResource)
