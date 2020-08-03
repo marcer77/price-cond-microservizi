@@ -283,7 +283,7 @@ public class ServiceUtil {
 	}
 
 	public static String formattaNumero(Number number) {
-		return formattaNumero(number, "###.#####");
+		return number!=null ? formattaNumero(number, "###.#####") : formattaNumero(0, "###.#####");
 	}
 
 	public static String dateToString(Date date, String format) {

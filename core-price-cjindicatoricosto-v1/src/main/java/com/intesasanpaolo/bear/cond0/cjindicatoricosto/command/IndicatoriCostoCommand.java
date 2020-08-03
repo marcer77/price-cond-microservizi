@@ -5,14 +5,12 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.io.filefilter.FileFileFilter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
@@ -60,13 +58,14 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
 		esitoControlli = dto != null
-		&& !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
-		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+				&& !StringUtils
+						.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
@@ -79,34 +78,32 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 		// Recupero informazioni superpratica (elenco pratiche)
 		String abi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
-		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi,dto.getPratica().getCodSuperPratica());
-		
+		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi,
+				dto.getPratica().getCodSuperPratica());
+
 		log.debug("pratiche recuperate da DB2 per superPratica={}: {}", dto.getPratica().getCodSuperPratica(),
 				pratiche);
 
-		if(CollectionUtils.isNotEmpty(pratiche)) {
-			log.debug("La bs ha restituito {} pratiche.",pratiche.size());
+		if (CollectionUtils.isNotEmpty(pratiche)) {
+			log.debug("La bs ha restituito {} pratiche.", pratiche.size());
 			pratiche.forEach(pa -> {
 				IndicatoriCostoPratica indicatoriCostoPratica = new IndicatoriCostoPratica();
 				indicatoriCostoPratica.setPratica(pa);
 				indicatoriCostoPraticaList.add(indicatoriCostoPratica);
 			});
-			log.debug("Tipo richiesta: {}",TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString());
+			log.debug("Tipo richiesta: {}", dto.getRichiesta());
 			if (TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString().equals(dto.getRichiesta())) {
 				for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
 					WKCJResponse wkcjResponse = callWKCJ(indPratica.getPratica());
 					indPratica.setWkcjResponse(wkcjResponse);
 				}
 			}
-	
-//			long count = indicatoriCostoPraticaList.stream().filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
-			
-			long count = indicatoriCostoPraticaList.stream()
-	                .filter(ele->ele.getWkcjResponse()!=null)
-	                .filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
+
+			long count = indicatoriCostoPraticaList.stream().filter(ele -> ele.getWkcjResponse() != null)
+					.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
 
 			boolean checkPresenzaCondizioniVariate = count > 0;
-			log.debug("Recuperate {} condizioni.",count);
+			log.debug("Recuperate {} condizioni.", count);
 			if (!checkPresenzaCondizioniVariate) {
 				// invocazione PCUJ
 				for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
@@ -114,15 +111,12 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 					indPratica.setPcujResponse(pcujResponse);
 				}
 			}
-		}else {
-			log.error("La BS non ha restituito pratiche con abi: {} e superpratica: {}",abi, dto.getPratica().getCodSuperPratica());
 		}
-		
-		//TODO:
-		indicatoriCosto.setCodErrore("");
+
+		// TODO:
+		indicatoriCosto.setCodErrore("00");
 		indicatoriCosto.setDescErrore("");
-		
-		
+
 		return indicatoriCosto;
 	}
 
@@ -135,17 +129,12 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private PCUJResponse callPCUJ(String pratica) throws Exception {
-		PCUJRequest pcujRequest = 
-				PCUJRequest.builder()
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
+		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica))
-				.codEvento(dto.getEvento().getCodice())
-				.subEvento(dto.getEvento().getSubCodice())
-				.classificCliente(dto.getClassificazione())
-				.tipoFunzione("A4")
+				.nrPratica(Integer.valueOf(pratica)).codEvento(dto.getEvento().getCodice())
+				.subEvento(dto.getEvento().getSubCodice()).classificCliente(dto.getClassificazione()).tipoFunzione("A4")
 				.build();
-				PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
+		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
 
 		return pcujResponse;
 	}
@@ -156,22 +145,14 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	 * 
 	 * R apply(T t) throws E; }
 	 */
-	/*static <T, E extends Exception> Consumer<T> handlingConsumerWrapper(
-			  ThrowingConsumer<T, E> throwingConsumer, Class<E> exceptionClass) {
-			 
-			    return i -> {
-			        try {
-			            throwingConsumer.accept(i);
-			        } catch (Exception ex) {
-			            try {
-			                E exCast = exceptionClass.cast(ex);
-			                System.err.println(
-			                  "Exception occured : " + exCast.getMessage());
-			            } catch (ClassCastException ccEx) {
-			                throw new RuntimeException(ex);
-			            }
-			        }
-			    };
-			}*/
+	/*
+	 * static <T, E extends Exception> Consumer<T> handlingConsumerWrapper(
+	 * ThrowingConsumer<T, E> throwingConsumer, Class<E> exceptionClass) {
+	 * 
+	 * return i -> { try { throwingConsumer.accept(i); } catch (Exception ex) { try
+	 * { E exCast = exceptionClass.cast(ex); System.err.println(
+	 * "Exception occured : " + exCast.getMessage()); } catch (ClassCastException
+	 * ccEx) { throw new RuntimeException(ex); } } }; }
+	 */
 
 }

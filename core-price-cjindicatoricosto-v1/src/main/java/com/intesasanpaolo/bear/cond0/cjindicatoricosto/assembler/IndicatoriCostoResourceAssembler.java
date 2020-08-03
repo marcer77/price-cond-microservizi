@@ -32,92 +32,76 @@ public class IndicatoriCostoResourceAssembler
 
 	@Override
 	public IndicatoriCostoResource toResource(IndicatoriCosto entity) {
-		EsitoResource esitoResource=new EsitoResource();
+		EsitoResource esitoResource = new EsitoResource();
 		esitoResource.setCodErrore(entity.getCodErrore());
 		esitoResource.setDescErrore(entity.getDescErrore());
-		
-		List<PraticaResource> praticaList=new ArrayList<>();
-		
-		entity.getIndicatoriCostoPraticaList().forEach(ent->{
-			List<CondizioneResource> condizioni=new ArrayList<>();
-			List<AffidamentoResource> affidamenti=new ArrayList<>();
-			
-			WKCJResponse wkcjResponse=ent.getWkcjResponse();
-			
-			//condizioni
-			List<OutCNF> outCNFList=wkcjResponse!=null?wkcjResponse.getOutCNFList():new ArrayList<>();
-			outCNFList.forEach(cv->{
-				CondizioneResource cond=CondizioneResource.builder().
-						codice(cv.getCodCnd())
-						.build();
+
+		List<PraticaResource> praticaList = new ArrayList<>();
+
+		entity.getIndicatoriCostoPraticaList().forEach(ent -> {
+			List<CondizioneResource> condizioni = new ArrayList<>();
+			List<AffidamentoResource> affidamenti = new ArrayList<>();
+
+			WKCJResponse wkcjResponse = ent.getWkcjResponse();
+
+			// condizioni
+			List<OutCNF> outCNFList = wkcjResponse != null ? wkcjResponse.getOutCNFList() : new ArrayList<>();
+			outCNFList.forEach(cv -> {
+				CondizioneResource cond = CondizioneResource.builder().codice(cv.getCodCnd()).build();
 				condizioni.add(cond);
 			});
-			
-			
-			//affidamenti
-			PCUJResponse pcujResponse=ent.getPcujResponse();
-			List<OutRIP> outRIPList=pcujResponse.getOutRIPList()!=null?pcujResponse.getOutRIPList():new ArrayList<>();
-			outRIPList.forEach(outRip->{
-				IndicatoriResource indicatoriResource=new IndicatoriResource();
-				
-				indicatoriResource.setTeg("");//TODO
-				indicatoriResource.setTaeg("");//TODO
-				indicatoriResource.setCdf("");//TODO
-				
-				//TAN: la lista OutTasList conterrà al più un elemento
-				//che servirà per valorizzare il campo composto TAN
-				outRip.getOutTasList().forEach(tas->{
-					
-					ParametriResource parametriResource=ParametriResource
-							.builder()
+
+			// affidamenti
+			PCUJResponse pcujResponse = ent.getPcujResponse() != null ? ent.getPcujResponse() : new PCUJResponse();
+			List<OutRIP> outRIPList = pcujResponse.getOutRIPList() != null ? pcujResponse.getOutRIPList()
+					: new ArrayList<OutRIP>();
+
+			outRIPList.forEach(outRip -> {
+				IndicatoriResource indicatoriResource = new IndicatoriResource();
+
+				indicatoriResource.setTeg("");// TODO
+				indicatoriResource.setTaeg("");// TODO
+				indicatoriResource.setCdf("");// TODO
+
+				// TAN: la lista OutTasList conterrà al più un elemento
+				// che servirà per valorizzare il campo composto TAN
+				outRip.getOutTasList().forEach(tas -> {
+
+					ParametriResource parametriResource = ParametriResource.builder()
 							.valoreIndice(ServiceUtil.formattaNumero(tas.getValParametro()))
 							.percApplic(ServiceUtil.formattaNumero(tas.getPercParametro()))
 							.valoreSpread(ServiceUtil.formattaNumero(tas.getValSpread()))
-							.segnoSpread(tas.getSegnoValSpread())
-							.descIndice(tas.getCodParametro())
-						.build();
-						
-						
-					TanResource tanResource=TanResource.builder()
-							.flUsura(tas.getFlUsura())
-							.valore(ServiceUtil.formattaNumero(tas.getTassoDebitore()))
-							.parametri(parametriResource)
+							.segnoSpread(tas.getSegnoValSpread()).descIndice(tas.getCodParametro()).build();
+
+					TanResource tanResource = TanResource.builder().flUsura(tas.getFlUsura())
+							.valore(ServiceUtil.formattaNumero(tas.getTassoDebitore())).parametri(parametriResource)
 							.build();
-					
-					indicatoriResource.setTan(tanResource);				
+
+					indicatoriResource.setTan(tanResource);
 				});
-				
-									
-				AffidamentoResource aff=AffidamentoResource.builder()
-						.formaTecnica(outRip.getCodFt())
-						 .importo(ServiceUtil.formattaNumero(outRip.getImportoFidoEur()))
-						.scadenza(outRip.getDataScadenzaFido())
-						.tipoFTecnica(outRip.getTipoFt())
-						.indicatori(indicatoriResource)
-						.build();
-				
+
+				AffidamentoResource aff = AffidamentoResource.builder().formaTecnica(outRip.getCodFt())
+						.importo(ServiceUtil.formattaNumero(outRip.getImportoFidoEur()))
+						.scadenza(outRip.getDataScadenzaFido()).tipoFTecnica(outRip.getTipoFt())
+						.indicatori(indicatoriResource).build();
+
 				affidamenti.add(aff);
+
 			});
-			
-			
-			PraticaResource praticaResource=PraticaResource.builder()
-					.codPratica(ent.getPratica())
-					.affidamenti(affidamenti)
-					.condizioni(condizioni)
-					.build();
-			
+
+			PraticaResource praticaResource = PraticaResource.builder().codPratica(ent.getPratica())
+					.affidamenti(affidamenti).condizioni(condizioni).build();
+
 			praticaList.add(praticaResource);
-		
+
 		});
 		//
-		IndicatoriCostoResource indicatoriCostoResource=IndicatoriCostoResource.builder()
-				.esito(esitoResource)
-				.pratica(praticaList)
-				.build();
+		IndicatoriCostoResource indicatoriCostoResource = IndicatoriCostoResource.builder().esito(esitoResource)
+				.pratica(praticaList).build();
 		return indicatoriCostoResource;
 	}
-	
+
 	private void buildIndicatori() {
-		
+
 	}
 }
