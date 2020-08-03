@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
@@ -56,7 +58,14 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	public boolean canExecute() {
 		log.info("- canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = dto != null && ispWebservicesHeaderType != null;
+		esitoControlli = dto != null
+		&& !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+		&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
 	}
@@ -74,30 +83,39 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		log.debug("pratiche recuperate da DB2 per superPratica={}: {}", dto.getPratica().getCodSuperPratica(),
 				pratiche);
 
-		pratiche.forEach(pa -> {
-			IndicatoriCostoPratica indicatoriCostoPratica = new IndicatoriCostoPratica();
-			indicatoriCostoPratica.setPratica(pa);
-			indicatoriCostoPraticaList.add(indicatoriCostoPratica);
-		});
-
-		if (TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString().equals(dto.getRichiesta())) {
-			for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
-				WKCJResponse wkcjResponse = callWKCJ(indPratica.getPratica());
-				indPratica.setWkcjResponse(wkcjResponse);
+		if(CollectionUtils.isNotEmpty(pratiche)) {
+			log.debug("La bs ha restituito {} pratiche.",pratiche.size());
+			pratiche.forEach(pa -> {
+				IndicatoriCostoPratica indicatoriCostoPratica = new IndicatoriCostoPratica();
+				indicatoriCostoPratica.setPratica(pa);
+				indicatoriCostoPraticaList.add(indicatoriCostoPratica);
+			});
+			log.debug("Tipo richiesta: {}",TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString());
+			if (TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString().equals(dto.getRichiesta())) {
+				for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
+					WKCJResponse wkcjResponse = callWKCJ(indPratica.getPratica());
+					indPratica.setWkcjResponse(wkcjResponse);
+				}
 			}
-		}
+	
+//			long count = indicatoriCostoPraticaList.stream().filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
+			
+			long count = indicatoriCostoPraticaList.stream()
+	                .filter(ele->ele.getWkcjResponse()!=null)
+	                .filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
 
-		long count = indicatoriCostoPraticaList.stream().filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
-		boolean checkPresenzaCondizioniVariate = count > 0;
-
-		if (!checkPresenzaCondizioniVariate) {
-			// invocazione PCUJ
-			for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
-				PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
-				indPratica.setPcujResponse(pcujResponse);
+			boolean checkPresenzaCondizioniVariate = count > 0;
+			log.debug("Recuperate {} condizioni.",count);
+			if (!checkPresenzaCondizioniVariate) {
+				// invocazione PCUJ
+				for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
+					PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
+					indPratica.setPcujResponse(pcujResponse);
+				}
 			}
+		}else {
+			log.error("La BS non ha restituito pratiche con abi: {} e superpratica: {}",abi, dto.getPratica().getCodSuperPratica());
 		}
-		
 		//TODO:
 		indicatoriCosto.setCodErrore("");
 		indicatoriCosto.setDescErrore("");
@@ -107,9 +125,9 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private WKCJResponse callWKCJ(String pratica) throws Exception {
+		
 		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.pratica(pratica).superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build();
-
 		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
 		return wkcjResponse;
 	}
