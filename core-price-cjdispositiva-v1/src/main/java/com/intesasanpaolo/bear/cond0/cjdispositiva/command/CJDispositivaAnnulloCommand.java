@@ -10,6 +10,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountOutput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
@@ -122,18 +123,10 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 					ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
 			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode",
 					ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
-			List<Param> listParams = ispWebservicesHeaderType.getAdditionalBusinessInfo().getParam();
-			if (listParams != null && listParams.size() > 0) {
-				for (Param param : listParams) {
-					if (ParamList.COD_ABI.equals(param.getName().COD_ABI)) {
-						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", param.getValue());
-					}
-					if (ParamList.COD_UNITA_OPERATIVA.equals(param.getName().COD_UNITA_OPERATIVA)) {
-						headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa",
-								param.getValue());
-					}
-				}
-			}
+			headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI",
+					ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
+			headerParams.put("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa",
+					ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
 			headerParams.put("ISPWebservicesHeader.BusinessInfo.CustomerID",
 					ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
 			headerParams.put("ISPWebservicesHeader.OperatorInfo.UserID",

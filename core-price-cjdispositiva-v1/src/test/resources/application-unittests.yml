@@ -16,7 +16,22 @@ logging:
     com.intesasanpaolo.bear.connector.bearcore: INFO
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
-    
+
+DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjindicatoricosto-v1
+DATASOURCE_COND0DB2_CONNECTIONTIMEOUT: 10000
+DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE: 5
+ABI_SDDA: 10125
+ABI_MDDA: 03296
+ABI_IDDA: 03249
+ABI_EDDA: 10637
+ABI_JDDA: 03239
+DATASOURCE_COND0DB2_URI: url.di.test
+DATASOURCE_COND0DB2_PORT: 5250
+DATASOURCE_COND0DB2_DBNAME: DB2YTOSG
+DATASOURCE_COND0DB2_DB2_USERNAME: u0h7129
+DATASOURCE_COND0DB2_DB2_PASSWORD: Alma0720
+ 
 connectors:
   soapConfiguration:
     items:
@@ -63,3 +78,10 @@ connectors:
       GestioneRestConnector:
         url: http://localhost:4545/Gestione.svc
         timeout: 120000
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        mocked: true
+        path: db2/
+        files:
+          - TB59R009.sql

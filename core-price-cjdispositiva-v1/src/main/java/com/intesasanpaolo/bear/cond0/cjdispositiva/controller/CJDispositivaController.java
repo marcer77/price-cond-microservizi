@@ -36,23 +36,6 @@ public class CJDispositivaController extends CoreController {
 	@PostMapping(value = "/inserimento", produces = "application/json")
 	public ResponseEntity<EsitoResource> inserimento(
 			@Valid @RequestBody(required = false) DispositivaRequestDTO dispositivaRequestDTO,
-
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "01025") String codABI,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "01383") String codUnitaOperativa,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false, defaultValue = "0002896811838000") String customerID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE, required = true, defaultValue = "01") String callerCompanyIDCode,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE, required = true, defaultValue = "01") String serviceCompanyIDCode,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID, required = true, defaultValue = "U004835") String userID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_IS_VIRTUAL_USER, required = false) String isVirtualUser,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_LANGUAGE, required = false, defaultValue = "I") String language,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_ID, required = false, defaultValue = "PCGESTIXME") String serviceID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_VERSION, required = false, defaultValue = "00") String serviceVersion,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TIMESTAMP, required = true, defaultValue = "1587135953280") String timestamp,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TRANCACTION_ID, required = true, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true, defaultValue = "NPUC0") String applicationID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false, defaultValue = "NPUC0") String callerProgramName,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true, defaultValue = "31") String channelIDCode)
-			
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "") String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "") String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false, defaultValue = "") String customerID,
@@ -89,22 +72,6 @@ public class CJDispositivaController extends CoreController {
 	@PostMapping(value = "/annullo", produces = "application/json")
 	public ResponseEntity<EsitoResource> annullo(
 			@Valid @RequestBody(required = false) DispositivaRequestDTO dispositivaRequestDTO,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "01025") String codABI,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "01383") String codUnitaOperativa,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false, defaultValue = "0002896811838000") String customerID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE, required = true, defaultValue = "01") String callerCompanyIDCode,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE, required = true, defaultValue = "01") String serviceCompanyIDCode,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID, required = true, defaultValue = "U004835") String userID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_IS_VIRTUAL_USER, required = false) String isVirtualUser,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_LANGUAGE, required = false, defaultValue = "I") String language,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_ID, required = false, defaultValue = "PCGESTIXME") String serviceID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_VERSION, required = false, defaultValue = "00") String serviceVersion,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TIMESTAMP, required = true, defaultValue = "1587135953280") String timestamp,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TRANCACTION_ID, required = true, defaultValue = "NPUA020200417GEN00164904998") String transactionId,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true, defaultValue = "NPUC0") String applicationID,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false, defaultValue = "NPUC0") String callerProgramName,
-//			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true, defaultValue = "31") String channelIDCode)
-			
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "") String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "") String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false, defaultValue = "") String customerID,
