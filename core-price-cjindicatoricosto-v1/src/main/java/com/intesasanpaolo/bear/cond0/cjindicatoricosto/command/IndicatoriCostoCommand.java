@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.io.filefilter.FileFileFilter;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -116,6 +117,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		}else {
 			log.error("La BS non ha restituito pratiche con abi: {} e superpratica: {}",abi, dto.getPratica().getCodSuperPratica());
 		}
+		
 		//TODO:
 		indicatoriCosto.setCodErrore("");
 		indicatoriCosto.setDescErrore("");
@@ -125,19 +127,25 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private WKCJResponse callWKCJ(String pratica) throws Exception {
-		
 		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.pratica(pratica).superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build();
+
 		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
 		return wkcjResponse;
 	}
 
 	private PCUJResponse callPCUJ(String pratica) throws Exception {
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+		PCUJRequest pcujRequest = 
+				PCUJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica)).build();
-
-		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
+				.nrPratica(Integer.valueOf(pratica))
+				.codEvento(dto.getEvento().getCodice())
+				.subEvento(dto.getEvento().getSubCodice())
+				.classificCliente(dto.getClassificazione())
+				.tipoFunzione("A4")
+				.build();
+				PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
 
 		return pcujResponse;
 	}

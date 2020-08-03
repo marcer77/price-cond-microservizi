@@ -37,19 +37,19 @@ public class PCUJCtgRequestTrasformer implements ICtgRequestTransformer<PCUJRequ
 		logger.debug("INHEADER = {}", ServiceUtil.stampaOggetto(connector.INHEADER[0]));
 
 		INPBST inpbst = new INPBST();
-		inpbst.CLASSIFIC_CLIENTE = request.getClassificCliente();
-		inpbst.COD_CAT_RAPP = request.getCodCatRapp();
-		inpbst.COD_EVENTO = request.getCodEvento();
-		inpbst.COD_FIL_RAPP = request.getCodFilRapp();
-		inpbst.COD_UTENTE = request.getCodUtente();
-		inpbst.DATA_RIFERIMENTO = request.getDataRiferimento();
-		inpbst.FILIALE_OPER = request.getFilialeOper();
+		inpbst.CLASSIFIC_CLIENTE = ServiceUtil.ifNull(request.getClassificCliente(),"");
+		inpbst.COD_CAT_RAPP = ServiceUtil.ifNull(request.getCodCatRapp(),"");
+		inpbst.COD_EVENTO = ServiceUtil.ifNull(request.getCodEvento(),"");
+		inpbst.COD_FIL_RAPP = ServiceUtil.ifNull(request.getCodFilRapp(),"");
+		inpbst.COD_UTENTE = ServiceUtil.ifNull(request.getCodUtente(),"");
+		inpbst.DATA_RIFERIMENTO = ServiceUtil.ifNull(request.getDataRiferimento(),"");
+		inpbst.FILIALE_OPER = ServiceUtil.ifNull(request.getFilialeOper(),"");
 		inpbst.NR_PRATICA = request.getNrPratica();
 		inpbst.NR_SUPERPRATICA =request.getNrSuperpratica();
-		inpbst.NUM_PROG_RAPP = request.getNumProgRapp();
+		inpbst.NUM_PROG_RAPP = ServiceUtil.ifNull(request.getNumProgRapp(),"");
 		inpbst.PROPOSTA_COMM =ServiceUtil.ifNullAsInt(request.getPropostaComm(), 0)  ;
-		inpbst.SUB_EVENTO = request.getSubEvento();
-		inpbst.TIPO_FUNZIONE = request.getTipoFunzione();
+		inpbst.SUB_EVENTO = ServiceUtil.ifNull(request.getSubEvento(),"");
+		inpbst.TIPO_FUNZIONE = ServiceUtil.ifNull(request.getTipoFunzione(),"");
 
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = inpbst;

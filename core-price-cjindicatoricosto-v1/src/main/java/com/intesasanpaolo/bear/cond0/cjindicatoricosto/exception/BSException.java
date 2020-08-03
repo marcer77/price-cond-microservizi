@@ -5,6 +5,7 @@ public class BSException extends CJBaseException{
 	private String mdwEsiMsg;
 	private String mdwEsiAnom;
 	public BSException(String mdwEsiRetc, String mdwEsiMsg, String mdwEsiAnom) {
+		//super(message, code, responseStatus)
 		this.mdwEsiAnom=mdwEsiAnom;
 		this.mdwEsiRetc=mdwEsiRetc;
 		this.mdwEsiMsg=mdwEsiMsg;
