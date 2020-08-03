@@ -1,9 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
-import java.math.RoundingMode;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.Locale;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -111,7 +108,7 @@ public class ServiceUtilTest {
 		public String COD_TERM_CICS;
 
 		public String COD_VERSIONE_BS;
-		
+
 	}
 
 	@Test
@@ -125,18 +122,59 @@ public class ServiceUtilTest {
 				.codABI("01025").codUnitaOperativa("00700").customerID("23232").isVirtualUser("false").language("IT")
 				.serviceCompanyIDCode("01").serviceID("FL030FLA01").userID("343").transactionId("3434343")
 				.timestamp("0").serviceVersion("00").build();
-		//ServiceUtil.setHeaders(obj, ispWebservicesHeaderType);
-		//System.out.println(obj.getCOD_ABI());
+		// ServiceUtil.setHeaders(obj, ispWebservicesHeaderType);
+		// System.out.println(obj.getCOD_ABI());
 		// Assert.assertTrue(inheader.COD_ABI.equals("01025"));
 
 	}
+
 	@Test
 	public void testFormattaDouble() {
-		Double d=new Double(123.5677);
-		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(d, null));
-		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(10000.232, null));
-		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(0.23343, "#######.##"));
-		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(0.23343, "#######"));
-		System.out.println(">>>>>>"+ServiceUtil.formattaNumero(10000.232, "#######"));
+		Double d = new Double(123.5677);
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(d, null));
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(10000.232, null));
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(0.23343, "#######.##"));
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(0.23343, "#######"));
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(10000.232, "#######"));
+	}
+
+	@Test
+	public void testFormattaNumero() {
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(10000.232));
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(null));
+	}
+
+	@Test
+	public void testDateToString() {
+		System.out.println(">>>>>>" + ServiceUtil.dateToString(new Date(), "yyyyMMdd"));
+	}
+
+	@Test
+	public void testIfNull() {
+		ServiceUtil.ifNull(null, "valore");
+		ServiceUtil.ifNull("test", "valore");
+	}
+
+	@Test
+	public void testIfNullAsInt() {
+		ServiceUtil.ifNullAsInt(null, 0);
+		ServiceUtil.ifNullAsInt(13, 0);
+	}
+
+	@Test
+	public void testStampaOggetto() {
+		ServiceUtil.stampaOggetto(new Object());
+	}
+
+	@Test
+	public void testSetBSHeaders() {
+		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("0").callerCompanyIDCode("01").callerProgramName("1").channelIDCode("0").codABI("01025")
+				.codUnitaOperativa("0").customerID("0").isVirtualUser("false").language("I").serviceCompanyIDCode("01")
+				.serviceID("00").userID("U015886").transactionId("0").timestamp("0").serviceVersion("0").build();
+
+		HeaderMock header = new HeaderMock();
+
+		ServiceUtil.setBSHeaders(header, BSTypeCall.FL03S00_CALL, ispWebservicesHeaderType);
 	}
 }
