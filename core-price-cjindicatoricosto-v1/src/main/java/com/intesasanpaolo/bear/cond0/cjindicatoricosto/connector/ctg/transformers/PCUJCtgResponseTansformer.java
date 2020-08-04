@@ -49,11 +49,17 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 
 				if (hasSomething(out.OUTTAS)) {
 					Arrays.asList(out.OUTTAS).forEach(outTas -> {
-						OutTAS outTAS = OutTAS.builder().codParametro(outTas.COD_PARAMETRO).dataDeca(outTas.DATA_DECA)
-								.dataDeco(outTas.DATA_DECO).flUsura(outTas.FL_USURA)
-								.percParametro(outTas.PERC_PARAMETRO).segnoValParametro(outTas.SEGNO_VAL_PARAMETRO)
-								.segnoValSpread(outTas.SEGNO_VAL_SPREAD).tassoDebitore(outTas.TASSO_DEBITORE)
-								.valParametro(outTas.VAL_PARAMETRO).valSpread(outTas.VAL_SPREAD).build();
+						OutTAS outTAS = OutTAS.builder()
+								.codParametro(outTas.COD_PARAMETRO)
+								.dataDeca(outTas.DATA_DECA)
+								.dataDeco(outTas.DATA_DECO)
+								.flUsura(outTas.FL_USURA)
+								.percParametro(outTas.PERC_PARAMETRO)
+								.segnoValParametro(outTas.SEGNO_VAL_PARAMETRO)
+								.segnoValSpread(outTas.SEGNO_VAL_SPREAD)
+								.tassoDebitore(outTas.TASSO_DEBITORE)
+								.valParametro(outTas.VAL_PARAMETRO)
+								.valSpread(outTas.VAL_SPREAD).build();
 						outTasList.add(outTAS);
 					});
 				}
@@ -75,7 +81,7 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 				.msgEsito(outBody.MSG_ESITO)
 				.outRIPList(outRIPList)
 				.build();
-
+		
 		logger.debug("response={}", response);
 
 		return response;
