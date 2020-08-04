@@ -1,6 +1,4 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,68 +10,97 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.EsitoResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriCostoResource;
 import com.intesasanpaolo.bear.config.LoggerUtils;
+import com.intesasanpaolo.bear.exceptions.model.BearError;
+import com.intesasanpaolo.bear.exceptions.model.BearErrorTypeEnum;
+import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
 import com.intesasanpaolo.bear.exceptions.model.ErrorMessage;
+import com.intesasanpaolo.bear.exceptions.model.MessageForm;
+import com.intesasanpaolo.bear.exceptions.response.MicroServiceExceptionResponse;
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
 public class CJIndicatoriCostoExceptionHandler {
 	private static final Logger logger = LoggerUtils.getLogger(CJIndicatoriCostoExceptionHandler.class);
 
-	@ExceptionHandler({ BSException.class })
-    public ResponseEntity<IndicatoriCostoResource> handleException(BSException e) {
-    	
+	@ExceptionHandler({ CJBaseException.class })
+    public ResponseEntity<IndicatoriCostoResource> handleException(CJBaseException e) {
 		logger.error("handleException {}", e.getMessage(), e);		    
-    	
 		EsitoResource esito=new EsitoResource();
-		esito.setCodErrore(e.getMdwEsiRetc());
-		esito.setDescErrore(e.getMdwEsiMsg().trim()+"  - "+e.getMdwEsiAnom().trim());
-		
+		esito.setCodErrore(e.getCode());
+	    esito.setDescErrore(e.getMessage());
 		IndicatoriCostoResource resource = IndicatoriCostoResource.builder().esito(esito).build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(resource);    	
     } 
 	
-	@ExceptionHandler({ MethodArgumentNotValidException.class })
+	@ExceptionHandler({MethodArgumentNotValidException.class })
     public ResponseEntity<IndicatoriCostoResource> handleException(MethodArgumentNotValidException e) {
     	
 		logger.error("handleException {}", e.getMessage(), e);		    
-    	
-		EsitoResource esito=new EsitoResource();
-		esito.setCodErrore("aaa");
-		esito.setDescErrore("ddd");
+		IndicatoriCostoResource resource = IndicatoriCostoResource.builder().pratica(null).build();
 		
-		IndicatoriCostoResource resource = IndicatoriCostoResource.builder().esito(esito).build();
+		//////
 		Map<String, List<ErrorMessage>> map= new HashMap<String, List<ErrorMessage>>();
-		ErrorMessage errorMessage=new ErrorMessage();
-		errorMessage.setErrorCode("00001");
-		errorMessage.setMessage("KO------");
+		List<ErrorMessage> list=new ArrayList<>();
+		map.put("ERROR", list);
 		resource.setReturnMessages(map);
-		List<ErrorMessage> list=new ArrayList<ErrorMessage>();
+		
+		BindingResult result = e.getBindingResult();
+	    List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
+	    fieldErrors.forEach(fe->{
+	    	ErrorMessage errorMessage=new ErrorMessage();
+		    //errorMessage.setMessageKey("mytest.error");
+		   errorMessage.setMessage(fe.getDefaultMessage());
+	       errorMessage.setMessageTitle(fe.getField());
+	    	
+	       //MessageForm messageForm=new MessageForm();
+	       //messageForm.setFieldName(fe.getField());
+	       //messageForm.setFormName("richiesta");
+	       //errorMessage.setMessageForm(messageForm);
+	       list.add(errorMessage);
+					
+	    });
+	    
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resource);    	
+    }
+	
+	@ExceptionHandler({Exception.class })
+    public ResponseEntity<IndicatoriCostoResource> handleExceptionGeneric(Exception e) {
+		IndicatoriCostoResource resource = IndicatoriCostoResource.builder().pratica(null).esito(null).build();
+		
+		logger.error("handleException {}", e.getMessage(), e);		    
+		Map<String, List<ErrorMessage>> map= new HashMap<String, List<ErrorMessage>>();
+		List<ErrorMessage> list=new ArrayList<>();
+		map.put("ERROR", list);
+		resource.setReturnMessages(map);
+		
+		ErrorMessage errorMessage=new ErrorMessage();
+		//errorMessage.setMessageKey("");
+		errorMessage.setMessageTitle("Errore durante la lavorazione della richiesta.");
+		errorMessage.setMessage("Causa= ["+e.getCause()+"] - Messaggio=["+e.getMessage()+"]");
+		errorMessage.setErrorCode("ERR000");
+		errorMessage.setRetry(false);
 		list.add(errorMessage);
-		map.put("key_1", list);
-		return ResponseEntity.status(HttpStatus.OK).body(resource);    	
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resource);  	
     }
 	
 	//@ResponseStatus(BAD_REQUEST)
     //@ResponseBody
     //@ExceptionHandler(MethodArgumentNotValidException.class)
-    public Error methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+	/*public Error methodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
         List<org.springframework.validation.FieldError> fieldErrors = result.getFieldErrors();
         return processFieldErrors(fieldErrors);
     }
 
-    private Error processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
+        private Error processFieldErrors(List<org.springframework.validation.FieldError> fieldErrors) {
         Error error = new Error(BAD_REQUEST.value(), "validation error");
         for (org.springframework.validation.FieldError fieldError: fieldErrors) {
             error.addFieldError(fieldError.getField(), fieldError.getDefaultMessage());
@@ -107,5 +134,5 @@ public class CJIndicatoriCostoExceptionHandler {
         public List<FieldError> getFieldErrors() {
             return fieldErrors;
         }
-    }
+    }*/
 }

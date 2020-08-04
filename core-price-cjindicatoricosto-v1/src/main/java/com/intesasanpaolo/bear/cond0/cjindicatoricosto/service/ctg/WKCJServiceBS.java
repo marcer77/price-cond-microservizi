@@ -53,7 +53,7 @@ public class WKCJServiceBS extends BaseService{
 	private void checkResult(WKCJResponse wkcjResponse) throws BSException {
 		//TODO:CASO POSITIVO??
 		if (StringUtils.isNotEmpty(wkcjResponse.getMdwEsiRetc())) {
-			throw new BSException(wkcjResponse.getMdwEsiRetc(),wkcjResponse.getMdwEsiMsg(),wkcjResponse.getMdwEsiAnom());		
+			throw new BSException(wkcjResponse.getMdwEsiRetc(),wkcjResponse.getMdwEsiMsg(),wkcjResponse.getMdwEsiAnom(),wkcjResponse.getLivelloSegnalazione(),wkcjResponse.getTxtSegnalazione(),"WKCJ");		
 		}
 		
 	}

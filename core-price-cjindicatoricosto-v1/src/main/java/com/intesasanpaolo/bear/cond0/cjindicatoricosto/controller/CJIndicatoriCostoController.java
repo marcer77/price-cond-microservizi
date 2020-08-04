@@ -64,29 +64,24 @@ public class CJIndicatoriCostoController extends CoreController {
 			@Valid @RequestBody IndicatoriCostoDTO dto) throws Exception {
 
 		IndicatoriCostoResource resource = new IndicatoriCostoResource();
-  
-		// try {
 
-		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
-				.applicationID(applicationID).callerCompanyIDCode(callerCompanyIDCode)
-				.callerProgramName(callerProgramName).channelIDCode(channelIDCode).codABI(codABI)
-				.codUnitaOperativa(codUnitaOperativa).customerID(customerID).isVirtualUser(isVirtualUser)
-				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
-				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
-		IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto, ispWebservicesHeaderType);
-		IndicatoriCosto indicatoriCosto = cmd.execute();
+			ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
+					.applicationID(applicationID).callerCompanyIDCode(callerCompanyIDCode)
+					.callerProgramName(callerProgramName).channelIDCode(channelIDCode).codABI(codABI)
+					.codUnitaOperativa(codUnitaOperativa).customerID(customerID).isVirtualUser(isVirtualUser)
+					.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
+					.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
-		resource = indicatoriCostoResourceAssembler.toResource(indicatoriCosto);
+			IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto,
+					ispWebservicesHeaderType);
+			IndicatoriCosto indicatoriCosto = cmd.execute();
 
-		// mock response
+			resource = indicatoriCostoResourceAssembler.toResource(indicatoriCosto);
+
+			// mock response
 //			resource=this.mockResponse();
 
-		/*
-		 * } catch (Exception e) { logger.error("Errore in EndPoint stampa: ", e); throw
-		 * new BearDomainRuntimeException("Errore generico in Stampa", "",
-		 * HttpStatus.INTERNAL_SERVER_ERROR); }
-		 */
 		return ResponseEntity.status(HttpStatus.OK).body(resource);
 
 	}

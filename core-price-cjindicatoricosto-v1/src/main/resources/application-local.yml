@@ -18,7 +18,7 @@ logging:
     org.keycloak: INFO
 
 error-manager:
-  enabled: false
+  enabled: true
   
 tracing:
   enabled: true

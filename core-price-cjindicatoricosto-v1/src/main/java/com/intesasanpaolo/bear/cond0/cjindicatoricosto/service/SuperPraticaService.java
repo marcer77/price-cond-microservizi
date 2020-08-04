@@ -12,7 +12,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.MultiDataS
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.jdbc.transformers.ResponseDb2TransformerFactory;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception.DB2Exception;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception.SuperPraticaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -42,7 +42,7 @@ public class SuperPraticaService extends BaseService{
 		logger.debug("Founded:", resultList);
 		
 		if (CollectionUtils.isEmpty(resultList)) {
-			throw new DB2Exception();
+			throw new SuperPraticaNotFoundDB2Exception(codSuperPratica);
 		}
 			
 

@@ -73,6 +73,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 	@Override
 	protected IndicatoriCosto doExecute() throws Exception {
+		// int x=4/0;
 		List<IndicatoriCostoPratica> indicatoriCostoPraticaList = new ArrayList<>();
 		IndicatoriCosto indicatoriCosto = IndicatoriCosto.builder()
 				.indicatoriCostoPraticaList(indicatoriCostoPraticaList).build();
