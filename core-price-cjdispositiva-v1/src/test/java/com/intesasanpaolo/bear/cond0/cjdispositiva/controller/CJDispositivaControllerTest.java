@@ -6,7 +6,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -40,9 +39,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 		dispositivaRequestDTO.setCodAppl(CodApplEnum.CARTE.toString());
 		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
 		PraticaDTO praticaDTO = new PraticaDTO();
-		praticaDTO.setCodPratica("1234568791123");
+		praticaDTO.setCodPratica("1234568791");
 		praticaDTO.setCodPropostaComm("1234568791123");
-		praticaDTO.setCodSuperPratica("1234568791123");
+		praticaDTO.setCodSuperPratica("1234568791");
 		dispositivaRequestDTO.setPraticaDTO(praticaDTO);
 	}
 
@@ -62,8 +61,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "00");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
-		
-		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc")).withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
+
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
 						.withBodyFile("StoreCovenantAdesioneConvenzione-response.xml")));
 
@@ -87,8 +87,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
 
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(httpHeaders)).andReturn();
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).headers(httpHeaders))
+				.andReturn();
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
@@ -96,13 +97,13 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("content = {}", content);
 
 	}
-	
+
 	@Test
 	public void testInserimentoKO() throws Exception {
 		String uri = "/cjdispositiva/inserimento";
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		
+
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
 						.withBodyFile("InviaPropostaV2-response.xml")));
@@ -119,8 +120,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
 
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(httpHeaders)).andReturn();
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).headers(httpHeaders))
+				.andReturn();
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
@@ -162,8 +164,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
 
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(httpHeaders)).andReturn();
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).headers(httpHeaders))
+				.andReturn();
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
@@ -179,7 +182,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		String uri = "/cjdispositiva/annullo";
 
 		HttpHeaders httpHeaders = new HttpHeaders();
-		
+
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("revocaProposta"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
 						.withBodyFile("RevocaProposta-response.xml")));
