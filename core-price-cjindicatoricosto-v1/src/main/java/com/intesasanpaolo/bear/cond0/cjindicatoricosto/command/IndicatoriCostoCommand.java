@@ -1,6 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.command;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -121,18 +122,33 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private WKCJResponse callWKCJ(String pratica) throws Exception {
-		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.pratica(pratica).superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build();
+		WKCJRequest wkcjRequest = WKCJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.pratica(pratica)
+				.superpratica(dto.getPratica().getCodSuperPratica())
+				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.tipoChiamata("A4")
+				.dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd"))
+				.lingua("I")
+				.build();
 
 		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
 		return wkcjResponse;
 	}
 
 	private PCUJResponse callPCUJ(String pratica) throws Exception {
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+		
+		PCUJRequest pcujRequest = PCUJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica)).codEvento(dto.getEvento().getCodice())
-				.subEvento(dto.getEvento().getSubCodice()).classificCliente(dto.getClassificazione()).tipoFunzione("A4")
+				.nrPratica(Integer.valueOf(pratica))
+				.codEvento(dto.getEvento().getCodice())
+				.subEvento(dto.getEvento().getSubCodice())
+				.classificCliente(dto.getClassificazione())
+				.tipoFunzione(dto.getRichiesta())
+				.codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.dataRiferimento(ServiceUtil.dateToString(new Date(), "yyyyMMdd"))
+				.filialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
 				.build();
 		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
 

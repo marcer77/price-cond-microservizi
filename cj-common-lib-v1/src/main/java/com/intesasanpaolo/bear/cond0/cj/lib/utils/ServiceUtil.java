@@ -1,6 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 import java.math.RoundingMode;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -250,6 +251,14 @@ public class ServiceUtil {
 			return defValue;
 		}
 	}
+	
+	public static double ifNullAsDouble(Number value) {
+		if (value != null) {
+			return value.doubleValue();
+		} else {
+			return 0;
+		}
+	}
 
 	public static StringBuilder stampaOggetto(Object obj) {
 		StringBuilder buffer = new StringBuilder("[");
@@ -291,4 +300,5 @@ public class ServiceUtil {
 		sdf.applyPattern(format);
 		return sdf.format(date);
 	}
+	
 }

@@ -64,7 +64,7 @@ public class CJIndicatoriCostoController extends CoreController {
 			@Valid @RequestBody IndicatoriCostoDTO dto) throws Exception {
 
 		IndicatoriCostoResource resource = new IndicatoriCostoResource();
-
+  
 		// try {
 
 		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
