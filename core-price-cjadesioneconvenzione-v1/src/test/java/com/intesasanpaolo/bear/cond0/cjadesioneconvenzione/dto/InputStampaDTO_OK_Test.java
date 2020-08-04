@@ -45,7 +45,7 @@ public class InputStampaDTO_OK_Test extends JUnitUtils {
 		praticaDTO = new PraticaDTO();
 		praticaDTO.setCodSuperPratica("1234561234");
 		praticaDTO.setCodPratica("1234561234");
-		praticaDTO.setCodPropostaComm("1234561234");
+		praticaDTO.setCodPropostaComm("1234561234123");
 		inputStampaDTO.setPratica(praticaDTO);
 		
 		rapportoDTO = new RapportoDTO();
