@@ -82,12 +82,6 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 	@MockBean
 	private FL03CtgResponseTansformer fl03CtgResponseTansformer;
 	
-	@MockBean
-	private SuperPraticaService superPraticaService;
-	
-	@MockBean
-	private ConvenzioniHostService convenzioniHostService;
-	
 	public InputStampaDTO inputStampaDTO = new InputStampaDTO();
 	
 	@Before
@@ -104,11 +98,6 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		
 		List<String> codConvenzione = new ArrayList<String>();
 		codConvenzione.add("00700100000005749CC1000S0                         ");
-		Mockito.when(
-				superPraticaService.recuperaCodConvenzione(
-						"01025",inputStampaDTO.getPratica().getCodSuperPratica(),inputStampaDTO.getPratica().getCodPratica()
-						)
-				).thenReturn(codConvenzione);
 		
 		ReqGetCovenantPerConvenzione getCovPerConRequest = new ReqGetCovenantPerConvenzione();
 		getCovPerConRequest.setAbi("01025");
@@ -122,8 +111,16 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		resp.setBeneficioCondizionatoDataFine("123");
 		resp.setBeneficioCondizionatoDataInizio("456");
 		getCovPerConResp.add(resp);
-		
-		Mockito.when(convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest)).thenReturn(getCovPerConResp);
+
+		stubFor(post(urlEqualTo("/ConvenzioniHostService.svc")).withRequestBody(containing("GetCovenantPerConvenzione"))
+                .willReturn(
+                        aResponse()
+                                .withStatus(200)
+                                .withHeader("content-type", 
+                          "text/xml")                             
+                .withBodyFile("GetCovenantPerConvenzione-response.xml")
+                )
+        );
 		
 		System.out.println("Inizio test");
 	}

@@ -52,8 +52,8 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 	@Rule
 	public WireMockRule backendService = new WireMockRule(4545);
 
-	@MockBean
-	private SuperPraticaService superPraticaService;
+//	@MockBean
+//	private SuperPraticaService superPraticaService;
 
 	private IndicatoriCostoDTO dto;
 
@@ -95,11 +95,6 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		buildIndicatoriCostoDTO();
 
 		pratica = "0000655703";
-
-		List<String> listaPratiche = new ArrayList<String>();
-		listaPratiche.add(pratica);
-		Mockito.when(superPraticaService.recuperaPraticheBySuperPratica("01025", dto.getPratica().getCodSuperPratica()))
-				.thenReturn(listaPratiche);
 
 		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(buildMockHeader())
 				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
