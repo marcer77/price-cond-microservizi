@@ -21,6 +21,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.BeneficiBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InfoCovenantBuilder;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InputStampaBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
@@ -160,12 +161,40 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			}
 
 			stampaOutput.setDocXML(docXML);
+			
+			//delete
+			String dtade = ServiceUtil.dateToString(new Date(), "yyyyMMdd"); // TODO CHIEDERE FORMATO
+			superPraticaService.deleteEntita(abi, dto.getPratica().getCodSuperPratica(),
+					dto.getPratica().getCodPratica(), dtade);
+			
+			//registrazione dati adesione
+			registrazioneDatiAdesione(codiceConvenzione);
 		} else {
 			log.error("Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
 		}
 
 		// TODO: costruire il modello di ritorno
 		return stampaOutput;
+	}
+	
+	private void registrazioneDatiAdesione(String codiceConvenzione) {
+		
+		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		
+		InputStampaBuilder inputStampaBuilder = new InputStampaBuilder(dto);
+		TB59R009 entity = TB59R009.builder()
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+				.nrPratica(dto.getPratica().getCodPratica())
+				.idEntita("DTADE")
+				.stato("N")
+				.progrEntita(1)
+				.progrDati(1)
+				.codEntita(codiceConvenzione)
+				.datiEntita(inputStampaBuilder.build())
+				.tipoAggiornamento("I")
+				.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.build();
+		superPraticaService.insertEntita(codAbi, entity);
 	}
 
 	private void registrazioneInfoConventantAndBenefici(
