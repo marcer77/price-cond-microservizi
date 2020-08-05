@@ -20,10 +20,10 @@ public class PCUJRequest {
 	private String codUtente;
 	private String dataRiferimento;
 	private String filialeOper;
-	private Integer nrPratica;
-	private Integer nrSuperpratica;
+	private String nrPratica;
+	private String nrSuperpratica;
 	private String numProgRapp;
-	private Integer propostaComm;
+	private String propostaComm;
 	private String subEvento;
 	private String tipoFunzione;
 }

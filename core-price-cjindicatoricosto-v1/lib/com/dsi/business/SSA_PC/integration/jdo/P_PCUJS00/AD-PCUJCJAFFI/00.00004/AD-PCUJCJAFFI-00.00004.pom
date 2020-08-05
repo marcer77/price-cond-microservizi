@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00</groupId>
   <artifactId>AD-PCUJCJAFFI</artifactId>
-  <version>00.00002</version>
+  <version>00.00004</version>
   <description>POM was created from install:install-file</description>
 </project>

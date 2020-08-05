@@ -3,10 +3,10 @@
   <groupId>com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00</groupId>
   <artifactId>AD-PCUJCJAFFI</artifactId>
   <versioning>
-    <release>00.00002</release>
+    <release>00.00004</release>
     <versions>
-      <version>00.00002</version>
+      <version>00.00004</version>
     </versions>
-    <lastUpdated>20200729083043</lastUpdated>
+    <lastUpdated>20200805150131</lastUpdated>
   </versioning>
 </metadata>

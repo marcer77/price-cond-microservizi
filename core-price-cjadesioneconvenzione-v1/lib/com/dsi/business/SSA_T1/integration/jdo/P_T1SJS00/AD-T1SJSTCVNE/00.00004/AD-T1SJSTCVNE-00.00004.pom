@@ -4,6 +4,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00</groupId>
   <artifactId>AD-T1SJSTCVNE</artifactId>
-  <version>00.00003</version>
+  <version>00.00004</version>
   <description>POM was created from install:install-file</description>
 </project>
