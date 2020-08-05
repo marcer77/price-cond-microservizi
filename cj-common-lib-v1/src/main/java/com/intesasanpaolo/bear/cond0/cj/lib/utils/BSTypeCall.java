@@ -19,7 +19,7 @@ public enum BSTypeCall {
 			BSType.T1SJS00 
 			,"31" //canale
 			, "00" // Version
-			, "0003" // Riciclo Tracciato
+			, "0004" // Riciclo Tracciato
 			, "T1999" // Acronimo proprietario BS
 			, 9999 // Lunghezza area
 	),
@@ -27,7 +27,7 @@ public enum BSTypeCall {
 			BSType.PCUJS00 
 			,"31" //canale
 			, "00" // Version
-			, "0002" // Riciclo Tracciato
+			, "0004" // Riciclo Tracciato
 			, "PC999" // Acronimo proprietario BS
 			, 9999 // Lunghezza area
 			),

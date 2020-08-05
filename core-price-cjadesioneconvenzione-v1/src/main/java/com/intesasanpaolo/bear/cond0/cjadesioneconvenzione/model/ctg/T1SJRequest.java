@@ -34,11 +34,11 @@ public class T1SJRequest {
 	private String  t1SjIIntestaz;
 	private String  t1SjIKeyOperazione;
 	private String  t1SjINdgIntestatario;
-	private Double  t1SjINrPratica;
-	private Double  t1SjINrSuperpratica;
+	private String  t1SjINrPratica;
+	private String  t1SjINrSuperpratica;
 	private String  t1SjINumProgRapp;
 	private Double  t1SjIProgStampa;
-	private Double  t1SjIPropostaComm;
+	private String  t1SjIPropostaComm;
 	private String  t1SjIProvRes;
 	private String  t1SjISpecieGiu;
 	private String  t1SjITipoOfferta;

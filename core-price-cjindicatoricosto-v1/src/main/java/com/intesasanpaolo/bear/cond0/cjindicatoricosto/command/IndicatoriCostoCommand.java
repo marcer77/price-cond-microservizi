@@ -141,8 +141,8 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		
 		PCUJRequest pcujRequest = PCUJRequest.builder()
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica))
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+				.nrPratica(pratica)
 				.codEvento(dto.getEvento().getCodice())
 				.subEvento(dto.getEvento().getSubCodice())
 				.classificCliente(dto.getClassificazione())

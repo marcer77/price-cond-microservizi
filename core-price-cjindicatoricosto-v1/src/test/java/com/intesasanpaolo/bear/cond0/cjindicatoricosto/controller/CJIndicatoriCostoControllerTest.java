@@ -97,8 +97,8 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		pratica = "0000655703";
 
 		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(buildMockHeader())
-				.nrSuperpratica(Integer.valueOf(dto.getPratica().getCodSuperPratica()))
-				.nrPratica(Integer.valueOf(pratica)).build();
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+				.nrPratica(pratica).build();
 
 		Mockito.when(
 				ctgConnectorPCUJ.call(pcujRequest, requestTransformerPCUJ, responseTransformerPCUJ, new Object[] {}))

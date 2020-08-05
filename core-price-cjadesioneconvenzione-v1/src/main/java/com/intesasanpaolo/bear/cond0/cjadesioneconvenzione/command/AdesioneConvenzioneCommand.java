@@ -313,8 +313,8 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 				.t1SjIIntestaz(dto.getIntestatario().getIntestazione())
 				.t1SjIKeyOperazione(dto.getInfoStampa().getKeyOper())
 				.t1SjINdgIntestatario(dto.getIntestatario().getNdg())
-				.t1SjINrPratica(Double.valueOf(dto.getPratica().getCodPratica()))
-				.t1SjINrSuperpratica(Double.valueOf(dto.getPratica().getCodSuperPratica()))
+				.t1SjINrPratica(dto.getPratica().getCodPratica())
+				.t1SjINrSuperpratica(dto.getPratica().getCodSuperPratica())
 				.t1SjINumProgRapp(dto.getRapporto().getCodProgressivo()).t1SjIProgStampa(Double.valueOf(0)) // TODO Come
 																											// valorizzare
 																											// questo
@@ -335,7 +335,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 																											// effettuare
 																											// alla BS
 																											// FL03
-				.t1SjIPropostaComm(Double.valueOf(StringUtils.isNotEmpty(dto.getPratica().getCodPropostaComm()) ? dto.getPratica().getCodPropostaComm() : "0"))
+				.t1SjIPropostaComm((StringUtils.isNotEmpty(dto.getPratica().getCodPropostaComm()) ? dto.getPratica().getCodPropostaComm() : ""))
 				.t1SjIProvRes(recapito.getProvincia()).t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
 				.t1SjITipoOfferta(dto.getInfoStampa().getTipoOfferta())
 				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa()).t1SjIViaRes(recapito.getIndirizzo())
