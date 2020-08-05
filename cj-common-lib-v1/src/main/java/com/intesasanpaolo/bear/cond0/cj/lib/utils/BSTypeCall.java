@@ -39,6 +39,15 @@ public enum BSTypeCall {
 			, "0003" // Riciclo Tracciato
 			, "WK999" // Acronimo proprietario BS
 			, 9999 // Lunghezza area
+			),
+	
+	T1SFS00_CALL(
+			BSType.T1SFS00 
+			,"31" //canale
+			, "00" // Version
+			, "0004" // Riciclo Tracciato
+			, "T1999" // Acronimo proprietario BS
+			, 9999 // Lunghezza area
 			)
 	;
 	

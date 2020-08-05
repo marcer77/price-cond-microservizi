@@ -4,7 +4,8 @@ public enum BSType {
 	FL03S00("FL03", "Stampa", "FL030FLA01"),
 	T1SJS00("T1SJ", "Stampa", "T1SJSTCVNE"),
 	WKCJS00("WKCJ", "Stampa contratto carte in Customer Journey", "WKCJCNTRZE"),
-	PCUJS00("PCUJ", "Calcolo / Controllo TEG e TAEG", "PCUJCJAFFI");
+	PCUJS00("PCUJ", "Calcolo / Controllo TEG e TAEG", "PCUJCJAFFI"),
+	T1SFS00("T1SF", "Stampa Bersani da PEF", "T1SFSTPPEF");
 	
 	
 	private final String code;

@@ -26,14 +26,7 @@ public class T1SFServiceBS extends BaseService {
 	private T1SFCtgResponseTansformer responseTransformer;
 
 	public T1SFResponse callBS(T1SFRequest t1sfRequest) throws Exception {
-		T1SFResponse t1sfResponse =null;
-		try{
-			t1sfResponse = this.ctgConnectorT1SF.call(t1sfRequest, requestTransformer, responseTransformer,null);			
-		}catch (Exception e) {
-			logger.error("Errore-",e);
-			//throw e;
-			//TODO:GESTIRE L'ERRORE
-		}
+		T1SFResponse t1sfResponse = this.ctgConnectorT1SF.call(t1sfRequest, requestTransformer, responseTransformer,null);			
 		return t1sfResponse;
 	}
 }

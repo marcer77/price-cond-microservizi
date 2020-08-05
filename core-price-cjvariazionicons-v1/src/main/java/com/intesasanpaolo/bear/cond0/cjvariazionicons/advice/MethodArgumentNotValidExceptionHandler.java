@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * Kudos http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-adding-validation-to-a-rest-api/
  *
  */
-@Order(Ordered.HIGHEST_PRECEDENCE)
-@ControllerAdvice
+//@Order(Ordered.HIGHEST_PRECEDENCE)
+//@ControllerAdvice
 public class MethodArgumentNotValidExceptionHandler {
 
     @ResponseStatus(BAD_REQUEST)

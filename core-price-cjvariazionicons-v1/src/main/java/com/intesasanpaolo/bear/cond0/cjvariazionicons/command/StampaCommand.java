@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.EsitoStampa;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
@@ -45,28 +46,16 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.iCodCatRapp(inputStampaDTO.getRapporto().getCodCategoria())
 				.iCodFilRapp(inputStampaDTO.getRapporto().getCodFiliale())
-				.iCodFT("")
 				.iCodLingua(inputStampaDTO.getInfoStampa().getCodLingua())
-				.iCQCatRapp("")
-				.iCQFilRapp("")
-				.iCQNumRapp("")
-				.iDataDecorrenzaFido("")
-				//.iDataRiferimento(inputStampaDTO.getInfoStampa().getData())
-				.iDataRiferimento("")//TODO:FORMAT PER DATE
-				.iDataScadenzaFido("")
-				.iDivisaFido("")
+				.iDataRiferimento(ServiceUtil.dateToString(inputStampaDTO.getInfoStampa().getData(),"yyyyMMdd"))
 				.iFirma(inputStampaDTO.getInfoStampa().getTipoFirma())
-				.iFunzione("")
-				.iImportoFido(0d)
 				.iKeyOperazione(inputStampaDTO.getInfoStampa().getKeyOper())
 				.iNrPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodPratica()):null)
 				.iNrSuperPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodSuperPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodSuperPratica()):null)
 				.iNumProgRapp(inputStampaDTO.getRapporto().getCodProgressivo())
-				.iProgFido(0)
 				.iPropostaComm(StringUtils.isNotEmpty(inputStampaDTO.getPratica().getCodPropostaComm())?Integer.valueOf(inputStampaDTO.getPratica().getCodPropostaComm()):null)
-				.iPropostaUsura("")
-				.iTipoFT("")
 				.iTipoOfferta(inputStampaDTO.getInfoStampa().getTipoOfferta())
+				.iTipoStampa(inputStampaDTO.getInfoStampa().getTipoStampa())
 				.build();
 
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);
@@ -97,6 +86,8 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 				docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
 				
 				returnCode = fl03Response.getRc();
+				if (returnCode.equals(""))
+					break;
 			}
 		}
 				

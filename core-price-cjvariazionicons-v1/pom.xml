@@ -51,13 +51,13 @@
  			 <artifactId>AD-FL030FLA01</artifactId>
  			 <version>00.00001</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00</groupId>
-			<artifactId>T1SF</artifactId>
-			<version>00.00003</version>
-			<!-- <systemPath>${basedir}/src/main/lib/T1SF-00.00003.jar</systemPath>  -->
+ 			 <artifactId>AD-T1SFSTPPEF</artifactId>
+ 			 <version>00.00004</version>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>

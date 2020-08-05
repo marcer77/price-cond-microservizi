@@ -1,5 +1,10 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,9 +23,12 @@ import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
+import com.intesasanpaolo.bear.core.controller.BaseController;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;
+import com.intesasanpaolo.bear.exceptions.model.BearErrorTypeEnum;
+import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -53,15 +61,19 @@ public class CJVariazioniController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true) String applicationID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false) String callerProgramName,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
-			//@Valid 
-			@RequestBody InputStampaDTO inputStampaDTO) throws Exception {
+			@Valid @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 
-		logger.info("start EndPoint stampa");
+		Map<String, Object> info = new HashMap<>();
+        info.put("detailedChannelMessage", "bla bla bla test exception with user id 8");
+        info.put("customerPreference", "show.detail");
+        info.put("additionalService", "activate.helpDesk.chatbot");
+
+		//if (true)
+	//		throw new BearDomainRuntimeException("pippo", "generic.error", HttpStatus.BAD_REQUEST,BearErrorTypeEnum.TECHNICAL,BearSeverityEnum.ERROR);
 		
+		logger.info("start EndPoint stampa");
 		StampaResponseResource stampaResponseResource=null;
 		
-		try {
-			
 			ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
 					.applicationID(applicationID)
 					.callerCompanyIDCode(callerCompanyIDCode)
@@ -86,25 +98,8 @@ public class CJVariazioniController extends CoreController {
 			stampaResponseResource= stampaResponseResourceAssembler.toResource(stampaResponse);
 					
 		
-		} catch (Exception e) {
-			logger.error("Errore in EndPoint stampa: ", e);
-			throw new BearDomainRuntimeException("Errore generico in Stampa", "", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
 		return ResponseEntity.status(HttpStatus.OK).body(stampaResponseResource);
 
 	}
-	
-	
+		
 }
-/*
-Content-Type:application/json
-Accept:application/json
-ISPWebservicesHeader.AdditionalBusinessInfo.CodABI:01025
-ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode:01
-ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode:01
-ISPWebservicesHeader.OperatorInfo.UserID:U015886
-ISPWebservicesHeader.RequestInfo.Timestamp:0
-ISPWebservicesHeader.RequestInfo.TransactionId:0
-ISPWebservicesHeader.TechnicalInfo.ApplicationID:0
-ISPWebservicesHeader.TechnicalInfo.ChannelIDCode:0
-*/
