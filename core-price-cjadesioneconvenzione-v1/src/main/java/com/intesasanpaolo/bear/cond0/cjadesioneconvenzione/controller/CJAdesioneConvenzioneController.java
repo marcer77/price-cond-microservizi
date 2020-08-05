@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,7 +48,7 @@ public class CJAdesioneConvenzioneController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true) String applicationID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_PGM_NAME, required = false) String callerProgramName,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
-			@RequestBody InputStampaDTO inputStampaDTO) throws Exception {
+			@Valid @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 		
 		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI+" "+codABI);
 		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE+" "+callerCompanyIDCode);
