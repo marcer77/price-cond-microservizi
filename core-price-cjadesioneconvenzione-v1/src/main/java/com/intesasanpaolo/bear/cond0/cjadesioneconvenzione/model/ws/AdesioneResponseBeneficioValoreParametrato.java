@@ -17,5 +17,6 @@ public class AdesioneResponseBeneficioValoreParametrato {
 	private BigDecimal parametroPerc1;
 	private BigDecimal parametroSpread;
 
-
+	private String parametroCodice2;
+	private BigDecimal parametroPerc2;
 }
