@@ -19,6 +19,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.BeneficiBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InfoCovenantBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request;
@@ -26,6 +27,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Respons
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.InpNDG;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJRequest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJResponse;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBenefici;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
@@ -193,6 +195,24 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			}
 
 			//TODO IMPLEMENTARE INSERT PER getReqAdesConResp
+			List<AdesioneResponseBenefici> benefici=getReqAdesConResp.getTabellaBenefici();
+			for (AdesioneResponseBenefici beneficio:benefici) {
+				BeneficiBuilder beneficiBuilder = new BeneficiBuilder(beneficio);
+				
+				TB59R009 entity = TB59R009.builder()
+						.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+						.nrPratica(dto.getPratica().getCodPratica())
+						.idEntita("00003")
+						.stato("N")
+						.progrEntita(progEntita)
+						.datiEntita(beneficiBuilder.build())
+						.tipoAggiornamento("I")
+						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+						.build();
+				progEntita++;
+				superPraticaService.insertEntita(codAbi, entity);
+				
+			}
 			
 		}else {
 			logger.error("La Lista getCovPerConResp e' vuota.");

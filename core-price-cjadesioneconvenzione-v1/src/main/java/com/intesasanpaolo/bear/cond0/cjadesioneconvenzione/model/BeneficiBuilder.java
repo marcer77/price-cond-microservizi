@@ -8,7 +8,7 @@ public class BeneficiBuilder implements Builder<String> {
 
 	private AdesioneResponseBenefici adesioneResponseBenefici;
 	
-	BeneficiBuilder(AdesioneResponseBenefici adesioneResponseBenefici){
+	public BeneficiBuilder(AdesioneResponseBenefici adesioneResponseBenefici){
 		this.adesioneResponseBenefici = adesioneResponseBenefici;
 	}
 	
