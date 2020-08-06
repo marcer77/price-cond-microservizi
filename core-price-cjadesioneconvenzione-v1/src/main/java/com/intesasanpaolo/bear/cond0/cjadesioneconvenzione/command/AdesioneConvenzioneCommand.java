@@ -129,8 +129,9 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			T1SJResponse t1SJResponse = preparazioneStampa();
 
 			// chiamata alla BS FL03 - recupero
-			generazioneXML(t1SJResponse,stampaOutput);
-
+			String docXML = generazioneXML(t1SJResponse,stampaOutput);
+			stampaOutput.setDocXML(docXML);
+			
 			//Eliminazione di eventuali dati gia' presenti
 			eliminazioneClientiPresenti();
 			
@@ -145,7 +146,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		return stampaOutput;
 	}
 	
-	private void generazioneXML(T1SJResponse t1SJResponse, StampaOutput stampaOutput) throws Exception {
+	private String generazioneXML(T1SJResponse t1SJResponse, StampaOutput stampaOutput) throws Exception {
 		log.info("generazioneXML START");
 		String docXML = "";
 
@@ -167,7 +168,8 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			}
 		}
 		log.info("generazioneXML END docXML generato: "+docXML);
-		stampaOutput.setDocXML(docXML);
+		
+		return docXML;
 	}
 	
 	private void eliminazioneClientiPresenti() {
