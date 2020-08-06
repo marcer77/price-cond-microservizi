@@ -21,10 +21,18 @@ public class CJExceptionHandler extends CJBaseExceptionHandler<StampaResponseRes
 
 	@Override
 	public StampaResponseResource getBaseResource() {
-		return StampaResponseResource.builder().documento(null).esitoStampaResource(null).build();
-		
+		return StampaResponseResource.builder().documento(null).esitoStampaResource(null).build();	
 	}
-	@ExceptionHandler({ CJBaseException.class })
+	
+	@Override
+	public StampaResponseResource errorResponseForCJBaseException(String errorCode, String errorMessage) {
+		EsitoStampaResource esito=new EsitoStampaResource();
+		esito.setCodErrore(errorCode);
+	    esito.setDescErrore(errorMessage);
+	    StampaResponseResource resource = StampaResponseResource.builder().esitoStampaResource(esito).build();
+		return resource;
+	}
+	/*@ExceptionHandler({ CJBaseException.class })
     public ResponseEntity<StampaResponseResource> handleException(CJBaseException e) {
 		logger.error("handleException {}", e.getMessage(), e);
 		
@@ -34,7 +42,9 @@ public class CJExceptionHandler extends CJBaseExceptionHandler<StampaResponseRes
 	    StampaResponseResource resource = StampaResponseResource.builder().esitoStampaResource(esito).build();
 		
 		return ResponseEntity.status(HttpStatus.OK).body(resource);    	
-    } 
+    } */
+
+	
 	
 	
 }

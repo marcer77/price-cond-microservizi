@@ -27,11 +27,20 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 
 	public abstract T getBaseResource();
 
+	public abstract T errorResponseForCJBaseException(String errorCode,String errorMessage );
+	
+	@ExceptionHandler({ CJBaseException.class })
+    public ResponseEntity<T> handleCJBaseException(CJBaseException e) {
+		logger.error("handleCJBaseException {}", e);
+		T resource=errorResponseForCJBaseException(e.getErrorCode(), e.formattaMessaggio());
+		return ResponseEntity.status(HttpStatus.OK).body(resource);    	
+    } 
+	
 	@ExceptionHandler({ MissingRequestHeaderException.class })
-	public ResponseEntity<T> handleMissingRequestHeaderException(MissingRequestHeaderException e,
+	protected ResponseEntity<T> handleMissingRequestHeaderException(MissingRequestHeaderException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		logger.error(e.getMessage(), e);
+		logger.error("handleException", e);
 
 		T resource = getBaseResource();
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
@@ -50,7 +59,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ MethodArgumentNotValidException.class })
-	public ResponseEntity<T> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+	protected ResponseEntity<T> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		logger.error("handleException {}", e.getMessage(), e);
@@ -81,7 +90,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ HttpMessageNotReadableException.class })
-	public ResponseEntity<T> handleInvalidFormatException(HttpMessageNotReadableException e, HttpServletRequest request,
+	protected ResponseEntity<T> handleInvalidFormatException(HttpMessageNotReadableException e, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		logger.error("handleException {}", e.getMessage(), e);
@@ -102,7 +111,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ Exception.class })
-	public ResponseEntity<T> handleExceptionGeneric(Exception e) {
+	protected ResponseEntity<T> handleExceptionGeneric(Exception e) {
 		T resource = getBaseResource();
 
 		logger.error("handleException {}", e.getMessage(), e);
