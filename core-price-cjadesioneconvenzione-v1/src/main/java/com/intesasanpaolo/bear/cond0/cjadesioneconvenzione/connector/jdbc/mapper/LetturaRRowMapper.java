@@ -16,7 +16,7 @@ public class LetturaRRowMapper implements RowMapper<String> {
 		try {
 			ret = rs.getString("COD_ENTITA");		 
 		} catch (SQLException e) {
-			throw new RuntimeException(e);
+//			throw new RuntimeException(e);
 		}
 		return ret;
 	}

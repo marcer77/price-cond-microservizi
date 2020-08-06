@@ -50,14 +50,5 @@ public class PaddingField {
 
         return org.apache.commons.lang.StringUtils.rightPad(str, size, " ");
     }
-    
-	public static void main(String[] args) {
-		System.out.println("["+rightPadSpaceOrTruncate(null, 5)+"]");
-		System.out.println("["+rightPadSpaceOrTruncate("", 5)+"]");
-		System.out.println("["+rightPadSpaceOrTruncate("cc", 5)+"]");
-		System.out.println("["+rightPadSpaceOrTruncate("aabbccdd", 5)+"]");
-		System.out.println("["+leftPadZeroOrTruncate("123", 5)+"]");
-		System.out.println("["+leftPadZeroOrTruncate("12345", 5)+"]");
-		System.out.println("["+leftPadZeroOrTruncate("12345789", 5)+"]");
-	}
+
 }
