@@ -75,10 +75,12 @@ public class SuperPraticaService extends BaseService {
 
 		String query = "INSERT INTO"
 				+ " FIATT.TB59R009 (NR_SUPERPRATICA, NR_PRATICA, ID_ENTITA, STATO, PROGR_ENTITA, PROGR_DATI, COD_ENTITA, DATI_ENTITA, TIPO_AGGIORNAMENTO, COD_OPE_ULT_MODIF, DATA_INSER,DT_ULT_MODIFICA)"
-				+ " VALUES(:NR_SUPERPRATICA, :NR_PRATICA, :ID_ENTITA, :STATO, :PROGR_ENTITA, :PROGR_DATI, :COD_ENTITA, :DATI_ENTITA, :TIPO_AGGIORNAMENTO, :COD_OPE_ULT_MODIF, TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'), TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'))";
+				+ " VALUES(:NR_SUPERPRATICA, :NR_PRATICA, :ID_ENTITA, :STATO, :PROGR_ENTITA, :PROGR_DATI, :COD_ENTITA, :DATI_ENTITA, :TIPO_AGGIORNAMENTO, :COD_OPE_ULT_MODIF, :DATA_INSER, :DT_ULT_MODIFICA)";
+//				+ "TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'), TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'))"; //FUNZIONE NON RICONOSCIUTA DA H2
 
 		String now = dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
-
+		String timestamp = dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
+		
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("NR_SUPERPRATICA", entity.getNrSuperpratica());
 		paramMap.put("NR_PRATICA", entity.getNrPratica());
@@ -91,7 +93,8 @@ public class SuperPraticaService extends BaseService {
 		paramMap.put("DATI_ENTITA", entity.getDatiEntita());
 		paramMap.put("TIPO_AGGIORNAMENTO", entity.getTipoAggiornamento());
 		paramMap.put("COD_OPE_ULT_MODIF", entity.getCodOpeUltModif());
-
+		paramMap.put("DATA_INSER",timestamp);
+		paramMap.put("DT_ULT_MODIFICA",timestamp);
 		paramMap.put("CURRENT_DATE", now);
 
 		updateRifMultiDataSourceConnector.call(query,
