@@ -30,7 +30,7 @@ public class SuperPraticaService extends BaseService {
 	private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
 	public List<String> recuperaCodConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
-		logger.info("START recuperaCodConvenzione");
+		logger.info("recuperaCodConvenzione codAbi {} codSuperPratica {} nrPratica {} START ",codAbi,codSuperPratica,nrPratica);
 
 		String query = "SELECT DISTINCT" + " COD_ENTITA " + " FROM FIATT.TB59R009"
 				+ " WHERE NR_SUPERPRATICA = :codSuperPratica" + " AND NR_PRATICA = :numeroPratica"
@@ -46,13 +46,13 @@ public class SuperPraticaService extends BaseService {
 
 		logger.debug("Founded:", resultList);
 
-		logger.info("END letturaRConvenzioneDiRifiremento");
+		logger.info("END recuperaCodConvenzione");
 		return resultList;
 	}
 
 	// @Transactional
 	public void deleteEntita(String codAbi, String codSuperPratica, String nrPratica, String idEntita) {
-		logger.info("START deleteEntita");
+		logger.info("deleteEntita codAbi {} codSuperPratica {} nrPratica {} idEntita {} START",codAbi,codSuperPratica,nrPratica,idEntita);
 
 		String query = "DELETE" + " FROM FIATT.TB59R009" + " WHERE NR_SUPERPRATICA = :codSuperPratica"
 				+ " AND NR_PRATICA = :numeroPratica" + " AND ID_ENTITA = :idEntita";
