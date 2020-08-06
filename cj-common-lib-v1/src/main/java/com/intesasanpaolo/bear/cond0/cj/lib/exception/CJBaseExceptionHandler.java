@@ -21,11 +21,10 @@ import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
 import com.intesasanpaolo.bear.exceptions.model.ErrorMessage;
+import com.intesasanpaolo.bear.exceptions.resource.ErrorResource;
 
 public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	private static final Logger logger = LoggerUtils.getLogger(CJBaseExceptionHandler.class);
-
-	public abstract T getBaseResource();
 
 	public abstract T errorResponseForCJBaseException(String errorCode,String errorMessage );
 	
@@ -37,12 +36,12 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
     } 
 	
 	@ExceptionHandler({ MissingRequestHeaderException.class })
-	protected ResponseEntity<T> handleMissingRequestHeaderException(MissingRequestHeaderException e,
+	protected ResponseEntity<ErrorResource> handleMissingRequestHeaderException(MissingRequestHeaderException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		logger.error("handleException", e);
-
-		T resource = getBaseResource();
+		
+		ErrorResource resource = new ErrorResource();
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
 		List<ErrorMessage> list = new ArrayList<>();
 		map.put(BearSeverityEnum.ERROR.name(), list);
@@ -59,12 +58,12 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ MethodArgumentNotValidException.class })
-	protected ResponseEntity<T> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
+	protected ResponseEntity<ErrorResource> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
 		logger.error("handleException {}", e.getMessage(), e);
-		T resource = getBaseResource();
-
+		ErrorResource resource = new ErrorResource();
+		
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
 		List<ErrorMessage> list = new ArrayList<>();
 		map.put(BearSeverityEnum.ERROR.name(), list);
@@ -90,12 +89,12 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ HttpMessageNotReadableException.class })
-	protected ResponseEntity<T> handleInvalidFormatException(HttpMessageNotReadableException e, HttpServletRequest request,
+	protected ResponseEntity<ErrorResource> handleInvalidFormatException(HttpMessageNotReadableException e, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		logger.error("handleException {}", e.getMessage(), e);
-		T resource = getBaseResource();
-
+		ErrorResource resource = new ErrorResource();
+		
 		//////
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
 		List<ErrorMessage> list = new ArrayList<>();
@@ -111,9 +110,9 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ Exception.class })
-	protected ResponseEntity<T> handleExceptionGeneric(Exception e) {
-		T resource = getBaseResource();
-
+	protected ResponseEntity<ErrorResource> handleExceptionGeneric(Exception e) {
+		ErrorResource resource = new ErrorResource();
+		
 		logger.error("handleException {}", e.getMessage(), e);
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
 		List<ErrorMessage> list = new ArrayList<>();

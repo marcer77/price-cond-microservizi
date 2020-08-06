@@ -19,10 +19,10 @@ import com.intesasanpaolo.bear.config.LoggerUtils;
 public class CJExceptionHandler extends CJBaseExceptionHandler<StampaResponseResource>{
 	private static final Logger logger = LoggerUtils.getLogger(CJExceptionHandler.class);
 
-	@Override
+	/*@Override
 	public StampaResponseResource getBaseResource() {
 		return StampaResponseResource.builder().documento(null).esitoStampaResource(null).build();	
-	}
+	}*/
 	
 	@Override
 	public StampaResponseResource errorResponseForCJBaseException(String errorCode, String errorMessage) {

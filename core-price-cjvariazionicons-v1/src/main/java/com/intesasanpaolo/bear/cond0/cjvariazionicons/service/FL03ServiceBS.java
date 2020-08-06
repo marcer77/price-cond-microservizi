@@ -1,11 +1,12 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.service;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSErrorUtil;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.CTGConnectorFL03;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgRequestTrasformer;
@@ -31,11 +32,23 @@ public class FL03ServiceBS extends BaseService {
 
 	public FL03Response callBS(FL03Request fl03Request) {
 		FL03Response fl03Response = this.ctgConnectorFL03.call(fl03Request, requestTransformer, responseTransformer,new Object());
-		checkErroreBS(fl03Response);
+		String[] parametriAggiuntivi=new String[1];
+		parametriAggiuntivi[0]="1";
+		OutEsi outEsi=OutEsi.builder().mdwEsiRetc("0001").build();
+		OutSeg outSeg=OutSeg.builder().livelloSegnalazione("E").build();
+		
+		//BSErrorUtil.checkErrore(BSType.FL03S00, ErrorCode.BS_EXCEPTION, outEsi,outSeg,this::additionalCheckErrorFunction,parametriAggiuntivi);
+		BSErrorUtil.checkErrore(BSType.FL03S00, ErrorCode.BS_EXCEPTION, outEsi,outSeg,null,null);
+		
 		return fl03Response;
 	}
 
-	private void checkErroreBS(FL03Response response) {
+	private boolean additionalCheckErrorFunction(String... st) {
+		//String test= StringUtils.isNotEmpty(fl03Response.getCodErr())?fl03Response.getCodErr():"";
+		return !st[0].equalsIgnoreCase("0");
+	}
+	
+	/*private void checkErroreBS(FL03Response response) {
 		String mdwEsiRetc = StringUtils.isNotBlank(response.getMdwEsiRetc()) ? response.getMdwEsiRetc() : "";
 		// @TODO: controllare anche l'esito presente nel Body fl03Response.getRc() e fl03Response.getRc();?
 		if (!mdwEsiRetc.equals("0000")) {
@@ -44,6 +57,6 @@ public class FL03ServiceBS extends BaseService {
 					.mdwEsiMsg(response.getMdwEsiMsg()).mdwEsiRetc(response.getMdwEsiRetc())
 					.bsName(BSType.FL03S00.getCode()).errorCode(ErrorCode.BS_EXCEPTION).build();
 		}
-	}
+	}*/
 
 }
