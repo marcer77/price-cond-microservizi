@@ -16,11 +16,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Valid
+@ToString
 public class IntestatarioDTO {
 
 	@NotNull(message = "Il campo ndg non può essere null")
