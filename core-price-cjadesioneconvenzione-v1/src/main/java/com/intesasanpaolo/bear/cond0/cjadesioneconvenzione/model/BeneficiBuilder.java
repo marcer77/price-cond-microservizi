@@ -98,8 +98,8 @@ public class BeneficiBuilder implements Builder<String> {
 
 	private String getValoreCodice() {
 		if (adesioneResponseBenefici.getBeneficioValoreParametrato() != null
-				&& adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1() != null
-				&& adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread() != null && StringUtils
+				|| adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1() != null
+				|| adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread() != null || StringUtils
 						.isNotEmpty(adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroCodice1())) {
 			return "S";
 		} else {
