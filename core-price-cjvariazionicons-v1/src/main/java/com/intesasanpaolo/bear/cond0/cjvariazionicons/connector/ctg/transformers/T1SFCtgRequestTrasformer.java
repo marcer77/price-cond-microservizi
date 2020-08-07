@@ -18,7 +18,7 @@ import com.intesasanpaolo.bear.connector.ctg.transformer.ICtgRequestTransformer;
 
 @Service
 public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SFRequest, C_T1SFS00> {
-	private static final Logger logger = LoggerUtils.getLogger(T1SFCtgResponseTansformer.class);	
+	private static final Logger logger = LoggerUtils.getLogger(T1SFCtgRequestTrasformer.class);	
 	
 	@Autowired
 	private BeanFactory beanFactory;

@@ -1,8 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.BeanFactory;
@@ -23,12 +20,8 @@ import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
-import com.intesasanpaolo.bear.core.controller.BaseController;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
-import com.intesasanpaolo.bear.exceptions.BearDomainRuntimeException;
-import com.intesasanpaolo.bear.exceptions.model.BearErrorTypeEnum;
-import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -42,7 +35,7 @@ public class CJVariazioniController extends CoreController {
 
 	@Autowired
 	private StampaResponseResourceAssembler stampaResponseResourceAssembler;
-	
+
 	@PostMapping(value = "/stampa", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
 	public ResponseEntity<StampaResponseResource> stampa(
@@ -63,43 +56,30 @@ public class CJVariazioniController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
 			@Valid @RequestBody InputStampaDTO inputStampaDTO) throws Exception {
 
-		Map<String, Object> info = new HashMap<>();
-        info.put("detailedChannelMessage", "bla bla bla test exception with user id 8");
-        info.put("customerPreference", "show.detail");
-        info.put("additionalService", "activate.helpDesk.chatbot");
+		logger.info("start EndPoint stampa {}", inputStampaDTO);
 
-		//if (true)
-	//		throw new BearDomainRuntimeException("pippo", "generic.error", HttpStatus.BAD_REQUEST,BearErrorTypeEnum.TECHNICAL,BearSeverityEnum.ERROR);
-		
-		logger.info("start EndPoint stampa");
-		StampaResponseResource stampaResponseResource=null;
-		
-			ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
-					.applicationID(applicationID)
-					.callerCompanyIDCode(callerCompanyIDCode)
-					.callerProgramName(callerProgramName)
-					.channelIDCode(channelIDCode)
-					.codABI(codABI)
-					.codUnitaOperativa(codUnitaOperativa)
-					.customerID(customerID)
-					.isVirtualUser(isVirtualUser)
-					.language(language)
-					.serviceCompanyIDCode(serviceCompanyIDCode)
-					.serviceID(serviceID)
-					.userID(userID)
-					.transactionId(transactionId)
-					.timestamp(timestamp)
-					.serviceVersion(serviceVersion).build();
-					
-			
-			StampaCommand stampaCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO,ispWebservicesHeaderType);
-			StampaResponse stampaResponse = stampaCommand.execute();
-			
-			stampaResponseResource= stampaResponseResourceAssembler.toResource(stampaResponse);
-					
-		
+		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID(applicationID)
+				.callerCompanyIDCode(callerCompanyIDCode)
+				.callerProgramName(callerProgramName)
+				.channelIDCode(channelIDCode)
+				.codABI(codABI)
+				.codUnitaOperativa(codUnitaOperativa)
+				.customerID(customerID)
+				.isVirtualUser(isVirtualUser)
+				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
+				.transactionId(transactionId)
+				.timestamp(timestamp)
+				.serviceVersion(serviceVersion)
+				.build();
+
+		StampaCommand stampaCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO,ispWebservicesHeaderType);
+		StampaResponse stampaResponse = stampaCommand.execute();
+
+		StampaResponseResource stampaResponseResource = stampaResponseResourceAssembler.toResource(stampaResponse);
+
 		return ResponseEntity.status(HttpStatus.OK).body(stampaResponseResource);
 
 	}
-		
+
 }
