@@ -1,5 +1,9 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers;
 
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.withNoException;
+
+import java.math.BigDecimal;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.log4j.Logger;
@@ -17,11 +21,15 @@ import com.intesasanpaolo.connector.ws.gen.convenzioniservice.AdesioneResponseBe
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ArrayOfAdesioneResponseAdesioneDettaglio;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ArrayOfAdesioneResponseBenefici;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ArrayOfFasce;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.BloccoValore;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ClassEsito;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ConfigurazioneFasce;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzioneResponse;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ObjectFactory;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ResponseLog;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.Valore;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ValoreIndicatore;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ValoreParametrato;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.Fasce;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -86,7 +94,22 @@ public class GetRequisitiAdesioneConvenzioneResponseTrasformerTest extends JUnit
 		fasce.setCodificaIndicatore(objectFactory.createConfigurazioneFasceCodificaIndicatore(""));
 		fasce.setDisabilitaMonitoraggio(objectFactory.createConfigurazioneFasceDisabilitaMonitoraggio(""));
 		ArrayOfFasce listaFasce = objectFactory.createArrayOfFasce();
-		listaFasce.getFasce().add(new Fasce());
+		Fasce fascia = new Fasce();
+		ValoreIndicatore valoreIndicatore = objectFactory.createValoreIndicatore();
+		Valore value = new Valore();
+		BloccoValore blocco = new BloccoValore();
+		blocco.setCodice(objectFactory.createBloccoValoreCodice(""));
+		blocco.setTipoDeroga(objectFactory.createBloccoValoreTipoDeroga("1"));
+		blocco.setValoreNumerico(objectFactory.createBloccoValoreValoreNumerico(new BigDecimal("2")));
+		ValoreParametrato valParam = objectFactory.createValoreParametrato();
+		valParam.setCodice1(objectFactory.createValoreParametratoCodice1("1"));
+		valParam.setPerc1(objectFactory.createValoreParametratoPerc1(5.0f));
+		valParam.setSpread(objectFactory.createValoreParametratoSpread(new BigDecimal("1")));
+		blocco.setValoreParametrato(objectFactory.createValoreParametrato(valParam));
+		value.setBlocco(objectFactory.createBloccoValore(blocco));
+		valoreIndicatore.setValore(objectFactory.createValore(value));
+		fascia.setValoreIndicatore(objectFactory.createValoreIndicatore(valoreIndicatore));
+		listaFasce.getFasce().add(fascia);
 		fasce.setListaFasce(objectFactory.createArrayOfFasce(listaFasce));
 		
 		ben.setConfigurazioneFasceApprovato(objectFactory.createConfigurazioneFasce(fasce));
@@ -97,11 +120,12 @@ public class GetRequisitiAdesioneConvenzioneResponseTrasformerTest extends JUnit
 		
 		ade.setTabellaBenefici(tabellaBenefici);
 		
-//		.getValue().getCodiceFasciaIndicatoreBeneficiIn().getValue()
-//		.getValue().getCodificaIndicatore().getValue(),
-//		.getValue().getCodificaIndicatoreSottorequisito(),
-//		.getValue().getDisabilitaMonitoraggio().getValue(),
-//		.getValue().getListaFasce().getValue(),
+//		() -> fasce.getValoreIndicatore().getValue().getValore().getValue().getBlocco().getValue().getTipoDeroga().getValue(),
+//		() -> fasce.getValoreIndicatore().getValue().getValore().getValue().getBlocco().getValue().getValoreNumerico().getValue(),
+//		() -> fasce.getValoreIndicatore().getValue().getValore().getValue().getBlocco().getValue()
+//		() -> fasce.getValoreIndicatore().getValue().getValore().getValue().getBlocco().getValue()
+//		() -> fasce.getValoreIndicatore().getValue().getValore().getValue().getBlocco().getValue()
+		
 		ArrayOfAdesioneResponseAdesioneDettaglio adeDett = objectFactory.createArrayOfAdesioneResponseAdesioneDettaglio();
 
 		AdesioneResponseAdesioneDettaglio elem = new AdesioneResponseAdesioneDettaglio();
