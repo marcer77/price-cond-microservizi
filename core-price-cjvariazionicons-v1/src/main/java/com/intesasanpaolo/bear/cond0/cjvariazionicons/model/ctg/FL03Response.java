@@ -1,5 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +15,8 @@ import lombok.ToString;
 @Builder
 @ToString
 public class FL03Response {
-	
-	private String livelloSegnalazione;
-	private String txtSegnalazione;
-	private String mdwEsiAnom;
-	private String mdwEsiMsg;
-	private String mdwEsiRetc;
+	private OutEsi outEsi;
+	private OutSeg outSeg;
 	private String codAppli;
 	private String codErr;
 	private String codSottoAppl;

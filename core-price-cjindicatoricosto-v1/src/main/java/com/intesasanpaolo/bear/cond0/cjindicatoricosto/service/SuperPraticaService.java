@@ -42,7 +42,7 @@ public class SuperPraticaService extends BaseService{
 		logger.debug("Founded:", resultList);
 		
 		if (CollectionUtils.isEmpty(resultList)) {
-			throw new SuperPraticaNotFoundDB2Exception(codSuperPratica);
+			throw SuperPraticaNotFoundDB2Exception.builder().codSuperPratica(codSuperPratica).build();
 		}
 			
 

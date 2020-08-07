@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cj.lib.exception;
+package com.intesasanpaolo.bear.cond0.cj.lib.exception.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseException;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;

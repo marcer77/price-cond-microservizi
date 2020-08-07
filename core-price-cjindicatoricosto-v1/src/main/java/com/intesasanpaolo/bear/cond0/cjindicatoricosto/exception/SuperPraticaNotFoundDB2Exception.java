@@ -1,16 +1,29 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception;
 
-import org.springframework.http.HttpStatus;
+import java.io.StringWriter;
 
-public class SuperPraticaNotFoundDB2Exception extends CJBaseException{
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseException;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 
-	/**
-	 * 
-	 */
+import lombok.Builder;
+
+@Builder
+public class SuperPraticaNotFoundDB2Exception extends CJBaseException {
+
 	private static final long serialVersionUID = 1L;
 
-	public SuperPraticaNotFoundDB2Exception(String codSuperPratica) {
-		super("Nessuna Pratica trovata per SuperPratica "+codSuperPratica,ErrorCode.SUPERPATICA_NOT_FOUND_CODE, HttpStatus.INTERNAL_SERVER_ERROR);
+	private final String codSuperPratica;
+
+	@Override
+	public String formattaMessaggio() {
+		StringWriter sw = new StringWriter();
+		sw.append("Nessuna Pratica trovata per SuperPratica ").append(codSuperPratica);
+		return sw.toString();
+	}
+
+	@Override
+	public String getErrorCode() {
+		return CommonErrorCode.DB2_EXCEPTION;
 	}
 
 }
