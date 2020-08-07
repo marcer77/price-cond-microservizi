@@ -27,7 +27,7 @@ public class PCUJServiceBS extends BaseService {
 	@Autowired
 	private PCUJCtgResponseTansformer responseTransformer;
 
-	public PCUJResponse callBS(PCUJRequest pcujRequest) throws Exception {
+	public PCUJResponse callBS(PCUJRequest pcujRequest) {
 		PCUJResponse pcujResponse = new PCUJResponse();
 		pcujResponse = this.ctgConnectorPCUJ.call(pcujRequest, requestTransformer, responseTransformer, null);
 		String[] parametriAggiuntivi = new String[0];

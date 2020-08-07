@@ -12,8 +12,13 @@ import lombok.NoArgsConstructor;
 public class AffidamentoResource {
 	private String formaTecnica;
 	private String tipoFTecnica;
+	private String descFTecnica;
 	private String scadenza;
 	private String importo;
+	private String divisa;
+	private String importoEUR;
+	private RapportoResource rapporto;
+	
 	private IndicatoriResource indicatori;
 
 }

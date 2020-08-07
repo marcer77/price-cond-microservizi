@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.C_PCUJS00;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTBST;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTESI;
+import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTRIP;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTSEG;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
@@ -39,50 +40,48 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 		OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
 		OUTSEG outSeg = hasSomething(connector.OUTSEG) ? connector.OUTSEG[0] : new OUTSEG();
 
-		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}", ServiceUtil.stampaOggetto(outBody),
-				ServiceUtil.stampaOggetto(outEsi), ServiceUtil.stampaOggetto(outSeg));
-		
-		 OutEsi outEsiModel=OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
-	     OutSeg outSegModel=OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
-	      
+		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}", ServiceUtil.stampaOggetto(outBody), ServiceUtil.stampaOggetto(outEsi),
+				ServiceUtil.stampaOggetto(outSeg));
+
+		OutEsi outEsiModel = OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
+		OutSeg outSegModel = OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
+
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
 		if (hasSomething(outBody.OUTRIP)) {
-			
+
 			Arrays.asList(outBody.OUTRIP).forEach(out -> {
 				List<OutTAS> outTasList = new ArrayList<OutTAS>();
 
 				if (hasSomething(out.OUTTAS)) {
 					Arrays.asList(out.OUTTAS).forEach(outTas -> {
-						OutTAS outTAS = OutTAS.builder()
-								.codParametro(outTas.COD_PARAMETRO)
-								.dataDeca(outTas.DATA_DECA)
-								.dataDeco(outTas.DATA_DECO)
-								.flUsura(outTas.FL_USURA)
-								.percParametro(outTas.PERC_PARAMETRO)
-								.segnoValParametro(outTas.SEGNO_VAL_PARAMETRO)
-								.segnoValSpread(outTas.SEGNO_VAL_SPREAD)
-								.tassoDebitore(outTas.TASSO_DEBITORE)
-								.valParametro(outTas.VAL_PARAMETRO)
+						OutTAS outTAS = OutTAS.builder().codParametro(outTas.COD_PARAMETRO).dataDeca(outTas.DATA_DECA).dataDeco(outTas.DATA_DECO)
+								.flUsura(outTas.FL_USURA).percParametro(outTas.PERC_PARAMETRO).segnoValParametro(outTas.SEGNO_VAL_PARAMETRO)
+								.segnoValSpread(outTas.SEGNO_VAL_SPREAD).tassoDebitore(outTas.TASSO_DEBITORE).valParametro(outTas.VAL_PARAMETRO)
 								.valSpread(outTas.VAL_SPREAD).build();
 						outTasList.add(outTAS);
 					});
 				}
-
-				OutRIP outRIP = OutRIP.builder().codFt(out.COD_FT).dataScadenzaFido(out.DATA_SCADENZA_FIDO)
-						.divisaFido(out.DIVISA_FIDO).importoFido(out.IMPORTO_FIDO).importoFidoEur(out.IMPORTO_FIDO_EUR)
-						.tipoFt(out.TIPO_FT).outTasList(outTasList).build();
+			   OutRIP outRIP = OutRIP.builder()
+						.codFt(out.COD_FT)
+						.dataScadenzaFido(out.DATA_SCADENZA_FIDO)
+						.divisaFido(out.DIVISA_FIDO)
+						.importoFido(out.IMPORTO_FIDO)
+						.importoFidoEur(out.IMPORTO_FIDO_EUR)
+						.tipoFt(out.TIPO_FT)
+						.descrFt(out.DESCR_FT)
+						.codCatRapRip(out.COD_CAT_RAP_RIP)
+						.codFilRappRip(out.COD_FIL_RAPP_RIP)
+						.numProgRappRip(out.NUM_PROG_RAPP_RIP)
+						.valCDF(out.VAL_CDF)
+						.valTaeg(out.VAL_TAEG)
+						.valTeg(out.VAL_TEG)
+						.outTasList(outTasList).build();
 				outRIPList.add(outRIP);
 			});
 		}
+		PCUJResponse response = PCUJResponse.builder().outEsi(outEsiModel).outSeg(outSegModel).codEsito(outBody.COD_ESITO).msgEsito(outBody.MSG_ESITO)
+				.outRIPList(outRIPList).build();
 
-		PCUJResponse response = PCUJResponse.builder()
-				.outEsi(outEsiModel)
-				.outSeg(outSegModel)
-				.codEsito(outBody.COD_ESITO)
-				.msgEsito(outBody.MSG_ESITO)
-				.outRIPList(outRIPList)
-				.build();
-		
 		logger.debug("response={}", response);
 
 		return response;

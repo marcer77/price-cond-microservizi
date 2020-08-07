@@ -45,8 +45,7 @@ public class CJIndicatoriCostoController extends CoreController {
 
 	@PostMapping(value = "/calcolo", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
-	public ResponseEntity<IndicatoriCostoResource> calcolo(
-			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
+	public ResponseEntity<IndicatoriCostoResource> calcolo(@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false) String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false) String customerID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE, required = true) String callerCompanyIDCode,
@@ -63,23 +62,18 @@ public class CJIndicatoriCostoController extends CoreController {
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CHANNEL_ID_CODE, required = true) String channelIDCode,
 			@Valid @RequestBody IndicatoriCostoDTO dto) throws Exception {
 
-		IndicatoriCostoResource resource = new IndicatoriCostoResource();
+		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType().applicationID(applicationID)
+				.callerCompanyIDCode(callerCompanyIDCode).callerProgramName(callerProgramName).channelIDCode(channelIDCode).codABI(codABI)
+				.codUnitaOperativa(codUnitaOperativa).customerID(customerID).isVirtualUser(isVirtualUser).language(language)
+				.serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID).transactionId(transactionId).timestamp(timestamp)
+				.serviceVersion(serviceVersion).build();
 
+		IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto, ispWebservicesHeaderType);
+		IndicatoriCosto indicatoriCosto = cmd.execute();
 
-			ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
-					.applicationID(applicationID).callerCompanyIDCode(callerCompanyIDCode)
-					.callerProgramName(callerProgramName).channelIDCode(channelIDCode).codABI(codABI)
-					.codUnitaOperativa(codUnitaOperativa).customerID(customerID).isVirtualUser(isVirtualUser)
-					.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
-					.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
+		IndicatoriCostoResource resource = indicatoriCostoResourceAssembler.toResource(indicatoriCosto);
 
-			IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto,
-					ispWebservicesHeaderType);
-			IndicatoriCosto indicatoriCosto = cmd.execute();
-
-			resource = indicatoriCostoResourceAssembler.toResource(indicatoriCosto);
-
-			// mock response
+		// mock response
 //			resource=this.mockResponse();
 
 		return ResponseEntity.status(HttpStatus.OK).body(resource);
@@ -98,8 +92,8 @@ public class CJIndicatoriCostoController extends CoreController {
 		return resource;
 	}
 
-	protected PraticaResource mockPraticaResource(String codPratica, String codiceCondizione1, String codiceCondizione2,
-			String formatecnica1, String formatecnica2) {
+	protected PraticaResource mockPraticaResource(String codPratica, String codiceCondizione1, String codiceCondizione2, String formatecnica1,
+			String formatecnica2) {
 		PraticaResource praticaResource = new PraticaResource();
 		praticaResource.setCodPratica(codPratica);
 		praticaResource.setCondizioni(new ArrayList<CondizioneResource>());

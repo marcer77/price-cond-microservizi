@@ -19,6 +19,17 @@ public class OutRIP {
 	private Integer importoFido;
 	private Integer importoFidoEur;
 	private String tipoFt;
+	private String descrFt;
+	
+	private String codCatRapRip;
+	private String codFilRappRip;
+	private String numProgRappRip;
+	
+	private Double valTaeg; 	
+	private Double valCDF; 	
+	private Double valTeg; 	
+	
+	
 	@Builder.Default
 	private List<OutTAS> outTasList=new ArrayList<>();
 }

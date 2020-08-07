@@ -19,6 +19,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriCostoR
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.ParametriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.PraticaResource;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.RapportoResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
 import com.intesasanpaolo.bear.core.assembler.BaseResourceAssemblerSupport;
 
@@ -59,9 +60,9 @@ public class IndicatoriCostoResourceAssembler
 			outRIPList.forEach(outRip -> {
 				IndicatoriResource indicatoriResource = new IndicatoriResource();
 
-				indicatoriResource.setTeg("");// TODO
-				indicatoriResource.setTaeg("");// TODO
-				indicatoriResource.setCdf("");// TODO
+				indicatoriResource.setTeg(ServiceUtil.formattaNumero(outRip.getValTeg()));
+				indicatoriResource.setTaeg(ServiceUtil.formattaNumero(outRip.getValTaeg()));
+				indicatoriResource.setCdf(ServiceUtil.formattaNumero(outRip.getValCDF()));
 
 				// TAN: la lista OutTasList conterrà al più un elemento
 				// che servirà per valorizzare il campo composto TAN
@@ -80,9 +81,20 @@ public class IndicatoriCostoResourceAssembler
 					indicatoriResource.setTan(tanResource);
 				});
 
-				AffidamentoResource aff = AffidamentoResource.builder().formaTecnica(outRip.getCodFt())
+				RapportoResource rapporto=RapportoResource.builder()
+						.categoria(outRip.getCodCatRapRip())
+						.numero(outRip.getNumProgRappRip())
+						.filiale(outRip.getCodFilRappRip())
+						.build();
+				
+				AffidamentoResource aff = AffidamentoResource.builder()
+						.formaTecnica(outRip.getCodFt())
 						.importo(ServiceUtil.formattaNumero(outRip.getImportoFidoEur()))
-						.scadenza(outRip.getDataScadenzaFido()).tipoFTecnica(outRip.getTipoFt())
+						.scadenza(outRip.getDataScadenzaFido())
+						.tipoFTecnica(outRip.getTipoFt())
+						.descFTecnica(outRip.getDescrFt())
+						.divisa(outRip.getDivisaFido())
+						.rapporto(rapporto)
 						.indicatori(indicatoriResource).build();
 
 				affidamenti.add(aff);
