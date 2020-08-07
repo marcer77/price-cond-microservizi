@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.EsitoStampa;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFRequest;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFResponse;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.EsitoStampaResource;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.service.FL03ServiceBS;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.service.T1SFServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
@@ -22,7 +22,7 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class StampaCommand extends BaseCommand<StampaResponse> {
+public class StampaCommand extends BaseCommand<StampaResponseResource> {
 
 	@Autowired
 	private T1SFServiceBS t1sfServiceBS;
@@ -40,7 +40,7 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 	}
 
 	@Override
-	protected StampaResponse doExecute() throws Exception {
+	protected StampaResponseResource doExecute() throws Exception {
 		//chiamata alla BS T1SF
 		T1SFRequest t1sfRequest = T1SFRequest.builder().
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
@@ -91,14 +91,15 @@ public class StampaCommand extends BaseCommand<StampaResponse> {
 			}
 		}
 				
-		StampaResponse stampaResponse=new StampaResponse();
-		stampaResponse.setDocumento(docXML);
-		stampaResponse.setKeyOper("");
-		stampaResponse.setEsitoStampa(new EsitoStampa());
-		stampaResponse.getEsitoStampa().setCodErrore("OK");
-		stampaResponse.getEsitoStampa().setDescErrore("");
+		StampaResponseResource stampaResponseResource=new StampaResponseResource();
+		stampaResponseResource.setDocumento(docXML);
+		stampaResponseResource.setKeyOper("");
+		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
+		stampaResponseResource.getEsitoStampaResource().setCodErrore("OK");
+		stampaResponseResource.getEsitoStampaResource().setDescErrore("");
 		
-		return stampaResponse;
+		return stampaResponseResource;
+		
 	}
 
 }

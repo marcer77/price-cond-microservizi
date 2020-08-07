@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.assembler.StampaResponseResourceAssembler;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.command.StampaCommand;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.StampaResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
@@ -32,9 +30,6 @@ public class CJVariazioniController extends CoreController {
 
 	@Autowired
 	private BeanFactory beanFactory;
-
-	@Autowired
-	private StampaResponseResourceAssembler stampaResponseResourceAssembler;
 
 	@PostMapping(value = "/stampa", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
@@ -59,26 +54,17 @@ public class CJVariazioniController extends CoreController {
 		logger.info("start EndPoint stampa {}", inputStampaDTO);
 
 		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
-				.applicationID(applicationID)
-				.callerCompanyIDCode(callerCompanyIDCode)
-				.callerProgramName(callerProgramName)
-				.channelIDCode(channelIDCode)
-				.codABI(codABI)
-				.codUnitaOperativa(codUnitaOperativa)
-				.customerID(customerID)
-				.isVirtualUser(isVirtualUser)
+				.applicationID(applicationID).callerCompanyIDCode(callerCompanyIDCode)
+				.callerProgramName(callerProgramName).channelIDCode(channelIDCode).codABI(codABI)
+				.codUnitaOperativa(codUnitaOperativa).customerID(customerID).isVirtualUser(isVirtualUser)
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
-				.transactionId(transactionId)
-				.timestamp(timestamp)
-				.serviceVersion(serviceVersion)
-				.build();
+				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
-		StampaCommand stampaCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO,ispWebservicesHeaderType);
-		StampaResponse stampaResponse = stampaCommand.execute();
+		StampaCommand stampaCommand = beanFactory.getBean(StampaCommand.class, inputStampaDTO,
+				ispWebservicesHeaderType);
+		StampaResponseResource stampaResponse = stampaCommand.execute();
 
-		StampaResponseResource stampaResponseResource = stampaResponseResourceAssembler.toResource(stampaResponse);
-
-		return ResponseEntity.status(HttpStatus.OK).body(stampaResponseResource);
+		return ResponseEntity.status(HttpStatus.OK).body(stampaResponse);
 
 	}
 

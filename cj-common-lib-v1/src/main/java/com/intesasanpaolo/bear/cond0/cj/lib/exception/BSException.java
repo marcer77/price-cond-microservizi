@@ -1,5 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.exception;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
@@ -9,32 +12,27 @@ import lombok.ToString;
 @ToString
 public class BSException extends CJBaseException {
 	private static final long serialVersionUID = 1L;
-	
-	private final String mdwEsiRetc;
-	private final String mdwEsiMsg;
-	private final String mdwEsiAnom;
-	private final String livelloSegnalazione;
-	private final String txtSegnalazione;
+	private final OutEsi outEsi;
+	private final OutSeg outSeg;
 	private final String bsName;
-	private final String errorCode;
+	//private final String errorCode;
 	
 	@Override
 	public String formattaMessaggio() {
 		StringBuilder buffer = new StringBuilder();
 		String separatore = " - ";
 		buffer.append("BS=").append(bsName).append(separatore);
-		buffer.append("mdwEsiRetc=").append(mdwEsiRetc != null ? mdwEsiRetc.trim() : "").append(separatore);
-		buffer.append("mdwEsiMsg=").append(mdwEsiMsg != null ? mdwEsiMsg.trim() : "").append(separatore);
-		buffer.append("mdwEsiAnom=").append(mdwEsiAnom != null ? mdwEsiAnom.trim() : "").append(separatore);
-		buffer.append("livelloSegnalzione=").append(livelloSegnalazione != null ? livelloSegnalazione.trim() : "")
-				.append(separatore);
-		buffer.append("txtSegnalazione=").append(txtSegnalazione != null ? txtSegnalazione.trim() : "")
-				.append(separatore);
+		buffer.append("mdwEsiRetc=").append(outEsi.getMdwEsiRetc() != null ? outEsi.getMdwEsiRetc().trim() : "").append(separatore);
+		buffer.append("mdwEsiMsg=").append(outEsi.getMdwEsiMsg() != null ? outEsi.getMdwEsiMsg().trim() : "").append(separatore);
+		buffer.append("mdwEsiAnom=").append(outEsi.getMdwEsiAnom() != null ? outEsi.getMdwEsiAnom().trim() : "").append(separatore);
+		buffer.append("livelloSegnalzione=").append(outSeg.getLivelloSegnalazione() != null ? outSeg.getLivelloSegnalazione().trim() : "").append(separatore);
+		buffer.append("txtSegnalazione=").append(outSeg.getTxtSegnalazione() != null ? outSeg.getTxtSegnalazione().trim() : "").append(separatore);
 		return buffer.toString();
 	}
+	
 	@Override
 	public String getErrorCode() {
-		return this.errorCode;
+		return CommonErrorCode.BS_SRV_EXCEPTION;
 	}
 
 }
