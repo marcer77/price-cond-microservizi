@@ -4,8 +4,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.CTGConnectorFL03;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.FL03CtgResponseTansformer;

@@ -5,7 +5,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseExceptionHandler;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.handler.CJBaseExceptionHandler;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.EsitoStampaResource;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.config.LoggerUtils;

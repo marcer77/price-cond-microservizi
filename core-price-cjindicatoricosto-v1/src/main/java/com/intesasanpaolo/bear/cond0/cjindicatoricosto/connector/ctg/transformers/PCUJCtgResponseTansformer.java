@@ -11,6 +11,8 @@ import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.C_PCUJS00;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTBST;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTESI;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTSEG;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutRIP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutTAS;
@@ -40,7 +42,9 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}", ServiceUtil.stampaOggetto(outBody),
 				ServiceUtil.stampaOggetto(outEsi), ServiceUtil.stampaOggetto(outSeg));
 		
-		
+		 OutEsi outEsiModel=OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
+	     OutSeg outSegModel=OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
+	      
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
 		if (hasSomething(outBody.OUTRIP)) {
 			
@@ -72,11 +76,8 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 		}
 
 		PCUJResponse response = PCUJResponse.builder()
-				.mdwEsiAnom(outEsi.MDW_ESI_ANOM)
-				.mdwEsiMsg(outEsi.MDW_ESI_MSG)
-				.mdwEsiRetc(outEsi.MDW_ESI_RETC)
-				.livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
-				.txtSegnalazione(outSeg.TXT_SEGNALAZIONE)
+				.outEsi(outEsiModel)
+				.outSeg(outSegModel)
 				.codEsito(outBody.COD_ESITO)
 				.msgEsito(outBody.MSG_ESITO)
 				.outRIPList(outRIPList)

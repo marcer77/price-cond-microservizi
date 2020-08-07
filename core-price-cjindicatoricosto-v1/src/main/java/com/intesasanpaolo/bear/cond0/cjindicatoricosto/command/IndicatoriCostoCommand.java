@@ -100,18 +100,9 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 					indPratica.setWkcjResponse(wkcjResponse);
 				}
 			}
-
-			long count = indicatoriCostoPraticaList.stream().filter(ele -> ele.getWkcjResponse() != null)
-					.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).count();
-
-			boolean checkPresenzaCondizioniVariate = count > 0;
-			log.debug("Recuperate {} condizioni.", count);
-			if (!checkPresenzaCondizioniVariate) {
-				// invocazione PCUJ
-				for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
-					PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
-					indPratica.setPcujResponse(pcujResponse);
-				}
+			for (IndicatoriCostoPratica indPratica : indicatoriCostoPraticaList) {
+				PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
+				indPratica.setPcujResponse(pcujResponse);
 			}
 		}
 
@@ -123,33 +114,25 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private WKCJResponse callWKCJ(String pratica) throws Exception {
-		WKCJRequest wkcjRequest = WKCJRequest.builder()
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.pratica(pratica)
-				.superpratica(dto.getPratica().getCodSuperPratica())
-				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				.tipoChiamata("A4")
-				.dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd"))
-				.lingua("I")
-				.build();
+		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.pratica(pratica).superpratica(dto.getPratica().getCodSuperPratica())
+				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID()).tipoChiamata("A4")
+				.dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
 
 		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
 		return wkcjResponse;
 	}
 
 	private PCUJResponse callPCUJ(String pratica) throws Exception {
-		
-		PCUJRequest pcujRequest = PCUJRequest.builder()
-				.ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-				.nrPratica(pratica)
-				.codEvento(dto.getEvento().getCodice())
-				.subEvento(dto.getEvento().getSubCodice())
-				.classificCliente(dto.getClassificazione())
-				.tipoFunzione(dto.getRichiesta())
+
+		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(pratica)
+				.codEvento(dto.getEvento().getCodice()).subEvento(dto.getEvento().getSubCodice())
+				.classificCliente(dto.getClassificazione()).tipoFunzione(dto.getRichiesta())
 				.codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.dataRiferimento(ServiceUtil.dateToString(new Date(), "yyyyMMdd"))
-				.filialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
+				.filialeOper(
+						ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
 				.build();
 		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
 

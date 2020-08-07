@@ -3,8 +3,8 @@ package com.intesasanpaolo.bear.cond0.cjvariazionicons.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.CTGConnectorT1SF;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.T1SFCtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.connector.ctg.transformers.T1SFCtgResponseTansformer;

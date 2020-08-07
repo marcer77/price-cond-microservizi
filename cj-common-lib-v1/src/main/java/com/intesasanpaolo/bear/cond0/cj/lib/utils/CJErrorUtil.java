@@ -1,12 +1,12 @@
-package com.intesasanpaolo.bear.cond0.cj.lib.exception;
+package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 import java.util.function.Function;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
 
 public class CJErrorUtil {
 	private CJErrorUtil() {

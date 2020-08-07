@@ -7,15 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
 
-@Data
 @Builder
-@ToString
 public class BSException extends CJBaseException {
 	private static final long serialVersionUID = 1L;
 	private final OutEsi outEsi;
 	private final OutSeg outSeg;
 	private final String bsName;
-	//private final String errorCode;
 	
 	@Override
 	public String formattaMessaggio() {

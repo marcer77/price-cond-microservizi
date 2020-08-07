@@ -17,6 +17,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.CTGConnectorPCUJ;
@@ -31,7 +32,6 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.exception.BSException;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutRIP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutTAS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
@@ -42,7 +42,6 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutSTP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.SuperPraticaService;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @RunWith(SpringRunner.class)
