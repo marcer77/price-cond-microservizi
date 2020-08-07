@@ -125,18 +125,18 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			// PCMK registrazione info covenant e benefici
 			registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp);
 
+			//Eliminazione di eventuali dati gia' presenti
+			eliminazioneClientiPresenti();
+			
+			//Registrazione dati adesione
+			registrazioneDatiAdesione(codiceConvenzione);
+			
 			// T1SJ preparazione stampa
 			T1SJResponse t1SJResponse = preparazioneStampa();
 
 			// chiamata alla BS FL03 - recupero
 			String docXML = generazioneXML(t1SJResponse,stampaOutput);
 			stampaOutput.setDocXML(docXML);
-			
-			//Eliminazione di eventuali dati gia' presenti
-			eliminazioneClientiPresenti();
-			
-			//Registrazione dati adesione
-			registrazioneDatiAdesione(codiceConvenzione);
 			
 		} else {
 			log.error("Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
