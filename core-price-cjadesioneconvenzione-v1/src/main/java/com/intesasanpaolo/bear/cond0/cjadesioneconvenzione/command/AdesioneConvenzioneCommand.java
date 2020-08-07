@@ -123,7 +123,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 			RespGetRequisitiAdesioneConvenzione getReqAdesConResp = getRequisitiAdesioneConvenzione(codiceConvenzione);
 
 			// PCMK registrazione info covenant e benefici
-			registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp);
+			registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp,codiceConvenzione);
 
 			//Eliminazione di eventuali dati gia' presenti
 			eliminazioneClientiPresenti();
@@ -247,7 +247,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 	private void registrazioneInfoConventantAndBenefici(
 			List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp,
-			RespGetRequisitiAdesioneConvenzione getReqAdesConResp) {
+			RespGetRequisitiAdesioneConvenzione getReqAdesConResp, String codiceConvenzione) {
 		log.info("registrazioneInfoConventantAndBenefici START");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 
@@ -263,6 +263,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 						.idEntita("00003")
 						.stato("N")
 						.progrEntita(progEntita)
+						.codEntita(codiceConvenzione) //obbligatorio per l'insert
 						.datiEntita(infoCovenantBuilder.build())
 						.tipoAggiornamento("I")
 						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
@@ -282,6 +283,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 						.idEntita("00003")
 						.stato("N")
 						.progrEntita(progEntita)
+						.codEntita(codiceConvenzione) //obbligatorio per l'insert
 						.datiEntita(beneficiBuilder.build())
 						.tipoAggiornamento("I")
 						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())

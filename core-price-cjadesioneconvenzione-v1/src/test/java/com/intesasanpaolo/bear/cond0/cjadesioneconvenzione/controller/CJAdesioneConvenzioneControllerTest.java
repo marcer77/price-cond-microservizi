@@ -118,7 +118,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
                                 .withStatus(200)
                                 .withHeader("content-type", 
                           "text/xml")                             
-                .withBodyFile("GetCovenantPerConvenzione-response.xml")
+                .withBodyFile("GetCovenantPerConvenzione-response2.xml")
                 )
         );
 		
@@ -193,7 +193,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
                                 .withStatus(200)
                                 .withHeader("content-type", 
                           "text/xml")                             
-                .withBodyFile("GetCovenantPerConvenzione-response.xml")
+                .withBodyFile("GetCovenantPerConvenzione-response2.xml")
                 )
         );
 
@@ -203,7 +203,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
                                 .withStatus(200)
                                 .withHeader("content-type", 
                           "text/xml")                             
-                .withBodyFile("GetRequisitiAdesioneConvenzione-response.xml")
+                .withBodyFile("GetRequisitiAdesioneConvenzione-response2.xml")
                 )
         );
 

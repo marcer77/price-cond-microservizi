@@ -79,7 +79,6 @@ public class SuperPraticaService extends BaseService {
 //				+ "TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'), TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'))"; //FUNZIONE NON RICONOSCIUTA DA H2
 
 		String now = dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
-		String timestamp = dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
 		
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("NR_SUPERPRATICA", entity.getNrSuperpratica());
@@ -93,8 +92,8 @@ public class SuperPraticaService extends BaseService {
 		paramMap.put("DATI_ENTITA", entity.getDatiEntita());
 		paramMap.put("TIPO_AGGIORNAMENTO", entity.getTipoAggiornamento());
 		paramMap.put("COD_OPE_ULT_MODIF", entity.getCodOpeUltModif());
-		paramMap.put("DATA_INSER",timestamp);
-		paramMap.put("DT_ULT_MODIFICA",timestamp);
+		paramMap.put("DATA_INSER",now);
+		paramMap.put("DT_ULT_MODIFICA",now);
 		paramMap.put("CURRENT_DATE", now);
 
 		updateRifMultiDataSourceConnector.call(query,
