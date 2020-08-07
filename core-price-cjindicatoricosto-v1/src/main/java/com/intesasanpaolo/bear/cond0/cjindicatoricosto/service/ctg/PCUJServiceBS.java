@@ -9,6 +9,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.CTGConnectorPCUJ;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.transformers.PCUJCtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.transformers.PCUJCtgResponseTansformer;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutTAS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -34,6 +35,12 @@ public class PCUJServiceBS extends BaseService {
 		CJErrorUtil.checkErrore(BSType.PCUJS00, pcujResponse.getOutEsi(), pcujResponse.getOutSeg(),
 				this::additionalCheckErrorFunction, parametriAggiuntivi);
 
+		//TODO:RECUPERARE DESCRIZIONE DA DATABASE ORACLE a partire dal valore: rip.getOutTas().getCodParametro()
+		pcujResponse.getOutRIPList().forEach(rip->{
+			OutTAS outTAS=rip.getOutTas();
+			String codPar=outTAS.getCodParametro();
+			outTAS.setDescrizioneIndiceDB("____descrizione___indice_db");
+		});
 		return pcujResponse;
 
 	}

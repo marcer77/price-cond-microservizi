@@ -72,7 +72,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 		IndicatoriCosto indicatoriCosto = IndicatoriCosto.builder().indicatoriCostoPraticaList(indicatoriCostoPraticaList).build();
 
-		// Recupero informazioni superpratica (elenco pratiche)
+		//Recupero informazioni superpratica (elenco pratiche)
 		String abi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi, dto.getPratica().getCodSuperPratica());
 
@@ -94,8 +94,9 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			});
 
 		}
-		indicatoriCostoPraticaList.forEach((indPratica) -> {
+		indicatoriCostoPraticaList.forEach(indPratica -> {
 			PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
+			//recupero dati da database
 			indPratica.setPcujResponse(pcujResponse);
 		});
 

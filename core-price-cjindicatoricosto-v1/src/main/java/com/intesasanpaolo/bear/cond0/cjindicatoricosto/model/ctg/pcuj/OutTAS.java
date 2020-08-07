@@ -20,5 +20,9 @@ public class OutTAS {
 	private Double tassoDebitore;
 	private Double valParametro;
 	private Double valSpread;
+	/**
+	 * Descrizione recuperata dal database
+	 */
+	private String descrizioneIndiceDB;
 
 }

@@ -1,8 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,7 +26,7 @@ public class OutRIP {
 	private Double valCDF; 	
 	private Double valTeg; 	
 	
+	private OutTAS outTas;
+
 	
-	@Builder.Default
-	private List<OutTAS> outTasList=new ArrayList<>();
 }

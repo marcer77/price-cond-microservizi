@@ -48,37 +48,27 @@ public class PCUJCtgResponseTansformer implements ICtgResponseTransformer<C_PCUJ
 
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
 		if (hasSomething(outBody.OUTRIP)) {
-
 			Arrays.asList(outBody.OUTRIP).forEach(out -> {
-				List<OutTAS> outTasList = new ArrayList<OutTAS>();
 
+				OutTAS outTAS = OutTAS.builder().build();
 				if (hasSomething(out.OUTTAS)) {
-					Arrays.asList(out.OUTTAS).forEach(outTas -> {
-						OutTAS outTAS = OutTAS.builder().codParametro(outTas.COD_PARAMETRO).dataDeca(outTas.DATA_DECA).dataDeco(outTas.DATA_DECO)
-								.flUsura(outTas.FL_USURA).percParametro(outTas.PERC_PARAMETRO).segnoValParametro(outTas.SEGNO_VAL_PARAMETRO)
-								.segnoValSpread(outTas.SEGNO_VAL_SPREAD).tassoDebitore(outTas.TASSO_DEBITORE).valParametro(outTas.VAL_PARAMETRO)
-								.valSpread(outTas.VAL_SPREAD).build();
-						outTasList.add(outTAS);
-					});
+					// si prende solo il primo elemento della lista
+					outTAS = OutTAS.builder().codParametro(out.OUTTAS[0].COD_PARAMETRO).dataDeca(out.OUTTAS[0].DATA_DECA).dataDeco(out.OUTTAS[0].DATA_DECO)
+							.flUsura(out.OUTTAS[0].FL_USURA).percParametro(out.OUTTAS[0].PERC_PARAMETRO).segnoValParametro(out.OUTTAS[0].SEGNO_VAL_PARAMETRO)
+							.segnoValSpread(out.OUTTAS[0].SEGNO_VAL_SPREAD).tassoDebitore(out.OUTTAS[0].TASSO_DEBITORE)
+							.valParametro(out.OUTTAS[0].VAL_PARAMETRO).valSpread(out.OUTTAS[0].VAL_SPREAD).build();
+
 				}
-			   OutRIP outRIP = OutRIP.builder()
-						.codFt(out.COD_FT)
-						.dataScadenzaFido(out.DATA_SCADENZA_FIDO)
-						.divisaFido(out.DIVISA_FIDO)
-						.importoFido(out.IMPORTO_FIDO)
-						.importoFidoEur(out.IMPORTO_FIDO_EUR)
-						.tipoFt(out.TIPO_FT)
-						.descrFt(out.DESCR_FT)
-						.codCatRapRip(out.COD_CAT_RAP_RIP)
-						.codFilRappRip(out.COD_FIL_RAPP_RIP)
-						.numProgRappRip(out.NUM_PROG_RAPP_RIP)
-						.valCDF(out.VAL_CDF)
-						.valTaeg(out.VAL_TAEG)
-						.valTeg(out.VAL_TEG)
-						.outTasList(outTasList).build();
+
+				OutRIP outRIP = OutRIP.builder().codFt(out.COD_FT).dataScadenzaFido(out.DATA_SCADENZA_FIDO).divisaFido(out.DIVISA_FIDO)
+						.importoFido(out.IMPORTO_FIDO).importoFidoEur(out.IMPORTO_FIDO_EUR).tipoFt(out.TIPO_FT).descrFt(out.DESCR_FT)
+						.codCatRapRip(out.COD_CAT_RAP_RIP).codFilRappRip(out.COD_FIL_RAPP_RIP).numProgRappRip(out.NUM_PROG_RAPP_RIP).valCDF(out.VAL_CDF)
+						.valTaeg(out.VAL_TAEG).valTeg(out.VAL_TEG).outTas(outTAS).build();
+
 				outRIPList.add(outRIP);
 			});
 		}
+
 		PCUJResponse response = PCUJResponse.builder().outEsi(outEsiModel).outSeg(outSegModel).codEsito(outBody.COD_ESITO).msgEsito(outBody.MSG_ESITO)
 				.outRIPList(outRIPList).build();
 

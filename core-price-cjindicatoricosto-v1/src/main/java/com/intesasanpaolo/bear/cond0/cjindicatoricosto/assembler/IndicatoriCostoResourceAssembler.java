@@ -55,32 +55,35 @@ public class IndicatoriCostoResourceAssembler
 			// affidamenti
 			PCUJResponse pcujResponse = ent.getPcujResponse() != null ? ent.getPcujResponse() : new PCUJResponse();
 			List<OutRIP> outRIPList = pcujResponse.getOutRIPList() != null ? pcujResponse.getOutRIPList()
-					: new ArrayList<OutRIP>();
+					: new ArrayList<>();
 
 			outRIPList.forEach(outRip -> {
+				
 				IndicatoriResource indicatoriResource = new IndicatoriResource();
-
 				indicatoriResource.setTeg(ServiceUtil.formattaNumero(outRip.getValTeg()));
 				indicatoriResource.setTaeg(ServiceUtil.formattaNumero(outRip.getValTaeg()));
 				indicatoriResource.setCdf(ServiceUtil.formattaNumero(outRip.getValCDF()));
 
 				// TAN: la lista OutTasList conterrà al più un elemento
 				// che servirà per valorizzare il campo composto TAN
-				outRip.getOutTasList().forEach(tas -> {
+				String valoreIndice=outRip.getOutTas().getSegnoValParametro();
+				valoreIndice=valoreIndice+ServiceUtil.formattaNumero(outRip.getOutTas().getValParametro());
+				
+				ParametriResource parametriResource = ParametriResource.builder()
+						.percApplic(ServiceUtil.formattaNumero(outRip.getOutTas().getPercParametro()))
+						.valoreSpread(ServiceUtil.formattaNumero(outRip.getOutTas().getValSpread()))
+						.segnoSpread(outRip.getOutTas().getSegnoValSpread())
+						.descIndice(outRip.getOutTas().getDescrizioneIndiceDB())
+						 .valoreIndice(valoreIndice)
+						.build();
+				
+				TanResource tanResource = TanResource.builder().flUsura(outRip.getOutTas().getFlUsura())
+						.valore(ServiceUtil.formattaNumero(outRip.getOutTas().getTassoDebitore())).parametri(parametriResource)
+						.build();
 
-					ParametriResource parametriResource = ParametriResource.builder()
-							.valoreIndice(ServiceUtil.formattaNumero(tas.getValParametro()))
-							.percApplic(ServiceUtil.formattaNumero(tas.getPercParametro()))
-							.valoreSpread(ServiceUtil.formattaNumero(tas.getValSpread()))
-							.segnoSpread(tas.getSegnoValSpread()).descIndice(tas.getCodParametro()).build();
-
-					TanResource tanResource = TanResource.builder().flUsura(tas.getFlUsura())
-							.valore(ServiceUtil.formattaNumero(tas.getTassoDebitore())).parametri(parametriResource)
-							.build();
-
-					indicatoriResource.setTan(tanResource);
-				});
-
+					
+				indicatoriResource.setTan(tanResource);
+				
 				RapportoResource rapporto=RapportoResource.builder()
 						.categoria(outRip.getCodCatRapRip())
 						.numero(outRip.getNumProgRappRip())
@@ -89,8 +92,10 @@ public class IndicatoriCostoResourceAssembler
 				
 				AffidamentoResource aff = AffidamentoResource.builder()
 						.formaTecnica(outRip.getCodFt())
-						.importo(ServiceUtil.formattaNumero(outRip.getImportoFidoEur()))
+						.importo(ServiceUtil.formattaNumero(outRip.getImportoFido(),"#########"))
+						.importoEUR(ServiceUtil.formattaNumero(outRip.getImportoFidoEur(),"#########"))
 						.scadenza(outRip.getDataScadenzaFido())
+						//TODO:OCCORRE CONVERTIRE LE DATE?In OUTPUT occorre restituire GG.MM.AAAA, dalla BS arriva lo stesso formato?
 						.tipoFTecnica(outRip.getTipoFt())
 						.descFTecnica(outRip.getDescrFt())
 						.divisa(outRip.getDivisaFido())
