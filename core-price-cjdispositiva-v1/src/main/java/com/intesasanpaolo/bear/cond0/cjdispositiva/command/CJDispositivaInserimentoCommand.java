@@ -18,10 +18,12 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiAdesione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
@@ -52,6 +54,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 	@Autowired
 	private RecuperoInformazioniService recuperoInformazioniService;
 	
+	@Autowired
+	private CoreConvenzioneService coreConvenzioneService;
+	
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
@@ -60,10 +65,21 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore.");
 		if (canExecute()) {
 
+			//TODO
+//			List<String> codConvenzione = recuperoInformazioniSuperPratica();
+//
+//			if (codConvenzione != null && codConvenzione.size() == 1) {
+//
+//				String codiceConvenzione = codConvenzione.get(0);
+
+			String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+			String codConvenzione = "";
+
 			// BS PCMK Recupero informazioni superpratica (…)
-			InformazioniPraticaDTO informazioniPraticaDTO = recuperoInformazioniService.recuperaInformazioni(praticaDTO, ispWebservicesHeaderType);
+			List<DatiAdesione> result = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, praticaDTO.getCodPratica() , praticaDTO.getCodSuperPratica(), codConvenzione);
 
 			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
+			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
 			NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
 			// WS VDM StoreCovenantAdesioneConvenzione

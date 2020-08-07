@@ -14,6 +14,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.Lettura
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ConvRiferimento;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiAdesione;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -29,6 +30,41 @@ public class CoreConvenzioneService extends BaseService{
 	 @Autowired
 	 private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
+	 public List<DatiAdesione> acquisizioneDatiAdesione(String codAbi, String codPratica, String codSuperPratica, String codConvenzione) {
+		logger.info("START acquisizioneDatiAdesione");
+		String query = 
+				"SELECT substr(COD_ENTITA ,  1,  7 ) AS \"codConvenzione\"" + 
+				"     , substr(DATI_ENTITA,  1, 13 ) AS \"intestatarioNDG\"" + 
+				"     , substr(DATI_ENTITA, 14, 70 ) AS \"intestatazione\"" + 
+				"     , substr(DATI_ENTITA, 84,  5 ) AS \"intestatarioSpecieGiur\"" + 
+				"     , substr(DATI_ENTITA, 89, 16 ) AS \"intestatarioCodFiscale\"" + 
+				"     , substr(DATI_ENTITA,105, 11 ) AS \"intestatarioPIVA\"" + 
+				"     , substr(DATI_ENTITA,116,  5 ) AS \"rapportoCodFiliale\"" + 
+				"     , substr(DATI_ENTITA,121,  4 ) AS \"rapportoCodCategoria\"" + 
+				"     , substr(DATI_ENTITA,125,  8 ) AS \"rapportoCodProgressivo\"" + 
+				"     , substr(DATI_ENTITA,133,  8 ) AS \"infoStampaData\"" + 
+				"     , substr(DATI_ENTITA,141, 30 ) AS \"infoStampakeyOper\"" + 
+				"  FROM FIATT.TB59R009" + 
+				" WHERE NR_SUPERPRATICA = :codSuperPratica" + 
+				"   AND NR_PRATICA = :codPratica" + 
+				"   AND ID_ENTITA = 'DTADE';";
+		
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+
+		//TODO
+		List<DatiAdesione> resultList = null;
+//		List<DatiAdesione> resultList = convRifMultiDataSourceConnector.call(query,
+//  				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
+//  				ResponseDb2TransformerFactory.of(), paramMap, codAbi);	
+		
+		logger.debug("Founded:", resultList);
+		
+		logger.info("END acquisizioneDatiAdesione");
+		return resultList;
+	 }
+	 
 	
 	//Lettura R. convenzione di rifiremento
 	//@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
