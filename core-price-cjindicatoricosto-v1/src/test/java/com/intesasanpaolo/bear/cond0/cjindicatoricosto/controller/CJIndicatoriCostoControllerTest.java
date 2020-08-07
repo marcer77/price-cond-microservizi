@@ -138,7 +138,7 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		outTAS.setCodParametro("TEST");
 		outTAS.setTassoDebitore(1.0);
 		outTasList.add(outTAS);
-		outRIP.setOutTasList(outTasList);
+		//outRIP.setOutTasList(outTasList);
 		outRIPList.add(outRIP);
 		pcujResponse.setOutRIPList(outRIPList);
 		return pcujResponse;

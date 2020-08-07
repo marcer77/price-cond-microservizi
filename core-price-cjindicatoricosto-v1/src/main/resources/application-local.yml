@@ -76,6 +76,19 @@ connectors:
             readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
             writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
             writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+  jdbcConfigurations:
+     default:
+         timeout: 8000
+         connectionPoolSize: 5
+     items:
+         GenericJdbcConnector:
+           uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
+           password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
+           enabledTracing: true
+        
+      
   
 hostbridge:
   # added to mock CTG call

@@ -28,6 +28,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriResour
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.ParametriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.PraticaResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
@@ -39,6 +40,9 @@ public class CJIndicatoriCostoController extends CoreController {
 
 	@Autowired
 	private BeanFactory beanFactory;
+
+	@Autowired
+	private PCUJServiceBS testService;
 
 	@Autowired
 	private IndicatoriCostoResourceAssembler indicatoriCostoResourceAssembler;
@@ -68,6 +72,10 @@ public class CJIndicatoriCostoController extends CoreController {
 				.serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID).transactionId(transactionId).timestamp(timestamp)
 				.serviceVersion(serviceVersion).build();
 
+		
+		String x=testService.getDescrizioneCondizione("012345678");
+		System.out.println(">>>>>>>>>>>>>>>>>><"+x);
+		
 		IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto, ispWebservicesHeaderType);
 		IndicatoriCosto indicatoriCosto = cmd.execute();
 
