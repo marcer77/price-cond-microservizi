@@ -1,0 +1,44 @@
+connectors:
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT:10000}
+        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE}
+        mocked: false
+        sources:
+          - abi: ${ABI_SPIMI}
+            uri: ${DATASOURCE_SPIMI_DB2_URI}
+            port: ${DATASOURCE_SPIMI_DB2_PORT}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}    
+          
+          - abi: ${ABI_BKFID}
+            uri: ${DATASOURCE_BKFID_DB2_URI}
+            port: ${DATASOURCE_BKFID_DB2_PORT}
+            dbName: ${DATASOURCE_BKFID_DB2_DBNAME}
+            readUsername: ${DATASOURCE_BKFID_DB2_USERNAME}
+            readPassword: ${DATASOURCE_BKFID_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_BKFID_DB2_USERNAME}
+            writePassword: ${DATASOURCE_BKFID_DB2_PASSWORD}    
+          
+          - abi: ${ABI_ISPBK}
+            uri: ${DATASOURCE_ISPBK_DB2_URI}
+            port: ${DATASOURCE_ISPBK_DB2_PORT}
+            dbName: ${DATASOURCE_ISPBK_DB2_DBNAME}
+            readUsername: ${DATASOURCE_ISPBK_DB2_USERNAME}
+            readPassword: ${DATASOURCE_ISPBK_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_ISPBK_DB2_USERNAME}
+            writePassword: ${DATASOURCE_ISPBK_DB2_PASSWORD}    
+          
+          - abi: ${ABI_BKIMI}
+            uri: ${DATASOURCE_BKIMI_DB2_URI}
+            port: ${DATASOURCE_BKIMI_DB2_PORT}
+            dbName: ${DATASOURCE_BKIMI_DB2_DBNAME}
+            readUsername: ${DATASOURCE_BKIMI_DB2_USERNAME}
+            readPassword: ${DATASOURCE_BKIMI_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_BKIMI_DB2_USERNAME}
+            writePassword: ${DATASOURCE_BKIMI_DB2_PASSWORD}    
+        

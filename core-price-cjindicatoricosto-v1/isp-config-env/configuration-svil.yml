@@ -7,9 +7,4 @@ configuration:
        acronimo: COND0
        servizio: COND0-CTGBS
        env: SVIL
-       user: GACONNEC
-    oracle:
-     - name: CONDDATA
-       acronimo: COND0
-       servizio: COND0
-       user: COND_APP   
+       user: GACONNEC  

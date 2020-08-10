@@ -44,13 +44,10 @@ public class PCUJServiceBS extends BaseService {
 	private GenericJdbcConnector<String, Void, String> genericJdbcConnector;
 
 	public PCUJResponse callBS(PCUJRequest pcujRequest) {
-		PCUJResponse pcujResponse = new PCUJResponse();
-		pcujResponse = this.ctgConnectorPCUJ.call(pcujRequest, requestTransformer, responseTransformer, null);
+		PCUJResponse pcujResponse = this.ctgConnectorPCUJ.call(pcujRequest, requestTransformer, responseTransformer, new Object());
 		String[] parametriAggiuntivi = new String[0];
 		CJErrorUtil.checkErrore(BSType.PCUJS00, pcujResponse.getOutEsi(), pcujResponse.getOutSeg(), this::additionalCheckErrorFunction, parametriAggiuntivi);
 
-		// TODO:RECUPERARE DESCRIZIONE DA DATABASE ORACLE a partire dal valore:
-		// rip.getOutTas().getCodParametro()
 		pcujResponse.getOutRIPList().forEach(rip -> {
 			OutTAS outTAS = rip.getOutTas();
 			String codParametro = outTAS.getCodParametro();
@@ -64,9 +61,18 @@ public class PCUJServiceBS extends BaseService {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Recupera dal database oracle COND0 la descrizione dell'indice
+	 * 
+	 * 
+	 * @param codParametro
+	 * @return
+	 */
 	public String getDescrizioneCondizione(String codParametro) {
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("codParametro", codParametro);
+		//codIstituto si può assumere sempre valorizzato a "01"
 		paramMap.put("codIstituto", "01");
 
 		StringWriter query = new StringWriter();
@@ -83,6 +89,6 @@ public class PCUJServiceBS extends BaseService {
 			}
 		}, JDBCQueryType.FIND), ResponseTransformerFactory.of(), paramMap);
 
-		return result != null && result.size() > 0 ? result.get(0) : "";
+		return !result.isEmpty() ? result.get(0) : "";
 	}
 }

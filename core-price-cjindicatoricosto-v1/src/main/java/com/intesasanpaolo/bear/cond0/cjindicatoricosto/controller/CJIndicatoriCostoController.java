@@ -73,8 +73,8 @@ public class CJIndicatoriCostoController extends CoreController {
 				.serviceVersion(serviceVersion).build();
 
 		
-		String x=testService.getDescrizioneCondizione("012345678");
-		System.out.println(">>>>>>>>>>>>>>>>>><"+x);
+		//String x=testService.getDescrizioneCondizione("012345678");
+		//System.out.println(">>>>>>>>>>>>>>>>>><"+x);
 		
 		IndicatoriCostoCommand cmd = beanFactory.getBean(IndicatoriCostoCommand.class, dto, ispWebservicesHeaderType);
 		IndicatoriCosto indicatoriCosto = cmd.execute();

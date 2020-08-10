@@ -4,6 +4,5 @@ import com.intesasanpaolo.bear.exceptions.model.BearErrorCode;
 
 public class ErrorCode extends BearErrorCode {
 
-    //public static final String SUPERPATICA_NOT_FOUND_CODE = "ERR001";
     
 }

@@ -1,15 +1,16 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 import java.math.RoundingMode;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -301,4 +302,18 @@ public class ServiceUtil {
 		return sdf.format(date);
 	}
 	
+	public static String convertiDate(String dateInput, String dateFormatInput,String dateFormatOutput) throws ParseException {
+		SimpleDateFormat sdfInput = new SimpleDateFormat(dateFormatInput);
+		SimpleDateFormat sdfOutput = new SimpleDateFormat(dateFormatOutput);
+		String output=null;
+		try {
+			Date dataScadenzaInput= StringUtils.isNotEmpty(dateInput)?sdfInput.parse(dateInput):null;
+			if (dataScadenzaInput!=null)
+				output=sdfOutput.format(dataScadenzaInput);
+		} catch (ParseException e) {
+			logger.error("Problema nella conversione della data {} dal formato {} al formato {}",dateInput,dateFormatInput,dateFormatOutput);
+			throw e;
+		}
+		return output;
+	}
 }

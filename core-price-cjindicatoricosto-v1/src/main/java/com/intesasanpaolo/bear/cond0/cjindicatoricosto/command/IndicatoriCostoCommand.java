@@ -1,8 +1,10 @@
 package com.intesasanpaolo.bear.cond0.cjindicatoricosto.command;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -59,8 +61,10 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 		boolean esitoControlli = false;
 		esitoControlli = dto != null && !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode()) && !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId()) && !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("- canExecute END - " + esitoControlli);
 		return esitoControlli;
@@ -72,7 +76,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 		IndicatoriCosto indicatoriCosto = IndicatoriCosto.builder().indicatoriCostoPraticaList(indicatoriCostoPraticaList).build();
 
-		//Recupero informazioni superpratica (elenco pratiche)
+		// Recupero informazioni superpratica (elenco pratiche)
 		String abi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 		List<String> pratiche = superPraticaService.recuperaPraticheBySuperPratica(abi, dto.getPratica().getCodSuperPratica());
 
@@ -86,52 +90,107 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			indicatoriCostoPratica.setPratica(pa);
 			indicatoriCostoPraticaList.add(indicatoriCostoPratica);
 		});
+
+		// invocazione WKCJ
 		if (TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString().equals(dto.getRichiesta())) {
 
-			indicatoriCostoPraticaList.forEach((indPratica) -> {
+			indicatoriCostoPraticaList.forEach(indPratica -> {
 				WKCJResponse wkcjResponse = callWKCJ(indPratica.getPratica());
 				indPratica.setWkcjResponse(wkcjResponse);
 			});
 
 		}
+		// invocazione PCUJ
 		indicatoriCostoPraticaList.forEach(indPratica -> {
 			PCUJResponse pcujResponse = callPCUJ(indPratica.getPratica());
-			//recupero dati da database
+			// recupero dati da database
 			indPratica.setPcujResponse(pcujResponse);
 		});
 
-		// TODO:
-		indicatoriCosto.setCodErrore("00");
-		indicatoriCosto.setDescErrore("");
+		String returnCode ="00";
+		StringWriter returnMessage = new StringWriter();
+
+		// gestione gerarchia WARNING
+		// check sul ritorno della WKCJ
+		List<IndicatoriCostoPratica> wkcjWarningList = indicatoriCostoPraticaList.stream().filter(ele -> ele.getWkcjResponse() != null)
+				.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).collect(Collectors.toList());
+
+		if (CollectionUtils.isNotEmpty(wkcjWarningList)) {
+			returnCode = "01";
+			returnMessage.append("WARNING - rilevate differenze in fase di controllo");
+			returnMessage.append("\n\n");
+
+		} else {
+			List<IndicatoriCostoPratica> pcujWarningList = indicatoriCostoPraticaList.stream()
+					.filter(ele -> !"00".equals(ele.getPcujResponse().getCodEsito()))
+					.collect(Collectors.toList());
+
+			returnCode = pcujWarningList.stream().map((ele) -> ele.getPcujResponse().getCodEsito()).sorted((String st1, String st2) -> {
+				if (st1.equals("01")
+						||(st1.equals("02") && !st2.equals("01"))
+						||(st1.equals("03") && !st2.equals("01") && !st2.equals("02")))	
+					return 1;
+				return -1;
+			}).findFirst().orElse("");
+
+			switch (returnCode) {
+			case "01":
+				returnMessage.append("Warning - presenti variazioni condizioni economiche");
+				break;
+			case "02":
+				returnMessage.append("Warning - presenti variazioni TEG");
+				break;
+			case "03":
+				returnMessage.append("Warning - pesenti variazioni TAEG");
+				break;
+			default:
+				returnMessage.append("Warning Generico");
+
+			}
+
+		}
+
+		// solo per debug stampo gli esiti delle BS per tutte le pratiche:
+		returnMessage.append("\n\n\n\nRisposta BS WKCJ per pratica:");
+		indicatoriCostoPraticaList.forEach(indicatoriCostoPratica -> {
+			returnMessage.append(" [ ");
+			returnMessage.append(" Pratica:" + indicatoriCostoPratica.getPratica()).append(" Condizioni Variate: ");
+			indicatoriCostoPratica.getWkcjResponse().getOutCNFList().forEach(cnd -> returnMessage.append("-").append(cnd.getCodCnd()).append(" - "));
+			returnMessage.append(" ]");
+		});
+		returnMessage.append("Risposta BS PCUJ per pratica:");
+		indicatoriCostoPraticaList.forEach(indicatoriCostoPratica -> {
+			returnMessage.append(" [ ");
+			returnMessage.append(" -Pratica:" + indicatoriCostoPratica.getPratica()).append(" [ ");
+			returnMessage.append(" -CodEsito: " + indicatoriCostoPratica.getPcujResponse().getCodEsito());
+			returnMessage.append(" -MsgEsito: " + indicatoriCostoPratica.getPcujResponse().getMsgEsito());
+			returnMessage.append(" ] --- ");
+		});
+		////////////////////////////////////////
+		
+		indicatoriCosto.setCodErrore(returnCode);
+		indicatoriCosto.setDescErrore(returnMessage.toString());
 
 		return indicatoriCosto;
 	}
 
 	private WKCJResponse callWKCJ(String pratica) {
-		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).pratica(pratica).superpratica(dto.getPratica().getCodSuperPratica())
-				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID()).tipoChiamata("A4").dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
+		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).pratica(pratica)
+				.superpratica(dto.getPratica().getCodSuperPratica()).utente(ispWebservicesHeaderType.getOperatorInfo().getUserID()).tipoChiamata("A4")
+				.dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
 
-		WKCJResponse wkcjResponse = wkcjServiceBS.callBS(wkcjRequest);
-		return wkcjResponse;
+		return wkcjServiceBS.callBS(wkcjRequest);
 	}
 
 	private PCUJResponse callPCUJ(String pratica) {
 
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.tipoFunzione(dto.getRichiesta())
-				.codEvento(dto.getEvento().getCodice())
-				.subEvento(dto.getEvento().getSubCodice())
-				.classificCliente(dto.getClassificazione())
-				.dataRiferimento(ServiceUtil.dateToString(new Date(), "yyyyMMdd"))
-				.codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).tipoFunzione(dto.getRichiesta())
+				.codEvento(dto.getEvento().getCodice()).subEvento(dto.getEvento().getSubCodice()).classificCliente(dto.getClassificazione())
+				.dataRiferimento(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.filialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
-				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-				.nrPratica(pratica)
-				.build();
-		
-		PCUJResponse pcujResponse = pcujServiceBS.callBS(pcujRequest);
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(pratica).build();
 
-		return pcujResponse;
+		return pcujServiceBS.callBS(pcujRequest);
 	}
 
 }
