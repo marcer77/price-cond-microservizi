@@ -18,6 +18,7 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseException;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
@@ -90,7 +91,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	}
 
 	@ExceptionHandler({ HttpMessageNotReadableException.class })
-	protected ResponseEntity<ErrorResource> handleInvalidFormatException(HttpMessageNotReadableException e, HttpServletRequest request,
+	protected ResponseEntity<ErrorResource> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request,
 			HttpServletResponse response) {
 
 		logger.error("handleException {}", e.getMessage(), e);
@@ -121,7 +122,6 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 		resource.setReturnMessages(map);
 
 		ErrorMessage errorMessage = new ErrorMessage();
-		// errorMessage.setMessageKey("");
 		errorMessage.setMessageTitle("Errore durante la lavorazione della richiesta.");
 		errorMessage.setMessage("Causa= [" + e.getCause() + "] - Messaggio=[" + e.getMessage() + "]");
 		errorMessage.setErrorCode("ERR000");

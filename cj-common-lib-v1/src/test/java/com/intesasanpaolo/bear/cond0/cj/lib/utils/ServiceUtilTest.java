@@ -1,12 +1,18 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
+import com.intesasanpaolo.bear.core.resource.BaseResource;
+import com.intesasanpaolo.bear.exceptions.model.ErrorMessage;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -163,7 +169,11 @@ public class ServiceUtilTest {
 
 	@Test
 	public void testStampaOggetto() {
-		ServiceUtil.stampaOggetto(new Object());
+		BaseResource baseResource=new BaseResource();
+		baseResource.setEntityId("12");
+		baseResource.setReturnMessages(new HashMap<String, List<ErrorMessage>>());
+		String st=ServiceUtil.stampaOggetto(baseResource).toString();
+		Assert.assertTrue(!st.equals(""));
 	}
 
 	@Test
@@ -177,4 +187,24 @@ public class ServiceUtilTest {
 
 		ServiceUtil.setBSHeaders(header, BSTypeCall.FL03S00_CALL, ispWebservicesHeaderType);
 	}
+	
+	@Test	
+	public void testConvertiDate01() throws ParseException {
+		String d=ServiceUtil.convertiDate("20201231", "yyyyMMdd","dd.MM.yyyy");
+		Assert.assertTrue(d.equals("31.12.2020"));
+	}
+	@Test(expected = ParseException.class)	
+	public void testConvertiDate02() throws ParseException {
+		String d=ServiceUtil.convertiDate("a0202231", "yyyyMMdd","dd.MM.yyyy");
+	}
+	@Test	
+	public void testIfNullAsDouble() throws ParseException {
+		Double d=ServiceUtil.ifNullAsDouble(null);
+		Assert.assertTrue(d==0);
+		d=ServiceUtil.ifNullAsDouble(40);
+		Assert.assertTrue(d==40);
+	}
+	
+	
+	
 }
