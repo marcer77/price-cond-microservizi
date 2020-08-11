@@ -1,9 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws;
 
 import org.springframework.stereotype.Service;
-import org.springframework.ws.soap.SoapMessage;
-import org.springframework.oxm.Unmarshaller;
-
 
 import com.intesasanpaolo.bear.connector.ws.connector.BaseDataPowerSoapConnector;
 

@@ -1,5 +1,4 @@
 spring:
-  profile: development
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
@@ -18,7 +17,7 @@ logging:
     org.keycloak: INFO
 
 error-manager:
-  enabled: false
+  enabled: true
   
 tracing:
   enabled: true
@@ -49,60 +48,8 @@ hostbridge:
     Y1.CTGCUserName: ${CTG_COND0_USERNAME}
     Y1.CTGPassword: ${CTG_COND0_PASSWORD}
     Y1.CTGSSL: ${CTG_COND0_SSL}
-  # added to mock CTG call
-  #servicesFileProps:
-  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.fileMode: true
-  #  com.dsi.business.SSA_Z3.integration.jdo.P_Z3YCS00.C_Z3YCS00.file: classpath:mocks/CTG/Z3YC_out.txt
-  #  com.dsi.business.SSA_AF.integration.jdo.P_AFDYS04.C_AFDYS04.file: classpath:mocks/CTG/AFDY_out.txt
-  #  com.dsi.business.SSA_AF.integration.jdo.P_AFRJS03.C_AFRJS03.file: classpath:mocks/CTG/AFRJ_out.txt
-#  transportsFileProps:
-#    mqtestGroup.transport: MQ
-#    mqtestGroup.trials: 2
-#    mqtestGroup.resumetime: 1
-  #tracerFileProps:
-  #  com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00.traceClass.Name_0: connector.log.DefaultTraceClass
-  #  com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.C_T1SFS00.traceClass.Name_0: connector.log.DefaultTraceClass
-
-
 
 connectors:
-  db2MultiDsConfigurations:
-    items:
-      MultiDataSourceDb2Connector:
-        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT}
-        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE}
-        mocked: false
-        sources:
-          - abi: ${ABI_SDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_MDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_IDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_EDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_JDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
   soapConfiguration:
    items:
      GetCovenantPerConvenzioneConnector:

@@ -34,12 +34,12 @@ public class FL03CtgRequestTrasformer implements ICtgRequestTransformer<FL03Requ
 		
 		
 		INPBST inpbst = new INPBST();
-		inpbst.COD_APPLIC = fl03Request.getCodApplic();
-		inpbst.COD_FUNZIONE = fl03Request.getCodFunzione();
-		inpbst.COD_SOTTOAPPLIC = fl03Request.getCodSottoApplic();
-		inpbst.FILLER = fl03Request.getFiller();
-		inpbst.KEY_OPER = fl03Request.getKeyOper();
-		inpbst.NUM_STR_KEY = fl03Request.getNumStrKey();
+		inpbst.COD_APPLIC =ServiceUtil.ifNull(fl03Request.getCodApplic(),"");
+		inpbst.COD_FUNZIONE = ServiceUtil.ifNull(fl03Request.getCodFunzione(),"");
+		inpbst.COD_SOTTOAPPLIC = ServiceUtil.ifNull(fl03Request.getCodSottoApplic(),"");
+		inpbst.FILLER = ServiceUtil.ifNull(fl03Request.getFiller(),"");
+		inpbst.KEY_OPER = ServiceUtil.ifNull(fl03Request.getKeyOper(),"");
+		inpbst.NUM_STR_KEY = ServiceUtil.ifNullAsInt(fl03Request.getNumStrKey(),0);
 
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = inpbst;

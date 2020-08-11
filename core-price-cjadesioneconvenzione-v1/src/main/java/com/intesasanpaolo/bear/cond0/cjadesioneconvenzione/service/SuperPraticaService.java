@@ -1,24 +1,26 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service;
 
-import java.math.BigDecimal;
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.dateToString;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import javax.transaction.Transactional;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.exception.CJConvenzioneNotFoundDB2Exception;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
-import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.*;
 
 @Service
 public class SuperPraticaService extends BaseService {
@@ -29,13 +31,14 @@ public class SuperPraticaService extends BaseService {
 	@Autowired
 	private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
-	public List<String> recuperaCodConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public String recuperaCodConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
 		logger.info("recuperaCodConvenzione codAbi {} codSuperPratica {} nrPratica {} START ",codAbi,codSuperPratica,nrPratica);
 
-		String query = "SELECT DISTINCT" + " COD_ENTITA " + " FROM FIATT.TB59R009"
+		String query = "SELECT SUBSTR(COD_ENTITA, 1, 7) FROM FIATT.TB59R009"
 				+ " WHERE NR_SUPERPRATICA = :codSuperPratica" + " AND NR_PRATICA = :numeroPratica"
 				+ " AND ID_ENTITA = '00001'";
-
+		
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("numeroPratica", nrPratica);
@@ -44,10 +47,12 @@ public class SuperPraticaService extends BaseService {
 				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
-		logger.debug("Founded:", resultList);
-
-		logger.info("END recuperaCodConvenzione");
-		return resultList;
+		logger.debug("Founded:{}", resultList);
+		
+		if (CollectionUtils.isEmpty(resultList)) {
+			 throw CJConvenzioneNotFoundDB2Exception.builder().codSuperPratica(codSuperPratica).nrPratica(nrPratica).build();
+		}
+		return resultList.get(0);
 	}
 
 	// @Transactional
@@ -101,6 +106,16 @@ public class SuperPraticaService extends BaseService {
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
 		logger.info("END insertEntita");
+	}
+	
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void inserisciAdesioneConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
+		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00003");
+		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00004");
+		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00005");
+		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "DTADE");
+		
 	}
 
 }

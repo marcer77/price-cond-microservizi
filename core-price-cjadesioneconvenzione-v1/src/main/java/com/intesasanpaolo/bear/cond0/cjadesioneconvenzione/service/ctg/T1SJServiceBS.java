@@ -4,6 +4,8 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.CTGConnectorT1SJ;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers.T1SJCtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers.T1SJCtgResponseTansformer;
@@ -25,15 +27,18 @@ public class T1SJServiceBS extends BaseService {
 	@Autowired
 	private T1SJCtgResponseTansformer responseTransformer;
 
-	public T1SJResponse callBS(T1SJRequest t1sjRequest) throws Exception {
-		T1SJResponse t1sjResponse =null;
-		try{
-			t1sjResponse = this.ctgConnectorT1SJ.call(t1sjRequest, requestTransformer, responseTransformer,null);			
-		}catch (Exception e) {
-			logger.error("Errore-",e);
-			//throw e;
-			//TODO:GESTIRE L'ERRORE
-		}
+	public T1SJResponse callBS(T1SJRequest t1sjRequest){
+		T1SJResponse t1sjResponse =this.ctgConnectorT1SJ.call(t1sjRequest, requestTransformer, responseTransformer,null);			
+
+		String[] parametriAggiuntivi = new String[0];
+
+		CJErrorUtil.checkErrore(BSType.T1SJS00, t1sjResponse.getOutEsi(), t1sjResponse.getOutSeg(), this::additionalCheckErrorFunction, parametriAggiuntivi);
+
 		return t1sjResponse;
 	}
+	
+	private boolean additionalCheckErrorFunction(String... st) {
+		return false;
+	}
 }
+

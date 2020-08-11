@@ -1,7 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model;
 
 import org.apache.commons.lang3.builder.Builder;
-import org.ehcache.core.spi.service.ServiceUtils;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.PaddingField;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;

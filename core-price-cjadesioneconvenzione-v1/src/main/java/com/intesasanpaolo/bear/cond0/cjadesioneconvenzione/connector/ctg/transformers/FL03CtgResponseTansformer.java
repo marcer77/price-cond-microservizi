@@ -7,6 +7,8 @@ import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTBST;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTESI;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.OUTSEG;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -24,7 +26,7 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
     @Override
     public FL03Response transform(CtgConnectorResponse<C_FL03S00> ctgResponse) {
     	C_FL03S00 connector = ctgResponse.getResult();
- 
+    	 
         //OUTHEADER outHeader = hasSomething(connector.OUTHEADER) ? connector.OUTHEADER[0] : new OUTHEADER();
         OUTBST outBody = hasSomething(connector.OUTBST) ? connector.OUTBST[0] : new OUTBST();
         OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
@@ -32,7 +34,12 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
         
         logger.debug("\n outBody={} \n outEsi={} \n outSeg={}",ServiceUtil.stampaOggetto(outBody),ServiceUtil.stampaOggetto(outEsi),ServiceUtil.stampaOggetto(outSeg));
         
+        OutEsi outEsiModel=OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
+        OutSeg ouSegModel=OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
+        
         FL03Response fl03Response= FL03Response.builder()
+        		.outEsi(outEsiModel)
+        		.outSeg(ouSegModel)
         		.codAppli(outBody.COD_APPLIC)
         		.codErr(outBody.COD_ERR)
         		.codSottoAppl(outBody.COD_SOTTOAPPLIC)
@@ -40,11 +47,6 @@ public class FL03CtgResponseTansformer implements ICtgResponseTransformer<C_FL03
         		.formatoStr(outBody.FORMATO_STR)
         		.idTemplate( outBody.ID_TEMPLATE)
         		.keyOper(outBody.KEY_OPER)
-        		.livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
-        		.txtSegnalazione(outSeg.TXT_SEGNALAZIONE)
-        		.mdwEsiAnom( outEsi.MDW_ESI_ANOM)
-        		.mdwEsiMsg( outEsi.MDW_ESI_MSG)
-        		.mdwEsiRetc(outEsi.MDW_ESI_RETC)
         		.numRapporto( outBody.NUM_RAPPORTO)
         		.stringaOut(outBody.STRINGA_OUT)
         		.rc(outBody.RC)

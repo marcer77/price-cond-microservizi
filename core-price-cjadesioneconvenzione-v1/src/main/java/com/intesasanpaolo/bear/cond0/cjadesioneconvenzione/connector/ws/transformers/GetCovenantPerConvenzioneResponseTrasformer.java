@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers;
 
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.withNoException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +14,6 @@ import com.intesasanpaolo.bear.connector.ws.transformer.ISoapResponseTransformer
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.GetCovenantPerConvenzioneResponse;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzione;
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.ResponseGetCovenantPerConvenzioneRespGetCovenantPerConvenzioneCovenantDaAttivare;
-import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.*;
 
 @Service
 public class GetCovenantPerConvenzioneResponseTrasformer implements

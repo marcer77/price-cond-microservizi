@@ -7,6 +7,8 @@ import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.C_T1SJS00;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.OUTBST;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.OUTESI;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.OUTSEG;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJResponse;
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -33,12 +35,14 @@ public class T1SJCtgResponseTansformer implements ICtgResponseTransformer<C_T1SJ
 		  
 		logger.debug("\n outBody={} \n outEsi={} \n outSeg={}",ServiceUtil.stampaOggetto(outBody),ServiceUtil.stampaOggetto(outEsi),ServiceUtil.stampaOggetto(outSeg));
 	      
+		 
+        OutEsi outEsiModel=OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
+        OutSeg outSegModel=OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
+       
+		
 		T1SJResponse t1sjResponse= T1SJResponse.builder()
-				.mdwEsiAnom(outEsi.MDW_ESI_ANOM)
-				.mdwEsiMsg(outEsi.MDW_ESI_MSG)
-				.mdwEsiRetc(outEsi.MDW_ESI_RETC)
-				.livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE)
-				.txtSegnalazione(outSeg.TXT_SEGNALAZIONE)
+				.outEsi(outEsiModel)
+				.outSeg(outSegModel)
 				.t1SjOKeyOperazione(outBody.T1SJ_O_KEY_OPERAZIONE)
 				.t1SjOProgStampa(outBody.T1SJ_O_PROG_STAMPA)
 				.t1SjOReturnCode(outBody.T1SJ_O_RETURN_CODE)

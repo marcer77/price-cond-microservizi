@@ -1,6 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc;
 
 import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 @Service

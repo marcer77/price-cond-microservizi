@@ -101,52 +101,49 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 	}
 
 	@Override
-	protected StampaOutput doExecute() throws Exception {
+	protected StampaOutput doExecute(){
 		log.info("doExecute START");
 		StampaOutput stampaOutput = new StampaOutput();
 		
 		codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 
 		// Recupero informazioni superpratica (convenzione)
-		List<String> codConvenzione = recuperoInformazioniSuperPratica();
-
-		if (codConvenzione != null && codConvenzione.size() == 1) {
-
-			String codiceConvenzione = codConvenzione.get(0);
-			
-			log.info("doExecute Recuperato codConvenzione "+codiceConvenzione);
-			
-			// invocazione VDM GetCovenantPerConvenzione
-			List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = getCovenantPerConvenzione(codiceConvenzione);
-			
-			// invocazione VDM GetRequisitiAdesioneConvenzione
-			RespGetRequisitiAdesioneConvenzione getReqAdesConResp = getRequisitiAdesioneConvenzione(codiceConvenzione);
-
-			// PCMK registrazione info covenant e benefici
-			registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp,codiceConvenzione);
-
-			//Eliminazione di eventuali dati gia' presenti
-			eliminazioneClientiPresenti();
-			
-			//Registrazione dati adesione
-			registrazioneDatiAdesione(codiceConvenzione);
-			
-			// T1SJ preparazione stampa
-			T1SJResponse t1SJResponse = preparazioneStampa();
-
-			// chiamata alla BS FL03 - recupero
-			String docXML = generazioneXML(t1SJResponse,stampaOutput);
-			stampaOutput.setDocXML(docXML);
-			
-		} else {
-			log.error("Lista presenta " + (codConvenzione != null ? codConvenzione.size() : 0) + " elementi.");
-		}
-		log.info("doExecute END");
-		// TODO: costruire il modello di ritorno
-		return stampaOutput;
-	}
+		String codiceConvenzione = superPraticaService.recuperaCodConvenzione(codAbi,dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica());
 	
-	private String generazioneXML(T1SJResponse t1SJResponse, StampaOutput stampaOutput) throws Exception {
+		logger.info("doExecute Recuperato codConvenzione {}",codiceConvenzione);
+			
+		// invocazione VDM GetCovenantPerConvenzione
+		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(codAbi, codiceConvenzione);
+		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
+	
+		// invocazione VDM GetRequisitiAdesioneConvenzione
+		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(codAbi, codiceConvenzione);
+		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
+		
+		this.superPraticaService.inserisciAdesioneConvenzione( codAbi, dto.getPratica().getCodSuperPratica(),dto.getPratica().getCodPratica());
+		// PCMK registrazione info covenant e benefici
+		//registrazioneInfoConventantAndBenefici(getCovPerConResp, getReqAdesConResp,codiceConvenzione);
+
+		//Eliminazione di eventuali dati gia' presenti
+		//eliminazioneClientiPresenti();
+		
+		//Registrazione dati adesione
+		//registrazioneDatiAdesione(codiceConvenzione);
+		
+		// T1SJ preparazione stampa
+		T1SJResponse t1SJResponse = preparazioneStampa();
+
+		// chiamata alla BS FL03 - recupero
+		String docXML = generazioneXML(t1SJResponse,stampaOutput);
+		stampaOutput.setDocXML(docXML);
+		
+		log.info("doExecute END");
+		
+		return stampaOutput;
+		
+	} 
+		
+	private String generazioneXML(T1SJResponse t1SJResponse, StampaOutput stampaOutput){
 		log.info("generazioneXML START");
 		String docXML = "";
 
@@ -181,7 +178,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		log.info("eliminazioneClientiPresenti END");
 	}
 	
-	private T1SJResponse preparazioneStampa() throws Exception {
+	private T1SJResponse preparazioneStampa(){
 		log.info("preparazioneStampa START");
 		T1SJRequest t1SJRequest = buildT1SJRequest();
 		T1SJResponse t1SJResponse = t1SJServiceBS.callBS(t1SJRequest);
@@ -189,7 +186,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		return t1SJResponse;
 	}
 	
-	private RespGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzione(String codConvenzione) {
+	/*private RespGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzione(String codConvenzione) {
 		log.info("getRequisitiAdesioneConvenzione START");
 		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(
 				codAbi, codConvenzione);
@@ -198,9 +195,9 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 				.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
 		log.info("getRequisitiAdesioneConvenzione END");
 		return getReqAdesConResp;
-	}
+	}*/
 	
-	private List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovenantPerConvenzione(String codConvenzione){
+	/*private List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovenantPerConvenzione(String codConvenzione){
 		log.info("getCovenantPerConvenzione START");
 		
 		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(codAbi, codConvenzione);
@@ -213,18 +210,9 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 		superPraticaService.deleteEntita(codAbi, dto.getPratica().getCodSuperPratica(),
 				dto.getPratica().getCodPratica(), "00004");
-		
 		log.info("getCovenantPerConvenzione END");
 		return getCovPerConResp;
-	}
-	
-	private List<String> recuperoInformazioniSuperPratica() {
-		log.info("recuperoInformazioniSuperPratica START");
-		List<String> codConvenzione = superPraticaService.recuperaCodConvenzione(codAbi,
-				dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica());
-		log.info("recuperoInformazioniSuperPratica END");
-		return codConvenzione;
-	}
+	}*/
 	
 	private void registrazioneDatiAdesione(String codiceConvenzione) {
 		log.info("registrazioneDatiAdesione START");
@@ -301,12 +289,12 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 
 	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi, String codConvenzione) {
 		log.info("buildRequestGetCovenantPerConvenzione START");
-		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder().abi(abi)
+		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder()
 				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				.abi(abi)
 				.dataAdesione(ServiceUtil.dateToString(new Date(), "yyyyMMdd")) // TODO CHIEDERE FORMATO
-				.filialeUserId(
-						ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
+				.filialeUserId(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
 				.codConvenzione(codConvenzione).build();
 		log.info("buildRequestGetCovenantPerConvenzione END");
 		return getCovPerConRequest;

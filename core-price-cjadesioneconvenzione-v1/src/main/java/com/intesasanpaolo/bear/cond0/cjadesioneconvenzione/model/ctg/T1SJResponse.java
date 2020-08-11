@@ -1,5 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +16,9 @@ import lombok.ToString;
 @Builder
 @ToString
 public class T1SJResponse {
-	//private String esito;
-	private String mdwEsiAnom;
-	private String mdwEsiMsg;
-	private String mdwEsiRetc;
+	private OutEsi outEsi;
+	private OutSeg outSeg;
 	
-	private String livelloSegnalazione;
-	private String txtSegnalazione;
 	
 	private String t1SjOKeyOperazione;
 	private Double t1SjOProgStampa;

@@ -9,6 +9,7 @@
 package com.intesasanpaolo.connector.ws.gen.convenzioniservice;
 
 import java.math.BigDecimal;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

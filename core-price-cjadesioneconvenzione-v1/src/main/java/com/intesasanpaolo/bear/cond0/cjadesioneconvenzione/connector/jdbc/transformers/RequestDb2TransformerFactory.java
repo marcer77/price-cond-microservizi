@@ -1,11 +1,11 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transformers;
 
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Service;
+
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.connector.db2.request.DB2Request;
 import com.intesasanpaolo.bear.connector.db2.transformer.IDB2RequestTransformer;
-
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.stereotype.Service;
 
 @Service
 public class RequestDb2TransformerFactory {
