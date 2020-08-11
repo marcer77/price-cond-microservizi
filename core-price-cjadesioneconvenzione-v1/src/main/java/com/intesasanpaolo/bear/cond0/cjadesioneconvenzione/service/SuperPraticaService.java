@@ -19,6 +19,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transf
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.exception.CJConvenzioneNotFoundDB2Exception;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.AdesioneConvenzione;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -31,7 +32,7 @@ public class SuperPraticaService extends BaseService {
 	@Autowired
 	private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	//@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public String recuperaCodConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
 		logger.info("recuperaCodConvenzione codAbi {} codSuperPratica {} nrPratica {} START ",codAbi,codSuperPratica,nrPratica);
 
@@ -110,11 +111,17 @@ public class SuperPraticaService extends BaseService {
 	
 	
 	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void inserisciAdesioneConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
-		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00003");
-		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00004");
-		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "00005");
-		this.deleteEntita(codAbi, codSuperPratica,nrPratica, "DTADE");
+	public void inserisciAdesioneConvenzione(AdesioneConvenzione adesioneConvenzione) {
+		//cancellazioni
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00003");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00004");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00005");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "DTADE");
+		
+		adesioneConvenzione.getTb59r009List().forEach(tb->{
+			insertEntita(adesioneConvenzione.getCodAbi(),tb);
+		});
+		
 		
 	}
 
