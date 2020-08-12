@@ -3,35 +3,25 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model;
 import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InfoStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO_OK_Test;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.IntestatarioDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.PraticaDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RapportoDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBenefici;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBeneficioValoreParametrato;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ConfigurazioneFasce;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class BeneficiBuilderTest extends JUnitUtils {
+public class BeneficiBuilderTest {
 	
 	private Logger log = Logger.getLogger(BeneficiBuilderTest.class);
 	
-	private BeneficiBuilder beneficiBuilder;
-
+	
 	@Before
 	public void setUp() {
 	}
@@ -39,10 +29,63 @@ public class BeneficiBuilderTest extends JUnitUtils {
 	@Before
 	public void initMocks() throws Exception {
 
+		
+	}
+
+	@Test
+	public void testBuilderOK() {
+		AdesioneResponseBenefici ad=mockAdesioneResponseBenefici();
+		ad.setFlagRolling("S");
+		BeneficiBuilder beneficiBuilder = new BeneficiBuilder(ad);
+		String beneficio=beneficiBuilder.build();
+		log.info("testBuilderOK: " +beneficio);
+		assertTrue(beneficio.length()>0);
+
+	}
+	
+	@Test
+	public void testBuilderOK1() {
+		BeneficiBuilder beneficiBuilder = new BeneficiBuilder(mockAdesioneResponseBenefici());
+		String beneficio=beneficiBuilder.build();
+		log.info("testBuilderOK: " +beneficio);
+		assertTrue(beneficio.length()>0);
+	}
+	
+	@Test
+	public void testBuilderOK2() {
+		AdesioneResponseBenefici ad=mockAdesioneResponseBenefici();
+		ad.getBeneficioValoreParametrato().setParametroSpread(new BigDecimal(10));
+		BeneficiBuilder beneficiBuilder = new BeneficiBuilder(ad);
+		String beneficio=beneficiBuilder.build();
+		log.info("testBuilderOK: " +beneficio);
+		assertTrue(beneficio.length()>0);
+	}
+	
+	/*@Test
+	public void testBuilderOK3() {
+		AdesioneResponseBenefici ad=mockAdesioneResponseBenefici();
+		ad.setBeneficioValoreParametrato(null);
+		BeneficiBuilder beneficiBuilder = new BeneficiBuilder(ad);
+		String beneficio=beneficiBuilder.build();
+		log.info("testBuilderOK: " +beneficio);
+		assertTrue(beneficio.length()>0);
+	}*/
+	/*private String getValoreCodice() {
+		if (adesioneResponseBenefici.getBeneficioValoreParametrato() != null
+				|| adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1() != null
+				|| adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread() != null || StringUtils
+						.isNotEmpty(adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroCodice1())) {
+			return "S";
+		} else {
+			return "N";
+		}
+	}
+	*/
+	
+	private AdesioneResponseBenefici mockAdesioneResponseBenefici() {
 		AdesioneResponseBenefici adesioneResponseBenefici = new AdesioneResponseBenefici();
 		adesioneResponseBenefici.setConfigurazioneFasceApprovato(new ConfigurazioneFasce());
 		adesioneResponseBenefici.setNumeroFascia((short) 0);
-//		ddMMyyyy
 		String data = "06082020"; 
 		adesioneResponseBenefici.setDataDecorrenza(data);
 		adesioneResponseBenefici.setDataScadenza(data);
@@ -53,14 +96,6 @@ public class BeneficiBuilderTest extends JUnitUtils {
 		adesioneResponseBenefici.setBeneficioValoreParametrato(beneficioValoreParametrato);
 		adesioneResponseBenefici.setDriver1ValoreNumerico(new BigDecimal(1));
 		adesioneResponseBenefici.setDriver2ValoreNumerico(new BigDecimal(1));
-		beneficiBuilder = new BeneficiBuilder(adesioneResponseBenefici);
-
-	}
-
-	@Test
-	public void testBuilderOK() {
-
-		log.info("testBuilderOK: " + beneficiBuilder.build());
-
+		return adesioneResponseBenefici;
 	}
 }

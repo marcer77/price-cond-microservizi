@@ -27,7 +27,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCoven
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-public class InfoCovenantBuilderTest extends JUnitUtils {
+public class InfoCovenantBuilderTest{
 	
 	private Logger log = Logger.getLogger(InfoCovenantBuilderTest.class);
 	

@@ -18,23 +18,20 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.entity.TB59R009;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.factory.AdesioneConvenzioneFactory;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.AdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.BeneficiBuilder;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InfoCovenantBuilder;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InputStampaBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.FL03Response;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.InpNDG;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJRequest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJResponse;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBenefici;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetCovenantPerConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.ReqGetRequisitiAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCovenantPerConvenzioneCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetRequisitiAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.EsitoStampaResource;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ConvenzioniService;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.SuperPraticaService;
@@ -46,11 +43,10 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
+public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResource> {
 
 	private Logger log = Logger.getLogger(AdesioneConvenzioneCommand.class);
 
-	
 	@Autowired
 	private AdesioneConvenzioneFactory adesioneConvenzioneFactory;
 
@@ -84,7 +80,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 	@Override
 	public boolean canExecute() {
 		log.info("canExecute START");
-		boolean esitoControlli = false;
+		/*boolean esitoControlli = false;
 		logger.info(HeaderAttribute.ISP_HEADER_COD_ABI + " " + ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
 		logger.info(HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE + " " + ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
 		logger.info(HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE + " " + ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
@@ -101,12 +97,15 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 		log.info("canExecute END - " + esitoControlli);
-		return esitoControlli;
+		return esitoControlli;*/
+		return true;
 	}
 
 	@Override
-	protected StampaOutput doExecute() {
+	protected StampaResponseResource doExecute() {
 		log.info("doExecute START");
+		
+		StampaResponseResource stampaResponseResource=new StampaResponseResource();
 		StampaOutput stampaOutput = new StampaOutput();
 
 		codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
@@ -124,21 +123,25 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(codAbi, codiceConvenzione);
 		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
 
-		AdesioneConvenzione adesioneConvenzione= adesioneConvenzioneFactory.createAdesioneConvenzione(ispWebservicesHeaderType,dto,getCovPerConResp,getReqAdesConResp,codiceConvenzione);
-		
+		AdesioneConvenzione adesioneConvenzione = adesioneConvenzioneFactory.createAdesioneConvenzione(ispWebservicesHeaderType, dto, getCovPerConResp,
+				getReqAdesConResp, codiceConvenzione);
+
 		this.superPraticaService.inserisciAdesioneConvenzione(adesioneConvenzione);
-		
-		//T1SJ preparazione stampa
+
+		// T1SJ preparazione stampa
 		T1SJResponse t1SJResponse = preparazioneStampa();
 
 		// chiamata alla BS FL03 - recupero
 		String docXML = generazioneXML(t1SJResponse, stampaOutput);
 		stampaOutput.setDocXML(docXML);
 
-		log.info("doExecute END");
-
-		return stampaOutput;
-
+		stampaResponseResource.setDocumento(docXML);
+		stampaResponseResource.setKeyOper(dto.getInfoStampa().getKeyOper());
+		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
+		stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
+		stampaResponseResource.getEsitoStampaResource().setDescErrore("");
+		//TODO:GESTIRE WARNING
+		return stampaResponseResource;
 	}
 
 	private String generazioneXML(T1SJResponse t1SJResponse, StampaOutput stampaOutput) {
@@ -167,106 +170,6 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		return docXML;
 	}
 
-	/*
-	 * private void eliminazioneClientiPresenti() {
-	 * log.info("eliminazioneClientiPresenti START"); String dtade =
-	 * ServiceUtil.dateToString(new Date(), "yyyyMMdd"); // TODO CHIEDERE FORMATO
-	 * log.info("DTADE: "+dtade); superPraticaService.deleteEntita(codAbi,
-	 * dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica(),
-	 * dtade); log.info("eliminazioneClientiPresenti END"); }
-	 */
-
-	
-
-	/*
-	 * private RespGetRequisitiAdesioneConvenzione
-	 * getRequisitiAdesioneConvenzione(String codConvenzione) {
-	 * log.info("getRequisitiAdesioneConvenzione START");
-	 * ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest =
-	 * buildRequestGetRequisitiAdesioneConvenzione( codAbi, codConvenzione);
-	 * 
-	 * RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService
-	 * .getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
-	 * log.info("getRequisitiAdesioneConvenzione END"); return getReqAdesConResp; }
-	 */
-
-	/*
-	 * private List<RespGetCovenantPerConvenzioneCovenantDaAttivare>
-	 * getCovenantPerConvenzione(String codConvenzione){
-	 * log.info("getCovenantPerConvenzione START");
-	 * 
-	 * ReqGetCovenantPerConvenzione getCovPerConRequest =
-	 * buildRequestGetCovenantPerConvenzione(codAbi, codConvenzione);
-	 * 
-	 * List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp =
-	 * convenzioniHostService .getCovenantPerConvenzione(getCovPerConRequest);
-	 * 
-	 * superPraticaService.deleteEntita(codAbi,
-	 * dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica(),
-	 * "00003");
-	 * 
-	 * superPraticaService.deleteEntita(codAbi,
-	 * dto.getPratica().getCodSuperPratica(), dto.getPratica().getCodPratica(),
-	 * "00004"); log.info("getCovenantPerConvenzione END"); return getCovPerConResp;
-	 * }
-	 */
-	/*
-	private void registrazioneDatiAdesione(String codiceConvenzione) {
-		log.info("registrazioneDatiAdesione START");
-		InputStampaBuilder inputStampaBuilder = new InputStampaBuilder(dto);
-		TB59R009 entity = TB59R009.builder().nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(dto.getPratica().getCodPratica()).idEntita("DTADE")
-				.stato("N").progrEntita(1).progrDati(1).codEntita(codiceConvenzione).datiEntita(inputStampaBuilder.build()).tipoAggiornamento("I")
-				.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID()).build();
-		superPraticaService.insertEntita(codAbi, entity);
-		log.info("registrazioneDatiAdesione END");
-	}*/
-
-/*	private void registrazioneInfoConventantAndBenefici(String codAbi,List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp,
-			RespGetRequisitiAdesioneConvenzione getReqAdesConResp, String codiceConvenzione) {
-		
-		log.info("registrazioneInfoConventantAndBenefici START");
-		
-		if (CollectionUtils.isNotEmpty(getCovPerConResp)) {
-			log.info("La Lista getCovPerConResp contiene " + getCovPerConResp.size() + " elementi.");
-			int progEntita = 1;
-			for (RespGetCovenantPerConvenzioneCovenantDaAttivare respGetCovenantPerConvenzioneCovenantDaAttivare : getCovPerConResp) {
-				InfoCovenantBuilder infoCovenantBuilder = new InfoCovenantBuilder(respGetCovenantPerConvenzioneCovenantDaAttivare);
-				TB59R009 entity = TB59R009.builder()
-						.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-						.nrPratica(dto.getPratica().getCodPratica())
-						.idEntita("00003")
-						.stato("N")
-						.progrEntita(progEntita)
-						.codEntita(codiceConvenzione) // obbligatorio per l'insert
-						.datiEntita(infoCovenantBuilder.build())
-						.tipoAggiornamento("I")
-						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-						.build();
-				progEntita++;
-				superPraticaService.insertEntita(codAbi, entity);
-			}
-
-			// INSERT PER getReqAdesConResp
-			List<AdesioneResponseBenefici> benefici = getReqAdesConResp.getTabellaBenefici();
-			for (AdesioneResponseBenefici beneficio : benefici) {
-				BeneficiBuilder beneficiBuilder = new BeneficiBuilder(beneficio);
-
-				TB59R009 entity = TB59R009.builder().nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(dto.getPratica().getCodPratica())
-						.idEntita("00003").stato("N").progrEntita(progEntita).codEntita(codiceConvenzione) // obbligatorio per l'insert
-						.datiEntita(beneficiBuilder.build()).tipoAggiornamento("I").codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-						.build();
-				progEntita++;
-				superPraticaService.insertEntita(codAbi, entity);
-
-			}
-
-		} else {
-			logger.error("La Lista getCovPerConResp e' vuota.");
-		}
-		log.info("registrazioneInfoConventantAndBenefici END");
-	}
-*/
-	
 	private T1SJResponse preparazioneStampa() {
 		log.info("preparazioneStampa START");
 		T1SJRequest t1SJRequest = buildT1SJRequest();
@@ -274,7 +177,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaOutput> {
 		log.info("preparazioneStampa END");
 		return t1SJResponse;
 	}
-	
+
 	/**
 	 * 
 	 * @param abi

@@ -23,11 +23,20 @@ public class ConvenzioniService {
 	public RespGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzione(ReqGetRequisitiAdesioneConvenzione request) {
 		
 		RespGetRequisitiAdesioneConvenzione response = (RespGetRequisitiAdesioneConvenzione) convenzioniServiceConnector.call(request, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
-		//TODO:GESTIONE ECCEZIONI APPLICATIVE
-		//if (true)
-		//	throw CJWebServiceException.builder().webServiceName("getRequisitiAdesioneConvenzione").codiceErroreWebService("--cod_errore_ritornato dal WS --").descrErroreWebService("---descrizione errore ritornato dal WS").build();
-				
+		//gestione eccezioni applicative
+		checkWSResult(response);
 		return response;
+	}
+	
+	/**
+	 * 
+	 * @param response
+	 */
+	private void checkWSResult(RespGetRequisitiAdesioneConvenzione response ) {
+		boolean checkEsitoPositivo=response!=null&&response.getEsitoResultCode()!=null&&response.getEsitoResultCode().equalsIgnoreCase("OK");
+		if (!checkEsitoPositivo){
+			throw CJWebServiceException.builder().codiceErroreWebService(response.getEsitoResultCode()).descrErroreWebService(response.getEsitoErrorMessage()).build();
+		}
 	}
 
 }

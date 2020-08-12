@@ -17,6 +17,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.command.AdesioneConvenzioneCommand;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
@@ -32,7 +33,7 @@ public class CJAdesioneConvenzioneController extends CoreController {
 
 	@PostMapping(value = "/stampa", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
-	public ResponseEntity<StampaOutput> stampa(
+	public ResponseEntity<StampaResponseResource> stampa(
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false) String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false) String customerID,
@@ -77,7 +78,7 @@ public class CJAdesioneConvenzioneController extends CoreController {
 				.serviceVersion(serviceVersion).build();
 		
 		AdesioneConvenzioneCommand cmd = beanFactory.getBean(AdesioneConvenzioneCommand.class, inputStampaDTO,ispWebservicesHeaderType);
-		StampaOutput response = cmd.execute();
+		StampaResponseResource response = cmd.execute();
 
 		
 

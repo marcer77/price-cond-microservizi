@@ -22,7 +22,7 @@ public class JUnitUtils {
 
 	protected <T> Set<ConstraintViolation<T>> validaCampi(T dto) {
 
-		log.info("Inizio validazione: " + dto.toString());
+		//log.info("Inizio validazione: " + dto.toString());
 
 		Set<ConstraintViolation<T>> violations = validator.validate(dto);
 
@@ -30,7 +30,7 @@ public class JUnitUtils {
 
 			for (ConstraintViolation<T> v : violations) {
 
-				log.error("Input non valido {" + v.getInvalidValue() + "} motivo: " + v.getMessage());
+				//log.error("Input non valido {" + v.getInvalidValue() + "} motivo: " + v.getMessage());
 
 			}
 

@@ -14,7 +14,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.C_T1SJS00;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.InpNDG;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJRequest;
@@ -35,23 +34,11 @@ public class T1SJCtgRequestTrasformerTest extends BaseTest{
 		
 		Mockito.when(beanFactoryMock.getBean(C_T1SJS00.class)).thenReturn(new C_T1SJS00());
 		
-		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
-				.applicationID("121")
-				.callerCompanyIDCode("01")
-				.callerProgramName("121")
-				.channelIDCode("")
-				.codABI("01025")
-				.codUnitaOperativa("00700")
-				.customerID("23232")
-				.isVirtualUser("false")
-				.language("IT")
-				.serviceCompanyIDCode("01")
-				.serviceID("FL030FLA01")
-				.userID("343")
-				.transactionId("3434343")
-				.timestamp("0")
-				.serviceVersion("00").build();
+		ISPWebservicesHeaderType ispWebservicesHeaderType=this.mockISPWebservicesHeaderType();
+		
 		List<InpNDG> inpNDGList = new ArrayList<InpNDG>();
+		inpNDGList.add(new InpNDG("test", "test"));
+		
 		T1SJRequest t1sjRequest = T1SJRequest.builder().
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.t1SjICapRes("")

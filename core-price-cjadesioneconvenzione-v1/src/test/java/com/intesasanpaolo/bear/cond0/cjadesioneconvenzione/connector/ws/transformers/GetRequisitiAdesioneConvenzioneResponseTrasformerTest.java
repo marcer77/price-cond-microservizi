@@ -1,7 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers;
 
-import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.withNoException;
-
 import java.math.BigDecimal;
 
 import javax.xml.bind.JAXBElement;
@@ -24,13 +22,13 @@ import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ArrayOfFasce;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.BloccoValore;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ClassEsito;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ConfigurazioneFasce;
+import com.intesasanpaolo.connector.ws.gen.convenzioniservice.Fasce;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.GetRequisitiAdesioneConvenzioneResponse;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ObjectFactory;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ResponseLog;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.Valore;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ValoreIndicatore;
 import com.intesasanpaolo.connector.ws.gen.convenzioniservice.ValoreParametrato;
-import com.intesasanpaolo.connector.ws.gen.convenzioniservice.Fasce;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 public class GetRequisitiAdesioneConvenzioneResponseTrasformerTest extends JUnitUtils {
@@ -81,7 +79,7 @@ public class GetRequisitiAdesioneConvenzioneResponseTrasformerTest extends JUnit
 		ArrayOfAdesioneResponseBenefici benefici = objectFactory.createArrayOfAdesioneResponseBenefici();
 		
 		AdesioneResponseBenefici ben = new AdesioneResponseBenefici();
-		
+		  
 		AdesioneResponseBeneficioValoreParametrato adeParam = objectFactory.createAdesioneResponseBeneficioValoreParametrato();
 		
 		adeParam.setParametroCodice1(objectFactory.createValoreParametratoCodice1("1"));
@@ -115,6 +113,11 @@ public class GetRequisitiAdesioneConvenzioneResponseTrasformerTest extends JUnit
 		ben.setConfigurazioneFasceApprovato(objectFactory.createConfigurazioneFasce(fasce));
 		
 		benefici.getAdesioneResponseBenefici().add(ben);
+		
+		//aggiunta benefici con flag ROLLING
+		ben.setFlagRolling(objectFactory.createAdesioneResponseBeneficiFlagRolling("S"));
+		benefici.getAdesioneResponseBenefici().add(ben);
+		
 		
 		JAXBElement<ArrayOfAdesioneResponseBenefici> tabellaBenefici = objectFactory.createArrayOfAdesioneResponseBenefici(benefici);
 		

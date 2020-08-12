@@ -1,6 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.common;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 
 import org.junit.Before;
 import org.slf4j.Logger;
@@ -19,6 +21,15 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InfoStampaDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.IntestatarioDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.PraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RapportoDTO;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.RecapitoDTO;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "unittests")
@@ -51,45 +62,85 @@ public class BaseTest {
 
 
 
-	/*@MockBean
-	private GetProtocolloFaseCommand getProtocolloFaseCommandMock;
+	public ISPWebservicesHeaderType mockISPWebservicesHeaderType () {
+		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("121")
+				.callerCompanyIDCode("01")
+				.callerProgramName("121")
+				.channelIDCode("")
+				.codABI("01025")
+				.codUnitaOperativa("00700")
+				.customerID("23232")
+				.isVirtualUser("false")
+				.language("IT")
+				.serviceCompanyIDCode("01")
+				.serviceID("FL030FLA01")
+				.userID("343")
+				.transactionId("3434343")
+				.timestamp("0")
+				.serviceVersion("00").build();
+		return ispWebservicesHeaderType;
+	}
+	
+	public  InputStampaDTO buildInputStampaDTO() {
+		InputStampaDTO inputStampaDTO=new InputStampaDTO();
+		PraticaDTO pratica = new PraticaDTO();
+		pratica.setCodPratica("0000655703");
+		pratica.setCodPropostaComm("");
+		pratica.setCodSuperPratica("0001161961");
+		inputStampaDTO.setPratica(pratica);
 
+		inputStampaDTO.setCodAppl("X");
+		inputStampaDTO.setCodProcesso("CJCPG");
 		
+		RapportoDTO rapportoDTO = new RapportoDTO();
+		rapportoDTO.setCodFiliale("12345");
+		rapportoDTO.setCodCategoria("1234");
+		rapportoDTO.setCodProgressivo("12345678");
+		inputStampaDTO.setRapporto(rapportoDTO);
+		
+		IntestatarioDTO intestatarioDTO = new IntestatarioDTO();
+		
+		intestatarioDTO.setNdg("1234561234560");
+		intestatarioDTO.setIntestazione("Intestazione di test");
+		intestatarioDTO.setSpecieGiur("PERSO");
+		intestatarioDTO.setCodFiscale("RSSMRA80A01H703F");
+		intestatarioDTO.setPIva("12345678901");
 
-	private void mockProtocolloFase() throws Exception {
-		ProtocolloFase pMock = new ProtocolloFase();
-		pMock.setStato("IN");
-		pMock.setProtocolloWf(codiceProtocolloTest);
-		Mockito.when(getProtocolloFaseCommandMock.execute()).thenReturn(pMock);
-	}
+		ArrayList<RecapitoDTO> recapiti = new ArrayList<RecapitoDTO>();
 
-	public void createDelibera() {
-		InitDeliberaDto initDeliberaDto=new InitDeliberaDto();
-		String abi="01025";
-		String nsg="1234519995125551";
-		try {
-			initDeliberaDto.setUtenteId("1234567");
-			initDeliberaDto.setUtenteCollegato("1234567");
-			initDeliberaDto.setCodTipologia("RV");
-			initDeliberaDto.setUoProponente("12345");
-			String inputJson=mapToJson(initDeliberaDto);
-			String uri="/delibera/" + abi + "/" + nsg;
-			MvcResult mvcResult=mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-			int status=mvcResult.getResponse().getStatus();
+		RecapitoDTO recapitoDTO = new RecapitoDTO();
+		recapitoDTO.setTipo("test tipo");
+		recapitoDTO.setIndirizzo("via dei test");
+		recapitoDTO.setCap("00000");
+		recapitoDTO.setComune("Comune di test");
+		recapitoDTO.setFrazione("Frazione di test");
+		recapitoDTO.setProvincia("TE");
+		recapiti.add(recapitoDTO);
 
-			log.info("inputJson : {}", inputJson);
-			log.info("status = " + status);
-			Assert.assertEquals(200, status);
+		intestatarioDTO.setRecapiti(recapiti);
+		
+		inputStampaDTO.setIntestatario(intestatarioDTO);
 
-			String content=mvcResult.getResponse().getContentAsString();
-			DatiGeneraliDeliberaResource dati=mapFromJson(content, DatiGeneraliDeliberaResource.class);
-			log.info("content = {}", content);
-			this.codiceProtocolloTest=dati.getCodProtocollo();
+		ArrayList<FirmatarioDTO> listaFirmatari = new ArrayList<FirmatarioDTO>();
 
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-			fail("Errore in createDelibera: " + ex.getMessage() + " " + ex.getCause());
+		for (int i = 0; i < 13; i++) {
+			listaFirmatari.add(new FirmatarioDTO("1234561234560","Intestazione di test"));
 		}
+
+		inputStampaDTO.setFirmatari(listaFirmatari);
+
+		InfoStampaDTO infoStampa = new InfoStampaDTO();
+		infoStampa.setData(new Date(System.currentTimeMillis()));
+		infoStampa.setTipoStampa("Stampa di test");
+		infoStampa.setTipoOfferta("Offerta di test");
+		infoStampa.setTipoFirma("Firma di test");
+		infoStampa.setCodLingua("Lingua di test");
+		infoStampa.setKeyOper("123456789012345678901234567890");
+		infoStampa.setData(new Date());
+		inputStampaDTO.setInfoStampa(infoStampa);
+		
+		return inputStampaDTO;
 	}
-	*/
+	
 }

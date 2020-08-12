@@ -32,11 +32,33 @@ public class SuperPraticaService extends BaseService {
 	@Autowired
 	private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
+	
+	/**
+	 * Inserisce adesione a convenzione in una unica transazione
+	 * 
+	 * 
+	 * @param adesioneConvenzione
+	 */
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void inserisciAdesioneConvenzione(AdesioneConvenzione adesioneConvenzione) {
+		//cancellazioni
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00003");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00004");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00005");
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "DTADE");
+		
+		adesioneConvenzione.getTb59r009List().forEach(tb->{
+			insertEntita(adesioneConvenzione.getCodAbi(),tb);
+		});
+		
+		
+	}
+
 	//@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
 	public String recuperaCodConvenzione(String codAbi, String codSuperPratica, String nrPratica) {
 		logger.info("recuperaCodConvenzione codAbi {} codSuperPratica {} nrPratica {} START ",codAbi,codSuperPratica,nrPratica);
-
-		String query = "SELECT SUBSTR(COD_ENTITA, 1, 7) FROM FIATT.TB59R009"
+		//SUBSTR(COD_ENTITA, 1, 7)
+		String query = "SELECT  SUBSTR(COD_ENTITA, 1, 7) COD_ENTITA FROM FIATT.TB59R009"
 				+ " WHERE NR_SUPERPRATICA = :codSuperPratica" + " AND NR_PRATICA = :numeroPratica"
 				+ " AND ID_ENTITA = '00001'";
 		
@@ -56,8 +78,7 @@ public class SuperPraticaService extends BaseService {
 		return resultList.get(0);
 	}
 
-	// @Transactional
-	public void deleteEntita(String codAbi, String codSuperPratica, String nrPratica, String idEntita) {
+	private void deleteEntita(String codAbi, String codSuperPratica, String nrPratica, String idEntita) {
 		logger.info("deleteEntita codAbi {} codSuperPratica {} nrPratica {} idEntita {} START",codAbi,codSuperPratica,nrPratica,idEntita);
 
 		String query = "DELETE" + " FROM FIATT.TB59R009" + " WHERE NR_SUPERPRATICA = :codSuperPratica"
@@ -75,8 +96,7 @@ public class SuperPraticaService extends BaseService {
 		logger.info("END deleteEntita");
 	}
 
-//	@Transactional
-	public void insertEntita(String codAbi,TB59R009 entity) {
+	private void insertEntita(String codAbi,TB59R009 entity) {
 		logger.info("START insertEntita");
 
 		String query = "INSERT INTO"
@@ -109,20 +129,5 @@ public class SuperPraticaService extends BaseService {
 		logger.info("END insertEntita");
 	}
 	
-	
-	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public void inserisciAdesioneConvenzione(AdesioneConvenzione adesioneConvenzione) {
-		//cancellazioni
-		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00003");
-		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00004");
-		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "00005");
-		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "DTADE");
-		
-		adesioneConvenzione.getTb59r009List().forEach(tb->{
-			insertEntita(adesioneConvenzione.getCodAbi(),tb);
-		});
-		
-		
-	}
 
 }
