@@ -35,7 +35,7 @@ public class ConvenzioniService {
 	private void checkWSResult(RespGetRequisitiAdesioneConvenzione response ) {
 		boolean checkEsitoPositivo=response!=null&&response.getEsitoResultCode()!=null&&response.getEsitoResultCode().equalsIgnoreCase("OK");
 		if (!checkEsitoPositivo){
-			throw CJWebServiceException.builder().codiceErroreWebService(response.getEsitoResultCode()).descrErroreWebService(response.getEsitoErrorMessage()).build();
+			throw CJWebServiceException.builder().codiceErroreWebService(response!=null? response.getEsitoResultCode():"").descrErroreWebService(response.getEsitoErrorMessage()).build();
 		}
 	}
 
