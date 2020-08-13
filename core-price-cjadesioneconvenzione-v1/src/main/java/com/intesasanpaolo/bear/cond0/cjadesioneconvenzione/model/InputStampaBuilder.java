@@ -2,6 +2,7 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model;
 
 import org.apache.commons.lang3.builder.Builder;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.PaddingField;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
@@ -25,7 +26,7 @@ public class InputStampaBuilder implements Builder<String> {
 				+ PaddingField.leftPadZeroOrTruncate(inputStampa.getRapporto().getCodFiliale(), 5)
 				+ PaddingField.leftPadZeroOrTruncate(inputStampa.getRapporto().getCodCategoria(), 4)
 				+ PaddingField.leftPadZeroOrTruncate(inputStampa.getRapporto().getCodProgressivo(), 8)
-				+ PaddingField.rightPadSpaceOrTruncate(ServiceUtil.dateToString(inputStampa.getInfoStampa().getData(),"yyyyMMdd"), 8)
+				+ PaddingField.rightPadSpaceOrTruncate(DateUtils.dateToString(inputStampa.getInfoStampa().getData(),"yyyyMMdd"), 8)
 				+ PaddingField.rightPadSpaceOrTruncate(inputStampa.getInfoStampa().getKeyOper(), 30)
 				;
 	}

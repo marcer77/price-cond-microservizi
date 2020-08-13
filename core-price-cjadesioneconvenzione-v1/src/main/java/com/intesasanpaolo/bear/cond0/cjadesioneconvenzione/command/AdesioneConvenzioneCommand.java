@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.FirmatarioDTO;
@@ -188,7 +189,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 		log.info("buildRequestGetCovenantPerConvenzione START");
 		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder().userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID()).abi(abi)
-				.dataAdesione(ServiceUtil.dateToString(new Date(), "yyyyMMdd")) // TODO CHIEDERE FORMATO
+				.dataAdesione(DateUtils.dateToString(new Date(), "yyyyMMdd")) // TODO CHIEDERE FORMATO
 				.filialeUserId(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA)).codConvenzione(codConvenzione)
 				.build();
 		log.info("buildRequestGetCovenantPerConvenzione END");
@@ -200,9 +201,9 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = ReqGetRequisitiAdesioneConvenzione.builder().abi(abi)
 				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID()).codiceConvenzione(codiceConvenzione)
 				.codiciFiscali(Arrays.asList(dto.getIntestatario().getCodFiscale()))
-				.dataAccensione(ServiceUtil.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
+				.dataAccensione(DateUtils.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
 																										// FORMATO
-				.dataAdesione(ServiceUtil.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
+				.dataAdesione(DateUtils.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
 																									// FORMATO
 				.filiale(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA)) // TODO
 																															// CHIEDERE

@@ -1,6 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service;
 
-import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.dateToString;
 
 import java.util.Date;
 import java.util.List;
@@ -13,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.jdbc.transformers.RequestDb2TransformerFactory;
@@ -104,7 +104,7 @@ public class SuperPraticaService extends BaseService {
 				+ " VALUES(:NR_SUPERPRATICA, :NR_PRATICA, :ID_ENTITA, :STATO, :PROGR_ENTITA, :PROGR_DATI, :COD_ENTITA, :DATI_ENTITA, :TIPO_AGGIORNAMENTO, :COD_OPE_ULT_MODIF, :DATA_INSER, :DT_ULT_MODIFICA)";
 //				+ "TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'), TIMESTAMP_FORMAT(:CURRENT_DATE,'YYYY-MM-DD HH24.MI.SS'))"; //FUNZIONE NON RICONOSCIUTA DA H2
 
-		String now = dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
+		String now = DateUtils.dateToString(new Date(), "yyyy-MM-dd HH.mm.ss");
 		
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("NR_SUPERPRATICA", entity.getNrSuperpratica());

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
@@ -47,7 +48,7 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 				.iCodCatRapp(inputStampaDTO.getRapporto().getCodCategoria())
 				.iCodFilRapp(inputStampaDTO.getRapporto().getCodFiliale())
 				.iCodLingua(inputStampaDTO.getInfoStampa().getCodLingua())
-				.iDataRiferimento(ServiceUtil.dateToString(inputStampaDTO.getInfoStampa().getData(),"yyyyMMdd"))
+				.iDataRiferimento(DateUtils.dateToString(inputStampaDTO.getInfoStampa().getData(),"yyyyMMdd"))
 				.iFirma(inputStampaDTO.getInfoStampa().getTipoFirma())
 				.iKeyOperazione(inputStampaDTO.getInfoStampa().getKeyOper())
 				.iNrPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodPratica()):null)

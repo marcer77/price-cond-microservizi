@@ -14,6 +14,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
@@ -177,7 +178,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	private WKCJResponse callWKCJ(String pratica) {
 		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).pratica(pratica)
 				.superpratica(dto.getPratica().getCodSuperPratica()).utente(ispWebservicesHeaderType.getOperatorInfo().getUserID()).tipoChiamata("A4")
-				.dataRifer(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
+				.dataRifer(DateUtils.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
 
 		return wkcjServiceBS.callBS(wkcjRequest);
 	}
@@ -186,7 +187,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).tipoFunzione(dto.getRichiesta())
 				.codEvento(dto.getEvento().getCodice()).subEvento(dto.getEvento().getSubCodice()).classificCliente(dto.getClassificazione())
-				.dataRiferimento(ServiceUtil.dateToString(new Date(), "yyyyMMdd")).codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.dataRiferimento(DateUtils.dateToString(new Date(), "yyyyMMdd")).codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.filialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
 				.nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(pratica).build();
 

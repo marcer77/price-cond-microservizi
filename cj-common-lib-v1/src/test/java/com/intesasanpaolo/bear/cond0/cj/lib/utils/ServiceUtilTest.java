@@ -1,7 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -150,10 +149,7 @@ public class ServiceUtilTest {
 		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(null));
 	}
 
-	@Test
-	public void testDateToString() {
-		System.out.println(">>>>>>" + ServiceUtil.dateToString(new Date(), "yyyyMMdd"));
-	}
+	
 
 	@Test
 	public void testIfNull() {
@@ -189,22 +185,12 @@ public class ServiceUtilTest {
 	}
 	
 	@Test	
-	public void testConvertiDate01() throws ParseException {
-		String d=ServiceUtil.convertiDate("20201231", "yyyyMMdd","dd.MM.yyyy");
-		Assert.assertTrue(d.equals("31.12.2020"));
-	}
-	@Test(expected = ParseException.class)	
-	public void testConvertiDate02() throws ParseException {
-		String d=ServiceUtil.convertiDate("a0202231", "yyyyMMdd","dd.MM.yyyy");
-	}
-	@Test	
 	public void testIfNullAsDouble() throws ParseException {
 		Double d=ServiceUtil.ifNullAsDouble(null);
 		Assert.assertTrue(d==0);
 		d=ServiceUtil.ifNullAsDouble(40);
 		Assert.assertTrue(d==40);
 	}
-	
 	
 	
 }

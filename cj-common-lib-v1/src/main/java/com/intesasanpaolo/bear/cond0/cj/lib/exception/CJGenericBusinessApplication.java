@@ -11,6 +11,11 @@ public class CJGenericBusinessApplication extends CJBaseException{
 	private final String errorCode;
 	private final String message;
 	
+	public CJGenericBusinessApplication(String errorCode,String message,Exception e){
+		super(e);
+		this.errorCode=errorCode;
+		this.message=message;
+	}
 	@Override
 	public String formattaMessaggio() {
 		return message;
@@ -20,5 +25,6 @@ public class CJGenericBusinessApplication extends CJBaseException{
 	public String getErrorCode() {
 		return errorCode;
 	}
+
 
 }
