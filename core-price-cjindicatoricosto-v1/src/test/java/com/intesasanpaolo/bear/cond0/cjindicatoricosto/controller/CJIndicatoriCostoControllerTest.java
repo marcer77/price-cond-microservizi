@@ -9,6 +9,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.connector.ctg.CTGConnectorPCUJ;
@@ -42,6 +44,8 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutSTP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.SuperPraticaService;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @RunWith(SpringRunner.class)
@@ -54,12 +58,11 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 //	@MockBean
 //	private SuperPraticaService superPraticaService;
 
-	private IndicatoriCostoDTO dto;
+	//private IndicatoriCostoDTO dto;
 
 	private HttpHeaders httpHeaders;
 
-	private String pratica;
-
+	
 	@MockBean
 	private CTGConnectorWKCJ ctgConnectorWKCJ;
 
@@ -91,17 +94,7 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 
-		buildIndicatoriCostoDTO();
-
-		pratica = "0000655703";
-
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(buildMockHeader())
-				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-				.nrPratica(pratica).build();
-
-		Mockito.when(
-				ctgConnectorPCUJ.call(pcujRequest, requestTransformerPCUJ, responseTransformerPCUJ, new Object[] {}))
-				.thenReturn(buildPCUJResponse());
+		
 	}
 
 	private WKCJResponse buildWKCJResponse(String tipoRichiesta) {
@@ -126,50 +119,34 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 	private PCUJResponse buildPCUJResponse() {
 		PCUJResponse pcujResponse = new PCUJResponse();
 		List<OutRIP> outRIPList = new ArrayList<OutRIP>();
+		
+		///////
 		OutRIP outRIP = new OutRIP();
 		outRIP.setCodFt("test");
 		outRIP.setImportoFidoEur(10);
-		List<OutTAS> outTasList = new ArrayList<>();
+		outRIP.setImportoFido(10);
+		
 		OutTAS outTAS = new OutTAS();
 		outTAS.setValParametro(12.5);
 		outTAS.setPercParametro(5.0);
 		outTAS.setValSpread(2.0);
 		outTAS.setSegnoValSpread("+");
-		outTAS.setCodParametro("TEST");
 		outTAS.setTassoDebitore(1.0);
-		outTasList.add(outTAS);
-		//outRIP.setOutTasList(outTasList);
+		outTAS.setCodParametro("00813");
+		outRIP.setOutTas(outTAS);
+		//////
 		outRIPList.add(outRIP);
+		
 		pcujResponse.setOutRIPList(outRIPList);
+		pcujResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
 		return pcujResponse;
 	}
 
-	private ISPWebservicesHeaderType buildMockHeader() {
-		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
-				.applicationID("0").callerCompanyIDCode("01").callerProgramName(null).channelIDCode("0").codABI("01025")
-				.codUnitaOperativa(null).customerID(null).isVirtualUser(null).language(null).serviceCompanyIDCode("01")
-				.serviceID(null).userID("U015886").transactionId("0").timestamp("0").serviceVersion(null).build();
-		return ispWebservicesHeaderType;
-	}
+	
 
-	private void buildIndicatoriCostoDTO() {
-		dto = new IndicatoriCostoDTO();
-		PraticaDTO pratica = new PraticaDTO();
-		pratica.setCodPratica("");
-		pratica.setCodPropostaComm("");
-		pratica.setCodSuperPratica("0001161961");
-		dto.setCodAppl(CodApplEnum.CARTE.toString());
-		dto.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
-		dto.setClassificazione("test");
-		dto.setPratica(pratica);
-		EventoDTO evento = new EventoDTO();
-		evento.setCodice("test");
-		evento.setSubCodice("test");
-		dto.setEvento(evento);
-		dto.setPratica(pratica);
-	}
+	
 
-	@Test
+	/*@Test
 	public void testCalcola() throws Exception {
 
 		dto.setRichiesta(TipoRichiestaEnum.CALCOLA.toString());
@@ -195,19 +172,46 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		Assert.assertTrue(content.contains("\"codErrore\":\"00\""));
 
 	}
-
+*/
+	//@Autowired
+	//private PCUJServiceBS  pCUJServiceBS;
+	
+	//@Autowired
+	//private SuperPraticaService  superPraticaService;
+		
 	@Test
-	public void testCalcolaAndControlla() throws Exception {
-
-		dto.setRichiesta(TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString());
-
-		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(buildMockHeader()).pratica(pratica)
-				.superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build();
+	public void testCalcolaAndControllaOK() throws Exception {
+		//WKCJ: non ritorna condizioni variate
+		WKCJResponse wkcjResponse = new WKCJResponse();
+		ArrayList<OutCNF> outCNFList = new ArrayList<OutCNF>();
+		/*OutCNF outCNF = new OutCNF();
+		outCNF.setCodCnd("cndTest");
+		outCNFList.add(outCNF);*/
+		wkcjResponse.setOutCNFList(outCNFList);
+		wkcjResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
+		
+		IndicatoriCostoDTO indicatoriCostoDTO=mockIndicatoriCostoDTO(TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString());
+		
+		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(buildMockHeader()).pratica(Mockito.anyString())
+				.superpratica("").tipoChiamata("A4").build();
 
 		Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, new Object[] {}))
-				.thenReturn(buildWKCJResponse(dto.getRichiesta()));
+				.thenReturn(wkcjResponse);
 
-		String inputJson = mapToJson(dto);
+
+		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(buildMockHeader())
+				.nrSuperpratica("")
+				.nrPratica(Mockito.anyString()).build();
+
+		Mockito.when(
+				ctgConnectorPCUJ.call(pcujRequest, requestTransformerPCUJ, responseTransformerPCUJ, new Object[] {}))
+				.thenReturn(buildPCUJResponse());
+		
+		//System.out.println(pCUJServiceBS.getDescrizioneCondizione("00813"));
+		//System.out.println(superPraticaService.recuperaPraticheBySuperPratica("01025", "0001161961"));
+		
+		
+		String inputJson = mapToJson(indicatoriCostoDTO);
 		String uri = "/cjindicatoricosto/calcolo";
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -218,9 +222,43 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
-		System.err.println("TestCalcolaAndControlla " + content);
-		Assert.assertTrue(content.contains("\"codErrore\":\"00\""));
+		Assert.assertTrue(content.contains("\"codErrore\":\"01\""));
 
+		/*WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(buildMockHeader()).pratica(pratica)
+				.superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build();
+
+		Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, new Object[] {}))
+				.thenReturn(buildWKCJResponse(dto.getRichiesta()));
+*/
+		
+	}
+	
+	
+	private IndicatoriCostoDTO mockIndicatoriCostoDTO(String richiesta) {
+		IndicatoriCostoDTO dto = new IndicatoriCostoDTO();
+		PraticaDTO pratica = new PraticaDTO();
+		pratica.setCodPratica("");
+		pratica.setCodPropostaComm("");
+		pratica.setCodSuperPratica("0001161961");
+		dto.setCodAppl(CodApplEnum.CARTE.toString());
+		dto.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		dto.setClassificazione("test");
+		dto.setPratica(pratica);
+		EventoDTO evento = new EventoDTO();
+		evento.setCodice("test");
+		evento.setSubCodice("test");
+		dto.setEvento(evento);
+		dto.setPratica(pratica);
+		dto.setRichiesta(richiesta);
+		return dto;
+	}
+	
+	private ISPWebservicesHeaderType buildMockHeader() {
+		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("0").callerCompanyIDCode("01").callerProgramName(null).channelIDCode("0").codABI("01025")
+				.codUnitaOperativa(null).customerID(null).isVirtualUser(null).language(null).serviceCompanyIDCode("01")
+				.serviceID(null).userID("U015886").transactionId("0").timestamp("0").serviceVersion(null).build();
+		return ispWebservicesHeaderType;
 	}
 
 }
