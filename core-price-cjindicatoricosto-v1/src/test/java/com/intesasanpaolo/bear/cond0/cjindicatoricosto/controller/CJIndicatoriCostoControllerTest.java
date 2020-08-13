@@ -9,7 +9,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
@@ -41,13 +39,8 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.OutTAS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJResponse;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAF;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAP;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutSTP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJRequest;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.SuperPraticaService;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @RunWith(SpringRunner.class)
@@ -101,59 +94,6 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 
 	}
 
-	/*
-	 * private WKCJResponse buildWKCJResponse(String tipoRichiesta) { WKCJResponse
-	 * wkcjResponse = new WKCJResponse(); ArrayList<OutCNF> outCNFList = new
-	 * ArrayList<OutCNF>(); if
-	 * (TipoRichiestaEnum.CALCOLA_E_CONTROLLA.toString().equals(tipoRichiesta)) {
-	 * OutCNF outCNF = new OutCNF(); outCNF.setCodCnd("cndTest");
-	 * outCNFList.add(outCNF); } wkcjResponse.setOutCNFList(outCNFList);
-	 * 
-	 * List<OutRAF> outRAFList = new ArrayList<>(); List<OutRAP> outRAPList = new
-	 * ArrayList<>(); List<OutSTP> outSTPList = new ArrayList<>();
-	 * wkcjResponse.setOutRAFList(outRAFList);
-	 * wkcjResponse.setOutRAPList(outRAPList);
-	 * wkcjResponse.setOutSTPList(outSTPList); return wkcjResponse; }
-	 */
-
-	/*
-	 * @Test public void testCalcola() throws Exception {
-	 * 
-	 * dto.setRichiesta(TipoRichiestaEnum.CALCOLA.toString());
-	 * 
-	 * WKCJRequest wkcjRequest =
-	 * WKCJRequest.builder().ispWebservicesHeaderType(buildMockHeader()).pratica(
-	 * pratica)
-	 * .superpratica(dto.getPratica().getCodSuperPratica()).tipoChiamata("A4").build
-	 * ();
-	 * 
-	 * Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer,
-	 * responseTransformer, new Object[] {}))
-	 * .thenReturn(buildWKCJResponse(dto.getRichiesta()));
-	 * 
-	 * String inputJson = mapToJson(dto); String uri = "/cjindicatoricosto/calcolo";
-	 * 
-	 * MvcResult mvcResult =
-	 * mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.
-	 * APPLICATION_JSON_VALUE)
-	 * .headers(httpHeaders).content(inputJson)).andReturn();
-	 * 
-	 * String content = mvcResult.getResponse().getContentAsString(); int status =
-	 * mvcResult.getResponse().getStatus(); log.info("status = " + status);
-	 * Assert.assertEquals(200, status); log.info("content = {}", content);
-	 * System.err.println("TestCalcola " + content);
-	 * Assert.assertTrue(content.contains("\"codErrore\":\"00\""));
-	 * 
-	 * }
-	 */
-	// @Autowired
-	// private PCUJServiceBS pCUJServiceBS;
-
-	// @Autowired
-	// private SuperPraticaService superPraticaService;
-	// System.out.println(pCUJServiceBS.getDescrizioneCondizione("00813"));
-	// System.out.println(superPraticaService.recuperaPraticheBySuperPratica("01025",
-	// "0001161961"));
 
 	@Test
 	public void testCalcolaAndControllaOK() throws Exception {

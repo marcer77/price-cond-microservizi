@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Response;
@@ -96,7 +95,7 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 		stampaResponseResource.setDocumento(docXML);
 		stampaResponseResource.setKeyOper("");
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
-		stampaResponseResource.getEsitoStampaResource().setCodErrore("OK");
+		stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
 		stampaResponseResource.getEsitoStampaResource().setDescErrore("");
 		
 		return stampaResponseResource;
