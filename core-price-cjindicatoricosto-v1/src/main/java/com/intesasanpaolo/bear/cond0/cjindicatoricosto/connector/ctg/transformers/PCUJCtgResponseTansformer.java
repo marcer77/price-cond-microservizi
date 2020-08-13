@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.C_PCUJS00;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTBST;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTESI;
-import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTRIP;
 import com.dsi.business.SSA_PC.integration.jdo.P_PCUJS00.OUTSEG;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;

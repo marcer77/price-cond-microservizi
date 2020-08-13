@@ -17,11 +17,6 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutCNF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAF;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRAP;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRC4;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRCZ;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRNO;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRPR;
-import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutRTS;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.OutSTP;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.wkcj.WKCJResponse;
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -62,7 +57,7 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 				outCNFList.add(outCNF);
 			});
 		}
-
+/*
 		List<OutRAF> outRAFList = new ArrayList<OutRAF>();
 		if (hasSomething(outBody.OUTRAF)) {
 			Arrays.asList(outBody.OUTRAF).forEach(out -> {
@@ -139,10 +134,10 @@ public class WKCJCtgResponseTansformer implements ICtgResponseTransformer<C_WKCJ
 			});
 
 		}
-
+*/
 		WKCJResponse response = WKCJResponse.builder().outEsi(outEsiModel).outSeg(outSegModel).flCnf(outBody.FL_CNF)
 				.flRaf(outBody.FL_RAF).flRap(outBody.FL_RAP).flStp(outBody.FL_STP).retCode(outBody.RET_CODE)
-				.outCNFList(outCNFList).outRAFList(outRAFList).outRAPList(outRAPList).outSTPList(outSTPList).build();
+				.outCNFList(outCNFList).outRAFList(new ArrayList<OutRAF>()).outRAPList(new ArrayList<OutRAP>()).outSTPList(new ArrayList<OutSTP>()).build();
 
 		logger.debug("response={}", response);
 
