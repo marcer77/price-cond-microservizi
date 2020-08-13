@@ -18,7 +18,6 @@ import org.springframework.web.bind.MissingRequestHeaderException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseException;
-import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 import com.intesasanpaolo.bear.exceptions.model.BearSeverityEnum;
@@ -32,7 +31,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	
 	@ExceptionHandler({ CJBaseException.class })
     public ResponseEntity<T> handleCJBaseException(CJBaseException e) {
-		logger.error("handleCJBaseException {}", e);
+		logger.error("handleCJBaseException ", e);
 		T resource=errorResponseForCJBaseException(e.getErrorCode(), e.formattaMessaggio());
 		return ResponseEntity.status(HttpStatus.OK).body(resource);    	
     } 
@@ -41,7 +40,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	protected ResponseEntity<ErrorResource> handleMissingRequestHeaderException(MissingRequestHeaderException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		logger.error("handleException", e);
+		logger.error("handleMissingRequestHeaderException", e);
 		
 		ErrorResource resource = new ErrorResource();
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
@@ -63,7 +62,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	protected ResponseEntity<ErrorResource> handleMethodArgumentNotValidException(MethodArgumentNotValidException e,
 			HttpServletRequest request, HttpServletResponse response) {
 
-		logger.error("handleException {}", e.getMessage(), e);
+		logger.error("handleMethodArgumentNotValidException ", e);
 		ErrorResource resource = new ErrorResource();
 		
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
@@ -94,7 +93,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	protected ResponseEntity<ErrorResource> handleHttpMessageNotReadableException(HttpMessageNotReadableException e, HttpServletRequest request,
 			HttpServletResponse response) {
 
-		logger.error("handleException {}", e.getMessage(), e);
+		logger.error("handleHttpMessageNotReadableException", e);
 		ErrorResource resource = new ErrorResource();
 		
 		//////
@@ -115,7 +114,7 @@ public abstract class CJBaseExceptionHandler<T extends BaseResource> {
 	protected ResponseEntity<ErrorResource> handleExceptionGeneric(Exception e) {
 		ErrorResource resource = new ErrorResource();
 		
-		logger.error("handleException {}", e.getMessage(), e);
+		logger.error("handleExceptionGeneric {}", e.getMessage(), e);
 		Map<String, List<ErrorMessage>> map = new HashMap<>();
 		List<ErrorMessage> list = new ArrayList<>();
 		map.put("ERROR", list);
