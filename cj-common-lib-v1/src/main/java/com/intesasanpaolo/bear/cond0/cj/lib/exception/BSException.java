@@ -4,14 +4,13 @@ import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 
 import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
 
 @Builder
 public class BSException extends CJBaseException {
 	private static final long serialVersionUID = 1L;
 	private final OutEsi outEsi;
-	private final OutSeg outSeg;
+	@Builder.Default
+	private final OutSeg outSeg=new OutSeg();
 	private final String bsName;
 	
 	@Override

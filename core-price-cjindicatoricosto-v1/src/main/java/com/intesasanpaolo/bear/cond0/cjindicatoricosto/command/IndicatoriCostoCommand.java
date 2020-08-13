@@ -18,6 +18,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.WarningResult;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCostoPratica;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.ctg.pcuj.PCUJRequest;
@@ -59,7 +60,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	@Override
 	public boolean canExecute() {
 		log.info("- canExecute START");
-		boolean esitoControlli = false;
+		/*boolean esitoControlli = false;
 		esitoControlli = dto != null && !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
@@ -67,8 +68,9 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-		log.info("- canExecute END - " + esitoControlli);
-		return esitoControlli;
+		log.info("- canExecute END - " + esitoControlli);*/
+		
+		return true;
 	}
 
 	@Override
@@ -108,51 +110,45 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			indPratica.setPcujResponse(pcujResponse);
 		});
 
-		String returnCode ="00";
-		StringWriter returnMessage = new StringWriter();
-
+		
+		//gestione warning
+		WarningResult warningResult=null;
 		// gestione gerarchia WARNING
 		// check sul ritorno della WKCJ
 		List<IndicatoriCostoPratica> wkcjWarningList = indicatoriCostoPraticaList.stream().filter(ele -> ele.getWkcjResponse() != null)
 				.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).collect(Collectors.toList());
 
-		if (CollectionUtils.isNotEmpty(wkcjWarningList)) {
-			returnCode = "01";
-			returnMessage.append("WARNING - rilevate differenze in fase di controllo");
-			returnMessage.append("\n\n");
-
-		} else {
+		if (CollectionUtils.isNotEmpty(wkcjWarningList)) {		
+			warningResult = new WarningResult("01",null,"Warning - rilevate differenze in fase di controllo",40);			
+		} else {		
 			List<IndicatoriCostoPratica> pcujWarningList = indicatoriCostoPraticaList.stream()
 					.filter(ele -> !"00".equals(ele.getPcujResponse().getCodEsito()))
 					.collect(Collectors.toList());
-
-			returnCode = pcujWarningList.stream().map((ele) -> ele.getPcujResponse().getCodEsito()).sorted((String st1, String st2) -> {
-				if (st1.equals("01")
-						||(st1.equals("02") && !st2.equals("01"))
-						||(st1.equals("03") && !st2.equals("01") && !st2.equals("02")))	
-					return 1;
-				return -1;
-			}).findFirst().orElse("");
-
-			switch (returnCode) {
-			case "01":
-				returnMessage.append("Warning - presenti variazioni condizioni economiche");
-				break;
-			case "02":
-				returnMessage.append("Warning - presenti variazioni TEG");
-				break;
-			case "03":
-				returnMessage.append("Warning - pesenti variazioni TAEG");
-				break;
-			default:
-				returnMessage.append("Warning Generico");
-
-			}
-
+						 
+			warningResult= pcujWarningList.stream().map(ele->{
+				String codEsito=ele.getPcujResponse().getCodEsito();
+				String msgEsito=ele.getPcujResponse().getMsgEsito();
+				
+				WarningResult result=null;
+				switch (codEsito) {
+				case "01":
+					result = new WarningResult(codEsito,msgEsito,"Warning - presenti variazioni condizioni economiche",30);				
+					break;
+				case "02":
+					result = new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning - presenti variazioni TEG",20);
+					break;
+				case "03":
+					result =new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning - presenti variazioni TAEG",10);
+					break;
+				default:
+					result =new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning generico",1);
+				}
+				
+				return result;
+			}).sorted().findFirst().orElse(null);
 		}
-
 		// solo per debug stampo gli esiti delle BS per tutte le pratiche:
-		returnMessage.append("\n\n\n\nRisposta BS WKCJ per pratica:");
+		/*returnMessage.append("\n\n\n\nRisposta BS WKCJ per pratica:");
 		indicatoriCostoPraticaList.forEach(indicatoriCostoPratica -> {
 			returnMessage.append(" [ ");
 			returnMessage.append(" Pratica:" + indicatoriCostoPratica.getPratica()).append(" Condizioni Variate: ");
@@ -166,12 +162,18 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 			returnMessage.append(" -CodEsito: " + indicatoriCostoPratica.getPcujResponse().getCodEsito());
 			returnMessage.append(" -MsgEsito: " + indicatoriCostoPratica.getPcujResponse().getMsgEsito());
 			returnMessage.append(" ] --- ");
-		});
+		});*/
 		////////////////////////////////////////
 		
-		indicatoriCosto.setCodErrore(returnCode);
-		indicatoriCosto.setDescErrore(returnMessage.toString());
-
+		if (warningResult!=null) {
+			indicatoriCosto.setCodErrore(warningResult.getCodeBS());
+			indicatoriCosto.setDescErrore(warningResult.getDescrizione().concat(warningResult.getMsgBS()!=null?warningResult.getMsgBS():""));
+	
+		}else {
+			indicatoriCosto.setCodErrore("00");
+			indicatoriCosto.setDescErrore("");
+		}
+		
 		return indicatoriCosto;
 	}
 
