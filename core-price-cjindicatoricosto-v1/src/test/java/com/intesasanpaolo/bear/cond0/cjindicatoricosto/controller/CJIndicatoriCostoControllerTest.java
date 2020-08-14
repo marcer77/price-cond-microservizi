@@ -86,6 +86,13 @@ public class CJIndicatoriCostoControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 
+		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceID", "0");
+		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "0");
+		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.CallerProgramName", "0");
+		httpHeaders.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa", "00700");
+		httpHeaders.add("ISPWebservicesHeader.BusinessInfo.CustomerID", "U015886");
+		
+
 		wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(buildMockHeader()).pratica("").superpratica("")
 				.tipoChiamata("A4").build();
 

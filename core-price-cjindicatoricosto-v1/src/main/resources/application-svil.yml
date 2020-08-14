@@ -13,6 +13,4 @@ connectors:
             readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
             readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
             writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}    
-            
-   
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}

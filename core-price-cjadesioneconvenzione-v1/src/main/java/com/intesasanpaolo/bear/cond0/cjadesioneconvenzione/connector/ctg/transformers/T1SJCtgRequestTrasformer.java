@@ -31,7 +31,7 @@ public class T1SJCtgRequestTrasformer implements ICtgRequestTransformer<T1SJRequ
 		connector.INHEADER = new INHEADER[1];
 		connector.INHEADER[0] = new INHEADER();
 
-		ServiceUtil.setBSHeaders(connector.INHEADER[0], BSTypeCall.FL03S00_CALL, request.getIspWebservicesHeaderType());
+		ServiceUtil.setBSHeaders(connector.INHEADER[0], BSTypeCall.T1SJ00_CALL, request.getIspWebservicesHeaderType());
 		logger.debug("INHEADER = {}", ServiceUtil.stampaOggetto(connector.INHEADER[0]));
 
 		// body
@@ -72,7 +72,7 @@ public class T1SJCtgRequestTrasformer implements ICtgRequestTransformer<T1SJRequ
 		inpbst.T1SJ_I_TIPO_OFFERTA = ServiceUtil.ifNull(request.getT1SjITipoOfferta(),"");
 		inpbst.T1SJ_I_TIPO_STAMPA = ServiceUtil.ifNull(request.getT1SjITipoStampa(),"");
 		inpbst.T1SJ_I_VIA_RES = ServiceUtil.ifNull(request.getT1SjIViaRes(),"");
-
+		inpbst.T1SJ_I_FUNZIONE=ServiceUtil.ifNull(request.getT1SjIFunzione(),"");
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = inpbst;
 

@@ -44,6 +44,8 @@ public class T1SJRequest {
 	private String  t1SjITipoOfferta;
 	private String  t1SjITipoStampa;
 	private String  t1SjIViaRes;
+	private String  t1SjIFunzione;
+	
 	
 	private List<InpNDG> inpNDGList;
 	

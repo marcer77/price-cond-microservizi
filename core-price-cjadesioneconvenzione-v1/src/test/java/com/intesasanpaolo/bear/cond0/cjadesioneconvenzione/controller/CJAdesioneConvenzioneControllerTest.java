@@ -236,6 +236,12 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		httpHeaders.add("ISPWebservicesHeader.RequestInfo.TransactionId", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
+
+		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceID", "0");
+		httpHeaders.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "0");
+		httpHeaders.add("ISPWebservicesHeader.TechnicalInfo.CallerProgramName", "0");
+		httpHeaders.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa", "00700");
+		httpHeaders.add("ISPWebservicesHeader.BusinessInfo.CustomerID", "U015886");
 		return httpHeaders;
 	}
 	

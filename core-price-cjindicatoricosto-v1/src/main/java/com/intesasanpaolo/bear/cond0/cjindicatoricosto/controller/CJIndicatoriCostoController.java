@@ -27,6 +27,7 @@ import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriCostoR
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.IndicatoriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.ParametriResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.PraticaResource;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.RapportoResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.resource.TanResource;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.service.ctg.PCUJServiceBS;
 import com.intesasanpaolo.bear.core.controller.CoreController;
@@ -50,15 +51,15 @@ public class CJIndicatoriCostoController extends CoreController {
 	@PostMapping(value = "/calcolo", produces = "application/json")
 	@ApiOperation(value = "Implementazione nuovo servizio per stampa addendum Bersani")
 	public ResponseEntity<IndicatoriCostoResource> calcolo(@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true) String codABI,
-			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false) String codUnitaOperativa,
+			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = true) String codUnitaOperativa,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_CUSTOMER_ID, required = false) String customerID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_CALLER_COMPANY_ID_CODE, required = true) String callerCompanyIDCode,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_COMPANY_ID_CODE, required = true) String serviceCompanyIDCode,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_OPERATOR_INFO_USER_ID, required = true) String userID,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_IS_VIRTUAL_USER, required = false) String isVirtualUser,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_LANGUAGE, required = false) String language,
-			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_ID, required = false) String serviceID,
-			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_VERSION, required = false) String serviceVersion,
+			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_ID, required = true) String serviceID,
+			@RequestHeader(value = HeaderAttribute.ISP_HEADER_SERVICE_VERSION, required = true) String serviceVersion,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TIMESTAMP, required = true) String timestamp,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_TRANCACTION_ID, required = true) String transactionId,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_APPLICATION_ID, required = true) String applicationID,
@@ -100,65 +101,83 @@ public class CJIndicatoriCostoController extends CoreController {
 		return resource;
 	}
 
-	protected PraticaResource mockPraticaResource(String codPratica, String codiceCondizione1, String codiceCondizione2, String formatecnica1,
-			String formatecnica2) {
-		PraticaResource praticaResource = new PraticaResource();
+	protected PraticaResource mockPraticaResource(String codPratica,String codiceCondizione1,String codiceCondizione2,String formatecnica1,String formatecnica2) {
+		PraticaResource praticaResource=new PraticaResource();
 		praticaResource.setCodPratica(codPratica);
 		praticaResource.setCondizioni(new ArrayList<CondizioneResource>());
 		praticaResource.getCondizioni().add(new CondizioneResource(codiceCondizione1));
 		praticaResource.getCondizioni().add(new CondizioneResource(codiceCondizione2));
-
-		// affidamenti
+		
+		//affidamenti
 		praticaResource.setAffidamenti(new ArrayList<AffidamentoResource>());
-
-		// primo affidamento
-		AffidamentoResource affidamentoResource = new AffidamentoResource();
+		
+		//primo affidamento
+		AffidamentoResource affidamentoResource=new AffidamentoResource();
 		affidamentoResource.setFormaTecnica(formatecnica1);
-		affidamentoResource.setImporto("343");
-		affidamentoResource.setScadenza("20201220");
-		affidamentoResource.setTipoFTecnica("tipoFT");
+		affidamentoResource.setImporto("100100000");
+		affidamentoResource.setScadenza("31.07.2020");
+		affidamentoResource.setTipoFTecnica("T_FT_1");
+		affidamentoResource.setDescFTecnica("DESC_TF_1");
+		affidamentoResource.setDivisa("EUR");
+		affidamentoResource.setImportoEUR("100020009");
+		
 		affidamentoResource.setIndicatori(new IndicatoriResource());
-		affidamentoResource.getIndicatori().setCdf("");
-		affidamentoResource.getIndicatori().setTaeg("");
-		affidamentoResource.getIndicatori().setTeg("");
+		affidamentoResource.getIndicatori().setCdf("001.23421");
+		affidamentoResource.getIndicatori().setTaeg("011.91567");
+		affidamentoResource.getIndicatori().setTeg("018.21981");
+		
 		affidamentoResource.getIndicatori().setTan(new TanResource());
 		affidamentoResource.getIndicatori().getTan().setFlUsura("S");
-		affidamentoResource.getIndicatori().getTan().setValore("");
+		affidamentoResource.getIndicatori().getTan().setValore("012.89786");
 		affidamentoResource.getIndicatori().getTan().setParametri(new ParametriResource());
-		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("5");
-		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("");
-		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("");
-		;
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("");
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("");
-
+		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("005.50123");
+		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("-TAN-");
+		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("+111.12221");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("17.81234");
+		
+		affidamentoResource.setRapporto(new RapportoResource());
+		affidamentoResource.getRapporto().setCategoria("1000");
+		affidamentoResource.getRapporto().setFiliale("00700");
+		affidamentoResource.getRapporto().setNumero("65676767");
+		
+		
 		praticaResource.getAffidamenti().add(affidamentoResource);
-
-		// secondo affidamento
-		affidamentoResource = new AffidamentoResource();
+		
+		//secondo affidamento
+		affidamentoResource=new AffidamentoResource();
 		affidamentoResource.setFormaTecnica(formatecnica2);
-		affidamentoResource.setImporto("343");
-		affidamentoResource.setScadenza("20201220");
-		affidamentoResource.setTipoFTecnica("tipoFT");
+		affidamentoResource.setImporto("100100");
+		affidamentoResource.setScadenza("31.07.2020");
+		affidamentoResource.setTipoFTecnica("T_FT_2");
+		affidamentoResource.setDescFTecnica("DESC_TF_2");
+		affidamentoResource.setDivisa("EUR");
+		affidamentoResource.setImportoEUR("100020001");
 		affidamentoResource.setIndicatori(new IndicatoriResource());
-		affidamentoResource.getIndicatori().setCdf("");
-		affidamentoResource.getIndicatori().setTaeg("");
-		affidamentoResource.getIndicatori().setTeg("");
+		affidamentoResource.getIndicatori().setCdf("003.56785");
+		affidamentoResource.getIndicatori().setTaeg("010.91997");
+		affidamentoResource.getIndicatori().setTeg("010.21981");
+		
 		affidamentoResource.getIndicatori().setTan(new TanResource());
 		affidamentoResource.getIndicatori().getTan().setFlUsura("S");
-		affidamentoResource.getIndicatori().getTan().setValore("");
+		affidamentoResource.getIndicatori().getTan().setValore("013.89786");
 		affidamentoResource.getIndicatori().getTan().setParametri(new ParametriResource());
-		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("4");
-		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("121");
-		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("121");
-		;
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("121");
-		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("12");
-
+		affidamentoResource.getIndicatori().getTan().getParametri().setPercApplic("002.50123");
+		affidamentoResource.getIndicatori().getTan().getParametri().setDescIndice("-TAN-");
+		affidamentoResource.getIndicatori().getTan().getParametri().setSegnoSpread("+");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreIndice("+021.12221");
+		affidamentoResource.getIndicatori().getTan().getParametri().setValoreSpread("17.11234");
+		
+		
+		affidamentoResource.setRapporto(new RapportoResource());
+		affidamentoResource.getRapporto().setCategoria("1000");
+		affidamentoResource.getRapporto().setFiliale("00700");
+		affidamentoResource.getRapporto().setNumero("65676767");
+		
 		praticaResource.getAffidamenti().add(affidamentoResource);
-
+		
 		return praticaResource;
-
+		
 	}
 
 }

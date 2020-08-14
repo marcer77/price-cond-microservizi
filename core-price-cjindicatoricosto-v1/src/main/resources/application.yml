@@ -28,6 +28,17 @@ controllers:
         enabled: true
         bodyMaxLength: 10000
 
+connectors:
+  jdbcConfigurations:
+     items:
+         GenericJdbcConnector:
+           uri: ${DATASOURCE_CONDDATA_URL}
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: ${DATASOURCE_CONDDATA_USERNAME}
+           password: ${DATASOURCE_CONDDATA_PASSWORD}
+           connectionPoolSize: ${DATASOURCE_CONDDATA_MAX_POOL_SIZE}
+           timeout: ${DATASOURCE_CONDDATA_CONNECTION_TIMEOUT}
+
 
 
 

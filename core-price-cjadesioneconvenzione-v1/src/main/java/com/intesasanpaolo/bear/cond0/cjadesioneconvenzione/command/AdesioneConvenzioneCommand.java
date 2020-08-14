@@ -187,10 +187,13 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 	 */
 	private ReqGetCovenantPerConvenzione buildRequestGetCovenantPerConvenzione(String abi, String codConvenzione) {
 		log.info("buildRequestGetCovenantPerConvenzione START");
-		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder().userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID()).abi(abi)
-				.dataAdesione(DateUtils.dateToString(new Date(), "yyyyMMdd")) // TODO CHIEDERE FORMATO
-				.filialeUserId(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA)).codConvenzione(codConvenzione)
+		ReqGetCovenantPerConvenzione getCovPerConRequest = ReqGetCovenantPerConvenzione.builder()
+				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				.abi(abi)
+				.dataAdesione(DateUtils.dateToString(new Date(),DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID))
+				.filialeUserId(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
+				.codConvenzione(codConvenzione)
 				.build();
 		log.info("buildRequestGetCovenantPerConvenzione END");
 		return getCovPerConRequest;
@@ -198,23 +201,17 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 
 	private ReqGetRequisitiAdesioneConvenzione buildRequestGetRequisitiAdesioneConvenzione(String abi, String codiceConvenzione) {
 		log.info("buildRequestGetRequisitiAdesioneConvenzione START");
-		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = ReqGetRequisitiAdesioneConvenzione.builder().abi(abi)
-				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID()).codiceConvenzione(codiceConvenzione)
-				.codiciFiscali(Arrays.asList(dto.getIntestatario().getCodFiscale()))
-				.dataAccensione(DateUtils.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
-																										// FORMATO
-				.dataAdesione(DateUtils.dateToString(dto.getInfoStampa().getData(), "YYYYMMGG")) // TODO CHIEDERE
-																									// FORMATO
-				.filiale(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA)) // TODO
-																															// CHIEDERE
-																															// CONFERMA
-																															// SE
-																															// E'
-																															// QUESTO
-				.flagTipoCliente(dto.getIntestatario().getSpecieGiur()).ndg(dto.getIntestatario().getNdg()).pIva(dto.getIntestatario().getPIva())
-				.rapportoCategoria(dto.getRapporto().getCodCategoria()).rapportoCodice(dto.getRapporto().getCodProgressivo())
-				.rapportoFiliale(dto.getRapporto().getCodFiliale()).tipoChiamata("?") // TODO DA CHIEDERE
-				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID()).build(); // TODO Da completare
+		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = ReqGetRequisitiAdesioneConvenzione.builder()
+				.abi(abi)
+				.applicativoId(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
+				.codiceConvenzione(codiceConvenzione)
+				.dataAccensione(DateUtils.dateToString(dto.getInfoStampa().getData(), DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID)) 
+				.dataAdesione(DateUtils.dateToString(dto.getInfoStampa().getData(), DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID))
+				.filiale(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
+				.tipoChiamata("2") 
+				.rol("S")
+				.userId(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.build();
 		log.info("buildRequestGetRequisitiAdesioneConvenzione END");
 		return getRequisitiAdesioneConvenzioneRequest;
 	}
@@ -230,40 +227,34 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				inpNDGList.add(InpNDG.builder().t1SjIIntestazFirma(firmatario.getIntestazione()).t1SjINdgFirma(firmatario.getNdg()).build());
 			}
 		}
-		T1SJRequest t1SJRequest = T1SJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).t1SjICapRes(recapito.getCap()).t1SjIChiamante("")// TODO
-				.t1SjICodCatRapp(dto.getRapporto().getCodCategoria()).t1SjICodFiscale(dto.getIntestatario().getCodFiscale())
-				.t1SjICodiceLingua(dto.getInfoStampa().getCodLingua()).t1SjICodUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				.t1SjIComuneRes(recapito.getComune()).t1SjIDataRiferimento(""/* dto.getInfoStampa().getData() */) // TODO
-																													// verificare
-																													// formato.
+		T1SJRequest t1SJRequest = T1SJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.t1SjICapRes(recapito.getCap())
+				.t1SjIChiamante(dto.getCodAppl())
+				.t1SjICodCatRapp(dto.getRapporto().getCodCategoria())
+				.t1SjICodFiscale(dto.getIntestatario().getCodFiscale())
+				.t1SjICodiceLingua(dto.getInfoStampa().getCodLingua())
+				.t1SjICodUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.t1SjIComuneRes(recapito.getComune())
+				.t1SjIDataRiferimento(DateUtils.dateToString(dto.getInfoStampa().getData(), DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID)) 																							
 				.t1SjIFilialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, (ParamList.COD_UNITA_OPERATIVA)))
-				.t1SjIFirma(dto.getInfoStampa().getTipoFirma()).t1SjIFrazione(recapito.getFrazione()).t1SjIIntestaz(dto.getIntestatario().getIntestazione())
-				.t1SjIKeyOperazione(dto.getInfoStampa().getKeyOper()).t1SjINdgIntestatario(dto.getIntestatario().getNdg())
-				.t1SjINrPratica(dto.getPratica().getCodPratica()).t1SjINrSuperpratica(dto.getPratica().getCodSuperPratica())
-				.t1SjINumProgRapp(dto.getRapporto().getCodProgressivo()).t1SjIProgStampa(Double.valueOf(0)) // TODO Come
-																											// valorizzare
-																											// questo
-																											// campo? E’
-																											// obbligatorio?
-																											// In output
-																											// alla BS è
-																											// presente
-																											// un campo
-																											// t1SjOProgStampa
-																											// che
-																											// potrebbe
-																											// indicare
-																											// il numero
-																											// di
-																											// chiamate
-																											// da
-																											// effettuare
-																											// alla BS
-																											// FL03
+				.t1SjIFirma(dto.getInfoStampa().getTipoFirma())
+				.t1SjIFrazione(recapito.getFrazione())
+				.t1SjIIntestaz(dto.getIntestatario().getIntestazione())
+				.t1SjIKeyOperazione(dto.getInfoStampa().getKeyOper())
+				.t1SjINdgIntestatario(dto.getIntestatario().getNdg())
+				.t1SjINrPratica(dto.getPratica().getCodPratica())
+				.t1SjINrSuperpratica(dto.getPratica().getCodSuperPratica())
+				.t1SjINumProgRapp(dto.getRapporto().getCodProgressivo())
+				.t1SjIProgStampa(Double.valueOf(0))
 				.t1SjIPropostaComm((StringUtils.isNotEmpty(dto.getPratica().getCodPropostaComm()) ? dto.getPratica().getCodPropostaComm() : ""))
-				.t1SjIProvRes(recapito.getProvincia()).t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
-				.t1SjITipoOfferta(dto.getInfoStampa().getTipoOfferta()).t1SjITipoStampa(dto.getInfoStampa().getTipoStampa())
-				.t1SjIViaRes(recapito.getIndirizzo()).inpNDGList(inpNDGList).build();
+				.t1SjIProvRes(recapito.getProvincia())
+				.t1SjISpecieGiu(dto.getIntestatario().getSpecieGiur())
+				.t1SjITipoOfferta(dto.getInfoStampa().getTipoOfferta())
+				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa())
+				.t1SjIViaRes(recapito.getIndirizzo())
+				.t1SjIFunzione(dto.getCodProcesso())
+				.inpNDGList(inpNDGList).build();
 		log.info("buildT1SJRequest END");
 		return t1SJRequest;
 	}
