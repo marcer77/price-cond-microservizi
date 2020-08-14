@@ -32,7 +32,7 @@ public class T1SFServiceBS extends BaseService {
 		
 		
 		String[] parametriAggiuntivi=new String[0];
-		CJErrorUtil.checkErrore(BSType.FL03S00, t1sfResponse.getOutEsi(),t1sfResponse.getOutSeg(),this::additionalCheckErrorFunction,parametriAggiuntivi);
+		CJErrorUtil.checkErrore(BSType.T1SFS00, t1sfResponse.getOutEsi(),t1sfResponse.getOutSeg(),this::additionalCheckErrorFunction,parametriAggiuntivi);
 		
 		return t1sfResponse;
 	}
