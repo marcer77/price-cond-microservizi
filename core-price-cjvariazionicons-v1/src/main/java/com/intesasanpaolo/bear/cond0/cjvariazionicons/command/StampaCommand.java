@@ -76,7 +76,7 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 						.codFunzione("UP")
 						.codSottoApplic("ORDIN")
 						.filler("")
-						.keyOper("01U01588620200710CMOD125914")
+						.keyOper(t1sfResponse.getOKeyOperazione())
 						.numStrKey(1)
 						.ispWebservicesHeaderType(ispWebservicesHeaderType)
 						.build();
