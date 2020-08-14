@@ -48,7 +48,7 @@
 		<dependency>
 			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00</groupId>
   			<artifactId>AD-T1SJSTCVNE</artifactId>
-  			<version>00.00004</version>
+  			<version>00.00005</version>
  		</dependency>
  		
  		<!-- 
@@ -59,9 +59,9 @@
 		</dependency>
 		 -->
 		<dependency>
-    		<groupId>com.intesasanpaolo.bear.cond0</groupId>
-    		<artifactId>cj-common-lib-v1</artifactId>
-    		<version>1.0.0-20200814.090325-1</version>
+		    <groupId>com.intesasanpaolo.bear.cond0</groupId>
+		    <artifactId>cj-common-lib-v1</artifactId>
+		    <version>1.0.0-20200814.190250-2</version>
 		</dependency>
 
 	</dependencies>
