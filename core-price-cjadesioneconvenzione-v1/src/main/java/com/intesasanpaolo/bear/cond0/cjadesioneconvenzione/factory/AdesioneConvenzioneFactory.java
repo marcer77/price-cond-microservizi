@@ -3,6 +3,7 @@ package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.factory;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,52 +27,56 @@ public class AdesioneConvenzioneFactory {
 		//
 		List<TB59R009> modelList=new ArrayList<>();
 		//
-		int progDati=1;
-		for (RespGetCovenantPerConvenzioneCovenantDaAttivare covenant : getCovPerConResp) {
-			InfoCovenantBuilder infoCovenantBuilder = new InfoCovenantBuilder(covenant);
-			String datiEntita=infoCovenantBuilder.build();
-			TB59R009 entity = TB59R009.builder()
-					.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-					.nrPratica(dto.getPratica().getCodPratica())
-					.idEntita("00003")
-					.stato("")
-					.progrEntita(1)
-					.progrDati(progDati++)
-					.codEntita("") 
-					.datiEntita(datiEntita)
-					.tipoAggiornamento("I")
-					.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-					.build();
-			
-			modelList.add(entity);
+		if(CollectionUtils.isNotEmpty(getCovPerConResp)) {
+			int progDati=1;
+			for (RespGetCovenantPerConvenzioneCovenantDaAttivare covenant : getCovPerConResp) {
+				InfoCovenantBuilder infoCovenantBuilder = new InfoCovenantBuilder(covenant);
+				String datiEntita=infoCovenantBuilder.build();
+				TB59R009 entity = TB59R009.builder()
+						.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+						.nrPratica(dto.getPratica().getCodPratica())
+						.idEntita("00003")
+						.stato("")
+						.progrEntita(1)
+						.progrDati(progDati++)
+						.codEntita("") 
+						.datiEntita(datiEntita)
+						.tipoAggiornamento("I")
+						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+						.build();
+
+				modelList.add(entity);
+			}
 		}
-			
 		//
-		int progBen=1;
-		int progRol=1;
-		List<AdesioneResponseBenefici> benefici = getReqAdesConResp.getTabellaBenefici();
-		for (AdesioneResponseBenefici beneficio : benefici) {
-			BeneficiBuilder beneficiBuilder = new BeneficiBuilder(beneficio);
-			
-			String datiEntita=beneficiBuilder.build();
-			boolean checkRolling=StringUtils.isNotEmpty(beneficio.getFlagRolling())&& beneficio.getFlagRolling().trim().equalsIgnoreCase("S");
-			
-			TB59R009 entity = TB59R009.builder()
-					.nrSuperpratica(dto.getPratica().getCodSuperPratica())
-					.nrPratica(dto.getPratica().getCodPratica())
-					.idEntita(checkRolling?"00005":"00004")
-					.stato("")
-					.progrEntita(1)
-					.progrDati(checkRolling?progRol++:progBen++)
-					.codEntita("")
-					.datiEntita(datiEntita)
-					.tipoAggiornamento("I")
-					.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-					.build();
-			
-			modelList.add(entity);
+		if(getReqAdesConResp!=null) {
+			int progBen=1;
+			int progRol=1;
+			List<AdesioneResponseBenefici> benefici = getReqAdesConResp.getTabellaBenefici();
+			if(CollectionUtils.isNotEmpty(benefici)) {
+				for (AdesioneResponseBenefici beneficio : benefici) {
+					BeneficiBuilder beneficiBuilder = new BeneficiBuilder(beneficio);
+
+					String datiEntita=beneficiBuilder.build();
+					boolean checkRolling=StringUtils.isNotEmpty(beneficio.getFlagRolling())&& beneficio.getFlagRolling().trim().equalsIgnoreCase("S");
+
+					TB59R009 entity = TB59R009.builder()
+							.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+							.nrPratica(dto.getPratica().getCodPratica())
+							.idEntita(checkRolling?"00005":"00004")
+							.stato("")
+							.progrEntita(1)
+							.progrDati(checkRolling?progRol++:progBen++)
+							.codEntita("")
+							.datiEntita(datiEntita)
+							.tipoAggiornamento("I")
+							.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+							.build();
+
+					modelList.add(entity);
+				}
+			}
 		}
-		
 		//
 		InputStampaBuilder inputStampaBuilder = new InputStampaBuilder(dto);
 		TB59R009 entityDTADE = TB59R009.builder()

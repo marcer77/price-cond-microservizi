@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums;
+package com.intesasanpaolo.bear.cond0.cj.lib.result;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

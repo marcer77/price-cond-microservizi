@@ -13,6 +13,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.result.WarningResult;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
@@ -38,6 +39,7 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ConvenzioniSe
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.SuperPraticaService;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ctg.FL03ServiceBS;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.service.ctg.T1SJServiceBS;
+
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -116,32 +118,53 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 
 		logger.info("doExecute Recuperato codConvenzione {}", codiceConvenzione);
 
-		// invocazione VDM GetCovenantPerConvenzione
-		ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(codAbi, codiceConvenzione);
-		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
+		
+		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovPerConResp = null;
+		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = null;
+		
+		boolean codiceConvenzioneFound = StringUtils.isNotEmpty(codiceConvenzione);
+		if(codiceConvenzioneFound) {
 
-		// invocazione VDM GetRequisitiAdesioneConvenzione
-		ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(codAbi, codiceConvenzione);
-		RespGetRequisitiAdesioneConvenzione getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
+			// invocazione VDM GetCovenantPerConvenzione
+			ReqGetCovenantPerConvenzione getCovPerConRequest = buildRequestGetCovenantPerConvenzione(codAbi, codiceConvenzione);
+			getCovPerConResp = convenzioniHostService.getCovenantPerConvenzione(getCovPerConRequest);
 
+			// invocazione VDM GetRequisitiAdesioneConvenzione
+			ReqGetRequisitiAdesioneConvenzione getRequisitiAdesioneConvenzioneRequest = buildRequestGetRequisitiAdesioneConvenzione(codAbi, codiceConvenzione);
+			getReqAdesConResp = convenzioniService.getRequisitiAdesioneConvenzione(getRequisitiAdesioneConvenzioneRequest);
+
+		}
+		
+		//Nel caso il codice convenzione non è stato trovato, verrà inserito solo il record con ID_ENTITA=’DTADE’
 		AdesioneConvenzione adesioneConvenzione = adesioneConvenzioneFactory.createAdesioneConvenzione(ispWebservicesHeaderType, dto, getCovPerConResp,
 				getReqAdesConResp, codiceConvenzione);
 
 		this.superPraticaService.inserisciAdesioneConvenzione(adesioneConvenzione);
 
+		String docXML = null;
+		String codiceErrore = null;
+		String descErrore = null;		
+		
+		if(codiceConvenzioneFound) {
 		// T1SJ preparazione stampa
 		T1SJResponse t1SJResponse = preparazioneStampa();
+		
+		codiceErrore = t1SJResponse.getT1SjOReturnCode(); //TODO BHO... da vericare nei test.
 
 		// chiamata alla BS FL03 - recupero
-		String docXML = generazioneXML(t1SJResponse, stampaOutput);
+		generazioneXML(t1SJResponse, stampaOutput);
 		stampaOutput.setDocXML(docXML);
-
+		}else {
+			codiceErrore = "04";
+		    descErrore = "Nessuna stampa da produrre";
+		}
+		
 		stampaResponseResource.setDocumento(docXML);
 		stampaResponseResource.setKeyOper(dto.getInfoStampa().getKeyOper());
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
-		stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
-		stampaResponseResource.getEsitoStampaResource().setDescErrore("");
-		//TODO:GESTIRE WARNING
+		stampaResponseResource.getEsitoStampaResource().setCodErrore(codiceErrore!=null?codiceErrore:"00");
+		stampaResponseResource.getEsitoStampaResource().setDescErrore(descErrore!=null?descErrore:"");
+		
 		return stampaResponseResource;
 	}
 
