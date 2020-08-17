@@ -6,20 +6,33 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ConvRiferimento;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Adesione;
 
 
 @Service
-public class LetturaRRowMapper implements RowMapper<ConvRiferimento> {
+public class LetturaRRowMapper implements RowMapper<Adesione> {
 
-	public ConvRiferimento mapRow(ResultSet rs, int rowNum) {
-		ConvRiferimento convRiferimento = new ConvRiferimento();
+	public Adesione mapRow(ResultSet rs, int rowNum) {
+		Adesione adesione = null;
 		try {
-			convRiferimento.setCodConvenzioneRf(rs.getString("codConvenzioneRf"));		 
+
+			adesione = Adesione.builder().codConvenzione(rs.getString("codConvenzione"))
+					.infoStampaData(rs.getString("infoStampaData"))
+					.infoStampakeyOper(rs.getString("infoStampakeyOper"))
+					.intestatarioCodFiscale(rs.getString("intestatarioCodFiscale"))
+					.intestatarioNDG(rs.getString("intestatarioNDG"))
+					.intestatarioPIVA(rs.getString("intestatarioPIVA"))
+					.intestatarioSpecieGiur(rs.getString("intestatarioSpecieGiur"))
+					.intestatazione(rs.getString("intestatazione"))
+					.rapportoCodCategoria(rs.getString("rapportoCodCategoria"))
+					.rapportoCodFiliale(rs.getString("rapportoCodFiliale"))
+					.rapportoCodProgressivo(rs.getString("rapportoCodProgressivo"))
+					.build();
+
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-		return convRiferimento;
+		return adesione;
 	}
-	
+
 }

@@ -18,7 +18,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiAdesione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Adesione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
@@ -75,8 +75,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 			String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 			String codConvenzione = "";
 
-			// BS PCMK Recupero informazioni superpratica (…)
-			List<DatiAdesione> result = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, praticaDTO.getCodPratica() , praticaDTO.getCodSuperPratica(), codConvenzione);
+			// Recupero informazioni superpratica (…)
+			List<Adesione> result = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, praticaDTO.getCodPratica() , praticaDTO.getCodSuperPratica(), codConvenzione);
 
 			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();

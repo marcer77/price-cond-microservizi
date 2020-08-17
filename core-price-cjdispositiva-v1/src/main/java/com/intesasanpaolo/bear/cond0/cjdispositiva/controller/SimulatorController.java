@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ConvRiferimento;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.controller.CoreController;
@@ -31,9 +30,9 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @Validated 
 @RequestMapping(value = "/convenzione")
-public class ConvenzioneController extends CoreController {
+public class SimulatorController extends CoreController {
        
-	private static final Logger logger = LoggerUtils.getLogger(ConvenzioneController.class);
+	private static final Logger logger = LoggerUtils.getLogger(SimulatorController.class);
  
 	@Autowired
 	private CoreConvenzioneService coreConvenzioneService;
@@ -47,15 +46,16 @@ public class ConvenzioneController extends CoreController {
 			) throws Exception {
 		
 	
-		List<ConvRiferimento> response;
+//		List<ConvRiferimento> response;
 		try {
 			 
-			response = coreConvenzioneService.letturaRConvenzioneDiRifiremento(codAbi, codConvenzionePc, dataRichiestaElaborazione);
+//			response = coreConvenzioneService.letturaRConvenzioneDiRifiremento(codAbi, codConvenzionePc, dataRichiestaElaborazione);
 
 		} catch(Exception e) {
 			logger.error("EndPoint convenzione error : ", e);
 			throw e;
 		}
+		Object response = null;
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
 	}

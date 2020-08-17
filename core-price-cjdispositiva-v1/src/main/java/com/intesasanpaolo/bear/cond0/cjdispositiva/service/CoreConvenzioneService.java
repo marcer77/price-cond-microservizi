@@ -6,15 +6,13 @@ import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.LetturaRRowMapper;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ConvRiferimento;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiAdesione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Adesione;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -25,12 +23,12 @@ import com.intesasanpaolo.bear.service.BaseService;
 public class CoreConvenzioneService extends BaseService{
 
 	 @Autowired
-	 private MultiDataSourceDb2Connector<ConvRiferimento, Void, ConvRiferimento> convRifMultiDataSourceConnector;
+	 private MultiDataSourceDb2Connector<Adesione, Void, Adesione> convRifMultiDataSourceConnector;
 	 
 	 @Autowired
 	 private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
 
-	 public List<DatiAdesione> acquisizioneDatiAdesione(String codAbi, String codPratica, String codSuperPratica, String codConvenzione) {
+	 public List<Adesione> acquisizioneDatiAdesione(String codAbi, String codPratica, String codSuperPratica, String codConvenzione) {
 		logger.info("START acquisizioneDatiAdesione");
 		String query = 
 				"SELECT substr(COD_ENTITA ,  1,  7 ) AS \"codConvenzione\"" + 
@@ -53,11 +51,10 @@ public class CoreConvenzioneService extends BaseService{
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
 
-		//TODO
-		List<DatiAdesione> resultList = null;
-//		List<DatiAdesione> resultList = convRifMultiDataSourceConnector.call(query,
-//  				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
-//  				ResponseDb2TransformerFactory.of(), paramMap, codAbi);	
+
+		List<Adesione> resultList = convRifMultiDataSourceConnector.call(query,
+  				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
+  				ResponseDb2TransformerFactory.of(), paramMap, codAbi);	
 		
 		logger.debug("Founded:", resultList);
 		
@@ -66,32 +63,6 @@ public class CoreConvenzioneService extends BaseService{
 	 }
 	 
 	
-	//Lettura R. convenzione di rifiremento
-	//@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
-	public List<ConvRiferimento> letturaRConvenzioneDiRifiremento(String codAbi, String codConvenzionePc, String dataRichiestaElaborazione){
-		logger.info("START letturaRConvenzioneDiRifiremento");
-
-		String query = "SELECT  COD_CONVENZIONE_RF as codConvenzioneRf " + 
-				"FROM   FIATT.TB07R007 " + 
-				"WHERE  COD_CONVENZIONE_PC = :codConvenzionePc " ;
-//		+ 
-//				"AND  DATA_DECO_COLL    < :dataRiferimento " + 
-//				"AND  DATA_DECA_COLL    >= :dataRiferimento " + 
-//				"AND  DATA_DECO_COLL    < DATA_DECA_COLL";
-
-		Map<String, Object> paramMap = new TreeMap<>();
-		paramMap.put("codConvenzionePc", codConvenzionePc);
-		paramMap.put("dataRiferimento", dataRichiestaElaborazione);
-  		
-		List<ConvRiferimento> resultList = convRifMultiDataSourceConnector.call(query,
-  				RequestDb2TransformerFactory.of(new LetturaRRowMapper(), DB2QueryType.FIND),
-  				ResponseDb2TransformerFactory.of(), paramMap, codAbi);	
-		
-		logger.debug("Founded:", resultList);
-
-		logger.info("END letturaRConvenzioneDiRifiremento");
-		return resultList;
-	}
 	@Transactional
 	public int updateRConvenzioneDiRifiremento(String codAbi, String codConvenzionePc){
 		logger.info("START letturaRConvenzioneDiRifiremento");
