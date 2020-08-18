@@ -102,7 +102,7 @@ public class CoreConvenzioneService extends BaseService {
 	}
 
 	public List<String> getLivelloGerarchia(String codAbi, String codConvenzione) {
-		logger.info("START getLivelloGerarchia");
+		logger.info("START getLivelloGerarchia codAbi: {} codConvenzione:{}",codAbi,codConvenzione);
 		String query = "SELECT CASE COND_GER WHEN '' THEN '0' ELSE LIV_GER END FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione CONCAT '000';";
 
 		Map<String, Object> paramMap = new TreeMap<>();

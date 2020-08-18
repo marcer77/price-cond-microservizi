@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -76,26 +77,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
 				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenandDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 				
-				if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
-					for(CovenantEntity covenantEntity : covenantDaAttivare) {
-						List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
-						if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
-							if("1".equals(livelloGerarchia.get(0))) {
-								List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
-								if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
-									covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
-								}
-							}
-							covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
-						}else {
-							//TODO Come settare se livello gerarchia e' null?
-//							throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Livello gerarchia").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
-						}
-					}
-				}else {
-					throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Covenant").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
-				}
-				
+				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
+
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
@@ -109,11 +92,41 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
 
 			}else {
-				throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Adesione").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
+				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
+				.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
 			}
 
 			log.info("execute SUCCESS ");
 			return esitoResource;
+	}
+	
+	private List<CovenantEntity> recuperaInfoCovenantDaAttivare(String codAbi, List<CovenantEntity> covenantDaAttivare) {
+		log.info("START recuperaInfoCovenantDaAttivare");
+		if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
+			log.info("covenantDaAttivare: "+covenantDaAttivare.size());
+			for(CovenantEntity covenantEntity : covenantDaAttivare) {
+				List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
+				log.info("livelloGerarchia: "+livelloGerarchia);
+				if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
+					if("1".equals(livelloGerarchia.get(0))) {
+						List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
+						if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
+							log.info("elencoCondizioniFiglie: "+stringaElencoCondizioniFiglie.get(0));
+							covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
+						}else {
+							throw CJDispositivaNotFoundDB2Exception.builder().messaggio("CondizioniFiglie non recuperabili per il covCodCondizione: {}")
+							.param(new String[]{covenantEntity.getCodCondizione()}).build();
+						}
+					}
+					covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
+				}
+			}
+		}else {
+			throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Convenzione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
+			.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
+		}
+		log.info("END recuperaInfoCovenantDaAttivare");
+		return covenantDaAttivare;
 	}
 	
 	@Override
