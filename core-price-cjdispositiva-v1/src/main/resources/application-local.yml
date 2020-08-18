@@ -1,3 +1,6 @@
+DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjdispositiva-v1
+
 spring:
   profile: development
   application:
@@ -27,6 +30,21 @@ tracing:
     enabled: true
 
 connectors:
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT:8000}
+        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE:30}
+        mocked: false
+        sources:
+          - abi: ${ABI_SPIMI:01025}
+            uri: ${DATASOURCE_SPIMI_DB2_URI:db2y.mframe.sanpaoloimi.com}
+            port: ${DATASOURCE_SPIMI_DB2_PORT:5250}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:DB2YTOSG}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}  
   soapConfiguration:
     items:
       ProposteCJPOSWSInviaPropostaV2Connector:
@@ -69,53 +87,53 @@ connectors:
       GestioneRestConnector:
         url: "http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione"
         timeout: 120000
-  db2MultiDsConfigurations:
-    items:
-      MultiDataSourceDb2Connector:
-        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT:10000}
-        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE:5}
-        mocked: false
-        sources:
-          - abi: ${ABI_SDDA:01025}
-            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_COND0DB2_PORT:5250}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-          - abi: ${ABI_MDDA:03296}
-            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_COND0DB2_PORT:5250}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-          - abi: ${ABI_IDDA:03249}
-            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_COND0DB2_PORT:5250}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:U0H7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-          - abi: ${ABI_EDDA:10637}
-            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_COND0DB2_PORT:5250}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-          - abi: ${ABI_JDDA:03239}
-            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_COND0DB2_PORT:5250}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#  db2MultiDsConfigurations:
+#    items:
+#      MultiDataSourceDb2Connector:
+#        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT:10000}
+#        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE:5}
+#        mocked: false
+#        sources:
+#          - abi: ${ABI_SDDA:01025}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#          - abi: ${ABI_MDDA:03296}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_IDDA:03249}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:U0H7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_EDDA:10637}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_JDDA:03239}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

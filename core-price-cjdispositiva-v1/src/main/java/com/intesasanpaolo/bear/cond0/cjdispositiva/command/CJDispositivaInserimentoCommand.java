@@ -20,6 +20,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -75,18 +76,18 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenandDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 				
 				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
+//				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
 				// WS VDM StoreCovenantAdesioneConvenzione
 				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
-
+		
 				// WS COND0 GESTCJPOSV.inviaPropostaV2
-				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
+//				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
 
 				// BS PCMK registrazione elenco cod.prop. “fittizie”
 				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
@@ -98,6 +99,15 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 
 			log.info("execute SUCCESS ");
 			return esitoResource;
+	}
+	
+	private void checkResponseStoreCovenantAdesioneConvenzione(RespStoreCovenantAdesioneConvenzione resp) {
+		log.info("checkResponseStoreCovenantAdesioneConvenzione START");
+		if("KO".equals(resp.getEsitoResultCode())){
+			throw CJWebServiceException.builder().webServiceName("StoreCovenantAdesioneConvenzione").codiceErroreWebService(resp.getEsitoResultCode())
+			.descrErroreWebService(resp.getEsitoErrorMessage()+" "+resp.getListaErroriCovenantDaAttivare()).build();
+		}
+		log.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 	
 	private List<CovenantEntity> recuperaInfoCovenantDaAttivare(String codAbi, List<CovenantEntity> covenantDaAttivare) {
@@ -151,6 +161,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, codAbi, codProcesso , branchCode, userId);
 		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
+		checkResponseStoreCovenantAdesioneConvenzione(resp);
 		return resp;
 	}
 	
