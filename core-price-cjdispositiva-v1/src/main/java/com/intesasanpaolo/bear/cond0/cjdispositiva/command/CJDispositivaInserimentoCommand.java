@@ -18,12 +18,13 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
@@ -36,7 +37,7 @@ import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> {
+public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseResource> {
 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 
@@ -62,9 +63,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	public EsitoResource execute() throws Exception {
+	public EsitoResponseResource execute() throws Exception {
 		log.info("execute START");
-		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore.");
+		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
 			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
 			String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 			String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
@@ -86,8 +87,13 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 								}
 							}
 							covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
+						}else {
+							//TODO Come settare se livello gerarchia e' null?
+//							throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Livello gerarchia").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
 						}
 					}
+				}else {
+					throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Covenant").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
 				}
 				
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
@@ -101,12 +107,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 
 				// BS PCMK registrazione elenco cod.prop. “fittizie”
 				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
-				
-				esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
-				esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
+
 			}else {
-				esitoResource.setCodErrore("04");
-				esitoResource.setDescErrore("ERRORE – manca adesione a convenzione");
+				throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Adesione").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
 			}
 
 			log.info("execute SUCCESS ");

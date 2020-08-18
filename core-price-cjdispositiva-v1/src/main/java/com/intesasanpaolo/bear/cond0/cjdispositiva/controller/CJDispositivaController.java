@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaInserimentoCommand;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ServiceUtil;
 import com.intesasanpaolo.bear.core.controller.CoreController;
@@ -34,7 +34,7 @@ public class CJDispositivaController extends CoreController {
 	private BeanFactory beanFactory;
 
 	@PostMapping(value = "/inserimento", produces = "application/json")
-	public ResponseEntity<EsitoResource> inserimento(
+	public ResponseEntity<EsitoResponseResource> inserimento(
 			@Valid @RequestBody(required = false) DispositivaRequestDTO dispositivaRequestDTO,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "") String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "") String codUnitaOperativa,
@@ -65,13 +65,13 @@ public class CJDispositivaController extends CoreController {
 				.getBean(CJDispositivaInserimentoCommand.class);
 		proposteCJPOSWSInviaPropostaV2Command.setDispositivaRequestDTO(dispositivaRequestDTO);
 		proposteCJPOSWSInviaPropostaV2Command.setIspWebservicesHeaderType(ispWebservicesHeaderType);
-		EsitoResource esito = proposteCJPOSWSInviaPropostaV2Command.execute();
+		EsitoResponseResource esito = proposteCJPOSWSInviaPropostaV2Command.execute();
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}
 
 	@PostMapping(value = "/annullo", produces = "application/json")
-	public ResponseEntity<EsitoResource> annullo(
+	public ResponseEntity<EsitoResponseResource> annullo(
 			@Valid @RequestBody(required = false) DispositivaRequestDTO dispositivaRequestDTO,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_ABI, required = true, defaultValue = "") String codABI,
 			@RequestHeader(value = HeaderAttribute.ISP_HEADER_COD_UNITA_OPERATIVA, required = false, defaultValue = "") String codUnitaOperativa,
@@ -101,7 +101,7 @@ public class CJDispositivaController extends CoreController {
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 		
 		proposteCJPOSWSRevocaPropostaCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
-		EsitoResource esito = proposteCJPOSWSRevocaPropostaCommand.execute();
+		EsitoResponseResource esito = proposteCJPOSWSRevocaPropostaCommand.execute();
 		log.info(" - annullo END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}

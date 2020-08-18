@@ -20,7 +20,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
@@ -33,7 +33,7 @@ import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
-public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
+public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResponseResource> {
 
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
 
@@ -56,9 +56,9 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResource> {
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	public EsitoResource execute() throws Exception {
+	public EsitoResponseResource execute() throws Exception {
 		log.info("execute START");
-		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore");
+		EsitoResponseResource esitoResource = new EsitoResponseResource("KO", "Si è verificato un errore");
 		if (canExecute()) {
 			log.info("execute OK");
 
