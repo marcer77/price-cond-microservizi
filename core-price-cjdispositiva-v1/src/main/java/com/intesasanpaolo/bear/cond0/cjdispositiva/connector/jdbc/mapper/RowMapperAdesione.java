@@ -6,17 +6,17 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Adesione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 
 
 @Service
-public class LetturaRRowMapper implements RowMapper<Adesione> {
+public class RowMapperAdesione implements RowMapper<AdesioneEntity> {
 
-	public Adesione mapRow(ResultSet rs, int rowNum) {
-		Adesione adesione = null;
+	public AdesioneEntity mapRow(ResultSet rs, int rowNum) {
+		AdesioneEntity adesione = null;
 		try {
 
-			adesione = Adesione.builder().codConvenzione(rs.getString("codConvenzione"))
+			adesione = AdesioneEntity.builder().codConvenzione(rs.getString("codConvenzione"))
 					.infoStampaData(rs.getString("infoStampaData"))
 					.infoStampakeyOper(rs.getString("infoStampakeyOper"))
 					.intestatarioCodFiscale(rs.getString("intestatarioCodFiscale"))

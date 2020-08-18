@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Adesione {
+public class AdesioneEntity {
 
 	private String codConvenzione;
 	private String intestatarioNDG;

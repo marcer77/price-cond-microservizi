@@ -14,5 +14,5 @@ public class InformazioniPraticaDTO {
 
 	private AnagraficaPropostaCJPOS anagraficaPropostaCJPOS;
 	private DatiCliente datiCliente;
-	private PraticaDTO praticaDTO;
+
 }

@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class ReqStoreCovenantAdesioneConvenzione {
-	
+
 	private String abi;
 	private String applicativoId;
 	private String codiceConvenzione;

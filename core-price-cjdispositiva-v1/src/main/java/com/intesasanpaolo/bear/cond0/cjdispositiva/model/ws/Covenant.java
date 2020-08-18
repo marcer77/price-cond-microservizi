@@ -15,7 +15,7 @@ public class Covenant {
 	private String beneficioCondizionatoDataInizio;
 	private String beneficioIncondizionatoDataFine;
 	private String beneficioIncondizionatoDatainizio;
-	private String beneficioIncondizionatoNumrilevazioni;
+	private String beneficioIncondizionatoNumRilevazioni;
 	private String beneficioIncondizionatoPresente;
 	private String beneficioIngressoDataFine;
 	private String beneficioIngressoDataInizio;
@@ -33,5 +33,4 @@ public class Covenant {
 	private String condizioniFiglie;
 	private String livelloGerarchia;
 	private Integer versioneTemplate;
-
 }

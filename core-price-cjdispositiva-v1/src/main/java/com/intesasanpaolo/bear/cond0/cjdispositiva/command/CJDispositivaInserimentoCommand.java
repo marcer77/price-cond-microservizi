@@ -3,6 +3,7 @@ package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,11 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.New
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountOutput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.Adesione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
@@ -29,7 +31,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSServic
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType.AdditionalBusinessInfo.Param;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
@@ -40,7 +41,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
-	private PraticaDTO praticaDTO;
+	
+	private DispositivaRequestDTO dispositivaRequestDTO;
 
 	@Autowired
 	private GestioneService gestioneService;
@@ -63,43 +65,52 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 	public EsitoResource execute() throws Exception {
 		log.info("execute START");
 		EsitoResource esitoResource = new EsitoResource("KO", "Si è verificato un errore.");
-		if (canExecute()) {
-
-			//TODO
-//			List<String> codConvenzione = recuperoInformazioniSuperPratica();
-//
-//			if (codConvenzione != null && codConvenzione.size() == 1) {
-//
-//				String codiceConvenzione = codConvenzione.get(0);
-
+			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
 			String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
-			String codConvenzione = "";
+			String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
+			String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 
 			// Recupero informazioni superpratica (…)
-			List<Adesione> result = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, praticaDTO.getCodPratica() , praticaDTO.getCodSuperPratica(), codConvenzione);
+			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
+				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenandDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+				
+				if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
+					for(CovenantEntity covenantEntity : covenantDaAttivare) {
+						List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
+						if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
+							if("1".equals(livelloGerarchia.get(0))) {
+								List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
+								if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
+									covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
+								}
+							}
+							covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
+						}
+					}
+				}
+				
+				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
+				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
-			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
-			NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
+				// WS VDM StoreCovenantAdesioneConvenzione
+				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
 
-			// WS VDM StoreCovenantAdesioneConvenzione
-			RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(informazioniPraticaDTO);
+				// WS COND0 GESTCJPOSV.inviaPropostaV2
+				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
 
-			// WS COND0 GESTCJPOSV.inviaPropostaV2
-			EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
+				// BS PCMK registrazione elenco cod.prop. “fittizie”
+				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
+				
+				esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
+				esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
+			}else {
+				esitoResource.setCodErrore("04");
+				esitoResource.setDescErrore("ERRORE – manca adesione a convenzione");
+			}
 
-			// BS PCMK registrazione elenco cod.prop. “fittizie”
-			boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
-
-			// return
-			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
-			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
 			log.info("execute SUCCESS ");
 			return esitoResource;
-		} else {
-			log.info("execute ERROR");
-			throw new BearForbiddenException("Cannot execute command");
-		}
 	}
 	
 	@Override
@@ -119,9 +130,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 		return esitoControlli;
 	}
 
-	private RespStoreCovenantAdesioneConvenzione callConvenzioniHostService(InformazioniPraticaDTO informazioniPraticaDTO) {
+	private RespStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, String codAbi, String codProcesso, String branchCode , String userId) {
 		log.info("callStoreCovenantAdesioneConvenzione START");
-		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(informazioniPraticaDTO);
+		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, codAbi, codProcesso , branchCode, userId);
 		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
 		return resp;
@@ -194,8 +205,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResource> 
 		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
 	}
 
-	public void setPraticaDTO(PraticaDTO praticaDTO) {
-		this.praticaDTO = praticaDTO;
+	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
+		this.dispositivaRequestDTO = dispositivaRequestDTO;
 	}
 
 }

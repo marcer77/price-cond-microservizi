@@ -63,6 +63,7 @@ public class CJDispositivaController extends CoreController {
 
 		CJDispositivaInserimentoCommand proposteCJPOSWSInviaPropostaV2Command = beanFactory
 				.getBean(CJDispositivaInserimentoCommand.class);
+		proposteCJPOSWSInviaPropostaV2Command.setDispositivaRequestDTO(dispositivaRequestDTO);
 		proposteCJPOSWSInviaPropostaV2Command.setIspWebservicesHeaderType(ispWebservicesHeaderType);
 		EsitoResource esito = proposteCJPOSWSInviaPropostaV2Command.execute();
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");

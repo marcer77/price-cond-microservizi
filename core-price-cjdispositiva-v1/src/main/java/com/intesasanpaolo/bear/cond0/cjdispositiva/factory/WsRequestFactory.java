@@ -1,5 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.factory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.log4j.Logger;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
@@ -10,6 +13,9 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.WrapperMap;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 
@@ -40,9 +46,68 @@ public class WsRequestFactory {
 		return ProposteCJPOSWSUtils._buildMockRevocaProposta();
 	}
 	
+	//per annullo
 	public ReqStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(InformazioniPraticaDTO informazioniPraticaDTO) {
 		log.info("assemblaRequestConvenzione START");
 		ReqStoreCovenantAdesioneConvenzione request = new ReqStoreCovenantAdesioneConvenzione();
+		log.info("assemblaRequestConvenzione END");
+		return request;
+	}
+	
+	public ReqStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, String codAbi, String codProcesso, String branchCode , String userId) {
+		log.info("assemblaRequestConvenzione START");
+		ReqStoreCovenantAdesioneConvenzione request = new ReqStoreCovenantAdesioneConvenzione();
+		
+		request.setAbi(codAbi);
+		request.setApplicativoId(codProcesso);
+		request.setCodiceConvenzione(adesione.getCodConvenzione());
+//		request.setCodiceConvenzioneOld(codiceConvenzioneOld);
+		request.setDataProposta(adesione.getInfoStampaData());
+		request.setDataOperazione(adesione.getInfoStampaData());
+		request.setFilialeUserId(branchCode);
+		request.setIdProdottoCovenant("03");
+		
+		List<Covenant> listaCovenantDaAttivare = new ArrayList<Covenant>();
+		
+		for(CovenantEntity covenantEntity :covenantDaAttivare) {
+			
+			Covenant covenant = new Covenant();
+			
+			covenant.setBeneficioCondizionatoDataFine(covenantEntity.getBeneficioCondizionatoDataFine());
+			covenant.setBeneficioCondizionatoDataInizio(covenantEntity.getBeneficioCondizionatoDataInizio());
+			covenant.setBeneficioIncondizionatoDataFine(covenantEntity.getBeneficioIncondizionatoDataFine());
+			covenant.setBeneficioIncondizionatoDatainizio(covenantEntity.getBeneficioIncondizionatoDatainizio());
+			covenant.setBeneficioIncondizionatoNumRilevazioni(covenantEntity.getBeneficioIncondizionatoNumRilevazioni());
+			covenant.setBeneficioIncondizionatoPresente(covenantEntity.getBeneficioIncondizionatoPresente());
+			covenant.setBeneficioIngressoDataFine(covenantEntity.getBeneficioIngressoDataFine());
+			covenant.setBeneficioIngressoDataInizio(covenantEntity.getBeneficioIngressoDataInizio());
+			covenant.setBeneficioIngressoPresente(covenantEntity.getBeneficioIngressoPresente());
+			covenant.setCodCondizione(covenantEntity.getCodCondizione());
+			covenant.setCovenantDataFine(covenantEntity.getCovenantDataFine());
+			covenant.setCovenantDataInizio(covenantEntity.getCovenantDataInizio());
+			covenant.setFlagEntitaPrincipale(covenantEntity.getFlagEntitaPrincipale());
+			covenant.setProgressivo(covenantEntity.getProgressivo());
+			covenant.setRapportoCategoria(covenantEntity.getRapportoCategoria());
+			covenant.setRapportoConto(covenantEntity.getRapportoConto());
+			covenant.setRapportoFiliale(covenantEntity.getRapportoFiliale());
+			covenant.setCodiceTemplate(covenantEntity.getCodiceTemplate());
+			covenant.setCondizioniFiglie(covenantEntity.getCondizioniFiglie());
+			covenant.setLivelloGerarchia(covenantEntity.getLivelloGerarchia());
+			covenant.setVersioneTemplate(covenantEntity.getVersioneTemplate());
+			
+			listaCovenantDaAttivare.add(covenant);
+		}
+		
+		request.setListaCovenantDaAttivare(listaCovenantDaAttivare);
+		
+		List<Covenant> listaCovenantDaCessare = new ArrayList<Covenant>();
+		request.setListaCovenantDaCessare(listaCovenantDaCessare);
+		
+		request.setNsg(adesione.getIntestatarioNDG());
+//		request.setNumeroProposta(numeroProposta);
+		request.setTipoOperazione("A");
+		request.setUserId(userId);
+		
 		log.info("assemblaRequestConvenzione END");
 		return request;
 	}
