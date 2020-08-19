@@ -1,6 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.exception;
 
-import java.io.StringWriter;
+import org.slf4j.helpers.MessageFormatter;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJBaseException;
 
@@ -11,20 +11,12 @@ import lombok.Builder;
 public class CJDispositivaNotFoundDB2Exception extends CJBaseException {
 
 	private static final long serialVersionUID = 1L;
-
-	private final String codSuperPratica;
-	private final String nrPratica;
-	private final String nomeEntity;
-
+	private final String messaggio;
+	private final String[] param;
+	
 	@Override
 	public String formattaMessaggio() {
-		StringWriter sw = new StringWriter();
-		sw.append("Nessuna "+nomeEntity+" trovata per la pratica fornita ");
-		sw.append(" [ ");
-		sw.append(" codSuperPratica: "+codSuperPratica);
-		sw.append(" nrPratica: "+nrPratica);
-		sw.append(" ] ");
-		return sw.toString();
+		return MessageFormatter.arrayFormat(messaggio, param).getMessage();
 	}
 
 	@Override

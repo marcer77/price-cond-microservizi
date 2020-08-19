@@ -16,22 +16,18 @@ logging:
     com.intesasanpaolo.bear.connector.bearcore: INFO
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
-
+    
 DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
-DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjindicatoricosto-v1
-DATASOURCE_COND0DB2_CONNECTIONTIMEOUT: 10000
-DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE: 5
-ABI_SDDA: 10125
-ABI_MDDA: 03296
-ABI_IDDA: 03249
-ABI_EDDA: 10637
-ABI_JDDA: 03239
-DATASOURCE_COND0DB2_URI: url.di.test
-DATASOURCE_COND0DB2_PORT: 5250
-DATASOURCE_COND0DB2_DBNAME: DB2YTOSG
-DATASOURCE_COND0DB2_DB2_USERNAME: u0h7129
-DATASOURCE_COND0DB2_DB2_PASSWORD: Alma0720
- 
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjdispositiva-v1
+DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT: 10000
+DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE: 5
+ABI_SPIMI: 01025
+DATASOURCE_SPIMI_DB2_URI: test
+DATASOURCE_SPIMI_DB2_PORT: 12144
+DATASOURCE_SPIMI_DB2_DBNAME: test
+DATASOURCE_SPIMI_DB2_USERNAME: test
+DATASOURCE_SPIMI_DB2_PASSWORD: test
+
 connectors:
   soapConfiguration:
     items:
@@ -81,7 +77,18 @@ connectors:
   db2MultiDsConfigurations:
     items:
       MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT}
+        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE}
         mocked: true
         path: db2/
         files:
           - TB59R009.sql
+        sources:
+          - abi: ${ABI_SPIMI}
+            uri: ${DATASOURCE_SPIMI_DB2_URI}
+            port: ${DATASOURCE_SPIMI_DB2_PORT}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}  

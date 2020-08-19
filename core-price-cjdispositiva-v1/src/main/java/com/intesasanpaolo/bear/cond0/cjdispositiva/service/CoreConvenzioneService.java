@@ -66,19 +66,28 @@ public class CoreConvenzioneService extends BaseService {
 		return resultList;
 	}
 
-	public List<CovenantEntity> getElencoCovenandDaAttivare(String codAbi, String codPratica, String codSuperPratica) {
-		logger.info("START getElencoCovenandDaAttivare");
-		String query = " SELECT  substr(DATI_ENTITA,  1, 5) " + ", substr(DATI_ENTITA,  6, 8) "
-				+ ", substr(DATI_ENTITA,  14, 5) " + ", TRIM(substr(DATI_ENTITA,  19, 8)) "
-				+ ", TRIM(substr(DATI_ENTITA,  27, 8)) " + ", substr(DATI_ENTITA,  35, 1) "
-				+ ", TRIM(substr(DATI_ENTITA,  36, 8)) " + ", TRIM(substr(DATI_ENTITA,  44, 8)) "
-				+ ", substr(DATI_ENTITA,  52, 1) " + ", TRIM(substr(DATI_ENTITA,  53, 8)) "
-				+ ", TRIM(substr(DATI_ENTITA,  61, 8)) " + ", substr(DATI_ENTITA,  69, 3) "
-				+ ", TRIM(substr(DATI_ENTITA,  72, 8)) " + ", TRIM(substr(DATI_ENTITA,  80, 8)) "
-				+ ", substr(DATI_ENTITA,  88, 1) " + ", substr(DATI_ENTITA,  89, 1) " + "  FROM FIATT.TB59R009 "
+	public List<CovenantEntity> getElencoCovenantDaAttivare(String codAbi, String codPratica, String codSuperPratica) {
+		logger.info("START getElencoCovenantDaAttivare");
+		String query = " SELECT  substr(DATI_ENTITA,  1, 5) AS covCodCondizione " 
+				+ ", substr(DATI_ENTITA,  6, 8) AS covCodiceTemplate"
+				+ ", substr(DATI_ENTITA,  14, 5) AS covVersioneTemplate " 
+				+ ", TRIM(substr(DATI_ENTITA,  19, 8)) AS covDataInizio"
+				+ ", TRIM(substr(DATI_ENTITA,  27, 8)) AS covDataFine" 
+				+ ", substr(DATI_ENTITA,  35, 1) AS covBeneficioIngressoPresente"
+				+ ", TRIM(substr(DATI_ENTITA,  36, 8)) AS covBeneficioIngressoDataInizio" 
+				+ ", TRIM(substr(DATI_ENTITA,  44, 8)) AS covBeneficioIngressoDataFine"
+				+ ", substr(DATI_ENTITA,  52, 1) AS covBeneficioIncondPresente" 
+				+ ", TRIM(substr(DATI_ENTITA,  53, 8)) AS covBeneficioIncondDataInizio"
+				+ ", TRIM(substr(DATI_ENTITA,  61, 8)) AS covBeneficioIncondDataFine" 
+				+ ", substr(DATI_ENTITA,  69, 3) AS covBeneficioIncondNumRilev"
+				+ ", TRIM(substr(DATI_ENTITA,  72, 8)) AS covBeneficioCondDataInizio" 
+				+ ", TRIM(substr(DATI_ENTITA,  80, 8)) AS covBeneficioCondDataFine"
+				+ ", substr(DATI_ENTITA,  88, 1) AS covFlagEventoEtaCliente"
+				+ ", substr(DATI_ENTITA,  89, 1) AS covFlagEffettoRilevato" 
+				+ "  FROM FIATT.TB59R009 "
 				+ " WHERE NR_SUPERPRATICA = :codSuperPratica " + "   AND NR_PRATICA = :codPratica "
 				+ "   AND ID_ENTITA  = '00003' " + "   AND STATO      = 'A' " + " ORDER BY PROGR_DATI;";
-
+		
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
@@ -97,13 +106,14 @@ public class CoreConvenzioneService extends BaseService {
 
 		logger.debug("Founded:", resultList);
 
-		logger.info("END getElencoCovenandDaAttivare");
+		logger.info("END getElencoCovenantDaAttivare");
 		return resultList;
 	}
 
 	public List<String> getLivelloGerarchia(String codAbi, String codConvenzione) {
-		logger.info("START getLivelloGerarchia");
-		String query = "SELECT CASE COND_GER WHEN '' THEN '0' ELSE LIV_GER END FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione CONCAT '000';";
+		logger.info("START getLivelloGerarchia codAbi: {} codConvenzione:{}",codAbi,codConvenzione);
+//		String query = "SELECT (CASE COND_GER WHEN '' THEN '0' ELSE LIV_GER END) AS livGerarchia  FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione CONCAT '000';";
+		String query = "SELECT 1 AS livGerarchia  FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione ;";
 
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("covCodCondizione", codConvenzione);

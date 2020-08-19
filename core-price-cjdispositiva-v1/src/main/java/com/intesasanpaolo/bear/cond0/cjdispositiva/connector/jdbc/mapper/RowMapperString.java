@@ -11,6 +11,8 @@ public class RowMapperString implements RowMapper<String> {
 	
 	private String nomeColonna;
 	
+	public RowMapperString() {}
+
 	public RowMapperString(String nomeColonna) {
 		this.nomeColonna = nomeColonna;
 	}

@@ -68,44 +68,44 @@ connectors:
     items:
       GestioneRestConnector:
         url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
-        timeout: 120000
-  db2MultiDsConfigurations:
-    items:
-      MultiDataSourceDb2Connector:
-        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT}
-        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE}
-        mocked: false
-        sources:
-          - abi: ${ABI_SDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_MDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_IDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_EDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
-          - abi: ${ABI_JDDA}
-            uri: ${DATASOURCE_COND0DB2_URI}
-            port: ${DATASOURCE_COND0DB2_PORT}
-            dbName: ${DATASOURCE_COND0DB2_DBNAME}
-            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
-            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
+        timeout: 120000 
+#  db2MultiDsConfigurations:
+#    items:
+#      MultiDataSourceDb2Connector:
+#        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT}
+#        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE}
+#        mocked: false
+#        sources:
+#          - abi: ${ABI_SDDA}
+#            uri: ${DATASOURCE_COND0DB2_URI}
+#            port: ${DATASOURCE_COND0DB2_PORT}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
+#          - abi: ${ABI_MDDA}
+#            uri: ${DATASOURCE_COND0DB2_URI}
+#            port: ${DATASOURCE_COND0DB2_PORT}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
+#          - abi: ${ABI_IDDA}
+#            uri: ${DATASOURCE_COND0DB2_URI}
+#            port: ${DATASOURCE_COND0DB2_PORT}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
+#          - abi: ${ABI_EDDA}
+#            uri: ${DATASOURCE_COND0DB2_URI}
+#            port: ${DATASOURCE_COND0DB2_PORT}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
+#          - abi: ${ABI_JDDA}
+#            uri: ${DATASOURCE_COND0DB2_URI}
+#            port: ${DATASOURCE_COND0DB2_PORT}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
 
 keycloak:
   enabled: false

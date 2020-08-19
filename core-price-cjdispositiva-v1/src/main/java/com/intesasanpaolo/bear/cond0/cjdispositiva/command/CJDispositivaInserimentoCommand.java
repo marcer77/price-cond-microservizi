@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -63,7 +65,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	public EsitoResponseResource execute() throws Exception {
+	protected EsitoResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
 			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
@@ -74,46 +76,67 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenandDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 				
-				if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
-					for(CovenantEntity covenantEntity : covenantDaAttivare) {
-						List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
-						if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
-							if("1".equals(livelloGerarchia.get(0))) {
-								List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
-								if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
-									covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
-								}
-							}
-							covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
-						}else {
-							//TODO Come settare se livello gerarchia e' null?
-//							throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Livello gerarchia").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
-						}
-					}
-				}else {
-					throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Covenant").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
-				}
-				
+				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
+
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
+//				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
 				// WS VDM StoreCovenantAdesioneConvenzione
 				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
-
+		
 				// WS COND0 GESTCJPOSV.inviaPropostaV2
-				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
+//				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
 
 				// BS PCMK registrazione elenco cod.prop. “fittizie”
 				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
 
 			}else {
-				throw CJDispositivaNotFoundDB2Exception.builder().nomeEntity("Adesione").codSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica()).nrPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica()).build();
+				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
+				.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
 			}
 
 			log.info("execute SUCCESS ");
 			return esitoResource;
+	}
+	
+	private void checkResponseStoreCovenantAdesioneConvenzione(RespStoreCovenantAdesioneConvenzione resp) {
+		log.info("checkResponseStoreCovenantAdesioneConvenzione START");
+		if("KO".equals(resp.getEsitoResultCode())){
+			throw CJWebServiceException.builder().webServiceName("StoreCovenantAdesioneConvenzione").codiceErroreWebService(resp.getEsitoResultCode())
+			.descrErroreWebService(resp.getEsitoErrorMessage()+" "+resp.getListaErroriCovenantDaAttivare()).build();
+		}
+		log.info("checkResponseStoreCovenantAdesioneConvenzione END");
+	}
+	
+	private List<CovenantEntity> recuperaInfoCovenantDaAttivare(String codAbi, List<CovenantEntity> covenantDaAttivare) {
+		log.info("START recuperaInfoCovenantDaAttivare");
+		if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
+			log.info("covenantDaAttivare: "+covenantDaAttivare.size());
+			for(CovenantEntity covenantEntity : covenantDaAttivare) {
+				List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
+				log.info("livelloGerarchia: "+livelloGerarchia);
+				if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
+					if("1".equals(livelloGerarchia.get(0))) {
+						List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
+						if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
+							log.info("elencoCondizioniFiglie: "+stringaElencoCondizioniFiglie.get(0));
+							covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
+						}else {
+							throw CJDispositivaNotFoundDB2Exception.builder().messaggio("CondizioniFiglie non recuperabili per il covCodCondizione: {}")
+							.param(new String[]{covenantEntity.getCodCondizione()}).build();
+						}
+					}
+					covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
+				}
+			}
+		}else {
+			throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Convenzione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
+			.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
+		}
+		log.info("END recuperaInfoCovenantDaAttivare");
+		return covenantDaAttivare;
 	}
 	
 	@Override
@@ -138,6 +161,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, codAbi, codProcesso , branchCode, userId);
 		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
+		checkResponseStoreCovenantAdesioneConvenzione(resp);
 		return resp;
 	}
 	

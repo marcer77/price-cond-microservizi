@@ -75,6 +75,16 @@
 							</execution>
 						</executions>
 					</plugin>
+					<plugin>
+						<groupId>org.jacoco</groupId>
+					    	<artifactId>jacoco-maven-plugin</artifactId>
+					    	<configuration>
+					        	<excludes>
+					            	<exclude>**/com/intesasanpaolo/bear/cond0/cjdispositiva/connector/ws/gen/*</exclude>
+					            	<exclude>**/com/intesasanpaolo/bear/cond0/cjdispositiva/connector/rest/*</exclude>
+					        	</excludes>
+					    	</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -108,6 +118,7 @@
 										<schema>
 											<url>http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS?wsdl</url>
 										</schema>
+
 									</schemas>
 								</configuration>
 							</execution>
