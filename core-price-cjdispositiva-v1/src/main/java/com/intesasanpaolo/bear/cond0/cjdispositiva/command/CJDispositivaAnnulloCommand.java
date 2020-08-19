@@ -56,36 +56,32 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResponseResour
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	public EsitoResponseResource execute() throws Exception {
+	protected EsitoResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("KO", "Si è verificato un errore");
-		if (canExecute()) {
-			log.info("execute OK");
 
-			// BS PCMK Recupero informazioni superpratica (…)
-			InformazioniPraticaDTO informazioniPraticaDTO = recuperoInformazioniService.recuperaInformazioni(praticaDTO,
-					ispWebservicesHeaderType);
+		log.info("execute OK");
 
-			// WS COND0 GESTCJPOSV.revocaProposta
-			EsitoOperazioneCJPOSV2 esitoOperazione = callWsRevocaProposta(informazioniPraticaDTO);
+		// BS PCMK Recupero informazioni superpratica (…)
+		InformazioniPraticaDTO informazioniPraticaDTO = recuperoInformazioniService.recuperaInformazioni(praticaDTO,
+				ispWebservicesHeaderType);
 
-			// BS PCMK aggiorna elenco cod.prop. fittizie
-			boolean esito = callAggiornaCodfittizie();
+		// WS COND0 GESTCJPOSV.revocaProposta
+		EsitoOperazioneCJPOSV2 esitoOperazione = callWsRevocaProposta(informazioniPraticaDTO);
 
-			// WS VDM rollback storecovenant
-			RespStoreCovenantAdesioneConvenzione resp = callRollbackConvenzioniHostService(informazioniPraticaDTO);
+		// BS PCMK aggiorna elenco cod.prop. fittizie
+		boolean esito = callAggiornaCodfittizie();
 
-			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
-			NewAccountOutput output = callWsGestione(informazioniPraticaDTO);
+		// WS VDM rollback storecovenant
+		RespStoreCovenantAdesioneConvenzione resp = callRollbackConvenzioniHostService(informazioniPraticaDTO);
 
-			// return
-			esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
-			esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
-			return esitoResource;
-		} else {
-			log.info("execute ERROR");
-			throw new BearForbiddenException("Cannot execute command");
-		}
+		// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
+		NewAccountOutput output = callWsGestione(informazioniPraticaDTO);
+
+		// return
+		esitoResource.setCodErrore(esitoOperazione.getEsitoCodice());
+		esitoResource.setDescErrore(esitoOperazione.getEsitoMessaggio());
+		return esitoResource;
 	}
 
 	private boolean callAggiornaCodfittizie() {

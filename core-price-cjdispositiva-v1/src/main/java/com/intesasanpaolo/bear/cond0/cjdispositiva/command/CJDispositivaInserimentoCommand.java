@@ -65,7 +65,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	public EsitoResponseResource execute() throws Exception {
+	protected EsitoResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
 			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();

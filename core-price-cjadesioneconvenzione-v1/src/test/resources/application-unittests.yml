@@ -15,6 +15,7 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
+    h2database: TRACE
 
 error-manager:
   enabled: true
