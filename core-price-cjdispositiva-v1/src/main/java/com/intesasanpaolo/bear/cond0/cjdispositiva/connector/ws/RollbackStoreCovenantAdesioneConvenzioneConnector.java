@@ -7,7 +7,7 @@ import org.springframework.oxm.Unmarshaller;
 
 import com.intesasanpaolo.bear.connector.ws.connector.BaseDataPowerSoapConnector;
 
-@Service
+//@Service
 public class RollbackStoreCovenantAdesioneConvenzioneConnector<INPUT,OUTPUT,DTO,RESOURCE> extends BaseDataPowerSoapConnector<INPUT,OUTPUT,DTO,RESOURCE> {
 	
 	
