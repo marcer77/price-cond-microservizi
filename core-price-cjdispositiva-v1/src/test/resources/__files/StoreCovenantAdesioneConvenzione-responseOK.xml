@@ -1,0 +1,18 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <StoreCovenantAdesioneConvenzioneResponse xmlns="http://tempuri.org/">
+         <StoreCovenantAdesioneConvenzioneResult xmlns:a="http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <a:ResponseStoreCovenantAdesioneConvenzione>
+               <a:ErroriListaCovenantDaAttivare>
+               </a:ErroriListaCovenantDaAttivare>
+               <a:ErroriListaCovenantDaCessare>
+               </a:ErroriListaCovenantDaCessare>
+               <a:Esito>
+                  <a:errorMessage></a:errorMessage>
+                  <a:resultCode>OK</a:resultCode>
+               </a:Esito>
+            </a:ResponseStoreCovenantAdesioneConvenzione>
+         </StoreCovenantAdesioneConvenzioneResult>
+      </StoreCovenantAdesioneConvenzioneResponse>
+   </s:Body>
+</s:Envelope>

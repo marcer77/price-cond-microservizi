@@ -112,8 +112,8 @@ public class CoreConvenzioneService extends BaseService {
 
 	public List<String> getLivelloGerarchia(String codAbi, String codConvenzione) {
 		logger.info("START getLivelloGerarchia codAbi: {} codConvenzione:{}",codAbi,codConvenzione);
-//		String query = "SELECT (CASE COND_GER WHEN '' THEN '0' ELSE LIV_GER END) AS livGerarchia  FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione CONCAT '000';";
-		String query = "SELECT 1 AS livGerarchia  FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione ;";
+		String query = "SELECT (CASE COND_GER WHEN '' THEN '0' ELSE LIV_GER END) AS livGerarchia  FROM FIATT.TB01R007 WHERE COD_CONDIZIONE = :covCodCondizione || '000';";
+//		String query = "SELECT count(LIV_GER) as livGerarchia FROM FIATT.TB01R007;"; //COUNT
 
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("covCodCondizione", codConvenzione);
@@ -130,48 +130,73 @@ public class CoreConvenzioneService extends BaseService {
 
 	public List<String> getCondizioniFiglie(String codAbi, String codConvenzione) {
 		logger.info("START getCondizioniFiglie");
-		String query = 
-				  "WITH                                                            "
-				+ " MAMME(MAMMA, FIGLIA_MIN) "
-				+ "    AS ( SELECT COND_GER                                        "
-				+ "              , MIN(COD_CONDIZIONE)                             "
-				+ "           FROM FIATT.TB01R007                                  "
-				+ "          WHERE COND_GER = :covCodCondizione       CONCAT '000' "
-				+ "            AND LIV_GER  = '2'                                  "
-				+ "          GROUP BY COND_GER                                     "
-				+ "       )                                                        "
-				+ " , GERARCHIE(GER, RIF, P, ELENCO)                                "
-				+ "    AS ( SELECT MAMMA                                           "
-				+ "              , FIGLIA_MIN                                      "
-				+ "              , 1                                               "
-				+ "              , CAST(SUBSTR(FIGLIA_MIN,1,5) AS VARCHAR(1000))   "
-				+ "           FROM MAMME                                           "
-				+ "         UNION ALL                                              "
-				+ "         SELECT COND_GER                                        "
-				+ "              , COD_CONDIZIONE                                  "
-				+ "              , P + 1                                           "
-				+ "              , CAST(ELENCO CONCAT ';'                          "
-				+ "                      CONCAT SUBSTR(COD_CONDIZIONE,1,5)         "
-				+ "                  AS VARCHAR(1000))                             "
-				+ "           FROM GERARCHIE                                       "
-				+ "              , FIATT.TB01R007                                  "
-				+ "          WHERE P < 100                                         "
-				+ "            AND COND_GER = GER                                  "
-				+ "            AND COD_CONDIZIONE =                                "
-				+ "                ( SELECT MIN(COD_CONDIZIONE)                    "
-				+ "                    FROM FIATT.TB01R007                         "
-				+ "                   WHERE COND_GER = GER                         "
-				+ "                     AND LIV_GER = '2'                          "
-				+ "                     AND COD_CONDIZIONE  > RIF)                 "
-				+ "      )                                                         "
-				+ " , ELENCO_GER(GER,ELENCO)                                       "
-				+ "    AS ( SELECT GER                                             "
-				+ "              , MAX(ELENCO)                                     "
-				+ "           FROM GERARCHIE                                       "
-				+ "          GROUP BY GER )                                        "
-				+ " SELECT ELENCO "
-				+ " FROM ELENCO_GER; ";
-
+//		String query = 
+//				  "WITH                                                            "
+//				+ " MAMME(MAMMA, FIGLIA_MIN) "
+//				+ "    AS ( SELECT COND_GER                                        "
+//				+ "              , MIN(COD_CONDIZIONE)                             "
+//				+ "           FROM FIATT.TB01R007                                  "
+//				+ "          WHERE COND_GER = :covCodCondizione       || '000' "
+//				+ "            AND LIV_GER  = '2'                                  "
+//				+ "          GROUP BY COND_GER                                     "
+//				+ "       )                                                        "
+//				+ " , GERARCHIE(GER, RIF, P, ELENCO)                                "
+//				+ "    AS ( SELECT MAMMA                                           "
+//				+ "              , FIGLIA_MIN                                      "
+//				+ "              , 1                                               "
+//				+ "              , CAST(SUBSTR(FIGLIA_MIN,1,5) AS VARCHAR(1000))   "
+//				+ "           FROM MAMME                                           "
+//				+ "         UNION ALL                                              "
+//				+ "         SELECT COND_GER                                        "
+//				+ "              , COD_CONDIZIONE                                  "
+//				+ "              , P + 1                                           "
+//				+ "              , CAST(ELENCO || ';'                          "
+//				+ "                      || SUBSTR(COD_CONDIZIONE,1,5)         "
+//				+ "                  AS VARCHAR(1000))                             "
+//				+ "           FROM GERARCHIE                                       "
+//				+ "              , FIATT.TB01R007                                  "
+//				+ "          WHERE P < 100                                         "
+//				+ "            AND COND_GER = GER                                  "
+//				+ "            AND COD_CONDIZIONE =                                "
+//				+ "                ( SELECT MIN(COD_CONDIZIONE)                    "
+//				+ "                    FROM FIATT.TB01R007                         "
+//				+ "                   WHERE COND_GER = GER                         "
+//				+ "                     AND LIV_GER = '2'                          "
+//				+ "                     AND COD_CONDIZIONE  > RIF)                 "
+//				+ "      )                                                         "
+//				+ " , ELENCO_GER(GER,ELENCO)                                       "
+//				+ "    AS ( SELECT GER                                             "
+//				+ "              , MAX(ELENCO)                                     "
+//				+ "           FROM GERARCHIE                                       "
+//				+ "          GROUP BY GER )                                        "
+//				+ " SELECT ELENCO "
+//				+ " FROM ELENCO_GER; ";
+		String query = "WITH GERARCHIE(GER, RIF, P, ELENCO) AS ( " + 
+				"SELECT " + 
+				"    COND_GER , MIN(COD_CONDIZIONE), 1, CAST(SUBSTR(MIN(COD_CONDIZIONE), 1, 5) AS VARCHAR(1000)) " + 
+				"FROM " + 
+				"    FIATT.TB01R007 " + 
+				"WHERE " + 
+				"    COND_GER = :covCodCondizione || '000' " + 
+				"    AND LIV_GER = '2' GROUP BY COND_GER " + 
+				"UNION ALL " + 
+				"SELECT " + 
+				"    COND_GER , COD_CONDIZIONE , P + 1 , CAST(ELENCO || ';' || SUBSTR(COD_CONDIZIONE, 1, 5) AS VARCHAR(1000)) " + 
+				"FROM " + 
+				"    GERARCHIE , FIATT.TB01R007 " + 
+				"WHERE " + 
+				"    P < 100 " + 
+				"    AND COND_GER = GER " + 
+				"    AND COD_CONDIZIONE = ( " + 
+				"    SELECT " + 
+				"        MIN(COD_CONDIZIONE) " + 
+				"    FROM " + 
+				"        FIATT.TB01R007 " + 
+				"    WHERE " + 
+				"        COND_GER = GER " + 
+				"        AND LIV_GER = '2' " + 
+				"        AND COD_CONDIZIONE > RIF) ) " + 
+				"SELECT MAX(ELENCO) AS ELENCO FROM  GERARCHIE ;";
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("covCodCondizione", codConvenzione);
 

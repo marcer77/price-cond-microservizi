@@ -83,6 +83,7 @@ connectors:
         path: db2/
         files:
           - TB59R009.sql
+          - TB01R007.sql
         sources:
           - abi: ${ABI_SPIMI}
             uri: ${DATASOURCE_SPIMI_DB2_URI}
