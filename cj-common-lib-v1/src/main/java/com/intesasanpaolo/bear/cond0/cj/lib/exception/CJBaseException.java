@@ -9,12 +9,13 @@ public abstract class CJBaseException extends RuntimeException {
 
 	public CJBaseException() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
-	public CJBaseException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
-		// TODO Auto-generated constructor stub
+	@Override
+	public String getMessage() {
+		return formattaMessaggio();
+		
 	}
 
 	public CJBaseException(String message, Throwable cause) {
