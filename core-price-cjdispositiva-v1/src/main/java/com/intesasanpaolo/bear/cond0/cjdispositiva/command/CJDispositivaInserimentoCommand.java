@@ -77,6 +77,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
 				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+				List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 				
 				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
@@ -84,7 +85,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 //				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
 
 				// WS VDM StoreCovenantAdesioneConvenzione
-				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
+				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
 		
 				// WS COND0 GESTCJPOSV.inviaPropostaV2
 //				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
@@ -156,9 +157,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 		return esitoControlli;
 	}
 
-	private RespStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, String codAbi, String codProcesso, String branchCode , String userId) {
+	private RespStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
 		log.info("callStoreCovenantAdesioneConvenzione START");
-		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, codAbi, codProcesso , branchCode, userId);
+		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
 		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.storeCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
 		checkResponseStoreCovenantAdesioneConvenzione(resp);

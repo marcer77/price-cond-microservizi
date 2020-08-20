@@ -54,7 +54,7 @@ public class WsRequestFactory {
 		return request;
 	}
 	
-	public ReqStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, String codAbi, String codProcesso, String branchCode , String userId) {
+	public ReqStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
 		log.info("assemblaRequestConvenzione START");
 		ReqStoreCovenantAdesioneConvenzione request = new ReqStoreCovenantAdesioneConvenzione();
 		
@@ -101,6 +101,36 @@ public class WsRequestFactory {
 		request.setListaCovenantDaAttivare(listaCovenantDaAttivare);
 		
 		List<Covenant> listaCovenantDaCessare = new ArrayList<Covenant>();
+		
+		for(CovenantEntity covenantEntity :covenantDaCessare) {
+			
+			Covenant covenant = new Covenant();
+			
+			covenant.setBeneficioCondizionatoDataFine(covenantEntity.getBeneficioCondizionatoDataFine());
+			covenant.setBeneficioCondizionatoDataInizio(covenantEntity.getBeneficioCondizionatoDataInizio());
+			covenant.setBeneficioIncondizionatoDataFine(covenantEntity.getBeneficioIncondizionatoDataFine());
+			covenant.setBeneficioIncondizionatoDatainizio(covenantEntity.getBeneficioIncondizionatoDatainizio());
+			covenant.setBeneficioIncondizionatoNumRilevazioni(covenantEntity.getBeneficioIncondizionatoNumRilevazioni());
+			covenant.setBeneficioIncondizionatoPresente(covenantEntity.getBeneficioIncondizionatoPresente());
+			covenant.setBeneficioIngressoDataFine(covenantEntity.getBeneficioIngressoDataFine());
+			covenant.setBeneficioIngressoDataInizio(covenantEntity.getBeneficioIngressoDataInizio());
+			covenant.setBeneficioIngressoPresente(covenantEntity.getBeneficioIngressoPresente());
+			covenant.setCodCondizione(covenantEntity.getCodCondizione());
+			covenant.setCovenantDataFine(covenantEntity.getCovenantDataFine());
+			covenant.setCovenantDataInizio(covenantEntity.getCovenantDataInizio());
+			covenant.setFlagEntitaPrincipale(covenantEntity.getFlagEntitaPrincipale());
+			covenant.setProgressivo(covenantEntity.getProgressivo());
+			covenant.setRapportoCategoria(covenantEntity.getRapportoCategoria());
+			covenant.setRapportoConto(covenantEntity.getRapportoConto());
+			covenant.setRapportoFiliale(covenantEntity.getRapportoFiliale());
+			covenant.setCodiceTemplate(covenantEntity.getCodiceTemplate());
+			covenant.setCondizioniFiglie(covenantEntity.getCondizioniFiglie());
+			covenant.setLivelloGerarchia(covenantEntity.getLivelloGerarchia());
+			covenant.setVersioneTemplate(covenantEntity.getVersioneTemplate());
+			
+			listaCovenantDaCessare.add(covenant);
+		}
+		
 		request.setListaCovenantDaCessare(listaCovenantDaCessare);
 		
 		request.setNsg(adesione.getIntestatarioNDG());
