@@ -19,6 +19,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
@@ -73,7 +74,7 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResponseResour
 		boolean esito = callAggiornaCodfittizie();
 
 		// WS VDM rollback storecovenant
-		RespStoreCovenantAdesioneConvenzione resp = callRollbackConvenzioniHostService(informazioniPraticaDTO);
+		RespRollbackStoreCovenantAdesioneConvenzione resp = callRollbackConvenzioniHostService(informazioniPraticaDTO);
 
 		// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
 		NewAccountOutput output = callWsGestione(informazioniPraticaDTO);
@@ -152,12 +153,12 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResponseResour
 		}
 	}
 
-	private RespStoreCovenantAdesioneConvenzione callRollbackConvenzioniHostService(
+	private RespRollbackStoreCovenantAdesioneConvenzione callRollbackConvenzioniHostService(
 			InformazioniPraticaDTO informazioniPraticaDTO) {
 		log.info("callStoreCovenantAdesioneConvenzione START");
 		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory
 				.assemblaRequestConvenzione(informazioniPraticaDTO);
-		RespStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackCovenantAdesioneConvenzione(request);
+		RespRollbackStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackStoreCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
 		return resp;
 	}
