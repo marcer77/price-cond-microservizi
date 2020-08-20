@@ -27,6 +27,9 @@ public class AdesioneConvenzioneFactory {
 		//
 		List<TB59R009> modelList=new ArrayList<>();
 		//
+		
+		String rapporto = dto.getRapporto().getCodFiliale() + dto.getRapporto().getCodCategoria() + dto.getRapporto().getCodProgressivo();
+		
 		if(CollectionUtils.isNotEmpty(getCovPerConResp)) {
 			int progDati=1;
 			for (RespGetCovenantPerConvenzioneCovenantDaAttivare covenant : getCovPerConResp) {
@@ -39,7 +42,7 @@ public class AdesioneConvenzioneFactory {
 						.stato("")
 						.progrEntita(1)
 						.progrDati(progDati++)
-						.codEntita("") 
+						.codEntita(rapporto+covenant.getCodCondizione()) 
 						.datiEntita(datiEntita)
 						.tipoAggiornamento("I")
 						.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
@@ -67,7 +70,7 @@ public class AdesioneConvenzioneFactory {
 							.stato("")
 							.progrEntita(1)
 							.progrDati(checkRolling?progRol++:progBen++)
-							.codEntita("")
+							.codEntita(rapporto+beneficio.getCodiceCondizione())
 							.datiEntita(datiEntita)
 							.tipoAggiornamento("I")
 							.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID())
