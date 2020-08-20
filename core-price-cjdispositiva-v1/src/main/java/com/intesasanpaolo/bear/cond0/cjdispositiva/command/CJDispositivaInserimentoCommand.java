@@ -113,8 +113,6 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 	
 	private List<CovenantEntity> recuperaInfoCovenantDaAttivare(String codAbi, List<CovenantEntity> covenantDaAttivare) {
 		log.info("START recuperaInfoCovenantDaAttivare");
-		if(CollectionUtils.isNotEmpty(covenantDaAttivare)) {
-			log.info("covenantDaAttivare: "+covenantDaAttivare.size());
 			for(CovenantEntity covenantEntity : covenantDaAttivare) {
 				List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
 				log.info("livelloGerarchia: "+livelloGerarchia);
@@ -132,10 +130,6 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 					covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
 				}
 			}
-		}else {
-			throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Convenzione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
-			.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
-		}
 		log.info("END recuperaInfoCovenantDaAttivare");
 		return covenantDaAttivare;
 	}
