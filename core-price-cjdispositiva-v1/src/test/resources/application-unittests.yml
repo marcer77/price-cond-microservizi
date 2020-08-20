@@ -69,6 +69,19 @@ connectors:
         enableMTOM: false
         mocked: false
         enabledTracing: true
+      RollbackStoreCovenantAdesioneConvenzioneConnector:
+       endpoint: http://localhost:4545/ConvenzioniHostService.svc
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/RollbackStoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true 
   restConfigurations:
     items:
       GestioneRestConnector:

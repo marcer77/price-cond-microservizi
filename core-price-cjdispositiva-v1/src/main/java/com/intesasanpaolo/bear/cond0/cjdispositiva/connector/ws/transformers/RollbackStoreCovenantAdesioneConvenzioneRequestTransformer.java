@@ -25,13 +25,13 @@ import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.RollbackStoreC
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzione;
 
 @Service
-public class RollbackCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqRollbackStoreCovenantAdesioneConvenzione,JAXBElement<RollbackStoreCovenantAdesioneConvenzione>>{
+public class RollbackStoreCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqRollbackStoreCovenantAdesioneConvenzione,JAXBElement<RollbackStoreCovenantAdesioneConvenzione>>{
 	
 	private ObjectFactory objectFactory;
 	
-	private static final Logger log = LoggerUtils.getLogger(RollbackCovenantAdesioneConvenzioneRequestTransformer.class);
+	private static final Logger log = LoggerUtils.getLogger(RollbackStoreCovenantAdesioneConvenzioneRequestTransformer.class);
 
-    public RollbackCovenantAdesioneConvenzioneRequestTransformer() {
+    public RollbackStoreCovenantAdesioneConvenzioneRequestTransformer() {
 		objectFactory = new ObjectFactory();
     }
 

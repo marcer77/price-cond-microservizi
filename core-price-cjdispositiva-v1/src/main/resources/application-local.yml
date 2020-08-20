@@ -1,5 +1,6 @@
 DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
 DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjdispositiva-v1
+CONVENZIONI_HOST_SERVICE_WS_URL: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
 
 spring:
   profile: development
