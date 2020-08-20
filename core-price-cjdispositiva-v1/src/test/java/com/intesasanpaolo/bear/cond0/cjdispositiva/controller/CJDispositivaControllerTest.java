@@ -151,8 +151,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
 
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
-
-		String[] codPraticaList = new String[] {"0000655704","0000655705","0000655706"};
+//cessione ko 0000655705
+		String[] codPraticaList = new String[] {"0000655704","0000655706"};
 
 		for (String pratica : codPraticaList) {
 
@@ -164,16 +164,157 @@ public class CJDispositivaControllerTest extends BaseTest {
 					.headers(httpHeaders).content(inputJson)).andReturn();
 
 			String content = mvcResult.getResponse().getContentAsString();
+			System.err.println(content);
 			int status = mvcResult.getResponse().getStatus();
 			log.info("status = " + status);
 			Assert.assertEquals(200, status);
 			log.info("content = {}", content);
+			Assert.assertTrue(!content.contains("codErrore\":\"00"));
 		}
+	}
+	
+	@Test
+	public void testInserimentoKO_Adesione() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("StoreCovenantAdesioneConvenzione-responseOK.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
+
+		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-response.xml")));
+
+		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+
+		Assert.assertEquals(200, stub.getResponse().getStatus());
+
+		StubMapping stubRest = stubFor(post(urlEqualTo("/Gestione.svc")).withRequestBody(containing("DatiInput"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/json")
+						.withBodyFile("Gestione-response.json")));
+
+		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubRest.getResponse().getStatus());
+
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655704");
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		System.err.println(content);
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(!content.contains("codErrore\":\"00"));
+	}
+	
+	@Test
+	public void testInserimentoKO_CovenantDaAttivare() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("StoreCovenantAdesioneConvenzione-responseOK.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
+
+		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-response.xml")));
+
+		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+
+		Assert.assertEquals(200, stub.getResponse().getStatus());
+
+		StubMapping stubRest = stubFor(post(urlEqualTo("/Gestione.svc")).withRequestBody(containing("DatiInput"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/json")
+						.withBodyFile("Gestione-response.json")));
+
+		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubRest.getResponse().getStatus());
+
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655705");
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		System.err.println(content);
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("codErrore\":\"00"));
+		
+	}
+	
+	@Test
+	public void testInserimentoKO_Figlie() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("StoreCovenantAdesioneConvenzione-responseOK.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
+
+		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-response.xml")));
+
+		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+
+		Assert.assertEquals(200, stub.getResponse().getStatus());
+
+		StubMapping stubRest = stubFor(post(urlEqualTo("/Gestione.svc")).withRequestBody(containing("DatiInput"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/json")
+						.withBodyFile("Gestione-response.json")));
+
+		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubRest.getResponse().getStatus());
+
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655706");
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		System.err.println(content);
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(!content.contains("codErrore\":\"00"));
 	}
 
 	//KO restituito dal servizio store Covenant
 	@Test
-	public void testInserimento_storeCovenantKO() throws Exception {
+	public void testInserimentoKO_StoreCovenant() throws Exception {
 
 		String uri = "/cjdispositiva/inserimento";
 
