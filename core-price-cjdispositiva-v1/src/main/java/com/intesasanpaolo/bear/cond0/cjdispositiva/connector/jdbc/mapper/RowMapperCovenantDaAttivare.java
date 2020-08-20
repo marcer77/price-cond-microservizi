@@ -11,7 +11,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 
 
 @Service
-public class RowMapperCovenant implements RowMapper<CovenantEntity> {
+public class RowMapperCovenantDaAttivare implements RowMapper<CovenantEntity> {
 
 	public CovenantEntity mapRow(ResultSet rs, int rowNum) {
 		CovenantEntity covenant = null;

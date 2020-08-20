@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperAdesione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenant;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaAttivare;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaCessare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperString;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
@@ -93,7 +94,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codPratica", codPratica);
 
 		List<CovenantEntity> resultList = convenantDataSourceConnector.call(query,
-				RequestDb2TransformerFactory.of(new RowMapperCovenant(), DB2QueryType.FIND),
+				RequestDb2TransformerFactory.of(new RowMapperCovenantDaAttivare(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
 		int numCov = 1;
@@ -107,6 +108,41 @@ public class CoreConvenzioneService extends BaseService {
 		logger.debug("Founded:", resultList);
 
 		logger.info("END getElencoCovenantDaAttivare");
+		return resultList;
+	}
+	
+	public List<CovenantEntity> getElencoCovenantDaCessare(String codAbi, String codPratica, String codSuperPratica) {
+		logger.info("START getElencoCovenantDaCessare");
+		String query = " SELECT substr(COD_ENTITA , 1, 5) AS covEstFilRapp" + 
+				"      , substr(COD_ENTITA , 6, 4) AS covEstCatRapp" + 
+				"      , substr(COD_ENTITA ,10, 8) AS covEstNumRapp" + 
+				"      , substr(DATI_ENTITA, 1, 5) AS covEstCodCondizione" + 
+				"      , substr(DATI_ENTITA, 6, 8) AS covEstCodiceTemplate" + 
+				"      , substr(DATI_ENTITA,14, 5) AS covEstVersioneTemplate" + 
+				"  FROM FIATT.TB59R009 " + 
+				" WHERE NR_SUPERPRATICA = :codSuperPratica " + 
+				"   AND NR_PRATICA = :codPratica " + 
+				"   AND ID_ENTITA  = '00030';";
+		
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+
+		List<CovenantEntity> resultList = convenantDataSourceConnector.call(query,
+				RequestDb2TransformerFactory.of(new RowMapperCovenantDaCessare(), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+
+		int numCov = 1;
+
+		if (CollectionUtils.isNotEmpty(resultList)) {
+			for (CovenantEntity covenant : resultList) {
+				covenant.setProgressivo(numCov++);
+			}
+		}
+
+		logger.debug("Founded:", resultList);
+
+		logger.info("END getElencoCovenantDaCessare");
 		return resultList;
 	}
 
