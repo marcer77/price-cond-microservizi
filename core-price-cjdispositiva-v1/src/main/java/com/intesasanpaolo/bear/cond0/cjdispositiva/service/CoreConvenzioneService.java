@@ -20,6 +20,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.R
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
@@ -262,7 +263,7 @@ public class CoreConvenzioneService extends BaseService {
 		
 	}
 	
-	public List<RapportoEntity> getElencoTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica){
+	public List<RapportoEntity> getElencoRapportiConTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica){
 		logger.info("START getElencoTassiAbbattuti");
 		
 		String query = "SELECT DISTINCT" + 
@@ -288,5 +289,9 @@ public class CoreConvenzioneService extends BaseService {
 
 	}
 	
-
+	public List<TassoEntity> getElencoTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica,RapportoEntity rapporto){
+		
+		//TODO
+		return null;
+	}
 }
