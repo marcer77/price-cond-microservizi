@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.controller.CoreController;
@@ -59,6 +61,59 @@ public class SimulatorController extends CoreController {
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 
 	}
+	
+	
+	@GetMapping(value="/rapporti-con-tassi", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "recupero convenzioni")
+	public ResponseEntity<?> rapportiConTassi(
+			@RequestParam(value = "abi", required = true) String codAbi,
+			@RequestParam(value = "codSuperPratica", required = true) String codSuperPratica, 
+			@RequestParam(value = "codPratica", required = true) String codPratica
+			) throws Exception {
+		
+	
+
+		List<RapportoEntity> response ;
+		try {
+			response = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, codSuperPratica, codPratica);
+//			response = coreConvenzioneService.letturaRConvenzioneDiRifiremento(codAbi, codConvenzionePc, dataRichiestaElaborazione);
+
+		} catch(Exception e) {
+			logger.error("EndPoint convenzione error : ", e);
+			throw e;
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+
+	}
+	
+	
+	@GetMapping(value="/elenco-tassi-abbattuti", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "recupero convenzioni")
+	public ResponseEntity<?> elencoTassiAbbattuti(
+			@RequestParam(value = "abi", required = true) String codAbi,
+			@RequestParam(value = "codSuperPratica", required = true) String codSuperPratica, 
+			@RequestParam(value = "codPratica", required = true) String codPratica,
+			@RequestParam(value = "rapportoCompleto", required = true) String rapportoCompleto
+			) throws Exception {
+		
+	
+
+		List<TassoEntity> response ;
+		try {
+			response = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, codSuperPratica, codPratica,RapportoEntity.builder().numero(rapportoCompleto).filiale("").categoria("").build());
+//			response = coreConvenzioneService.letturaRConvenzioneDiRifiremento(codAbi, codConvenzionePc, dataRichiestaElaborazione);
+
+		} catch(Exception e) {
+			logger.error("EndPoint convenzione error : ", e);
+			throw e;
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(response);
+
+	}
+	
+	
 	
 	@PostMapping(value="/update", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "recupero convenzioni")

@@ -15,6 +15,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapp
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaCessare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperRapporto;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperString;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperTasso;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
@@ -264,7 +265,7 @@ public class CoreConvenzioneService extends BaseService {
 	}
 	
 	public List<RapportoEntity> getElencoRapportiConTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica){
-		logger.info("START getElencoTassiAbbattuti");
+		logger.info("START getElencoRapportiConTassiAbbattuti");
 		
 		String query = "SELECT DISTINCT" + 
 				" SUBSTR(COD_ENTITA,  1, 5)   	as FilRappTX" + 
@@ -281,7 +282,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
 		
-		logger.info("END getElencoTassiAbbattuti");
+		logger.info("END getElencoRapportiConTassiAbbattuti");
 		
 		return (List<RapportoEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperRapporto(), DB2QueryType.FIND),
@@ -290,8 +291,32 @@ public class CoreConvenzioneService extends BaseService {
 	}
 	
 	public List<TassoEntity> getElencoTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica,RapportoEntity rapporto){
+		logger.info("START getElencoTassiAbbattuti");
 		
-		//TODO
-		return null;
+		String query = "   SELECT \n" + 
+				"   SUBSTR(DATI_ENTITA,43,05) 	    AS codCondizioneTX 	" + 
+				",  SUBSTR(DATI_ENTITA,51,08) 		AS decoCdzTX	    " + 
+				",  SUBSTR(DATI_ENTITA,59,08) 		AS decaCdzTX		" + 
+				",  SUBSTR(DATI_ENTITA,67,01) 		AS tipoValCdzTX		" + 
+				",  SUBSTR(DATI_ENTITA,68,15) / 10000 AS valoreCdzTX    " + 
+				",  TRIM(SUBSTR(DATI_ENTITA,84,05)) 	AS cdParamTX	" + 
+				",  nvl(TRIM(SUBSTR(DATI_ENTITA,93,10)),'0') || '.0' / 100000   AS percApplParTX	" + 
+				",  SUBSTR(DATI_ENTITA,111,1)  as	segnoSpreadTX		" + 
+				",  CASE WHEN TRIM(SUBSTR(DATI_ENTITA,113, 10))  != '' THEN TRIM(SUBSTR(DATI_ENTITA,113, 10)) /100000 ELSE 0 END AS valoreSprdTX	" + 
+				"  FROM FIATT.TB59R009 T WHERE NR_SUPERPRATICA = :codSuperPratica" + 
+				"   AND NR_PRATICA = :codPratica" + 
+				" AND ID_ENTITA  = '00012'" +
+			    " AND STATO='C' " + 
+				" AND COD_ENTITA = :idEntita" ;
+		
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+		paramMap.put("idEntita", rapporto.getFiliale()+rapporto.getCategoria()+rapporto.getNumero());
+		
+		logger.info("END getElencoTassiAbbattuti");
+		return (List<TassoEntity>) selectDataSourceConnector.call(query,
+				RequestDb2TransformerFactory.of(new RowMapperTasso(), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 	}
 }
