@@ -125,7 +125,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 				if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
 					if("1".equals(livelloGerarchia.get(0))) {
 						List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
-						if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie)) {
+						if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie) && stringaElencoCondizioniFiglie.get(0)!=null) {
 							log.info("elencoCondizioniFiglie: "+stringaElencoCondizioniFiglie.get(0));
 							covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
 						}else {
