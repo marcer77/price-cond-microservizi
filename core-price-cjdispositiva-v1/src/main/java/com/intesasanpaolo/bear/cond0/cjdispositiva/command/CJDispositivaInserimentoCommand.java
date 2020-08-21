@@ -24,6 +24,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
@@ -91,9 +93,18 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 				//  •	DELETE codici proposte
 				if("CJAFF".equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
 					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+					
+					elencoRapporti.stream().forEach(rapporto -> {
+
+						List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
+						// WS COND0 GESTCJPOSV.inviaPropostaV2
+//						EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
+
+					});
+
 				}
-				// WS COND0 GESTCJPOSV.inviaPropostaV2
-//				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
+
 
 				// BS PCMK registrazione elenco cod.prop. “fittizie”
 				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
