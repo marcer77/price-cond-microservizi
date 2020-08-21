@@ -82,7 +82,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-//				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
+				NewAccountOutput output = callGestioneService(dispositivaRequestDTO, listaAdesioni.get(0));
 
 				// WS VDM StoreCovenantAdesioneConvenzione
 				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
@@ -176,10 +176,8 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 		return esitoOperazione;
 	}
 
-	private NewAccountOutput callGestioneService(InformazioniPraticaDTO informazioniPraticaDTO) throws BearForbiddenException {
+	private NewAccountOutput callGestioneService(DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) throws BearForbiddenException {
 		log.info("callWsGestione START");
-		if (informazioniPraticaDTO != null) {
-			log.info("callWsGestione CAN EXECUTE");
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();
 			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID",
@@ -213,14 +211,17 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 
 			log.info("- callWsGestione END");
 
-			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(informazioniPraticaDTO);
+			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			
-			return gestioneService.gestione(newAccountInput, headerParams);
+			NewAccountOutput newAccountOutput = gestioneService.gestione(newAccountInput, headerParams);
+			
+			if(!"00".equals(newAccountOutput.getOutput().getDatiDebug().getReturnCode())) {
+				throw CJWebServiceException.builder().webServiceName("StoreCovenantAdesioneConvenzione").codiceErroreWebService(newAccountOutput.getOutput().getDatiDebug().getReturnCode())
+				.descrErroreWebService(newAccountOutput.getOutput().getDatiDebug().getTxTMessaggio()).build();
+			}
+			
+			return newAccountOutput;
 
-		} else {
-			log.info("callWsGestione ERROR");
-			throw new BearForbiddenException("Cannot execute command");
-		}
 	}
 	
 	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {

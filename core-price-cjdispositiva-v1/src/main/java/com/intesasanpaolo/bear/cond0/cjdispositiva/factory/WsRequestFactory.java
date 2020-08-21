@@ -7,12 +7,17 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputArea;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputAreaRapportoAccessorio;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountDatiInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput.Input;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.CondizioneCJPOS;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.PropostaCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.WrapperMap;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -147,9 +152,44 @@ public class WsRequestFactory {
 		return request;
 	}
 
-	public NewAccountInput assemblaRequestGestione(InformazioniPraticaDTO informazioniPraticaDTO) {
+	public NewAccountInput assemblaRequestGestione(DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione, String codFilDipendente, String codCanale) {
 		log.info("assemblaRequestGestione START");
 		NewAccountInput newAccountInput = new NewAccountInput();
+		
+		Input input = new Input();
+		
+		NewAccountDatiInput newAccountDatiInput = new NewAccountDatiInput();
+		
+		InputDatiInputArea inputDatiInputArea = new InputDatiInputArea();
+		
+		InputDatiInputAreaRapportoAccessorio rapportoAccessorio = new InputDatiInputAreaRapportoAccessorio();
+		
+		inputDatiInputArea.setRapportoAccessorio(rapportoAccessorio);
+		
+		newAccountDatiInput.setArea(inputDatiInputArea);
+		
+		input.setDatiInput(newAccountDatiInput);
+		
+		newAccountInput.setInput(input);
+
+		newAccountInput.getInput().getDatiInput().setFunzione(dispositivaRequestDTO.getCodProcesso());
+		
+		newAccountInput.getInput().getDatiInput().getArea().getRapportoAccessorio().setFiLRappAcc(adesione.getRapportoCodFiliale());
+		
+		newAccountInput.getInput().getDatiInput().getArea().getRapportoAccessorio().setCaTRappAcc(adesione.getRapportoCodCategoria());
+		
+		newAccountInput.getInput().getDatiInput().getArea().getRapportoAccessorio().setNumProgRappAcc(adesione.getRapportoCodProgressivo());
+		
+		newAccountInput.getInput().getDatiInput().getArea().setCodFilDipendente(codFilDipendente);
+		
+		newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(adesione.getInfoStampaData());
+		
+		newAccountInput.getInput().getDatiInput().getArea().setCodCanale(codCanale);
+		
+		newAccountInput.getInput().setNumSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+		
+		newAccountInput.getInput().setNumPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+		
 		log.info("assemblaRequestGestione END");
 		return newAccountInput;
 	}

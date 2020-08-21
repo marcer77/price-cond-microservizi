@@ -120,12 +120,23 @@ public class CJDispositivaControllerTest extends BaseTest {
 	private void stubGestioneOk() {
 		StubMapping stubRest = stubFor(post(urlEqualTo("/Gestione.svc")).withRequestBody(containing("DatiInput"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/json")
-						.withBodyFile("Gestione-response.json")));
+						.withBodyFile("Gestione-responseOK.json")));
 
 		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
 
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
 	}
+	
+	private void stubGestioneKO() {
+		StubMapping stubRest = stubFor(post(urlEqualTo("/Gestione.svc")).withRequestBody(containing("DatiInput"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/json")
+						.withBodyFile("Gestione-responseKO.json")));
+
+		log.info("Esito Gestione: " + stubRest.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubRest.getResponse().getStatus());
+	}
+
 
 	@Test
 	public void testInserimentoOK() throws Exception {
@@ -285,6 +296,31 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
+
+	}
+	
+	@Test
+	public void testInserimentoKO_WsGestione() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+		
+		stubConvenzioneOK();
+
+		stubInviaPropostaOK();
+		
+		stubGestioneKO();
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(!content.contains("codErrore\":\"00"));
 
 	}
 
