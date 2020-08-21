@@ -87,6 +87,11 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 				// WS VDM StoreCovenantAdesioneConvenzione
 				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
 		
+				//6)	Se input.codProcesso == ‘CJAFF’
+				//  •	DELETE codici proposte
+				if("CJAFF".equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
+					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+				}
 				// WS COND0 GESTCJPOSV.inviaPropostaV2
 //				EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
 
@@ -102,6 +107,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 			return esitoResource;
 	}
 	
+
 	private void checkResponseStoreCovenantAdesioneConvenzione(RespStoreCovenantAdesioneConvenzione resp) {
 		log.info("checkResponseStoreCovenantAdesioneConvenzione START");
 		if("KO".equals(resp.getEsitoResultCode())){
