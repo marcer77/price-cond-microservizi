@@ -1,6 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.New
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.InformazioniPraticaDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
@@ -70,52 +68,51 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 	protected EsitoResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
-			InformazioniPraticaDTO informazioniPraticaDTO = new InformazioniPraticaDTO();
-			String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
-			String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
-			String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
+		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		String codUnitaOperativa = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA);
+		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
+		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 
-			// Recupero informazioni superpratica (…)
-			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
-			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-				List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
-				List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+		// Recupero informazioni superpratica (…)
+		List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+		if(CollectionUtils.isNotEmpty(listaAdesioni)) {
+			List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+			List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+			
+			covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
+
+			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
+			callGestioneService(dispositivaRequestDTO, listaAdesioni.get(0));
+
+			// WS VDM StoreCovenantAdesioneConvenzione
+			callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
+	
+			//6)	Se input.codProcesso == ‘CJAFF’
+			//  •	DELETE codici proposte
+			if("CJAFF".equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
+				coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+				List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
 				
-				covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
+				elencoRapporti.stream().forEach(rapporto -> {
 
-				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-//				NewAccountOutput output = callGestioneService(informazioniPraticaDTO);
+					List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
+					// WS COND0 GESTCJPOSV.inviaPropostaV2
+					callInviaPropostaV2Service(codAbi,codUnitaOperativa,listaAdesioni.get(0), rapporto,tassiAbbattuti);
 
-				// WS VDM StoreCovenantAdesioneConvenzione
-				RespStoreCovenantAdesioneConvenzione resp = callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
-		
-				//6)	Se input.codProcesso == ‘CJAFF’
-				//  •	DELETE codici proposte
-				if("CJAFF".equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
-					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
-					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
-					
-					elencoRapporti.stream().forEach(rapporto -> {
+				});
 
-						List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
-						// WS COND0 GESTCJPOSV.inviaPropostaV2
-//						EsitoOperazioneCJPOSV2 esitoOperazione = callInviaPropostaV2Service(informazioniPraticaDTO);
-
-					});
-
-				}
-
-
-				// BS PCMK registrazione elenco cod.prop. “fittizie”
-				boolean esito = recuperoInformazioniService.registrazioneCodFittizie();
-
-			}else {
-				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
-				.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
 			}
 
-			log.info("execute SUCCESS ");
-			return esitoResource;
+			// BS PCMK registrazione elenco cod.prop. “fittizie”
+			recuperoInformazioniService.registrazioneCodFittizie();
+
+		}else {
+			throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
+			.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
+		}
+
+		log.info("execute SUCCESS ");
+		return esitoResource;
 	}
 	
 
@@ -177,26 +174,18 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 		return resp;
 	}
 	
-	private EsitoOperazioneCJPOSV2 callInviaPropostaV2Service(InformazioniPraticaDTO informazioniPraticaDTO) throws BearForbiddenException {
+	private EsitoOperazioneCJPOSV2 callInviaPropostaV2Service(String codAbi, String codUnitaOperativa,AdesioneEntity adesione, RapportoEntity rapporto, List<TassoEntity> tassiAbbattuti) {
 		log.info("inviaPropostaV2 START");
-
 		EsitoOperazioneCJPOSV2 esitoOperazione = new EsitoOperazioneCJPOSV2();
-		if (informazioniPraticaDTO != null) {
-			InviaPropostaV2 request = wsRequestFactory.assemblaRequestInviaProposta(informazioniPraticaDTO);
-			log.info("inviaPropostaV2 CAN EXECUTE");
-			esitoOperazione = proposteCJPOSWSService.inviaPropostaV2(request, ispWebservicesHeaderType);
-		} else {
-			log.info("inviaPropostaV2 ERROR");
-			throw new BearForbiddenException("Cannot execute command");
-		}
+		InviaPropostaV2 request = wsRequestFactory.assemblaRequestInviaProposta(codAbi, codUnitaOperativa,adesione, rapporto, tassiAbbattuti);
+		log.info("inviaPropostaV2 CAN EXECUTE");
+		esitoOperazione = proposteCJPOSWSService.inviaPropostaV2(request, ispWebservicesHeaderType);
 		log.info("inviaPropostaV2 END");
 		return esitoOperazione;
 	}
 
-	private NewAccountOutput callGestioneService(InformazioniPraticaDTO informazioniPraticaDTO) throws BearForbiddenException {
+	private NewAccountOutput callGestioneService(DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) throws BearForbiddenException {
 		log.info("callWsGestione START");
-		if (informazioniPraticaDTO != null) {
-			log.info("callWsGestione CAN EXECUTE");
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();
 			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID",
@@ -230,14 +219,17 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 
 			log.info("- callWsGestione END");
 
-			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(informazioniPraticaDTO);
+			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			
-			return gestioneService.gestione(newAccountInput, headerParams);
+			NewAccountOutput newAccountOutput = gestioneService.gestione(newAccountInput, headerParams);
+			
+			if(!"00".equals(newAccountOutput.getOutput().getDatiDebug().getReturnCode())) {
+				throw CJWebServiceException.builder().webServiceName("StoreCovenantAdesioneConvenzione").codiceErroreWebService(newAccountOutput.getOutput().getDatiDebug().getReturnCode())
+				.descrErroreWebService(newAccountOutput.getOutput().getDatiDebug().getTxTMessaggio()).build();
+			}
+			
+			return newAccountOutput;
 
-		} else {
-			log.info("callWsGestione ERROR");
-			throw new BearForbiddenException("Cannot execute command");
-		}
 	}
 	
 	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {

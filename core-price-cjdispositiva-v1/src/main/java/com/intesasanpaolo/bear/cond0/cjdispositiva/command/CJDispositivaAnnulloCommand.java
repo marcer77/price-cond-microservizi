@@ -144,7 +144,8 @@ public class CJDispositivaAnnulloCommand extends BaseCommand<EsitoResponseResour
 					ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			log.info("_callWsGestione END");
 
-			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(informazioniPraticaDTO);
+			//TODO COMPILARE CHIAMATA ANNULLA PER WS REST GESTIONE
+			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(null, null, null, null);
 
 			return gestioneService.gestione(newAccountInput, headerParams);
 		} else {
