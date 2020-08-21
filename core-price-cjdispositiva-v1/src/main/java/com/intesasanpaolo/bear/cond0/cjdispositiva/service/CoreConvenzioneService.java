@@ -13,11 +13,13 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourc
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperAdesione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaCessare;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperRapporto;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperString;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
@@ -30,6 +32,9 @@ public class CoreConvenzioneService extends BaseService {
 
 	@Autowired
 	private MultiDataSourceDb2Connector<CovenantEntity, Void, CovenantEntity> convenantDataSourceConnector;
+	
+	@Autowired
+	private MultiDataSourceDb2Connector selectDataSourceConnector;
 
 	@Autowired
 	private MultiDataSourceDb2Connector<String, Void, String> genericStringDataSourceConnector;
@@ -238,5 +243,50 @@ public class CoreConvenzioneService extends BaseService {
 		logger.info("END letturaRConvenzioneDiRifiremento");
 		return 1;
 	}
+	
+	public int deleteCodiciProposte(String codAbi,String codSuperPratica,String codPratica) {
+		logger.info("START deleteCodiciProposte");
+		String query = "DELETE FROM FIATT.TB59R009"
+				+ " WHERE NR_SUPERPRATICA = :codSuperPratica" + 
+				"   AND NR_PRATICA = :codPratica" + 
+				"   AND ID_ENTITA = 'PRUSU'" ;
+				
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+		
+		updateRifMultiDataSourceConnector.call(query, RequestDb2TransformerFactory.of(null, DB2QueryType.UPDATE),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+		logger.info("END deleteCodiciProposte");
+		return 1;
+		
+	}
+	
+	public List<RapportoEntity> getElencoTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica){
+		logger.info("START getElencoTassiAbbattuti");
+		
+		String query = "SELECT DISTINCT" + 
+				" SUBSTR(COD_ENTITA,  1, 5)   	as FilRappTX" + 
+				" , SUBSTR(COD_ENTITA,  6, 4)   as CatRappTX" + 
+				" , SUBSTR(COD_ENTITA, 10, 8)	as NumRappTX" + 
+				" FROM FIATT.TB59R009 T" + 
+				" WHERE 1=1" + 
+				" AND NR_SUPERPRATICA = :codSuperPratica" + 
+				" AND NR_PRATICA = :codPratica" + 
+				" AND ID_ENTITA  = '00012'" + 
+				" AND STATO='C' ";
+		
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+		
+		logger.info("END getElencoTassiAbbattuti");
+		
+		return (List<RapportoEntity>) selectDataSourceConnector.call(query,
+				RequestDb2TransformerFactory.of(new RowMapperRapporto(), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+
+	}
+	
 
 }
