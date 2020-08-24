@@ -152,7 +152,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 		codiceErrore = t1SJResponse.getT1SjOReturnCode(); //TODO BHO... da vericare nei test.
 
 		// chiamata alla BS FL03 - recupero
-		generazioneXML(t1SJResponse, stampaOutput);
+		docXML = generazioneXML(t1SJResponse, stampaOutput);
 		stampaOutput.setDocXML(docXML);
 		}else {
 			codiceErrore = "04";
