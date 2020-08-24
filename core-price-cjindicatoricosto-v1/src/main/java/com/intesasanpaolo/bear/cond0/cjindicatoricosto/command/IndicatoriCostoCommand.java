@@ -18,6 +18,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.result.WarningResult;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.dto.IndicatoriCostoDTO;
+import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.enums.TipoRichiestaEnum;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCosto;
 import com.intesasanpaolo.bear.cond0.cjindicatoricosto.model.IndicatoriCostoPratica;
@@ -179,7 +180,8 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 
 	private WKCJResponse callWKCJ(String pratica) {
 		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).pratica(pratica)
-				.superpratica(dto.getPratica().getCodSuperPratica()).utente(ispWebservicesHeaderType.getOperatorInfo().getUserID()).tipoChiamata("A4")
+				.superpratica(dto.getPratica().getCodSuperPratica()).utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.tipoChiamata(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dto.getCodProcesso()) ? "A4" : "D4")
 				.dataRifer(DateUtils.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
 
 		return wkcjServiceBS.callBS(wkcjRequest);
