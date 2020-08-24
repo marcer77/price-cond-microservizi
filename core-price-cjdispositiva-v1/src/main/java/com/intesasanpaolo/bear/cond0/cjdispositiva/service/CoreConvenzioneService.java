@@ -303,6 +303,7 @@ public class CoreConvenzioneService extends BaseService {
 				",  nvl(TRIM(SUBSTR(DATI_ENTITA,93,10)),'0') || '.0' / 100000   AS percApplParTX	" + 
 				",  SUBSTR(DATI_ENTITA,111,1)  as	segnoSpreadTX		" + 
 				",  CASE WHEN TRIM(SUBSTR(DATI_ENTITA,113, 10))  != '' THEN TRIM(SUBSTR(DATI_ENTITA,113, 10)) /100000 ELSE 0 END AS valoreSprdTX	" + 
+				",  SUBSTR(DATI_ENTITA, 141, 12) AS ATTRIBUTO_RP " +
 				"  FROM FIATT.TB59R009 T WHERE NR_SUPERPRATICA = :codSuperPratica" + 
 				"   AND NR_PRATICA = :codPratica" + 
 				" AND ID_ENTITA  = '00012'" +

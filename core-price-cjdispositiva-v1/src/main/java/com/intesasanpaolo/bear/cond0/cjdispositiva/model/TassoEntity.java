@@ -22,4 +22,5 @@ public class TassoEntity {
 	private BigDecimal percApplParTX;
 	private String segnoSpreadTX;
 	private BigDecimal valoreSprdTX;
+	private String attributoRP;
 }

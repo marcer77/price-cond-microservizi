@@ -29,6 +29,7 @@ public class RowMapperTasso implements RowMapper<TassoEntity> {
 					.tipoValCdzTX(rs.getString("TIPOVALCDZTX"))
 					.valoreCdzTX(new BigDecimal(rs.getString("VALORECDZTX")))
 					.valoreSprdTX(new BigDecimal(rs.getString("VALORESPRDTX")))
+					.attributoRP(rs.getString("ATTRIBUTO_RP"))
 					.build();
 
 		} catch (SQLException e) {
