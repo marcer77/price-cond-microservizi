@@ -100,6 +100,7 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 		
+		proposteCJPOSWSRevocaPropostaCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
 		proposteCJPOSWSRevocaPropostaCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
 		EsitoResponseResource esito = proposteCJPOSWSRevocaPropostaCommand.execute();
 		log.info(" - annullo END: esito {" + esito.toString() + "}");

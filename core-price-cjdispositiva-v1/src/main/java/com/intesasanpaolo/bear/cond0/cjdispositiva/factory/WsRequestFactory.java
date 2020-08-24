@@ -20,6 +20,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.ParametroCondizioneDeroga;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.PropostaCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaPropostaRequest;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.ValoriPercParametri;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.WrapperMap;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
@@ -101,10 +102,20 @@ public class WsRequestFactory {
 		return ProposteCJPOSWSUtils._buildMockInviaPropostaV2();
 	}
 	
-	public RevocaProposta assemblaRequestRevocaProposta(InformazioniPraticaDTO informazioniPraticaDTO) {
+	public RevocaProposta assemblaRequestRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
 		log.info("assemblaRequestRevocaProposta START");
+		RevocaProposta revocaProposta = new RevocaProposta();
+		RevocaPropostaRequest revocaPropostaRequest = new RevocaPropostaRequest();
+		revocaPropostaRequest.setAnnoProposta(annoProposta);
+		revocaPropostaRequest.setCodiceAbiProposta(codAbi);
+		revocaPropostaRequest.setCodiceProposta(codiceProposta);
+		revocaPropostaRequest.setDataRespinta(dataRespinta);
+		revocaPropostaRequest.setMatricolaRespinta(userId);
+		revocaPropostaRequest.setNoteRespinta("ANNULLO DISPOSITIVA CJ");
+		revocaPropostaRequest.setUoRespinta(codUnitaOperativa);
+		revocaProposta.setDatiProposta(revocaPropostaRequest);
 		log.info("assemblaRequestRevocaProposta END");
-		return ProposteCJPOSWSUtils._buildMockRevocaProposta();
+		return revocaProposta;
 	}
 	
 	//per annullo

@@ -13,6 +13,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourc
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperAdesione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaCessare;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperRapporto;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperString;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperTasso;
@@ -20,6 +21,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.R
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
@@ -37,6 +39,9 @@ public class CoreConvenzioneService extends BaseService {
 	
 	@Autowired
 	private MultiDataSourceDb2Connector selectDataSourceConnector;
+	
+	@Autowired
+	private MultiDataSourceDb2Connector<PropostaEntity, Void, PropostaEntity> propostaDataSourceConnector;
 
 	@Autowired
 	private MultiDataSourceDb2Connector<String, Void, String> genericStringDataSourceConnector;
@@ -261,6 +266,31 @@ public class CoreConvenzioneService extends BaseService {
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 		logger.info("END deleteCodiciProposte");
 		return 1;
+		
+	}
+	
+	public List<PropostaEntity> getCodiciProposte(String codAbi,String codSuperPratica,String codPratica) {
+		logger.info("START getCodiciProposte");
+		String query = "SELECT SUBSTR(COD_ENTITA, 1, 4) as annoProposta " + 
+				"     , SUBSTR(COD_ENTITA, 5, 7) as codiceProposta " + 
+				"   FROM FIATT.TB59R009 " + 
+				"   WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica " + 
+				"   AND NR_PRATICA = :input.pratica.codPratica " + 
+				"   AND ID_ENTITA = 'PRUSU'; ";
+				
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+		
+		
+		List<PropostaEntity> resultList = propostaDataSourceConnector.call(query,
+				RequestDb2TransformerFactory.of(new RowMapperProposta(), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+
+		logger.debug("Founded:", resultList);
+		
+		logger.info("END getCodiciProposte");
+		return resultList;
 		
 	}
 	
