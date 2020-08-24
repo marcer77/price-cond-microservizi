@@ -24,7 +24,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 import com.intesasanpaolo.bear.connector.db2.DB2QueryType;
 import com.intesasanpaolo.bear.service.BaseService;
 
