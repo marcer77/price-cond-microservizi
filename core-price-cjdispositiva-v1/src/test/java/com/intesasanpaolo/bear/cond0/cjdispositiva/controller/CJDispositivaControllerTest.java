@@ -148,7 +148,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		stubInviaPropostaOK();
 
 		stubGestioneOk();
-
+		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)

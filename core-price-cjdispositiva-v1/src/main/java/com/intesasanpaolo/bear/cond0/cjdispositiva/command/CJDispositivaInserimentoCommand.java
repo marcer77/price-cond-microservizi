@@ -17,6 +17,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.New
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
@@ -89,7 +90,7 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 	
 			//6)	Se input.codProcesso == ‘CJAFF’
 			//  •	DELETE codici proposte
-			if("CJAFF".equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
+			if(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
 				coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
 				List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
 				
@@ -97,7 +98,9 @@ public class CJDispositivaInserimentoCommand extends BaseCommand<EsitoResponseRe
 
 					List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
 					// WS COND0 GESTCJPOSV.inviaPropostaV2
-					callInviaPropostaV2Service(codAbi,codUnitaOperativa,listaAdesioni.get(0), rapporto,tassiAbbattuti);
+					EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,listaAdesioni.get(0), rapporto,tassiAbbattuti);
+					
+					coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
 
 				});
 

@@ -293,16 +293,16 @@ public class CoreConvenzioneService extends BaseService {
 	public List<TassoEntity> getElencoTassiAbbattuti(String codAbi,String codSuperPratica,String codPratica,RapportoEntity rapporto){
 		logger.info("START getElencoTassiAbbattuti");
 		
-		String query = "   SELECT \n" + 
+		String query = "   SELECT" + 
 				"   SUBSTR(DATI_ENTITA,43,05) 	    AS codCondizioneTX 	" + 
 				",  SUBSTR(DATI_ENTITA,51,08) 		AS decoCdzTX	    " + 
 				",  SUBSTR(DATI_ENTITA,59,08) 		AS decaCdzTX		" + 
 				",  SUBSTR(DATI_ENTITA,67,01) 		AS tipoValCdzTX		" + 
-				",  SUBSTR(DATI_ENTITA,68,15) / 10000 AS valoreCdzTX    " + 
-				",  TRIM(SUBSTR(DATI_ENTITA,84,05)) 	AS cdParamTX	" + 
-				",  nvl(TRIM(SUBSTR(DATI_ENTITA,93,10)),'0') || '.0' / 100000   AS percApplParTX	" + 
-				",  SUBSTR(DATI_ENTITA,111,1)  as	segnoSpreadTX		" + 
-				",  CASE WHEN TRIM(SUBSTR(DATI_ENTITA,113, 10))  != '' THEN TRIM(SUBSTR(DATI_ENTITA,113, 10)) /100000 ELSE 0 END AS valoreSprdTX	" + 
+				",  CAST(SUBSTR(DATI_ENTITA, 68, 15) AS numeric(15,5) ) / 10000  AS valoreCdzTX " + 
+				",  TRIM(SUBSTR(DATI_ENTITA, 84, 05)) AS cdParamTX " + 
+				",  CAST(TRIM(SUBSTR(DATI_ENTITA, 93, 10)) || '.0' AS numeric(15,5)) / 100000 AS percApplParTX " + 
+				",  SUBSTR(DATI_ENTITA, 111, 1) AS segnoSpreadTX " + 
+				",  CAST(TRIM(SUBSTR(DATI_ENTITA, 113, 10))  || '.0' AS numeric(15,5))/ 100000 AS valoreSprdTX" + 
 				",  SUBSTR(DATI_ENTITA, 141, 12) AS ATTRIBUTO_RP " +
 				"  FROM FIATT.TB59R009 T WHERE NR_SUPERPRATICA = :codSuperPratica" + 
 				"   AND NR_PRATICA = :codPratica" + 
@@ -319,5 +319,28 @@ public class CoreConvenzioneService extends BaseService {
 		return (List<TassoEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperTasso(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+	}
+	
+	public int saveCodiceProposta(String codAbi,String codSuperPratica,String codPratica,String codiceProposta,String userId) {
+		
+		logger.info("START saveCodiceProposta");
+
+		String query = "INSERT INTO FIATT.TB59R009 (NR_SUPERPRATICA,NR_PRATICA,ID_ENTITA,STATO,PROGR_ENTITA,PROGR_DATI,COD_ENTITA,DATI_ENTITA,TIPO_AGGIORNAMENTO,COD_OPE_ULT_MODIF,DATA_INSER,DT_ULT_MODIFICA) VALUES (" + 
+				":codSuperPratica , :codPratica, 'PRUSU' , 'N' , 1 ,1, :codiceProposta, '', 'I', :userId, CURRENT TIMESTAMP,CURRENT TIMESTAMP)";
+
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		paramMap.put("codPratica", codPratica);
+		paramMap.put("codiceProposta", codiceProposta);
+		paramMap.put("userId", userId);
+		
+
+		updateRifMultiDataSourceConnector.call(query, RequestDb2TransformerFactory.of(null, DB2QueryType.UPDATE),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+
+
+		logger.info("END saveCodiceProposta");
+		
+		return 1;
 	}
 }

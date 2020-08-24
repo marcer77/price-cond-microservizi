@@ -17,8 +17,8 @@ public class RowMapperRapporto implements RowMapper<RapportoEntity> {
 		RapportoEntity entity = null;
 		try {
 
-			entity= RapportoEntity.builder().categoria(rs.getString("FILRAPPTX"))
-					.filiale(rs.getString("CATRAPPTX"))
+			entity= RapportoEntity.builder().filiale(rs.getString("FILRAPPTX"))
+					.categoria(rs.getString("CATRAPPTX"))
 					.numero(rs.getString("NUMRAPPTX")).build();
 
 		} catch (SQLException e) {
