@@ -21,6 +21,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
@@ -128,7 +129,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 	
 	private RespRollbackStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
 		log.info("callStoreCovenantAdesioneConvenzione START");
-		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
+		ReqRollbackStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
 		RespRollbackStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackStoreCovenantAdesioneConvenzione(request);
 		log.info("callStoreCovenantAdesioneConvenzione END");
 		checkResponseRollbackCovenantAdesioneConvenzione(resp);
@@ -142,10 +143,6 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 			.descrErroreWebService(resp.getErrorDescription()).build();
 		}
 		log.info("checkResponseRollbackCovenantAdesioneConvenzione END");
-	}
-
-	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
 	}
 
 	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {

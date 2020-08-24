@@ -22,6 +22,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
@@ -36,8 +37,6 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
-
-	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
 	private DispositivaRequestDTO dispositivaRequestDTO;
 
@@ -150,12 +149,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		log.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 	
-	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
-	}
-
 	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
 		this.dispositivaRequestDTO = dispositivaRequestDTO;
 	}
-
 }

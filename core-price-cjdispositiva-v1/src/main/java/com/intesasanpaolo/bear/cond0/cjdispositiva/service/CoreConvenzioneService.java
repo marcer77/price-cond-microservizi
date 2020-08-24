@@ -31,19 +31,7 @@ import com.intesasanpaolo.bear.service.BaseService;
 public class CoreConvenzioneService extends BaseService {
 
 	@Autowired
-	private MultiDataSourceDb2Connector<AdesioneEntity, Void, AdesioneEntity> convRifMultiDataSourceConnector;
-
-	@Autowired
-	private MultiDataSourceDb2Connector<CovenantEntity, Void, CovenantEntity> convenantDataSourceConnector;
-	
-	@Autowired
 	private MultiDataSourceDb2Connector selectDataSourceConnector;
-	
-	@Autowired
-	private MultiDataSourceDb2Connector<PropostaEntity, Void, PropostaEntity> propostaDataSourceConnector;
-
-	@Autowired
-	private MultiDataSourceDb2Connector<String, Void, String> genericStringDataSourceConnector;
 
 	@Autowired
 	private MultiDataSourceDb2Connector<Void, Void, Void> updateRifMultiDataSourceConnector;
@@ -68,7 +56,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
 
-		List<AdesioneEntity> resultList = convRifMultiDataSourceConnector.call(query,
+		List<AdesioneEntity> resultList = (List<AdesioneEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperAdesione(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
@@ -104,7 +92,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
 
-		List<CovenantEntity> resultList = convenantDataSourceConnector.call(query,
+		List<CovenantEntity> resultList = (List<CovenantEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperCovenantDaAttivare(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
@@ -139,7 +127,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codSuperPratica", codSuperPratica);
 		paramMap.put("codPratica", codPratica);
 
-		List<CovenantEntity> resultList = convenantDataSourceConnector.call(query,
+		List<CovenantEntity> resultList = (List<CovenantEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperCovenantDaCessare(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
@@ -164,7 +152,7 @@ public class CoreConvenzioneService extends BaseService {
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("covCodCondizione", codConvenzione);
 
-		List<String> resultList = genericStringDataSourceConnector.call(query,
+		List<String> resultList = (List<String>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperString("livGerarchia"), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
@@ -205,7 +193,7 @@ public class CoreConvenzioneService extends BaseService {
 		Map<String, Object> paramMap = new TreeMap<>();
 		paramMap.put("covCodCondizione", codConvenzione);
 
-		List<String> resultList = genericStringDataSourceConnector.call(query,
+		List<String> resultList = (List<String>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperString("ELENCO"), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
@@ -273,8 +261,8 @@ public class CoreConvenzioneService extends BaseService {
 		String query = "SELECT SUBSTR(COD_ENTITA, 1, 4) as annoProposta " + 
 				"     , SUBSTR(COD_ENTITA, 5, 7) as codiceProposta " + 
 				"   FROM FIATT.TB59R009 " + 
-				"   WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica " + 
-				"   AND NR_PRATICA = :input.pratica.codPratica " + 
+				"   WHERE NR_SUPERPRATICA = :codSuperPratica" + 
+				"   AND NR_PRATICA = :codPratica" + 
 				"   AND ID_ENTITA = 'PRUSU'; ";
 				
 		Map<String, Object> paramMap = new TreeMap<>();
@@ -282,7 +270,7 @@ public class CoreConvenzioneService extends BaseService {
 		paramMap.put("codPratica", codPratica);
 		
 		
-		List<PropostaEntity> resultList = propostaDataSourceConnector.call(query,
+		List<PropostaEntity> resultList = (List<PropostaEntity>) selectDataSourceConnector.call(query,
 				RequestDb2TransformerFactory.of(new RowMapperProposta(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 

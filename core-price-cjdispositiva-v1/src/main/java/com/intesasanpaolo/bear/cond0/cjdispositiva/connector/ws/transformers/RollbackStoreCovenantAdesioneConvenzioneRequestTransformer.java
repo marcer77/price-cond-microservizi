@@ -10,8 +10,8 @@ import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.connector.ws.model.SoapConnectorRequest;
 import com.intesasanpaolo.bear.connector.ws.transformer.ISoapRequestTransformer;
@@ -25,7 +25,7 @@ import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.RollbackStoreC
 import com.intesasanpaolo.connector.ws.gen.convenzionihostservice.StoreCovenantAdesioneConvenzione;
 
 @Service
-public class RollbackStoreCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqRollbackStoreCovenantAdesioneConvenzione,JAXBElement<RollbackStoreCovenantAdesioneConvenzione>>{
+public class RollbackStoreCovenantAdesioneConvenzioneRequestTransformer implements ISoapRequestTransformer<ReqStoreCovenantAdesioneConvenzione,JAXBElement<RollbackStoreCovenantAdesioneConvenzione>>{
 	
 	private ObjectFactory objectFactory;
 	
@@ -36,7 +36,7 @@ public class RollbackStoreCovenantAdesioneConvenzioneRequestTransformer implemen
     }
 
     @Override
-    public SoapConnectorRequest<JAXBElement<RollbackStoreCovenantAdesioneConvenzione>> transform(ReqRollbackStoreCovenantAdesioneConvenzione input, Object... args) {
+    public SoapConnectorRequest<JAXBElement<RollbackStoreCovenantAdesioneConvenzione>> transform(ReqStoreCovenantAdesioneConvenzione input, Object... args) {
     	
 
     	RollbackStoreCovenantAdesioneConvenzione rollbackStoreCovenantAdesioneConvenzione = objectFactory.createRollbackStoreCovenantAdesioneConvenzione();
@@ -49,7 +49,7 @@ public class RollbackStoreCovenantAdesioneConvenzioneRequestTransformer implemen
         return request;
     }
     
-    private RequestStoreCovenantAdesioneConvenzione _populateRequestStoreCovenantAdesioneConvenzione(ReqRollbackStoreCovenantAdesioneConvenzione input) {
+    private RequestStoreCovenantAdesioneConvenzione _populateRequestStoreCovenantAdesioneConvenzione(ReqStoreCovenantAdesioneConvenzione input) {
     	RequestStoreCovenantAdesioneConvenzione in = new RequestStoreCovenantAdesioneConvenzione();
     	
     	in.setABI(objectFactory.createRequestStoreCovenantAdesioneConvenzioneABI(input.getAbi()));

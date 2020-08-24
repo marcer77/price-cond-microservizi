@@ -10,6 +10,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.Rol
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.StoreCovenantAdesioneConvenzioneRequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.StoreCovenantAdesioneConvenzioneResponseTransformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 
@@ -38,7 +39,7 @@ public class ConvenzioniHostService {
 		return response;
 	}
 
-	public RespRollbackStoreCovenantAdesioneConvenzione rollbackStoreCovenantAdesioneConvenzione(ReqStoreCovenantAdesioneConvenzione request) {
+	public RespRollbackStoreCovenantAdesioneConvenzione rollbackStoreCovenantAdesioneConvenzione(ReqRollbackStoreCovenantAdesioneConvenzione request) {
 		
 		RespRollbackStoreCovenantAdesioneConvenzione response =(RespRollbackStoreCovenantAdesioneConvenzione) rollbackConnector.call(request, rollbackRequestTrasformer, rollbackResponseTransformer, null);
 		return response;

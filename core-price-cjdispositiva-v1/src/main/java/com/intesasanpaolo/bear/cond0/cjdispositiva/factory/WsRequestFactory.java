@@ -30,6 +30,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 
@@ -119,9 +120,9 @@ public class WsRequestFactory {
 	}
 	
 	//per annullo
-	public ReqStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(InformazioniPraticaDTO informazioniPraticaDTO) {
+	public ReqRollbackStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(InformazioniPraticaDTO informazioniPraticaDTO) {
 		log.info("assemblaRequestConvenzione START");
-		ReqStoreCovenantAdesioneConvenzione request = new ReqStoreCovenantAdesioneConvenzione();
+		ReqRollbackStoreCovenantAdesioneConvenzione request = new ReqRollbackStoreCovenantAdesioneConvenzione();
 		log.info("assemblaRequestConvenzione END");
 		return request;
 	}

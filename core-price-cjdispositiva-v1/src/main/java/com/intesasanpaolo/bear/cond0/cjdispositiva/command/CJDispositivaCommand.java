@@ -16,7 +16,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
@@ -114,4 +114,9 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 		log.info("END recuperaInfoCovenantDaAttivare");
 		return covenantDaAttivare;
 	}
+	
+	public void setIspWebservicesHeaderType(ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
+	}
+
 }

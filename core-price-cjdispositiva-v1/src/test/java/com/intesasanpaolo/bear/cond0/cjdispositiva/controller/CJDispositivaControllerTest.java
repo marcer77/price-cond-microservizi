@@ -346,18 +346,22 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	}
 
-	//@Test
+	@Test
 	public void testAnnulloOK() throws Exception {
 
+		String inputJson = mapToJson(dispositivaRequestDTO);
+		
 		String uri = "/cjdispositiva/annullo";
 
+		stubConvenzioneOK();
+		
 		stubRevocaPropostaOK();
 
 		stubGestioneOk();
 
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).headers(httpHeaders))
-				.andReturn();
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
@@ -373,6 +377,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		String uri = "/cjdispositiva/annullo";
 
+		stubConvenzioneOK();
+		
 		stubRevocaPropostaOK();
 
 		stubGestioneOk();
