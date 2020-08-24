@@ -86,7 +86,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
 	}
 	
-	private void stubConvenzioneOK() {
+	private void stubStoreCovenantWSOK() {
 		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
 				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
@@ -96,6 +96,31 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
 	}
+	
+	
+	
+	private void stubRollbackStoreCovenantWSOK() {
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("RollbackStoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("RollbackStoreCovenantAdesioneConvenzione-responseOK.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
+	}
+	
+	private void stubRollbackStoreCovenantWSKO() {
+		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+				.withRequestBody(containing("RollbackStoreCovenantAdesioneConvenzione"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("RollbackStoreCovenantAdesioneConvenzione-responseOK.xml")));
+
+		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
+
+		Assert.assertEquals(200, stubConvenzione.getResponse().getStatus());
+	}
+	
 	
 	private void stubInviaPropostaOK() {
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
@@ -143,7 +168,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 
@@ -168,7 +193,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		String uri = "/cjdispositiva/inserimento";
 		
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 		
@@ -199,7 +224,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 		
@@ -225,7 +250,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 		
@@ -253,7 +278,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 		
@@ -304,7 +329,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 		
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 
 		stubInviaPropostaOK();
 		
@@ -353,7 +378,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		String uri = "/cjdispositiva/annullo";
 
-		stubConvenzioneOK();
+		stubRollbackStoreCovenantWSOK();
 		
 		stubRevocaPropostaOK();
 
@@ -371,13 +396,39 @@ public class CJDispositivaControllerTest extends BaseTest {
 	}
 
 	@Test
+	public void testAnnullo_WS_KO() throws Exception {
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+		
+		String uri = "/cjdispositiva/annullo";
+
+		stubRollbackStoreCovenantWSKO();
+		
+		stubRevocaPropostaOK();
+
+		stubGestioneOk();
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+
+	
+	
+	@Test
 	public void testAnnulloKO() throws Exception {
 
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
 		String uri = "/cjdispositiva/annullo";
 
-		stubConvenzioneOK();
+		stubStoreCovenantWSOK();
 		
 		stubRevocaPropostaOK();
 
