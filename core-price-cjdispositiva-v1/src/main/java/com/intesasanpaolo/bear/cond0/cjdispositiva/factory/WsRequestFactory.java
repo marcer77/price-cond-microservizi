@@ -51,11 +51,22 @@ public class WsRequestFactory {
 		anagrafica.setCodiceAbiProposta(codAbi);
 		
 		String annoProposta = "";
-		if(adesione!=null && adesione.getInfoStampaData()!=null) {
-			annoProposta = adesione.getInfoStampaData();
-			if(adesione.getInfoStampaData().length()>=4) {
-				annoProposta = adesione.getInfoStampaData().substring(0,4);
+		DatiCliente datiCliente = new DatiCliente();
+		if(adesione!=null) {
+			
+			datiCliente.setNdgCliente(adesione.getIntestatarioNDG());
+			datiCliente.setNominativoCliente(adesione.getIntestatazione());
+			datiCliente.setCfCliente(adesione.getIntestatarioCodFiscale());
+			datiCliente.setPivaCliente(adesione.getIntestatarioPIVA());
+		
+			if(adesione.getInfoStampaData()!=null) {
+				annoProposta = adesione.getInfoStampaData();
+				if(adesione.getInfoStampaData().length()>=4) {
+					annoProposta = adesione.getInfoStampaData().substring(0,4);
+				}
 			}
+			
+
 		}
 		anagrafica.setAnnoProposta(annoProposta);
 		anagrafica.setCodiceTipoOperazione("N");
@@ -63,13 +74,9 @@ public class WsRequestFactory {
 		anagrafica.setMatricolaProponente("AUTODEL");
 		anagrafica.setUoProponente(codUnitaOperativa);
 		propostaCJPOSV2.setDatiProposta(anagrafica);
-		
-		DatiCliente datiCliente = new DatiCliente();
+
 		datiCliente.setAbiCliente(codAbi);
-		datiCliente.setNdgCliente(adesione.getIntestatarioNDG());
-		datiCliente.setNominativoCliente(adesione.getIntestatazione());
-		datiCliente.setCfCliente(adesione.getIntestatarioCodFiscale());
-		datiCliente.setPivaCliente(adesione.getIntestatarioPIVA());
+
 		propostaCJPOSV2.setDatiCliente(datiCliente);
 		
 		propostaCJPOSV2.setAttributiPricing(new WrapperMap());

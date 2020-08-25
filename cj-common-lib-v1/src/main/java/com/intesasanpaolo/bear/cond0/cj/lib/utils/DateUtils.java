@@ -18,6 +18,43 @@ public class DateUtils {
 	public static final String DATE_FORMAT_YYYY_MM_DD 		= "yyyy-MM-dd";
 	public static final String DATE_FORMAT_DD_MM_YYYY 		= "dd-MM-yyyy";
 	
+	public static String dateToString(Date date) {
+		String strDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.applyPattern(DATE_FORMAT_YYYY_MM_DD);
+		if(date != null) {
+			strDate = sdf.format(date);
+		}
+		return strDate;
+	}
+
+	public static Date stringToDate(String strDate) {
+		Date dateFormatted = null;
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.applyPattern(DATE_FORMAT_YYYY_MM_DD);
+		if(strDate != null) {
+			try {
+				dateFormatted = sdf.parse(strDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return dateFormatted;
+	}
+
+	public static String changeFormatDateString(String dateString, SimpleDateFormat from, SimpleDateFormat to) {
+		String strDate = null;
+		if(dateString != null) {
+			try {
+				Date date = from.parse(dateString);
+				strDate = to.format(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		return strDate;
+	}
+	
 	public static String dateToString(Date date, String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat();
 		sdf.applyPattern(format);
