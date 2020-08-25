@@ -174,6 +174,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		stubGestioneOk();
 		
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655703");
+		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -189,7 +191,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	//vario la pratica in modo da generare eccezioni db2 le chiamate esterno sono tutte ok
 	@Test
-	public void testInserimentoKO_datiDb2() throws Exception {
+	public void testInserimentoKO_DatiDb2() throws Exception {
 		
 		String uri = "/cjdispositiva/inserimento";
 		
@@ -350,7 +352,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 	}
 
 	@Test
-	public void testInserimentoKO() throws Exception {
+	public void testInserimento_HeadersKO() throws Exception {
 		
 		String uri = "/cjdispositiva/inserimento";
 
@@ -373,7 +375,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	@Test
 	public void testAnnulloOK() throws Exception {
-
+		
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655713");
+		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
 		String uri = "/cjdispositiva/annullo";
@@ -422,7 +426,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 	
 	
 	@Test
-	public void testAnnulloKO() throws Exception {
+	public void testAnnullo_HeadersKO() throws Exception {
 
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
