@@ -1,14 +1,10 @@
 configuration:         
   env: 
-   -  name: ABI_SDDA
+   -  name: ABI_SPIMI
       value: "01025"
-   -  name: ABI_MDDA
+   -  name: ABI_BKFID
       value: "03296"
-   -  name: ABI_IDDA
-      value: "03249"
-   -  name: ABI_EDDA
-      value: "10637"
-   -  name: ABI_JDDA
+   -  name: ABI_ISPBK
       value: "03239"
-   -  name: ABI_SDZA
-      value: "01025"
+   -  name: ABI_BKIMI
+      value: "03249"
