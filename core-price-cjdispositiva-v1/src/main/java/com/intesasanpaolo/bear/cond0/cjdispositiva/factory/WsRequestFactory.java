@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputArea;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputAreaRapportoAccessorio;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountDatiInput;
@@ -32,7 +30,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.Covenant;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ProposteCJPOSWSUtils;
 
 public class WsRequestFactory {
 	
@@ -107,7 +104,7 @@ public class WsRequestFactory {
 
 		inviaPropostaV2.setDatiProposta(propostaCJPOSV2);
 		log.info("assemblaRequestInviaProposta END");
-		return ProposteCJPOSWSUtils._buildMockInviaPropostaV2();
+		return inviaPropostaV2;
 	}
 	
 	public RevocaProposta assemblaRequestRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
