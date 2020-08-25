@@ -75,7 +75,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 	}
 	
-	private void stubConvenzioneKO() {
+	private void stubStoreCovenantWSKO() {
 		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
 				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
@@ -305,7 +305,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		String uri = "/cjdispositiva/inserimento";
 		
-		stubConvenzioneKO();
+		stubStoreCovenantWSKO();
 
 		stubInviaPropostaOK();
 		
@@ -354,7 +354,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		String uri = "/cjdispositiva/inserimento";
 
-		stubConvenzioneKO();
+		stubStoreCovenantWSKO();
 
 		stubInviaPropostaOK();
 		
