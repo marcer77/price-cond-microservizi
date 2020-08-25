@@ -21,38 +21,38 @@ public class ServiceUtil {
 	 *                                 e avere tutti campi public
 	 * @param ispWebservicesHeaderType
 	 */
-	public static void setHeaders(Object header, ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		// if (!header.getClass().getSimpleName().equals("INHEADER")) {
-		// throw new ClassCastException();
-		// }
+//	public static void setHeaders(Object header, ISPWebservicesHeaderType ispWebservicesHeaderType) {
+//		// if (!header.getClass().getSimpleName().equals("INHEADER")) {
+//		// throw new ClassCastException();
+//		// }
+//
+//		setHeader(header, "COD_ABI", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
+//		setHeader(header, "CODICE_UO_RICH",
+//				getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
+//		setHeader(header, "COD_CLI_RICH", ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
+//		setHeader(header, "CODICE_SOCIETA", ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
+//		setHeader(header, "COD_AZIENDA_DEST", ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
+//		setHeader(header, "CODICE_SPORTELLO", ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode());
+//		setHeader(header, "CODICE_USERID", ispWebservicesHeaderType.getOperatorInfo().getUserID());
+//		setHeader(header, "COD_TIPO_LINGUA", ispWebservicesHeaderType.getRequestInfo().getLanguage());
+//		setHeader(header, "COD_RICH_CANALE", ispWebservicesHeaderType.getRequestInfo().getTransactionId());
+//		setHeader(header, "COD_RIS_RICH", ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
+//		setHeader(header, "CODICE_TIPO_CANALE", ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+//	}
 
-		setHeader(header, "COD_ABI", getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));
-		setHeader(header, "CODICE_UO_RICH",
-				getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
-		setHeader(header, "COD_CLI_RICH", ispWebservicesHeaderType.getBusinessInfo().getCustomerID());
-		setHeader(header, "CODICE_SOCIETA", ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
-		setHeader(header, "COD_AZIENDA_DEST", ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
-		setHeader(header, "CODICE_SPORTELLO", ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode());
-		setHeader(header, "CODICE_USERID", ispWebservicesHeaderType.getOperatorInfo().getUserID());
-		setHeader(header, "COD_TIPO_LINGUA", ispWebservicesHeaderType.getRequestInfo().getLanguage());
-		setHeader(header, "COD_RICH_CANALE", ispWebservicesHeaderType.getRequestInfo().getTransactionId());
-		setHeader(header, "COD_RIS_RICH", ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
-		setHeader(header, "CODICE_TIPO_CANALE", ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-	}
-
-	private static void setHeader(Object header, String headerName, String value) {
-		if (value != null) {
-			try {
-				header.getClass().getField(headerName).set(header, value);
-			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-				// non dovrebbe mai succedere perché i campi sono tutti public
-				// eventualmente potrei aver sbagliato il nome del campo, ma in produzione non
-				// può succedere
-				// l'ho intercettato prima
-				throw new AssertionError(e);
-			}
-		}
-	}
+//	private static void setHeader(Object header, String headerName, String value) {
+//		if (value != null) {
+//			try {
+//				header.getClass().getField(headerName).set(header, value);
+//			} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+//				// non dovrebbe mai succedere perché i campi sono tutti public
+//				// eventualmente potrei aver sbagliato il nome del campo, ma in produzione non
+//				// può succedere
+//				// l'ho intercettato prima
+//				throw new AssertionError(e);
+//			}
+//		}
+//	}
 
 	private static String getAdditionalBusinessInfo(ISPWebservicesHeaderType obj, ParamList name) {
 		for (Param param : obj.getAdditionalBusinessInfo().getParam()) {
@@ -63,70 +63,70 @@ public class ServiceUtil {
 		return null;
 	}
 
-	public static ISPWebservicesHeaderType buildISPWebservicesHeader(String transactionId, String timestamp,
-			String serviceID, String serviceVersion, String language,
-
-			String userID, String isVirtualUser,
-
-			String ispCallerCompanyIDCode, String ispBranchCode, String ispServiceCompanyIDCode,
-
-			String customerID, String businessProcessName, String businessProcessID, String businessOperation,
-			String businessFileID,
-
-			String channelIDCode, String applicationID, String callerServerName, String callerProgramName,
-
-			String codAbi, String codUnitaOperativa, String codOperativa, String dataContabile
-
-	) {
-
-		ObjectFactory factory = new ObjectFactory();
-
-		ISPWebservicesHeaderType obj = factory.createISPWebservicesHeaderType();
-		obj.setRequestInfo(factory.createISPWebservicesHeaderTypeRequestInfo());
-		obj.setOperatorInfo(factory.createISPWebservicesHeaderTypeOperatorInfo());
-		obj.setCompanyInfo(factory.createISPWebservicesHeaderTypeCompanyInfo());
-		obj.setBusinessInfo(factory.createISPWebservicesHeaderTypeBusinessInfo());
-		obj.setTechnicalInfo(factory.createISPWebservicesHeaderTypeTechnicalInfo());
-		obj.setAdditionalBusinessInfo(factory.createISPWebservicesHeaderTypeAdditionalBusinessInfo());
-
-		obj.getRequestInfo().setTransactionId(transactionId);
-		if (timestamp != null) {
-			obj.getRequestInfo().setTimestamp(Long.parseLong(timestamp));
-		}
-
-		obj.getRequestInfo().setServiceID(serviceID);
-		obj.getRequestInfo().setServiceVersion(serviceVersion);
-		obj.getRequestInfo().setLanguage(language);
-		obj.getOperatorInfo().setUserID(userID);
-		
-		if (isVirtualUser != null) {
-			obj.getOperatorInfo().setIsVirtualUser(Boolean.parseBoolean(isVirtualUser));
-		}else{
-			obj.getOperatorInfo().setIsVirtualUser(Boolean.FALSE);
-		}
-		
-		obj.getCompanyInfo().setISPCallerCompanyIDCode(ispCallerCompanyIDCode);
-		obj.getCompanyInfo().setISPBranchCode(ispBranchCode);
-		obj.getCompanyInfo().setISPServiceCompanyIDCode(ispServiceCompanyIDCode);
-		
-		obj.getBusinessInfo().setCustomerID(customerID);
-		obj.getBusinessInfo().setBusinessProcessName(businessProcessName);
-		obj.getBusinessInfo().setBusinessProcessID(businessProcessID);
-		obj.getBusinessInfo().setBusinessOperation(businessOperation);
-		obj.getBusinessInfo().setBusinessFileID(businessFileID);
-		
-		obj.getTechnicalInfo().setChannelIDCode(channelIDCode);
-		obj.getTechnicalInfo().setApplicationID(applicationID);
-		obj.getTechnicalInfo().setCallerProgramName(callerProgramName);
-		obj.getTechnicalInfo().setCallerServerName(callerServerName);
-		
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_ABI, codAbi));
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_UNITA_OPERATIVA, codUnitaOperativa));
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_OPERATIVITA, codOperativa));
-		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.DATA_CONTABILE, dataContabile));
-
-		return obj;
-	}
+//	public static ISPWebservicesHeaderType buildISPWebservicesHeader(String transactionId, String timestamp,
+//			String serviceID, String serviceVersion, String language,
+//
+//			String userID, String isVirtualUser,
+//
+//			String ispCallerCompanyIDCode, String ispBranchCode, String ispServiceCompanyIDCode,
+//
+//			String customerID, String businessProcessName, String businessProcessID, String businessOperation,
+//			String businessFileID,
+//
+//			String channelIDCode, String applicationID, String callerServerName, String callerProgramName,
+//
+//			String codAbi, String codUnitaOperativa, String codOperativa, String dataContabile
+//
+//	) {
+//
+//		ObjectFactory factory = new ObjectFactory();
+//
+//		ISPWebservicesHeaderType obj = factory.createISPWebservicesHeaderType();
+//		obj.setRequestInfo(factory.createISPWebservicesHeaderTypeRequestInfo());
+//		obj.setOperatorInfo(factory.createISPWebservicesHeaderTypeOperatorInfo());
+//		obj.setCompanyInfo(factory.createISPWebservicesHeaderTypeCompanyInfo());
+//		obj.setBusinessInfo(factory.createISPWebservicesHeaderTypeBusinessInfo());
+//		obj.setTechnicalInfo(factory.createISPWebservicesHeaderTypeTechnicalInfo());
+//		obj.setAdditionalBusinessInfo(factory.createISPWebservicesHeaderTypeAdditionalBusinessInfo());
+//
+//		obj.getRequestInfo().setTransactionId(transactionId);
+//		if (timestamp != null) {
+//			obj.getRequestInfo().setTimestamp(Long.parseLong(timestamp));
+//		}
+//
+//		obj.getRequestInfo().setServiceID(serviceID);
+//		obj.getRequestInfo().setServiceVersion(serviceVersion);
+//		obj.getRequestInfo().setLanguage(language);
+//		obj.getOperatorInfo().setUserID(userID);
+//		
+//		if (isVirtualUser != null) {
+//			obj.getOperatorInfo().setIsVirtualUser(Boolean.parseBoolean(isVirtualUser));
+//		}else{
+//			obj.getOperatorInfo().setIsVirtualUser(Boolean.FALSE);
+//		}
+//		
+//		obj.getCompanyInfo().setISPCallerCompanyIDCode(ispCallerCompanyIDCode);
+//		obj.getCompanyInfo().setISPBranchCode(ispBranchCode);
+//		obj.getCompanyInfo().setISPServiceCompanyIDCode(ispServiceCompanyIDCode);
+//		
+//		obj.getBusinessInfo().setCustomerID(customerID);
+//		obj.getBusinessInfo().setBusinessProcessName(businessProcessName);
+//		obj.getBusinessInfo().setBusinessProcessID(businessProcessID);
+//		obj.getBusinessInfo().setBusinessOperation(businessOperation);
+//		obj.getBusinessInfo().setBusinessFileID(businessFileID);
+//		
+//		obj.getTechnicalInfo().setChannelIDCode(channelIDCode);
+//		obj.getTechnicalInfo().setApplicationID(applicationID);
+//		obj.getTechnicalInfo().setCallerProgramName(callerProgramName);
+//		obj.getTechnicalInfo().setCallerServerName(callerServerName);
+//		
+//		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_ABI, codAbi));
+//		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_UNITA_OPERATIVA, codUnitaOperativa));
+//		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.COD_OPERATIVITA, codOperativa));
+//		addIfNonNull(obj.getAdditionalBusinessInfo().getParam(), createParam(ParamList.DATA_CONTABILE, dataContabile));
+//
+//		return obj;
+//	}
 
 	@Builder(builderMethodName = "buildISPWebservicesHeaderType")
 	public static ISPWebservicesHeaderType buildISPWebservicesHeader(String codABI, String codUnitaOperativa,
