@@ -8,11 +8,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputArea;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.InputDatiInputAreaRapportoAccessorio;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountDatiInput;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.pcgestixme.NewAccountInput.Input;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.InputDatiInputArea;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.InputDatiInputAreaRapportoAccessorio;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountDatiInput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput.Input;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.AnagraficaPropostaCJPOS;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.CondizioneCJPOS;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.DatiCliente;
