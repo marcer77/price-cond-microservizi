@@ -6,6 +6,15 @@ spring:
 
 error-manager:
   enabled: true
+  
+tracing:
+  enabled: true
+ #mocked: true
+
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
 
 connectors:
   #restConfigurations:
