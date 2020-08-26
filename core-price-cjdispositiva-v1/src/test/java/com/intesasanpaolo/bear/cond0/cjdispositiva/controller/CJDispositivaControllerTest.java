@@ -40,8 +40,19 @@ public class CJDispositivaControllerTest extends BaseTest {
 	@Before
 	public void initMocks() throws Exception {
 		dispositivaRequestDTO = new DispositivaRequestDTO();
+		
+		dispositivaRequestDTO.setCodAppl(CodApplEnum.FIDI.toString());
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CARTE_AZIENDALI_PG.toString());
+		dispositivaRequestDTO.isValidCodAppl(); //chiamata explicita per copertura codice
+		dispositivaRequestDTO.isValidCodProcesso(); //chiamata explicita per copertura codice
+		dispositivaRequestDTO.setCodAppl(CodApplEnum.AREA_FINANZA.toString());
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		dispositivaRequestDTO.isValidCodAppl(); //chiamata explicita per copertura codice
+		dispositivaRequestDTO.isValidCodProcesso(); //chiamata explicita per copertura codice
 		dispositivaRequestDTO.setCodAppl(CodApplEnum.CARTE.toString());
 		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		dispositivaRequestDTO.isValidCodAppl(); //chiamata explicita per copertura codice
+		dispositivaRequestDTO.isValidCodProcesso(); //chiamata explicita per copertura codice
 		PraticaDTO praticaDTO = new PraticaDTO();
 		praticaDTO.setCodPratica("0000655703");
 		praticaDTO.setCodPropostaComm("");
@@ -114,7 +125,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
 				.withRequestBody(containing("RollbackStoreCovenantAdesioneConvenzione"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
-						.withBodyFile("RollbackStoreCovenantAdesioneConvenzione-responseOK.xml")));
+						.withBodyFile("RollbackStoreCovenantAdesioneConvenzione-responseKO.xml")));
 
 		log.info("Esito StoreCovenantAdesioneConvenzione: " + stubConvenzione.getResponse().getStatus());
 

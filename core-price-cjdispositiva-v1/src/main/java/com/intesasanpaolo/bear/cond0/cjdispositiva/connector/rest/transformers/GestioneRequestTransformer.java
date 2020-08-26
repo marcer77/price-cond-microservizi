@@ -54,46 +54,9 @@ public class GestioneRequestTransformer implements IRestRequestTransformer<NewAc
 				restConnectorRequest.addHeader(key, headaerParams.get(key));
 			}
 		}
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.RequestInfo.ServiceID", "PCGESTIXME");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode", "01");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode", "01");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa", "00700");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", "01025");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.BusinessInfo.CustomerID", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.OperatorInfo.UserID", "23232");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.RequestInfo.Language", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.RequestInfo.ServiceVersion", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.RequestInfo.Timestamp", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.RequestInfo.TransactionId", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.TechnicalInfo.CallerProgramName", "0");
-//		restConnectorRequest.addHeader("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
 	}
 	
-//	private HashMap<String, String> _buildRequest(NewAccountInput request){
-//		HashMap<String, String> mappa = new HashMap<String, String>();
-////		"PCK8-I-TIPO-FUNZIONE":"I",
-//		mappa.put("PCK8-I-TIPO-FUNZIONE", "23");	
-////		"PCK8-I-NR-SUPERPRATICA":"A",
-//		mappa.put("PCK8-I-NR-SUPERPRATICA", "A");	
-////		"PCK8-I-NR-PRATICA" :"1212121",
-//		mappa.put("PCK8-I-NR-PRATICA", "1212121");	
-////		"PCK8-I-COD-FIL-RAPP-ACC" :"00072",
-//		mappa.put("PCK8-I-COD-FIL-RAPP-ACC", "00072");	
-////		"PCK8-I-COD-CAT-RAPP-ACC" :"1000",
-//		mappa.put("PCK8-I-COD-CAT-RAPP-ACC", "1000");	
-////		"PCK8-I-NUM-PROG-RAPP-ACC" :"1",
-//		mappa.put("PCK8-I-NUM-PROG-RAPP-ACC", "1");	
-////		"PCK8-I-COD-FIL-DIPENDENTE":"00070",
-//		mappa.put("PCK8-I-COD-FIL-DIPENDENTE", "00070");	
-////		"PCK8-I-COD-CANALE" :"A"
-//		mappa.put("PCK8-I-COD-CANALE", "A");
-//		return mappa;
-//	}
-	
     private static NewAccountInput _createNewAccountInput(NewAccountXMeSaluteModel model) {
-//    	NewAccountXMeSaluteModel model = new NewAccountXMeSaluteModel();
-//        WsrrProperties prop = ServiceConfigurationSingleton.getInstance().getPriceContractConfirm();
         ContractModel co = model.getContract();
 
         NewAccountInput request = new NewAccountInput();
@@ -201,17 +164,5 @@ public class GestioneRequestTransformer implements IRestRequestTransformer<NewAc
     	
     	return result;
     }
-    
-//    public static void main(String[] args) throws JsonProcessingException {
-//
-//    	ObjectMapper objectMapper = new ObjectMapper();
-//		
-//    	NewAccountInput result  = buildRequest(new NewAccountInput());
-//		
-//    	String json = objectMapper.writeValueAsString(result);
-//    	
-//    	System.out.println(json);
-//		
-//	}
 
 }
