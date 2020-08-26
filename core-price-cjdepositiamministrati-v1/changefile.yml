@@ -21,7 +21,7 @@ build:
 
 quality:
   sonar:
-    active: true
+    active: false
 
 deployment:
   openshift:
