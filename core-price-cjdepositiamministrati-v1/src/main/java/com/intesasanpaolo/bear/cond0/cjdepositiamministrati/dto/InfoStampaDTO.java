@@ -5,12 +5,10 @@ import java.util.Date;
 import javax.validation.constraints.AssertTrue;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodLinguaEnum;
-import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
