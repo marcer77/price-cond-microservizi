@@ -23,21 +23,21 @@ public class ProposteCJPOSWSRevocaPropostaConnector extends
 
 	private Logger log = Logger.getLogger(ProposteCJPOSWSRevocaPropostaConnector.class);
 
-	protected void handleSoapFault(SoapMessage soapMessage, Unmarshaller unmarshaller) throws RuntimeException {
-		log.info(" handleSoapFault START");
-		StringBuilder errorMessage = new StringBuilder();
-		SoapFaultDetail faultDetail = ((SoapMessage) soapMessage).getSoapBody().getFault().getFaultDetail();
-		Iterator<SoapFaultDetailElement> detailEntries = faultDetail.getDetailEntries();
-		while (detailEntries.hasNext()) {
-			SoapFaultDetailElement detailElement = detailEntries.next();
-			Node node = ((DOMResult) detailElement.getResult()).getNode();
-			log.debug("Nome nodo: " + node.getNodeName() + " Valore nodo: " + node.getNodeValue() + " Testo nodo: "
-					+ node.getTextContent());
-			errorMessage.append(node.getTextContent());
-			log.info(" handleSoapFault ERROR: " + node.getTextContent());
-		}
-		log.info(" handleSoapFault END");
-		throw new RuntimeException(errorMessage.toString());
-	}
+//	protected void handleSoapFault(SoapMessage soapMessage, Unmarshaller unmarshaller) throws RuntimeException {
+//		log.info(" handleSoapFault START");
+//		StringBuilder errorMessage = new StringBuilder();
+//		SoapFaultDetail faultDetail = ((SoapMessage) soapMessage).getSoapBody().getFault().getFaultDetail();
+//		Iterator<SoapFaultDetailElement> detailEntries = faultDetail.getDetailEntries();
+//		while (detailEntries.hasNext()) {
+//			SoapFaultDetailElement detailElement = detailEntries.next();
+//			Node node = ((DOMResult) detailElement.getResult()).getNode();
+//			log.debug("Nome nodo: " + node.getNodeName() + " Valore nodo: " + node.getNodeValue() + " Testo nodo: "
+//					+ node.getTextContent());
+//			errorMessage.append(node.getTextContent());
+//			log.info(" handleSoapFault ERROR: " + node.getTextContent());
+//		}
+//		log.info(" handleSoapFault END");
+//		throw new RuntimeException(errorMessage.toString());
+//	}
 
 }
