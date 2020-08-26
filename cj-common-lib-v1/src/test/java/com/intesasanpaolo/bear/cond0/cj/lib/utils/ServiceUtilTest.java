@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.withNoException;
+
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
@@ -182,6 +184,17 @@ public class ServiceUtilTest {
 		HeaderMock header = new HeaderMock();
 
 		ServiceUtil.setBSHeaders(header, BSTypeCall.FL03S00_CALL, ispWebservicesHeaderType);
+
+	}
+	
+	@Test(expected = AssertionError.class)
+	public void setHeader() {
+		ISPWebservicesHeaderType ispWebservicesHeaderType = ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("0").callerCompanyIDCode("01").callerProgramName("1").channelIDCode("0").codABI("01025")
+				.codUnitaOperativa("0").customerID("0").isVirtualUser("false").language("I").serviceCompanyIDCode("01")
+				.serviceID("00").userID("U015886").transactionId("0").timestamp("0").serviceVersion("0").build();
+
+		ServiceUtil.setHeader(ispWebservicesHeaderType,"test","prova");
 	}
 	
 	@Test	
@@ -192,5 +205,9 @@ public class ServiceUtilTest {
 		Assert.assertTrue(d==40);
 	}
 	
+	@Test
+	public void testWithNoException() {
+		withNoException(()-> "test",null);
+	}
 	
 }

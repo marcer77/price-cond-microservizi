@@ -22,6 +22,8 @@ public class PaddingFieldTest {
 		
 		PaddingField.paddingZeros(123456, length);
 		
+		PaddingField.paddingZeros(123456.0, length);
+		
 		PaddingField.paddingZeros(5L, length);
 
 		PaddingField.paddingZeros((short) 5, length);
@@ -31,6 +33,9 @@ public class PaddingFieldTest {
 		PaddingField.rightPadSpaceOrTruncate(field, length);
 		
 		PaddingField.rightPadSpaceOrTruncate(null, length);
+		
+		PaddingField.rightPadSpaceOrTruncate("KO", length);
+
 	}
 
 }
