@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.dto;
+package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.AssertTrue;
@@ -12,22 +12,30 @@ import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DispositivaRequestDTO {
+@ToString
+public class StampaRequestDTO {
 
 	@NotNull(message = "Il campo codAppl non può essere null")
 	@NotBlank(message = "Il campo codAppl non può essere vuoto")
 	private String codAppl;
-
+	
 	@NotNull(message = "Il campo codProcesso non può essere null")
 	@NotBlank(message = "Il campo codProcesso non può essere vuoto")
 	private String codProcesso;
 
-	@Valid
-	private PraticaDTO praticaDTO;
+	@NotNull(message = "Il campo rapporto non può essere null")
+	@Valid private RapportoDTO rapporto;
+	
+	@NotNull(message = "Il campo intestatario non può essere null")
+	@Valid private IntestatarioDTO intestatario;
+
+	@NotNull(message = "Il campo infoStampa non può essere vuoto")
+	@Valid private InfoStampaDTO infoStampa;
 
 	@AssertTrue(message = "Il codAppl inserito non è previsto.")
 	@JsonIgnore

@@ -23,7 +23,8 @@ public class DateUtils {
 	public static final String DATE_FORMAT_DD_MM_YYYY_DOTS	= "dd.MM.yyyy";
 	public static final String DATE_FORMAT_YYYY_MM_DD 		= "yyyy-MM-dd";
 	public static final String DATE_FORMAT_DD_MM_YYYY 		= "dd-MM-yyyy";
-
+	public static final String DATE_FORMAT_DD_MM_YYYY_SLASH = "dd/MM/yyyy";
+	
 	public static String dateToString(Date date) {
 		String strDate = null;
 		SimpleDateFormat sdf = new SimpleDateFormat();

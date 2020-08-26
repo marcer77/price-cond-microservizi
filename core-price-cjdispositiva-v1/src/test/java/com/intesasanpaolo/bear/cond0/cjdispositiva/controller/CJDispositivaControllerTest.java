@@ -19,11 +19,11 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.enums.CodApplEnum;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.enums.CodProcessoEnum;
 
 @RunWith(SpringRunner.class)
 public class CJDispositivaControllerTest extends BaseTest {

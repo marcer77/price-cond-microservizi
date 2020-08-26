@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdispositiva.enums;
+package com.intesasanpaolo.bear.cond0.cj.lib.enums;
 
 public enum CodProcessoEnum {
 
