@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.enums.CodApplEnum;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
