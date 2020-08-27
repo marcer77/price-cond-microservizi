@@ -144,9 +144,5 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		}
 		log.info("checkResponseRollbackCovenantAdesioneConvenzione END");
 	}
-
-	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
-		this.dispositivaRequestDTO = dispositivaRequestDTO;
-	}
 	
 }

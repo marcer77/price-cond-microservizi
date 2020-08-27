@@ -413,6 +413,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 	@Test
 	public void testAnnullo_WS_KO() throws Exception {
 
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655713");
+		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
 		String uri = "/cjdispositiva/annullo";
