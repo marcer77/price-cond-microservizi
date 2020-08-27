@@ -22,12 +22,10 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 @Component
@@ -87,7 +85,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 			}
 	
 			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
-			callGestioneService(dispositivaRequestDTO, listaAdesioni.get(0));
+			callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0));
 			
 			// BS PCMK aggiorna elenco cod.prop. fittizie
 			callAggiornaCodfittizie();
@@ -115,7 +113,9 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 	public boolean canExecute() {
 		log.info("canExecute START");
 		boolean esitoControlli = false;
-		esitoControlli = !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+		esitoControlli =
+				super.canExecute()
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())

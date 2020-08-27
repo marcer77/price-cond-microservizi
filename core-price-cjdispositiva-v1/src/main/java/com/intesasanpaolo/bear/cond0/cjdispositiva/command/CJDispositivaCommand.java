@@ -7,6 +7,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountOutput;
@@ -16,8 +17,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
@@ -44,12 +43,27 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	
 	protected WsRequestFactory wsRequestFactory = new WsRequestFactory();
 	
-	protected NewAccountOutput callGestioneService(DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) throws BearForbiddenException {
+	protected DispositivaRequestDTO dispositivaRequestDTO;
+	
+	@Override
+	public boolean canExecute() {
+		log.info("canExecute START");
+		if(!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) && !CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
+			throw CJWebServiceException.builder().webServiceName("callGestioneService").codiceErroreWebService("")
+			.descrErroreWebService("Tipo processo ("+dispositivaRequestDTO.getCodProcesso()+") non gestito.").build();
+		}
+		log.info("canExecute END");
+		return true;
+
+	}
+	
+	protected NewAccountOutput callGestioneService(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) throws BearForbiddenException {
 		log.info("callWsGestione START");
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();
-			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID",
-					ispWebservicesHeaderType.getRequestInfo().getServiceID());
+			//Valorizzare fisso per il momento funziona con PCGESTIXME
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceID","PCGESTIXME");
+			
 			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode",
 					ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode());
 			headerParams.put("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode",
@@ -64,8 +78,8 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 					ispWebservicesHeaderType.getOperatorInfo().getUserID());
 			headerParams.put("ISPWebservicesHeader.RequestInfo.Language",
 					ispWebservicesHeaderType.getRequestInfo().getLanguage());
-			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceVersion",
-					ispWebservicesHeaderType.getRequestInfo().getServiceVersion());
+			//Valorizzare fisso per il momento funziona con 0
+			headerParams.put("ISPWebservicesHeader.RequestInfo.ServiceVersion","0");
 			headerParams.put("ISPWebservicesHeader.RequestInfo.Timestamp",
 					ispWebservicesHeaderType.getRequestInfo().getTimestamp() + "");
 			headerParams.put("ISPWebservicesHeader.RequestInfo.TransactionId",
@@ -79,12 +93,12 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 
 			log.info("- callWsGestione END");
 
-			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(codFunzione, dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			
 			NewAccountOutput newAccountOutput = gestioneService.gestione(newAccountInput, headerParams);
 			
 			if(!"00".equals(newAccountOutput.getOutput().getDatiDebug().getReturnCode())) {
-				throw CJWebServiceException.builder().webServiceName("StoreCovenantAdesioneConvenzione").codiceErroreWebService(newAccountOutput.getOutput().getDatiDebug().getReturnCode())
+				throw CJWebServiceException.builder().webServiceName("WsGestione").codiceErroreWebService(newAccountOutput.getOutput().getDatiDebug().getReturnCode())
 				.descrErroreWebService(newAccountOutput.getOutput().getDatiDebug().getTxTMessaggio()).build();
 			}
 			
@@ -119,4 +133,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 		this.ispWebservicesHeaderType = ispWebservicesHeaderType;
 	}
 
+	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
+		this.dispositivaRequestDTO = dispositivaRequestDTO;
+	}
 }

@@ -14,7 +14,6 @@ import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
@@ -22,14 +21,12 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 @Component
@@ -38,7 +35,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 	
-	private DispositivaRequestDTO dispositivaRequestDTO;
+
 
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
@@ -69,7 +66,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 			covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
 			// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
-			callGestioneService(dispositivaRequestDTO, listaAdesioni.get(0));
+			callGestioneService( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "CAF": "CDA" , dispositivaRequestDTO, listaAdesioni.get(0));
 
 			// WS VDM StoreCovenantAdesioneConvenzione
 			callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
@@ -109,7 +106,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		log.info("canExecute START");
 		boolean esitoControlli = false;
 		esitoControlli = 
-				!StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
+				super.canExecute() 
+				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
@@ -149,7 +147,4 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		log.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 	
-	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
-		this.dispositivaRequestDTO = dispositivaRequestDTO;
-	}
 }

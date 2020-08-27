@@ -223,7 +223,7 @@ public class WsRequestFactory {
 		return request;
 	}
 
-	public NewAccountInput assemblaRequestGestione(DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione, String codFilDipendente, String codCanale) {
+	public NewAccountInput assemblaRequestGestione(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione, String codFilDipendente, String codCanale) {
 		log.info("assemblaRequestGestione START");
 		NewAccountInput newAccountInput = new NewAccountInput();
 		
@@ -232,6 +232,8 @@ public class WsRequestFactory {
 		NewAccountDatiInput newAccountDatiInput = new NewAccountDatiInput();
 		
 		InputDatiInputArea inputDatiInputArea = new InputDatiInputArea();
+		
+		inputDatiInputArea.setNumPromozioni("0"); //necessario inizializzare, quindi inserisco 0
 		
 		InputDatiInputAreaRapportoAccessorio rapportoAccessorio = new InputDatiInputAreaRapportoAccessorio();
 		
@@ -243,7 +245,7 @@ public class WsRequestFactory {
 		
 		newAccountInput.setInput(input);
 
-		newAccountInput.getInput().getDatiInput().setFunzione(dispositivaRequestDTO.getCodProcesso());
+		newAccountInput.getInput().getDatiInput().setFunzione(codFunzione);
 		
 		newAccountInput.getInput().getDatiInput().getArea().getRapportoAccessorio().setFiLRappAcc(adesione.getRapportoCodFiliale());
 		
