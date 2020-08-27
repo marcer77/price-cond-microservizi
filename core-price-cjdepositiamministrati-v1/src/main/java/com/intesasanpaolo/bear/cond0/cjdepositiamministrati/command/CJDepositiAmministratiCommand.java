@@ -78,8 +78,8 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		stampaResponseResource.setCodDDS("codDDS di prova");
 		stampaResponseResource.setCodTemplate("Template di prova");
 		RigheDiStampaResource riga = new RigheDiStampaResource();
-		riga.setPrgStp("progressivo stampa");
-		riga.setPrgStrut("progressivo struttura");
+		riga.setPrgStp("123");
+		riga.setPrgStrut("1313");
 		riga.setTipoStrut(TipoStrutEnum.INTESTAZIONE.toString());
 		
 		riga.setIntestazione(new IntestazioneStampaResource(stampaRequestDTO.getIntestatario().getIntestazione(), "testo mock2", "testo mock3", "testo mock4"));
