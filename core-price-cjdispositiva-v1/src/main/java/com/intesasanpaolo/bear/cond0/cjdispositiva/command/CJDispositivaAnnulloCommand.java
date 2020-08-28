@@ -16,7 +16,6 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -33,8 +32,6 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
-
-	private DispositivaRequestDTO dispositivaRequestDTO;
 
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
