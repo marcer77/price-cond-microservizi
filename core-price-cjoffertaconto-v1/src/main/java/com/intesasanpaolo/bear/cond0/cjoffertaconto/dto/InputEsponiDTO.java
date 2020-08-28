@@ -22,7 +22,7 @@ public class InputEsponiDTO {
 	
 	@NotNull(message = "il campo codAppl non puo' essere null")
 	@NotBlank(message = "Il campo codAppl non puo' essere vuoto")
-	@Pattern(regexp = "(X | F | D)", message = "Il campo codAppl puo' assumere solo i valori X, F, D")
+	@Pattern(regexp = "\\bX\\b|\\bF\\b|\\bD\\b", message = "Il campo codAppl puo' assumere solo i valori X, F, D")
 	private String codAppl;
 	
 	@NotNull(message = "Il campo codProcesso non può essere null")
@@ -33,7 +33,7 @@ public class InputEsponiDTO {
 	
 	@NotNull(message = "il campo tipoDA non puo' essere null")
 	@NotBlank(message = "Il campo tipoDA non puo' essere vuoto")
-	@Pattern(regexp = "(CU | GA)", message = "Il campo codAppl puo' assumere solo i valor CU, GA")
+	@Pattern(regexp = "\\bCU\\b|\\bDA\\b", message = "Il campo tipoDA puo' assumere solo i valor CU, GA")
 	private String tipoDA;
 	
 	@Valid private List<PromozioniDTO> promozioni;
