@@ -9,6 +9,7 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.C_WKIBS00;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.TipoStrutEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
