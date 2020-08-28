@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjoffertaconto.command;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -10,7 +11,12 @@ import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.InputEsponiDTO;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.EsitoResource;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.EsponiResponseResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.OffertaResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ProdottoResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriOffertaResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriProdottoResource;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -61,15 +67,71 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 	protected EsponiResponseResource doExecute() {
 		log.info("doExecute START");
 		
+		return getMockResponse();
+	}
+	
+	private EsponiResponseResource getMockResponse() {
+		
 		EsponiResponseResource response =new EsponiResponseResource();
 		
-
-		String codiceErrore = "00";
-		response.getEsito().setCodErrore(codiceErrore);
-		String descErrore="";
-		response.getEsito().setDescErrore(descErrore);
+		response.setEsito(new EsitoResource("00", ""));
+		
+		List<ValoriOffertaResource> valori = new ArrayList<>();
+		valori.add(ValoriOffertaResource.builder().costo("13.34582")
+				.costoListino("14.034522")
+				.decorrenza("20200901")
+				.scadenza("20210303")
+				.flAgevolato("S")
+				.build());
+		
+		valori.add(ValoriOffertaResource.builder().costo("13.34582")
+				.costoListino("15.034522")
+				.decorrenza("20200901")
+				.scadenza("20210303")
+				.flAgevolato("N")
+				.build());
+		
+		OffertaResource offerta = OffertaResource.builder().codice("OFFH99C").valori(valori).build();
+		response.setOfferta(offerta);
+		
+		List<ProdottoResource> prodotti = new ArrayList<>();
+		
+		List<ValoriProdottoResource> valoriProdotto = new ArrayList<>();
+		
+		valoriProdotto.add(ValoriProdottoResource.builder()
+				.costo("16.034532")
+				.costoPromo("15")
+				.decorrenza("20201005")
+				.scadenza("20201120")
+				.flAcceso("N")
+				.flPromo("S")
+				.build());
+		
+		valoriProdotto.add(ValoriProdottoResource.builder()
+				.costo("11.034532")
+				.costoPromo("10")
+				.decorrenza("20201005")
+				.scadenza("20201120")
+				.flAcceso("S")
+				.flPromo("S")
+				.build());
+		
+		prodotti.add(ProdottoResource.builder().codice("PRNH99C")
+				.descrizione("XMESALUTE")
+				.prodotti(valoriProdotto)
+				.build());
+		
+		prodotti.add(ProdottoResource.builder().codice("PRNH94C")
+				.descrizione("XMESALUTE-FAMILY")
+				.prodotti(valoriProdotto)
+				.build());
+		
+		
+		
+		response.setProdotti(prodotti);
 		
 		return response;
+		
 	}
 
 }

@@ -18,6 +18,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version>1.0.0-SNAPSHOT</version>
     </properties>
+    
+    <repositories>
+		<repository>
+			<id>maven-repository</id>
+			<url>file:///${basedir}/lib</url>
+		</repository>
+	</repositories>
 
     <dependencies>
 		<dependency>
@@ -35,6 +42,12 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.dsi.business.SSA_PC.integration.jdo.P_PCMYS00</groupId>
+ 			 <artifactId>AD-PCMYSTCJOF</artifactId>
+ 			 <version>00.00001</version>
 		</dependency>
     </dependencies>
 
