@@ -26,6 +26,14 @@ controllers:
 tracing:
     enabled: true
 
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+    
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

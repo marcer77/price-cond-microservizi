@@ -7,6 +7,14 @@ spring:
 error-manager:
   enabled: true
 
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+
 connectors:
   #restConfigurations:
   #  -
