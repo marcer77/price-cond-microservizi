@@ -40,17 +40,6 @@ connectors:
         soapVersion: 1.2
         enableMTOM: false
         mocked: false
-      ProposteCJPOSWSRevocaPropostaConnector:
-        endpoint: ${CJPOSWS_WS_URL}
-        timeout: 60000
-        username: username
-        password: password
-        authenticationType: none
-        timeToLive: 7000
-        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
-        soapVersion: 1.2
-        enableMTOM: false
-        mocked: false
       StoreCovenantAdesioneConvenzioneConnector:
        endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
        timeout: 60000
@@ -120,6 +109,17 @@ connectors:
 #            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME}
 #            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD}
 
+  jdbcConfigurations:
+     items:
+         GenericJdbcConnector:
+           uri: ${DATASOURCE_CONDDATA_URL}
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: ${DATASOURCE_CONDDATA_USERNAME}
+           password: ${DATASOURCE_CONDDATA_PASSWORD}
+           connectionPoolSize: ${DATASOURCE_CONDDATA_MAX_POOL_SIZE}
+           timeout: ${DATASOURCE_CONDDATA_CONNECTION_TIMEOUT}
+           
+           
 keycloak:
   enabled: false
   auth-server-url: ${AUTH_SERVER_ENDPOINT}

@@ -23,6 +23,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.DBCond0Service;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -37,10 +38,19 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 	private ProposteCJPOSWSService proposteCJPOSWSService;
 
 	@Autowired
+	private DBCond0Service dbCond0Service;
+
+	@Autowired
 	private RecuperoInformazioniService recuperoInformazioniService;
 
 	@Override
 	protected EsitoResponseResource doExecute() throws Exception {
+		/*if (true) {
+			dbCond0Service.annullaProposta("01025", "2018", "1420019");
+			dbCond0Service.annullaProposta("01025", "2018", "9920019");
+			return new EsitoResponseResource();
+		}*/
+		
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
@@ -59,9 +69,8 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 
 				if(CollectionUtils.isNotEmpty(listaProposte)) {
 					for(PropostaEntity proposta : listaProposte) {
-						// WS COND0 GESTCJPOSV.revocaProposta
-						String dataRespinta = DateUtils.dateToString(new Date(ispWebservicesHeaderType.getRequestInfo().getTimestamp()), DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID);
-						callWsRevocaProposta(codAbi, proposta.getAnnoProposta(), proposta.getCodiceProposta(), dataRespinta, userId, codUnitaOperativa);
+						//annulla proposta sul database oracle COND0
+						dbCond0Service.annullaProposta(codAbi, proposta.getAnnoProposta(), proposta.getCodiceProposta());
 					}
 				}
 				
@@ -98,6 +107,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		return recuperoInformazioniService.aggiornaCodFittizie();
 	}
 
+	/*
 	private EsitoOperazioneCJPOSV2 callWsRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
 		log.info("_revocaProposta START");
 		RevocaProposta revocaProposta = wsRequestFactory.assemblaRequestRevocaProposta( codAbi,  annoProposta,  codiceProposta,  dataRespinta, userId, codUnitaOperativa );
@@ -105,7 +115,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		log.info("_revocaProposta END");
 		return esito;
 	}
-
+	 */
 	@Override
 	public boolean canExecute() {
 		log.info("canExecute START");

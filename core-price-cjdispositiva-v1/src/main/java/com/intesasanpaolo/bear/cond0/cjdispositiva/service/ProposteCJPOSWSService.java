@@ -5,16 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.ProposteCJPOSWSInviaPropostaV2Connector;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.ProposteCJPOSWSRevocaPropostaConnector;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoInviaPropostaV2Response;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoRevocaPropostaResponse;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSInviaPropostaV2RequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSInviaPropostaV2ResponseTransformer;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSRevocaPropostaRequestTransformer;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSRevocaPropostaResponseTransformer;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -31,16 +26,7 @@ public class ProposteCJPOSWSService extends BaseService {
 
 	@Autowired
 	private ProposteCJPOSWSInviaPropostaV2Connector proposteCJPOSWSInviaPropostaV2Connector;
-
-	@Autowired
-	private ProposteCJPOSWSRevocaPropostaRequestTransformer proposteCJPOSWSRevocaPropostaRequestTransformer;
-
-	@Autowired
-	private ProposteCJPOSWSRevocaPropostaResponseTransformer proposteCJPOSWSRevocaPropostaResponseTransformer;
-
-	@Autowired
-	private ProposteCJPOSWSRevocaPropostaConnector proposteCJPOSWSRevocaPropostaConnector;
-
+	
 	public EsitoOperazioneCJPOSV2 inviaPropostaV2(InviaPropostaV2 request, ISPWebservicesHeaderType header) {
 		log.info(" - inviaPropostaV2 START");
 		EsitoInviaPropostaV2Response esitoInviaPropostaV2Response = proposteCJPOSWSInviaPropostaV2Connector.call(
@@ -63,23 +49,5 @@ public class ProposteCJPOSWSService extends BaseService {
 		return dto;
 	}
 
-	public EsitoOperazioneCJPOSV2 revocaProposta(RevocaProposta request, ISPWebservicesHeaderType header) {
-		log.info(" - revocaProposta START");
-		EsitoRevocaPropostaResponse esitoInviaPropostaV2Response = proposteCJPOSWSRevocaPropostaConnector.call(request,
-				proposteCJPOSWSRevocaPropostaRequestTransformer, proposteCJPOSWSRevocaPropostaResponseTransformer,
-				header);
-		EsitoOperazioneCJPOSV2 dto = new EsitoOperazioneCJPOSV2();
-		if (esitoInviaPropostaV2Response != null && esitoInviaPropostaV2Response.getEsito() != null) {
-			log.info(" - inquiry RESPONSE " + esitoInviaPropostaV2Response.getEsito());
-			dto.setCodiceProposta(esitoInviaPropostaV2Response.getEsito().getCodiceProposta());
-			dto.setEsitoCodice(esitoInviaPropostaV2Response.getEsito().getEsitoCodice());
-			dto.setEsitoMessaggio(esitoInviaPropostaV2Response.getEsito().getEsitoMessaggio());
-		} else {
-			dto.setEsitoCodice("KO");
-			dto.setEsitoMessaggio("Risposta null");
-		}
-		log.info(" - revocaProposta END");
-		return dto;
-	}
 
 }
