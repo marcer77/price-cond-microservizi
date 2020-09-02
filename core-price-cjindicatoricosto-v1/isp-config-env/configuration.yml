@@ -8,6 +8,10 @@ configuration:
       value: "03239"
    -  name: ABI_BKIMI
       value: "03249"
+   -  name: DATASOURCE_DB2_CONNECTIONTIMEOUT
+      value: 10000
+   -  name: DATASOURCE_DB2_CONNECTIONPOOLSIZE
+      value: 30
 
   oracle:
      - name: CONDDATA

@@ -5,7 +5,7 @@ configuration:
      - name: CONVENZIONI_HOST_SERVICE_WS_URL
        value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CONVENZIONI_SERVICE_WS_URL
-       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc 
+       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc
     ctg:
      - name: COND0
        acronimo: COND0

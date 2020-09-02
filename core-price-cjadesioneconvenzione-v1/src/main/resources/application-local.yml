@@ -55,8 +55,8 @@ connectors:
   db2MultiDsConfigurations:
     items:
       MultiDataSourceDb2Connector:
-        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT:8000}
-        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE:30}
+        connectionTimeout: ${DATASOURCE_DB2_CONNECTIONTIMEOUT:8000}
+        connectionPoolSize: ${DATASOURCE_DB2_CONNECTIONPOOLSIZE:30}
         mocked: false
         sources:
           - abi: ${ABI_SPIMI:01025}

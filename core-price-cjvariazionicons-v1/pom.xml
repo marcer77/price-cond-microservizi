@@ -40,7 +40,7 @@
 		<dependency>
 		    <groupId>com.intesasanpaolo.bear.cond0</groupId>
 		    <artifactId>cj-common-lib-v1</artifactId>
-		    <version>1.0.0-20200814.190250-2</version>
+		    <version>1.0.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>
