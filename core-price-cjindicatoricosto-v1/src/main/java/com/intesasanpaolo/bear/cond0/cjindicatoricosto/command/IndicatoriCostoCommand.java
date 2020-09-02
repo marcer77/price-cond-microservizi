@@ -61,16 +61,6 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	@Override
 	public boolean canExecute() {
 		log.info("- canExecute START");
-		/*boolean esitoControlli = false;
-		esitoControlli = dto != null && !StringUtils.isEmpty(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI))
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-		log.info("- canExecute END - " + esitoControlli);*/
-		
 		return true;
 	}
 
