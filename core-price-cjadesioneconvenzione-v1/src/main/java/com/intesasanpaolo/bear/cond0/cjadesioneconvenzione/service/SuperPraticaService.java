@@ -72,10 +72,10 @@ public class SuperPraticaService extends BaseService {
 
 		logger.debug("Founded:{}", resultList);
 		
-		if (CollectionUtils.isEmpty(resultList)) {
-			 throw CJConvenzioneNotFoundDB2Exception.builder().codSuperPratica(codSuperPratica).nrPratica(nrPratica).build();
-		}
-		return resultList.get(0);
+		//if (CollectionUtils.isEmpty(resultList)) {
+		//	 throw CJConvenzioneNotFoundDB2Exception.builder().codSuperPratica(codSuperPratica).nrPratica(nrPratica).build();
+		//}
+		return CollectionUtils.isNotEmpty(resultList)?resultList.get(0):null;
 	}
 
 	private void deleteEntita(String codAbi, String codSuperPratica, String nrPratica, String idEntita) {
