@@ -104,7 +104,7 @@ public class IndicatoriCostoResourceAssembler
 				//DATA_SCADENZA_FIDO  è AAAAMMGG
 				String dataScadenza=null;
 				try {
-					String dateConverted=DateUtils.convertiDate(outRip.getDataScadenzaFido(),DateUtils.DATE_FORMAT_YYYY_MM_DD ,DateUtils.DATE_FORMAT_DD_MM_YYYY_DOTS);
+					String dateConverted=DateUtils.convertiDate(outRip.getDataScadenzaFido(),DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID ,DateUtils.DATE_FORMAT_DD_MM_YYYY_DOTS);
 					dataScadenza=StringUtils.isNoneEmpty(dateConverted)?dateConverted:" .  .   ";				
 				} catch (ParseException e) {
 					throw new CJGenericBusinessApplication(CommonErrorCode.GENERIC_EXCEPTION,e.getMessage());
