@@ -179,21 +179,33 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 	}
 
 	private WKCJResponse callWKCJ(String pratica) {
-		WKCJRequest wkcjRequest = WKCJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).pratica(pratica)
-				.superpratica(dto.getPratica().getCodSuperPratica()).utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+		WKCJRequest wkcjRequest = WKCJRequest
+				.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.pratica(pratica)
+				.superpratica(dto.getPratica().getCodSuperPratica())
+				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.tipoChiamata(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dto.getCodProcesso()) ? "A4" : "D4")
-				.dataRifer(DateUtils.dateToString(new Date(), "yyyyMMdd")).lingua("I").build();
+				.dataRifer(DateUtils.dateToString(new Date(), "yyyyMMdd"))
+				.lingua("I")
+				.build();
 
 		return wkcjServiceBS.callBS(wkcjRequest);
 	}
 
 	private PCUJResponse callPCUJ(String pratica) {
 
-		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType).tipoFunzione(dto.getRichiesta())
-				.codEvento(dto.getEvento().getCodice()).subEvento(dto.getEvento().getSubCodice()).classificCliente(dto.getClassificazione())
-				.dataRiferimento(DateUtils.dateToString(new Date(), "yyyyMMdd")).codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+		PCUJRequest pcujRequest = PCUJRequest.builder().ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.tipoFunzione(dto.getRichiesta())
+				.codEvento(dto.getEvento().getCodice())
+				.subEvento(dto.getEvento().getSubCodice())
+				.classificCliente(dto.getClassificazione())
+				.dataRiferimento(DateUtils.dateToString(new Date(), "yyyyMMdd"))
+				.codUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.filialeOper(ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA))
-				.nrSuperpratica(dto.getPratica().getCodSuperPratica()).nrPratica(pratica).build();
+				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
+				.nrPratica(pratica)
+				.build();
 
 		return pcujServiceBS.callBS(pcujRequest);
 	}
