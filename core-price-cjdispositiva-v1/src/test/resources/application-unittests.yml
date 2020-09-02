@@ -44,18 +44,6 @@ connectors:
         enableMTOM: false
         mocked: false
         enabledTracing: true
-      ProposteCJPOSWSRevocaPropostaConnector:
-        endpoint: http://localhost:4545/ProposteCJPOS.svc
-        timeout: 60000
-        username: username
-        password: password
-        authenticationType: none
-        timeToLive: 7000
-        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
-        soapVersion: 1.2
-        enableMTOM: false
-        mocked: false
-        enabledTracing: true
       StoreCovenantAdesioneConvenzioneConnector:
         endpoint: http://localhost:4545/ConvenzioniHostService.svc
         timeout: 60000
@@ -105,4 +93,18 @@ connectors:
             readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
             readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
             writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}  
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+  jdbcConfigurations:
+     items:
+         GenericJdbcConnector:
+           mocked: true
+           uri: test
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: COND_APP
+           password: COND_APP
+           connectionPoolSize: 30
+           timeout: 5000
+           path: oracle/
+           files:
+             - t_pr_proposta.sql
+            
