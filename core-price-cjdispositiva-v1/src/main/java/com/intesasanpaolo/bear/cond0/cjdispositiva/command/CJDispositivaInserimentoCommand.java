@@ -3,7 +3,6 @@ package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -35,8 +34,6 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 	private Logger log = Logger.getLogger(CJDispositivaInserimentoCommand.class);
 	
-
-
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
 	
@@ -49,7 +46,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	@Override
-	protected EsitoResponseResource doExecute() throws Exception {
+	protected EsitoResponseResource doExecute(){
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
@@ -103,20 +100,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	
 	@Override
 	public boolean canExecute() {
-		log.info("canExecute START");
-		boolean esitoControlli = false;
-		esitoControlli = 
-				super.canExecute() 
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPCallerCompanyIDCode())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getOperatorInfo().getUserID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getServiceVersion())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getRequestInfo().getTransactionId())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getApplicationID())
-				&& !StringUtils.isEmpty(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-		log.info("canExecute END - " + esitoControlli);
-		return esitoControlli;
+		return true;
 	}
 	
 	private EsitoOperazioneCJPOSV2 callInviaPropostaV2Service(String codAbi, String codUnitaOperativa,AdesioneEntity adesione, RapportoEntity rapporto, List<TassoEntity> tassiAbbattuti) {

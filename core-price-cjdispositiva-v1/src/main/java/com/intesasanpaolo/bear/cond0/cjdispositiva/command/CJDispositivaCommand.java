@@ -7,7 +7,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountOutput;
@@ -24,7 +23,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
-import com.intesasanpaolo.bear.exceptions.BearForbiddenException;
 
 public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 
@@ -47,17 +45,10 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	
 	@Override
 	public boolean canExecute() {
-		log.info("canExecute START");
-		if(!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) && !CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
-			throw CJWebServiceException.builder().webServiceName("callGestioneService").codiceErroreWebService("")
-			.descrErroreWebService("Tipo processo ("+dispositivaRequestDTO.getCodProcesso()+") non gestito.").build();
-		}
-		log.info("canExecute END");
 		return true;
-
 	}
 	
-	protected NewAccountOutput callGestioneService(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) throws BearForbiddenException {
+	protected NewAccountOutput callGestioneService(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) {
 		log.info("callWsGestione START");
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();

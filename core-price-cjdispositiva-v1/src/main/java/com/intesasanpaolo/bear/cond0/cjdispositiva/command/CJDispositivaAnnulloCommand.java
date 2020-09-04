@@ -1,6 +1,5 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
@@ -12,10 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -44,12 +40,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 	private RecuperoInformazioniService recuperoInformazioniService;
 
 	@Override
-	protected EsitoResponseResource doExecute() throws Exception {
-		/*if (true) {
-			dbCond0Service.annullaProposta("01025", "2018", "1420019");
-			dbCond0Service.annullaProposta("01025", "2018", "9920019");
-			return new EsitoResponseResource();
-		}*/
+	protected EsitoResponseResource doExecute(){
 		
 		log.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
@@ -58,8 +49,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 
-		log.info("execute OK");
-
+	
 		List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 		if(CollectionUtils.isNotEmpty(listaAdesioni)) {
 
