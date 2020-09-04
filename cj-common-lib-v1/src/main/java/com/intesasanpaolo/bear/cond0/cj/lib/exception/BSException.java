@@ -21,7 +21,7 @@ public class BSException extends CJBaseException {
 		buffer.append("mdwEsiRetc=").append(outEsi.getMdwEsiRetc() != null ? outEsi.getMdwEsiRetc().trim() : "").append(separatore);
 		buffer.append("mdwEsiMsg=").append(outEsi.getMdwEsiMsg() != null ? outEsi.getMdwEsiMsg().trim() : "").append(separatore);
 		buffer.append("mdwEsiAnom=").append(outEsi.getMdwEsiAnom() != null ? outEsi.getMdwEsiAnom().trim() : "").append(separatore);
-		buffer.append("livelloSegnalzione=").append(outSeg.getLivelloSegnalazione() != null ? outSeg.getLivelloSegnalazione().trim() : "").append(separatore);
+		buffer.append("livelloSegnalazione=").append(outSeg.getLivelloSegnalazione() != null ? outSeg.getLivelloSegnalazione().trim() : "").append(separatore);
 		buffer.append("txtSegnalazione=").append(outSeg.getTxtSegnalazione() != null ? outSeg.getTxtSegnalazione().trim() : "").append(separatore);
 		return buffer.toString();
 	}

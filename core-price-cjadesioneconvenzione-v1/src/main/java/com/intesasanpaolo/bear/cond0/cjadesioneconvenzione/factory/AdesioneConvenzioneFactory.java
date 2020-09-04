@@ -89,7 +89,7 @@ public class AdesioneConvenzioneFactory {
 				.stato("N")
 				.progrEntita(1)
 				.progrDati(1)
-				.codEntita(codiceConvenzione)
+				.codEntita(codiceConvenzione!=null?codiceConvenzione:"")
 				.datiEntita(inputStampaBuilder.build())
 				.tipoAggiornamento("I")
 				.codOpeUltModif(ispWebservicesHeaderType.getOperatorInfo().getUserID()).build();

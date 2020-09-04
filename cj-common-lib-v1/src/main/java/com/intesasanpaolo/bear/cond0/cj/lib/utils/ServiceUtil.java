@@ -285,7 +285,7 @@ public class ServiceUtil {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("it", "IT"));
 		symbols.setDecimalSeparator('.');
 		if (pattern == null)
-			pattern = "###.#####";
+			pattern = "000.00000";
 
 		DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
 		decimalFormat.setRoundingMode(RoundingMode.DOWN);
@@ -293,8 +293,12 @@ public class ServiceUtil {
 	}
 
 	public static String formattaNumero(Number number) {
-		return number!=null ? formattaNumero(number, "###.#####") : formattaNumero(0, "###.#####");
+		return number!=null ? formattaNumero(number, "000.00000") : formattaNumero(0, "000.00000");
 	}
-
+	
+	public static String trim(String value) {
+		
+		return value!=null?value.trim():"";
+	}
 
 }

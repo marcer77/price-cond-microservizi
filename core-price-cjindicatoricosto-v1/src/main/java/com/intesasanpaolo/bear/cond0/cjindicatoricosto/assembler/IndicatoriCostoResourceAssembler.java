@@ -82,9 +82,9 @@ public class IndicatoriCostoResourceAssembler
 				ParametriResource parametriResource = ParametriResource.builder()
 						.percApplic(ServiceUtil.formattaNumero(outRip.getOutTas().getPercParametro()))
 						.valoreSpread(ServiceUtil.formattaNumero(outRip.getOutTas().getValSpread()))
-						.segnoSpread(outRip.getOutTas().getSegnoValSpread())
-						.descIndice(outRip.getOutTas().getDescrizioneIndiceDB())
-						 .valoreIndice(valoreIndice)
+						.segnoSpread(ServiceUtil.trim(outRip.getOutTas().getSegnoValSpread()))
+						.descIndice(ServiceUtil.trim(outRip.getOutTas().getDescrizioneIndiceDB()))
+						 .valoreIndice(ServiceUtil.trim(valoreIndice))
 						.build();
 				
 				TanResource tanResource = TanResource.builder().flUsura(outRip.getOutTas().getFlUsura())
@@ -112,11 +112,11 @@ public class IndicatoriCostoResourceAssembler
 				
 				AffidamentoResource aff = AffidamentoResource.builder()
 						.formaTecnica(outRip.getCodFt())
-						.importo(ServiceUtil.formattaNumero(outRip.getImportoFido(),"#########"))
-						.importoEUR(ServiceUtil.formattaNumero(outRip.getImportoFidoEur(),"#########"))
+						.importo(ServiceUtil.formattaNumero(outRip.getImportoFido(),"000000000"))
+						.importoEUR(ServiceUtil.formattaNumero(outRip.getImportoFidoEur(),"000000000"))
 						.scadenza(dataScadenza)
 						.tipoFTecnica(outRip.getTipoFt())
-						.descFTecnica(outRip.getDescrFt())
+						.descFTecnica(ServiceUtil.trim(outRip.getDescrFt()))
 						.divisa(outRip.getDivisaFido())
 						.rapporto(rapporto)
 						.indicatori(indicatoriResource).build();

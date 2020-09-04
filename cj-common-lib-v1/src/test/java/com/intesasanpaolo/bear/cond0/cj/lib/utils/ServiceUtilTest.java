@@ -147,6 +147,7 @@ public class ServiceUtilTest {
 
 	@Test
 	public void testFormattaNumero() {
+		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(9.0));
 		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(10000.232));
 		System.out.println(">>>>>>" + ServiceUtil.formattaNumero(null));
 	}

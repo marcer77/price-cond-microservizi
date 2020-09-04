@@ -20,8 +20,8 @@ public class SuperPraticaServiceTest extends BaseTest{
 		String codConvenzione=superPraticaService.recuperaCodConvenzione("01025", "0001161961", "0000655703");
 		Assert.assertTrue(codConvenzione.equalsIgnoreCase("0070010"));
 	}
-	@Test(expected = CJBaseException.class)
-	public void testRecuperaCodConvenzioneKO() {
-		superPraticaService.recuperaCodConvenzione("01025", "9991161961", "9999655703");
-	}
+//	@Test(expected = CJBaseException.class)
+//	public void testRecuperaCodConvenzioneKO() {
+//		superPraticaService.recuperaCodConvenzione("01025", "9991161961", "9999655703");
+//	}
 }
