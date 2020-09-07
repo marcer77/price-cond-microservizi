@@ -33,6 +33,18 @@ hostbridge:
   connectorFileProps:
     ServerConfig.section: ${ISP_AMBIENTE}
     ServerConfig.path: ""
+  y1j2cConfigFileProps:
+    Y1.StgY: StgA
+    Y1.ApiStage: "01"
+    Y1.Acronimo: COND0
+    Y1.ExecuteTimeout: 120000
+    Y1.displaycommArea: ""
+    Y1.CTGConnectionURL: ""
+    Y1.CTGPortNumberSSL: ""
+    Y1.CTGPortNumberTcpIP: ""
+    Y1.CTGCUserName: ""
+    Y1.CTGPassword: ""
+    Y1.CTGSSL: ""
     
 keycloak:
   enabled: false

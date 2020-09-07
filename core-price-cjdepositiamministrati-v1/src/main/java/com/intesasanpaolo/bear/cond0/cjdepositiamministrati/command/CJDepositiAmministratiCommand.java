@@ -18,7 +18,8 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 //import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 //import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.CondizioneStampaResource;
@@ -29,7 +30,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.PromozioneS
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.RigheDiStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.TitoloStampaResource;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -44,8 +45,8 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
-//	@Autowired
-//	private WKIBServiceBS wkibServiceBS;
+	@Autowired
+	private WKIBServiceBS wkibServiceBS;
 	
 	@Override
 	protected StampaResponseResource doExecute() throws Exception {
@@ -55,11 +56,9 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource("00", ""));
 		
-		WKIBResponse wkibResponse = null;
 		
-//		wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 		
-		stampaResponseResource = buildStampaResponseResource(stampaResponseResource,wkibResponse);
+		stampaResponseResource = buildStampaResponseResource(stampaResponseResource);
 		
 		log.info("execute END");
 		return stampaResponseResource;
@@ -92,52 +91,58 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		this.stampaRequestDTO = stampaRequestDTO;
 	}
 	
-	private StampaResponseResource buildStampaResponseResource(StampaResponseResource stampaResponseResource, WKIBResponse wkibResponse) {
+	private StampaResponseResource buildStampaResponseResource(StampaResponseResource stampaResponseResource) {
 		log.info("buildStampaResponseResource START");
 
+			//CON MOCK
 			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
-
-//			stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
-//			.codDDS(wkibResponse.getCodDDS())
-//			.codTemplate(wkibResponse.getCodTemplate())
-//			.righe(new ArrayList<RigheDiStampaResource>())
-//			.build();
-//		
-//			if(CollectionUtils.isNotEmpty(wkibResponse.getElenco())) {
-//				for(WKIBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
-//					
-//					RigheDiStampaResource rigaStampa = new RigheDiStampaResource();
-//					
-//					rigaStampa.setPrgStp(riga.getPrgStp());
-//					rigaStampa.setPrgStrut(riga.getPrgStrut());
-//					rigaStampa.setTipoStrut(riga.getTipoStrut());
-//					rigaStampa.setFlContinua(riga.getFlContinua());
-//					
-//					rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
-//							.testo1(riga.getTesto1())
-//							.testo2(riga.getTesto2())
-//							.testo3(riga.getTesto3())
-//							.testo4(riga.getTesto4())
-//							.build());
-//					
-//					rigaStampa.setTitolo(TitoloStampaResource.builder().testo(riga.getTesto()).build());
-//					
-//					rigaStampa.setCondizione(CondizioneStampaResource.builder()
-//							.codCond(riga.getCodCond())
-//							.dataDeco(riga.getDataDeco())
-//							.descrCond(riga.getDescrCond())
-//							.valore(riga.getValore())
-//							.indNota(riga.getIndNota())
-//							.build());
-//					
-//					rigaStampa.setNota(NotaStampaResource.builder().num(riga.getNum()).testo(riga.getTestoNota()).build());
-//					rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
-//					
-//					stampaResponseResource.getRighe().add(rigaStampa);
-//				}
-//				
-//			}
-//		}
+			
+			//SENZA MOCK
+			/*
+			WKIBResponse wkibResponse = null;
+			wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
+						
+			stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
+			.codDDS(wkibResponse.getCodDDS())
+			.codTemplate(wkibResponse.getCodTemplate())
+			.righe(new ArrayList<RigheDiStampaResource>())
+			.build();
+		
+			if(CollectionUtils.isNotEmpty(wkibResponse.getElenco())) {
+				for(WKIBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
+					
+					RigheDiStampaResource rigaStampa = new RigheDiStampaResource();
+					
+					rigaStampa.setPrgStp(riga.getPrgStp());
+					rigaStampa.setPrgStrut(riga.getPrgStrut());
+					rigaStampa.setTipoStrut(riga.getTipoStrut());
+					rigaStampa.setFlContinua(riga.getFlContinua());
+					
+					rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
+							.testo1(riga.getTesto1())
+							.testo2(riga.getTesto2())
+							.testo3(riga.getTesto3())
+							.testo4(riga.getTesto4())
+							.build());
+					
+					rigaStampa.setTitolo(TitoloStampaResource.builder().testo(riga.getTesto()).build());
+					
+					rigaStampa.setCondizione(CondizioneStampaResource.builder()
+							.codCond(riga.getCodCond())
+							.dataDeco(riga.getDataDeco())
+							.descrCond(riga.getDescrCond())
+							.valore(riga.getValore())
+							.indNota(riga.getIndNota())
+							.build());
+					
+					rigaStampa.setNota(NotaStampaResource.builder().num(riga.getNum()).testo(riga.getTestoNota()).build());
+					rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
+					
+					stampaResponseResource.getRighe().add(rigaStampa);
+				}
+				
+			}
+		*/
 		log.info("buildStampaResponseResource END");
 		return stampaResponseResource;
 	}
