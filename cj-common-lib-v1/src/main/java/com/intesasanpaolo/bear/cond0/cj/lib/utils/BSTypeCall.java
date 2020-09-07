@@ -54,10 +54,19 @@ public enum BSTypeCall {
 			BSType.WKIBS00
 			,"31" //canale
 			, "00" // Version
-			, "0003" // Riciclo Tracciato
+			, "0005" // Riciclo Tracciato
 			, "WK999" // Acronimo proprietario BS
 			, 9999 // Lunghezza area
 			),
+	
+	PCMYS00_CALL(
+			BSType.PCMYS00
+			,"31" //canale
+			, "00" // Version
+			, "0001" // Riciclo Tracciato
+			, "PC999" // Acronimo proprietario BS
+			, 9999 // Lunghezza area
+			)
 	
 	;
 	
