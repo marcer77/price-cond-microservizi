@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
@@ -30,8 +32,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
 
-	@Autowired
-	private ProposteCJPOSWSService proposteCJPOSWSService;
+
 
 	@Autowired
 	private DBCond0Service dbCond0Service;
@@ -77,7 +78,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 				}
 				
 				// WS VDM rollback storecovenant
-				callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
+				callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
 			}
 	
 			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
@@ -99,7 +100,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 
 	/*
 	private EsitoOperazioneCJPOSV2 callWsRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
-		log.info("_revocaProposta START");
+
 		RevocaProposta revocaProposta = wsRequestFactory.assemblaRequestRevocaProposta( codAbi,  annoProposta,  codiceProposta,  dataRespinta, userId, codUnitaOperativa );
 		EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta,ispWebservicesHeaderType);
 		log.info("_revocaProposta END");
@@ -124,22 +125,6 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		return esitoControlli;
 	}
 	
-	private RespRollbackStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
-		log.info("callStoreCovenantAdesioneConvenzione START");
-		ReqRollbackStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
-		RespRollbackStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackStoreCovenantAdesioneConvenzione(request);
-		log.info("callStoreCovenantAdesioneConvenzione END");
-		checkResponseRollbackCovenantAdesioneConvenzione(resp);
-		return resp;
-	}
 	
-	private void checkResponseRollbackCovenantAdesioneConvenzione(RespRollbackStoreCovenantAdesioneConvenzione resp) {
-		log.info("checkResponseRollbackCovenantAdesioneConvenzione START");
-		if(resp.getIsHasError().booleanValue()){
-			throw CJWebServiceException.builder().webServiceName("RollbackCovenantAdesioneConvenzione").codiceErroreWebService("")
-			.descrErroreWebService(resp.getErrorDescription()).build();
-		}
-		log.info("checkResponseRollbackCovenantAdesioneConvenzione END");
-	}
 	
 }

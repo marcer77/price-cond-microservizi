@@ -383,6 +383,32 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("content = {}", content);
 
 	}
+	
+	@Test
+	public void testInserimento_KO_conRevocaPratica() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		stubStoreCovenantWSOK();
+
+		stubInviaPropostaOK();
+
+		stubGestioneOk();
+		
+		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655703");
+		
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
 
 	@Test
 	public void testAnnulloOK() throws Exception {

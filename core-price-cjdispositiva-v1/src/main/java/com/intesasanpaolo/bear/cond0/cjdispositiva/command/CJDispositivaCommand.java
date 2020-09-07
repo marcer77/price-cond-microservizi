@@ -10,23 +10,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountOutput;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 
-	private Logger log = Logger.getLogger(CJDispositivaCommand.class);
+
 	
 	@Autowired
 	protected GestioneService gestioneService;
@@ -36,6 +41,9 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	
 	@Autowired
 	protected CoreConvenzioneService coreConvenzioneService;
+	
+	@Autowired
+	protected ProposteCJPOSWSService proposteCJPOSWSService;
 	
 	protected ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
@@ -49,7 +57,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	}
 	
 	protected NewAccountOutput callGestioneService(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) {
-		log.info("callWsGestione START");
+		logger.info("callGestioneService START codFunzione:{} ", codFunzione);
 
 			HashMap<String, String> headerParams = new HashMap<String, String>();
 			//Valorizzare fisso per il momento funziona con PCGESTIXME
@@ -82,7 +90,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 			headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode",
 					ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 
-			log.info("- callWsGestione END");
+			logger.info("- callGestioneService END");
 
 			NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(codFunzione, dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 			
@@ -98,15 +106,15 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	}
 	
 	protected List<CovenantEntity> recuperaInfoCovenantDaAttivare(String codAbi, List<CovenantEntity> covenantDaAttivare) {
-		log.info("START recuperaInfoCovenantDaAttivare");
+		logger.info("START recuperaInfoCovenantDaAttivare");
 			for(CovenantEntity covenantEntity : covenantDaAttivare) {
 				List<String> livelloGerarchia = coreConvenzioneService.getLivelloGerarchia(codAbi, covenantEntity.getCodCondizione());
-				log.info("livelloGerarchia: "+livelloGerarchia);
+				logger.info("livelloGerarchia: "+livelloGerarchia);
 				if(CollectionUtils.isNotEmpty(livelloGerarchia)) {
 					if("1".equals(livelloGerarchia.get(0))) {
 						List<String> stringaElencoCondizioniFiglie = coreConvenzioneService.getCondizioniFiglie(codAbi, covenantEntity.getCodCondizione());
 						if(CollectionUtils.isNotEmpty(stringaElencoCondizioniFiglie) && stringaElencoCondizioniFiglie.get(0)!=null) {
-							log.info("elencoCondizioniFiglie: "+stringaElencoCondizioniFiglie.get(0));
+							logger.info("elencoCondizioniFiglie: "+stringaElencoCondizioniFiglie.get(0));
 							covenantEntity.setCondizioniFiglie(stringaElencoCondizioniFiglie.get(0));
 						}else {
 							throw CJDispositivaNotFoundDB2Exception.builder().messaggio("CondizioniFiglie non recuperabili per il covCodCondizione: {}")
@@ -116,7 +124,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 					covenantEntity.setLivelloGerarchia(livelloGerarchia.get(0));
 				}
 			}
-		log.info("END recuperaInfoCovenantDaAttivare");
+			logger.info("END recuperaInfoCovenantDaAttivare");
 		return covenantDaAttivare;
 	}
 	
@@ -126,5 +134,31 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 
 	public void setDispositivaRequestDTO(DispositivaRequestDTO dispositivaRequestDTO) {
 		this.dispositivaRequestDTO = dispositivaRequestDTO;
+	}
+	
+	protected RespRollbackStoreCovenantAdesioneConvenzione callRollbackConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
+		logger.info("callStoreCovenantAdesioneConvenzione START");
+		ReqRollbackStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
+		RespRollbackStoreCovenantAdesioneConvenzione resp = convenzioniHostService.rollbackStoreCovenantAdesioneConvenzione(request);
+		logger.info("callStoreCovenantAdesioneConvenzione END");
+		checkResponseRollbackCovenantAdesioneConvenzione(resp);
+		return resp;
+	}
+	
+	private void checkResponseRollbackCovenantAdesioneConvenzione(RespRollbackStoreCovenantAdesioneConvenzione resp) {
+		logger.info("checkResponseRollbackCovenantAdesioneConvenzione START");
+		if(resp.getIsHasError().booleanValue()){
+			throw CJWebServiceException.builder().webServiceName("RollbackCovenantAdesioneConvenzione").codiceErroreWebService("")
+			.descrErroreWebService(resp.getErrorDescription()).build();
+		}
+		logger.info("checkResponseRollbackCovenantAdesioneConvenzione END");
+	}
+	
+	protected EsitoOperazioneCJPOSV2 callWsRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
+		logger.info("_revocaProposta START");
+		RevocaProposta revocaProposta = wsRequestFactory.assemblaRequestRevocaProposta( codAbi,  annoProposta,  codiceProposta,  dataRespinta, userId, codUnitaOperativa );
+		EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta,ispWebservicesHeaderType);
+		logger.info("_revocaProposta END");
+		return esito;
 	}
 }

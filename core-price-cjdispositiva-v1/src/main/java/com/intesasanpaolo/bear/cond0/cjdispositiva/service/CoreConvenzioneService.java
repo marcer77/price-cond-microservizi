@@ -337,7 +337,7 @@ public class CoreConvenzioneService extends BaseService {
 				RequestDb2TransformerFactory.of(new RowMapperTasso(), DB2QueryType.FIND),
 				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 	}
-	
+	@Transactional
 	public int saveCodiceProposta(String codAbi,String codSuperPratica,String codPratica,String codiceProposta,String userId) {
 		
 		logger.info("START saveCodiceProposta");

@@ -8,8 +8,10 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.ProposteCJPOSWSI
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoInviaPropostaV2Response;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.RevocaProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSInviaPropostaV2RequestTransformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.transformers.ProposteCJPOSWSInviaPropostaV2ResponseTransformer;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.service.BaseService;
 
@@ -44,9 +46,17 @@ public class ProposteCJPOSWSService extends BaseService {
 		} else {
 			dto.setEsitoCodice("KO");
 			dto.setEsitoMessaggio("Risposta null");
+			throw CJWebServiceException.builder().webServiceName("inviaPropostaV2").codiceErroreWebService("KO")
+			.descrErroreWebService("").build();
 		}
 		log.info(" - inviaPropostaV2 END");
 		return dto;
+	}
+
+	public EsitoOperazioneCJPOSV2 revocaProposta(RevocaProposta revocaProposta,
+			ISPWebservicesHeaderType ispWebservicesHeaderType) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

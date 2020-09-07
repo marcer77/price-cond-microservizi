@@ -107,7 +107,7 @@ public class WsRequestFactory {
 		return inviaPropostaV2;
 	}
 	
-	/*public RevocaProposta assemblaRequestRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
+	public RevocaProposta assemblaRequestRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
 		log.info("assemblaRequestRevocaProposta START");
 		RevocaProposta revocaProposta = new RevocaProposta();
 		RevocaPropostaRequest revocaPropostaRequest = new RevocaPropostaRequest();
@@ -121,7 +121,7 @@ public class WsRequestFactory {
 		revocaProposta.setDatiProposta(revocaPropostaRequest);
 		log.info("assemblaRequestRevocaProposta END");
 		return revocaProposta;
-	}*/
+	}
 	
 	//per annullo
 	public ReqRollbackStoreCovenantAdesioneConvenzione assemblaRequestConvenzione(InformazioniPraticaDTO informazioniPraticaDTO) {
