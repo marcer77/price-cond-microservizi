@@ -116,26 +116,32 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 					rigaStampa.setTipoStrut(riga.getTipoStrut());
 					rigaStampa.setFlContinua(riga.getFlContinua());
 					
-					rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
-							.testo1(riga.getTesto1())
-							.testo2(riga.getTesto2())
-							.testo3(riga.getTesto3())
-							.testo4(riga.getTesto4())
-							.build());
-					
-					rigaStampa.setTitolo(TitoloStampaResource.builder().testo(riga.getTesto()).build());
-					
-					rigaStampa.setCondizione(CondizioneStampaResource.builder()
-							.codCond(riga.getCodCond())
-							.dataDeco(riga.getDataDeco())
-							.descrCond(riga.getDescrCond())
-							.valore(riga.getValore())
-							.indNota(riga.getIndNota())
-							.build());
-					
-					rigaStampa.setNota(NotaStampaResource.builder().num(riga.getNum()).testo(riga.getTestoNota()).build());
-					rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
-					
+					if("C".equals(riga.getTipoStrut())) {
+						rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
+								.testo1(riga.getTesto1())
+								.testo2(riga.getTesto2())
+								.testo3(riga.getTesto3())
+								.testo4(riga.getTesto4())
+								.build());
+					}
+					if("T".equals(riga.getTipoStrut())) {
+						rigaStampa.setTitolo(TitoloStampaResource.builder().testo(riga.getTesto()).build());
+					}
+					if("Y".equals(riga.getTipoStrut())) {
+						rigaStampa.setCondizione(CondizioneStampaResource.builder()
+								.codCond(riga.getCodCond())
+								.dataDeco(riga.getDataDeco())
+								.descrCond(riga.getDescrCond())
+								.valore(riga.getValore())
+								.indNota(riga.getIndNota())
+								.build());
+					}
+					if("N".equals(riga.getTipoStrut())) {
+						rigaStampa.setNota(NotaStampaResource.builder().num(riga.getNum()).testo(riga.getTestoNota()).build());
+					}
+					if("M".equals(riga.getTipoStrut())) {
+						rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
+					}
 					stampaResponseResource.getRighe().add(rigaStampa);
 				}
 				
