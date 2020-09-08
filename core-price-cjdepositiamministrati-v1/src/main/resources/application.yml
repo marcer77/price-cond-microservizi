@@ -3,6 +3,8 @@ spring:
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
+  profiles:
+    active: ${ISP_AMBIENTE}
 
 error-manager:
   enabled: true

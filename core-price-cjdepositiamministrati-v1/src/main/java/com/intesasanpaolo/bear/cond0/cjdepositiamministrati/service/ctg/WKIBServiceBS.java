@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.CJErrorUtil;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
@@ -30,6 +32,15 @@ public class WKIBServiceBS extends BaseService{
 	public WKIBResponse callBS(WKIBRequest wkibRequest) throws BSException {
 		WKIBResponse wkibResponse = WKIBResponse.builder().build();
 		wkibResponse = this.ctgConnectorWKIB.call(wkibRequest, requestTransformer, responseTransformer, null);
+		String[] parametriAggiuntivi=new String[0];
+		CJErrorUtil.checkErrore(BSType.WKIBS00, wkibResponse.getOutEsi(),wkibResponse.getOutSeg(),this::additionalCheckErrorFunction,parametriAggiuntivi);
+		
 		return wkibResponse;
+	}
+	
+	private boolean additionalCheckErrorFunction(String... st) {
+		//String test= StringUtils.isNotEmpty(fl03Response.getCodErr())?fl03Response.getCodErr():"";
+		//return !st[0].equalsIgnoreCase("0");
+		return false;
 	}
 }

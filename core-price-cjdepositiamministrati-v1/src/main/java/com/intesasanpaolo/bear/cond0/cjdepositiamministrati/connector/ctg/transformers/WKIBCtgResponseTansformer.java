@@ -7,6 +7,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.springframework.stereotype.Service;
 
+import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTESI;
+import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTSEG;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.C_WKIBS00;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTBST;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTRC4;
@@ -14,6 +16,8 @@ import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTRCZ;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTRNO;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTRPR;
 import com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00.OUTRTS;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.config.LoggerUtils;
@@ -34,7 +38,9 @@ public class WKIBCtgResponseTansformer implements ICtgResponseTransformer<C_WKIB
 		C_WKIBS00 connector = ctgConnectorResponse.getResult();
 		
 		OUTBST outbst = hasSomething(connector.OUTBST) ? connector.OUTBST[0] : new OUTBST();
-		
+        OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
+        OUTSEG outSeg = hasSomething(connector.OUTSEG) ? connector.OUTSEG[0] : new OUTSEG();
+        
 		List<WKIBResponseRigheDiStampa> elenco = new ArrayList<WKIBResponseRigheDiStampa>();
 		if (hasSomething(outbst.OUTSTP)) {
 			Arrays.asList(outbst.OUTSTP).forEach(out -> {
@@ -78,7 +84,12 @@ public class WKIBCtgResponseTansformer implements ICtgResponseTransformer<C_WKIB
 			});
 		}
 		
+        OutEsi outEsiModel=OutEsi.builder().mdwEsiRetc(outEsi.MDW_ESI_RETC).mdwEsiMsg(outEsi.MDW_ESI_MSG).mdwEsiAnom(outEsi.MDW_ESI_ANOM).build();
+        OutSeg ouSegModel=OutSeg.builder().txtSegnalazione(outSeg.TXT_SEGNALAZIONE).livelloSegnalazione(outSeg.LIVELLO_SEGNALAZIONE).build();
+      
 		WKIBResponse wkibResponse = WKIBResponse.builder()
+        		.outEsi(outEsiModel)
+        		.outSeg(ouSegModel)
 				.codDDS(outbst.COD_DDS)
 				.codTemplate(outbst.COD_TEMPL)
 				.elenco(elenco)

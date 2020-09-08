@@ -56,8 +56,6 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource("00", ""));
 		
-		
-		
 		stampaResponseResource = buildStampaResponseResource(stampaResponseResource);
 		
 		log.info("execute END");
