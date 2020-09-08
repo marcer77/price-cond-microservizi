@@ -37,20 +37,20 @@ import com.intesasanpaolo.bear.exceptions.BearTransactionException;
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
-	
+
 	@Autowired
 	private ProposteCJPOSWSService proposteCJPOSWSService;
-	
+
 	@Autowired
 	private RecuperoInformazioniService recuperoInformazioniService;
-	
+
 	@Autowired
 	private CoreConvenzioneService coreConvenzioneService;
-	
+
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
-	
+
 	private List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = new ArrayList<>();
-	
+
 	@Autowired
 	private DBCond0Service dbCond0Service;
 
@@ -88,13 +88,16 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 				if(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
 					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
 					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
-					callInTransaction(
-							()->creaProposte(elencoRapporti,codAbi,codUnitaOperativa,listaAdesioni.get(0)),
-							()->revocaProposte(codAbi, userId, codUnitaOperativa));
+
+					if(CollectionUtils.isNotEmpty(elencoRapporti)) {
+						for (RapportoEntity rapporto : elencoRapporti) {
+							callInTransaction(
+									()->creaProposta(rapporto,codAbi,codUnitaOperativa,listaAdesioni.get(0)),
+									()->revocaProposte(codAbi, userId, codUnitaOperativa));
+						}
+					}
 
 				}
-
-
 			}else {
 				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
 				.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
@@ -102,12 +105,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 			logger.info("execute SUCCESS ");
 		}catch(BearTransactionException ex) {
-			logger.error("BearTransactionException message:{} ", ex.getMessage());
 			throw (Exception)ex.getCause();
 		}
 		return esitoResource;
 	}
-	
+
 	private Integer revocaProposte(String codAbi, String userId, String codUnitaOperativa) {
 		logger.info("revocaProposte START ");
 		if(CollectionUtils.isNotEmpty(listaEsitoInviaPropostaV2)) {
@@ -119,26 +121,27 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		}
 
 		coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+		
+		
+		listaEsitoInviaPropostaV2.clear(); //rimuovo tutto in modo che se anche il revoca viene invocato più volte
+		                                   //agira e saranno rollbackate tutte le pratiche solo nella prima chiamata
+		
 		logger.info("revocaProposte END OK ");
 		return 1;
 	}
 
-	private Integer creaProposte(List<RapportoEntity> elencoRapporti, String codAbi,String codUnitaOperativa,AdesioneEntity adesione) {
-		logger.info("creaProposte START ",codAbi);
-		
-		if(CollectionUtils.isNotEmpty(elencoRapporti)) {
-			for (RapportoEntity rapporto : elencoRapporti) {
-				logger.info("rapporto:" + rapporto);
-				List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
+	private Integer creaProposta(RapportoEntity rapporto, String codAbi,String codUnitaOperativa,AdesioneEntity adesione) {
+		logger.info("creaProposta START ");
 
-				// WS COND0 GESTCJPOSV.inviaPropostaV2
-				EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
-				this.listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
-				coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
+		logger.info("rapporto:" + rapporto);
+		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
 
-			}
-		}
-		logger.info("creaProposte END OK ");
+		// WS COND0 GESTCJPOSV.inviaPropostaV2
+		EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
+		this.listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
+		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
+
+		logger.info("creaProposta END OK ");
 		return 1;
 	}
 
@@ -146,18 +149,18 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	public boolean canExecute() {
 		return true;
 	}
-	
+
 	private EsitoOperazioneCJPOSV2 callInviaPropostaV2Service(String codAbi, String codUnitaOperativa,AdesioneEntity adesione, RapportoEntity rapporto, List<TassoEntity> tassiAbbattuti) {
 		logger.info("inviaPropostaV2 START");
 		EsitoOperazioneCJPOSV2 esitoOperazione = new EsitoOperazioneCJPOSV2();
 		InviaPropostaV2 request = wsRequestFactory.assemblaRequestInviaProposta(codAbi, codUnitaOperativa,adesione, rapporto, tassiAbbattuti);
 		logger.info("inviaPropostaV2 CAN EXECUTE");
 		esitoOperazione = proposteCJPOSWSService.inviaPropostaV2(request, ispWebservicesHeaderType);
-	
+
 		logger.info("inviaPropostaV2 END");
 		return esitoOperazione;
 	}
-	
+
 	private RespStoreCovenantAdesioneConvenzione callConvenzioniHostService(AdesioneEntity adesione, List<CovenantEntity> covenantDaAttivare, List<CovenantEntity> covenantDaCessare, String codAbi, String codProcesso, String branchCode , String userId) {
 		logger.info("callStoreCovenantAdesioneConvenzione START");
 		ReqStoreCovenantAdesioneConvenzione request = wsRequestFactory.assemblaRequestConvenzione(adesione,covenantDaAttivare, covenantDaCessare, codAbi, codProcesso , branchCode, userId);
@@ -166,7 +169,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		checkResponseStoreCovenantAdesioneConvenzione(resp);
 		return resp;
 	}
-	
+
 	private void checkResponseStoreCovenantAdesioneConvenzione(RespStoreCovenantAdesioneConvenzione resp) {
 		logger.info("checkResponseStoreCovenantAdesioneConvenzione START");
 		if("KO".equals(resp.getEsitoResultCode())){
@@ -175,5 +178,5 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		}
 		logger.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
-	
+
 }

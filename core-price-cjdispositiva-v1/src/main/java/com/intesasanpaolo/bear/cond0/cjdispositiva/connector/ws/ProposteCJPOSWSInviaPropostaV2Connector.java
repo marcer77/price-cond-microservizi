@@ -24,7 +24,8 @@ public class ProposteCJPOSWSInviaPropostaV2Connector extends
 
 	private Logger log = Logger.getLogger(ProposteCJPOSWSInviaPropostaV2Connector.class);
 
-	protected void handleSoapFault(SoapMessage soapMessage, Unmarshaller unmarshaller) throws RuntimeException {
+	@Override
+	protected void handleSoapFault(SoapMessage soapMessage, Unmarshaller unmarshaller)  {
 		log.info(" handleSoapFault START");
 		StringBuilder errorMessage = new StringBuilder();
 		SoapFaultDetail faultDetail = ((SoapMessage) soapMessage).getSoapBody().getFault().getFaultDetail();
