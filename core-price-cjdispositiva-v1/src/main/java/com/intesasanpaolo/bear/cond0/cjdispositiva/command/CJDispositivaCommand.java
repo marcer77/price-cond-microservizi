@@ -154,11 +154,5 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 		logger.info("checkResponseRollbackCovenantAdesioneConvenzione END");
 	}
 	
-	protected EsitoOperazioneCJPOSV2 callWsRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {
-		logger.info("_revocaProposta START");
-		RevocaProposta revocaProposta = wsRequestFactory.assemblaRequestRevocaProposta( codAbi,  annoProposta,  codiceProposta,  dataRespinta, userId, codUnitaOperativa );
-		EsitoOperazioneCJPOSV2 esito = proposteCJPOSWSService.revocaProposta(revocaProposta,ispWebservicesHeaderType);
-		logger.info("_revocaProposta END");
-		return esito;
-	}
+	
 }

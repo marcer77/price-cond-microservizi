@@ -390,8 +390,17 @@ public class CJDispositivaControllerTest extends BaseTest {
 		String uri = "/cjdispositiva/inserimento";
 
 		stubStoreCovenantWSOK();
+		stubRollbackStoreCovenantWSOK();
 
-		stubInviaPropostaOK();
+		//stubInviaPropostaOK();
+		
+		StubMapping stubOk = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("00700100000005479"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-response.xml")));
+		
+		StubMapping stubKo = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("00700100000127778"))
+				.willReturn(aResponse().withStatus(500).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-responseKO.xml")));
 
 		stubGestioneOk();
 		
