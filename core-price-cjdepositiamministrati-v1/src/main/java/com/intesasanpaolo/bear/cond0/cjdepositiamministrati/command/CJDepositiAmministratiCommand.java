@@ -93,10 +93,10 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		log.info("buildStampaResponseResource START");
 
 			//CON MOCK
-			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
+//			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
 			
 			//SENZA MOCK
-			/*
+			
 			WKIBResponse wkibResponse = null;
 			wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 						
@@ -146,7 +146,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 				}
 				
 			}
-		*/
+		
 		log.info("buildStampaResponseResource END");
 		return stampaResponseResource;
 	}

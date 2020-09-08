@@ -4,24 +4,31 @@ import java.util.Date;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodLinguaEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.common.BaseTest;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.IntestatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.RapportoDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 
 @RunWith(SpringRunner.class)
 public class CJDepositiAmministratiControllerTest extends BaseTest {
@@ -31,6 +38,18 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	private HttpHeaders httpHeaders;
 
 	private HttpHeaders httpHeadersCorrotto;
+	
+	@MockBean
+	private CTGConnectorWKIB ctgConnectorWKIB;
+	
+	@MockBean
+	private WKIBCtgRequestTrasformer wkibCtgRequestTrasformer;
+
+	@MockBean
+	private WKIBCtgResponseTansformer wkibCtgResponseTansformer;
+	
+	@MockBean
+	private WKIBRequest wkibRequest;
 	
 	@Before
 	public void initMocks() throws Exception {
@@ -73,7 +92,7 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	
 	@Test
 	public void testStampaOK() throws Exception {
-
+		mockWKIBServiceBS_OK();
 		String uri = "/cjdepositiamministrati/stampa";
 
 		String inputJson = mapToJson(stampaRequestDTO);
@@ -86,7 +105,24 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
+	}
+	
+	@Test
+	public void testStampaWKIBServiceBS_KO() throws Exception {
+		mockWKIBServiceBS_KO();
+		String uri = "/cjdepositiamministrati/stampa";
 
+		String inputJson = mapToJson(stampaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertFalse(content.contains("\"codErrore\":\"00"));
 	}
 	
 	@Test
@@ -103,6 +139,22 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		Assert.assertNotEquals(200, status);
 		log.info("content = {}", content);
 
+	}
+	
+	private void mockWKIBServiceBS_OK() {
+		WKIBResponse wkibResponse = new WKIBResponse();
+		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
+		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
+		.thenReturn(wkibResponse);
+	}
+	
+	private void mockWKIBServiceBS_KO() {
+		WKIBResponse wkibResponse = new WKIBResponse();
+		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
+		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
+		.thenReturn(wkibResponse);
 	}
 
 }
