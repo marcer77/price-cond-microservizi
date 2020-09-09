@@ -93,10 +93,10 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		log.info("buildStampaResponseResource START");
 
 			//CON MOCK
-//			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
+			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
 			
 			//SENZA MOCK
-			
+			/*
 			WKIBResponse wkibResponse = null;
 			wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 						
@@ -146,11 +146,12 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 				}
 				
 			}
-		
+		*/
 		log.info("buildStampaResponseResource END");
 		return stampaResponseResource;
 	}
 	
+	/* DA DECOMMENTARE QUANDO TOLTI I MOCK
 	private WKIBRequest buildWKIBRequest() {
 		log.info("buildWKIBRequest START");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
@@ -179,7 +180,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		log.info("buildWKIBRequest END");
 		return wkibRequest;
 	}
-
+	*/
 	private StampaResponseResource buildStampaResponseResourceMock(StampaResponseResource stampaResponseResource) {
 		log.info("mock START");
 		stampaResponseResource.setCodDDS("codDDS di prova");
