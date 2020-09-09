@@ -1,6 +1,8 @@
 package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -29,6 +31,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.RapportoDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
 
 @RunWith(SpringRunner.class)
 public class CJDepositiAmministratiControllerTest extends BaseTest {
@@ -110,7 +113,7 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	
 	@Test
 	public void testStampaOK() throws Exception {
-		mockWKIBServiceBS_OK();
+//		mockWKIBServiceBS_OK(); DECOMMENTARE QUANDO SI TOLGO I MOCK
 		String uri = "/cjdepositiamministrati/stampa";
 
 		String inputJson = mapToJson(stampaRequestDTO);
@@ -159,15 +162,34 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		log.info("content = {}", content);
 
 	}
-	
+	/*
+	SENZA MOCK
 	private void mockWKIBServiceBS_OK() {
 		WKIBResponse wkibResponse = new WKIBResponse();
+		List<WKIBResponseRigheDiStampa> lista = new ArrayList<WKIBResponseRigheDiStampa>();
+		WKIBResponseRigheDiStampa elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("C");
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("T");
+		lista.add(elem);
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("Y");
+		lista.add(elem);
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("N");
+		lista.add(elem);
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("M");
+		lista.add(elem);
+		lista.add(elem);
+		wkibResponse.setElenco(lista);
 		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
 		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
 		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
 		.thenReturn(wkibResponse);
 	}
 	
+	SENZA MOCK
 	private void mockWKIBServiceBS_KO() {
 		WKIBResponse wkibResponse = new WKIBResponse();
 		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
@@ -175,5 +197,5 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
 		.thenReturn(wkibResponse);
 	}
-
+	*/
 }
