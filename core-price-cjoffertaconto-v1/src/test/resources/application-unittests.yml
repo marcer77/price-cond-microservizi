@@ -14,5 +14,8 @@ logging:
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
-    com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
+    com.intesasanpaolo.bear.cond0.cjoffertaconto: DEBUG
     org.keycloak: INFO
+
+hostbridge:
+  mocked: true

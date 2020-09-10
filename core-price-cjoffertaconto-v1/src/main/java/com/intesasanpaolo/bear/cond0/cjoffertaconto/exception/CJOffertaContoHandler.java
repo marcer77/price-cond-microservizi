@@ -10,9 +10,7 @@ import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.EsponiResponseResou
 
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @ControllerAdvice
-public class CJOffertaContoExceptionHandler extends CJBaseExceptionHandler<EsponiResponseResource> {
-	// private static final Logger logger =
-	// LoggerUtils.getLogger(CJAdesioneConvenzioneExceptionHandler.class);
+public class CJOffertaContoHandler extends CJBaseExceptionHandler<EsponiResponseResource> {
 
 	@Override
 	public EsponiResponseResource errorResponseForCJBaseException(String errorCode, String errorMessage) {
