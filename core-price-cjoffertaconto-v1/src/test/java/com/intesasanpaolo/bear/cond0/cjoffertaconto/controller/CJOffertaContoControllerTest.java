@@ -1,9 +1,15 @@
 package com.intesasanpaolo.bear.cond0.cjoffertaconto.controller;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -12,9 +18,25 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.common.BaseTest;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.connector.ctg.CTGConnectorPCMY;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.connector.ctg.transformers.PCMYCtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.connector.ctg.transformers.PCMYCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.InputEsponiDTO;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.PromozioniDTO;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.RapportoDTO;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.OutCPR;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.OutOFF;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.OutPRD;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.PCMYRequest;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.PCMYResponse;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.OffertaResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ProdottoResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriOffertaResource;
+import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriProdottoResource;
 
 @RunWith(SpringRunner.class)
 public class CJOffertaContoControllerTest extends BaseTest{
@@ -23,7 +45,17 @@ public class CJOffertaContoControllerTest extends BaseTest{
 	private HttpHeaders httpHeadersCorrotto;
 	private InputEsponiDTO inputEsponiDTO;
 	
+	@MockBean
+	private CTGConnectorPCMY ctgConnectorPCMY;
 	
+	@MockBean
+	private PCMYCtgRequestTrasformer pcmyCtgRequestTrasformer;
+	
+	@MockBean
+	private PCMYCtgResponseTansformer pcmyCtgResponseTansformer;
+	
+	@MockBean
+	private PCMYRequest request;
 	
 	@Before
 	public void initMocks() throws Exception {
@@ -34,6 +66,14 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		inputEsponiDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
 		inputEsponiDTO.setRapporto(new RapportoDTO("12345", "1234", "12345678"));
 		inputEsponiDTO.setTipoDA("CU");
+		inputEsponiDTO.setDataRif(new Date());
+		List<PromozioniDTO> promozioni = new ArrayList<PromozioniDTO>();
+		PromozioniDTO promozione = new PromozioniDTO();
+		promozione.setCodice("12345");
+		promozione.setDataDecorrenza(new Date());
+		promozione.setDataScadenza(new Date());
+		promozioni.add(promozione);
+		inputEsponiDTO.setPromozioni(promozioni);
 		
 		httpHeaders = new HttpHeaders();
 
@@ -67,7 +107,7 @@ public class CJOffertaContoControllerTest extends BaseTest{
 	
 	@Test
 	public void testStampaOK() throws Exception {
-
+		mockPCMYServiceBS_OK();
 		String uri = "/cjoffertaconto/esponi";
 
 		String inputJson = mapToJson(inputEsponiDTO);
@@ -82,6 +122,39 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		log.info("content = {}", content);
 
 	}
+	
+	private void mockPCMYServiceBS_OK() {
+		PCMYResponse pcmyResponse = new PCMYResponse();
+		pcmyResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
+		pcmyResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		pcmyResponse.setCodOfferta("");
+		pcmyResponse.setCodEsito("00");
+		
+		List<OutOFF> outOffList = new ArrayList<OutOFF>();
+		OutOFF outOff = new OutOFF();
+		outOff.setCostoListino(new Double("0.0"));
+		outOff.setCostoOfferta(new Double("0.0"));
+		outOffList.add(outOff);
+		
+		List<OutPRD> outPrdList = new ArrayList<OutPRD>();
+		OutPRD outPRD = new OutPRD();
+		outPrdList.add(outPRD);
+		
+		List<OutCPR> outCPRList = new ArrayList<OutCPR>();
+		OutCPR outCPR = new OutCPR();
+		outCPR.setCostoProdotto(new Double("0.0"));
+		outCPR.setCostoProdottoPRM(new Double("0.0"));
+		outCPRList.add(outCPR);
+		outPrdList.get(0).setOutCPRList(outCPRList);
+		
+		
+		pcmyResponse.setOutOffList(outOffList);
+		pcmyResponse.setOutPrdList(outPrdList);
+		Mockito.when(
+				this.ctgConnectorPCMY.call(request, pcmyCtgRequestTrasformer, pcmyCtgResponseTansformer, new Object[] {})
+		).thenReturn(pcmyResponse);
+	}
+	
 	
 	@Test
 	public void testStampa_HeadersKO() throws Exception {
