@@ -20,8 +20,8 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBR
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.CondizioneStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.EsitoStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.IntestazioneStampaResource;
@@ -30,7 +30,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.PromozioneS
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.RigheDiStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.TitoloStampaResource;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -45,8 +45,8 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
-//	@Autowired
-//	private WKIBServiceBS wkibServiceBS;
+	@Autowired
+	private WKIBServiceBS wkibServiceBS;
 	
 	@Override
 	protected StampaResponseResource doExecute() throws Exception {
@@ -92,11 +92,6 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	private StampaResponseResource buildStampaResponseResource(StampaResponseResource stampaResponseResource) {
 		log.info("buildStampaResponseResource START");
 
-			//CON MOCK
-			stampaResponseResource = buildStampaResponseResourceMock(stampaResponseResource);
-			
-			//SENZA MOCK
-			/*
 			WKIBResponse wkibResponse = null;
 			wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 						
@@ -146,13 +141,11 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 				}
 				
 			}
-		*/
+			
 		log.info("buildStampaResponseResource END");
 		return stampaResponseResource;
 	}
-	
-	//SENZA MOCK
-	/*
+
 	private WKIBRequest buildWKIBRequest() {
 		log.info("buildWKIBRequest START");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
@@ -180,32 +173,6 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 				.build();
 		log.info("buildWKIBRequest END");
 		return wkibRequest;
-	}
-	*/
-	
-	private StampaResponseResource buildStampaResponseResourceMock(StampaResponseResource stampaResponseResource) {
-		log.info("mock START");
-		stampaResponseResource.setCodDDS("codDDS di prova");
-		stampaResponseResource.setCodTemplate("Template di prova");
-		RigheDiStampaResource riga = new RigheDiStampaResource();
-		riga.setPrgStp("123");
-		riga.setPrgStrut("1313");
-		riga.setTipoStrut(TipoStrutEnum.INTESTAZIONE.toString());
-		
-		riga.setIntestazione(new IntestazioneStampaResource(stampaRequestDTO.getIntestatario().getIntestazione(), "testo mock2", "testo mock3", "testo mock4"));
-
-		riga.setTitolo(new TitoloStampaResource("titolo mock"));
-		
-		riga.setCondizione(new CondizioneStampaResource("cod mock", DateUtils.dateToString(new Date(), DateUtils.DATE_FORMAT_DD_MM_YYYY_SLASH), "desc cond mock", "valore mock", "nota mock"));
-		
-		riga.setNota(new NotaStampaResource("1", "nota mock"));
-		
-		riga.setPromozione(new PromozioneStampaResource("Promozione mock"));
-		
-		stampaResponseResource.setRighe(new ArrayList<RigheDiStampaResource>());
-		stampaResponseResource.getRighe().add(riga);
-		log.info("mock END");
-		return stampaResponseResource;
 	}
 	
 }
