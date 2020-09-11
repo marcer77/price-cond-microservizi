@@ -19,12 +19,15 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodLinguaEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.BSException;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.handler.CJBaseExceptionHandler;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.common.BaseTest;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
+//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
+//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
+//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.IntestatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.RapportoDTO;
@@ -32,6 +35,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.core.resource.BaseResource;
 
 @RunWith(SpringRunner.class)
 public class CJDepositiAmministratiControllerTest extends BaseTest {
@@ -42,14 +46,14 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 
 	private HttpHeaders httpHeadersCorrotto;
 	
-	@MockBean
-	private CTGConnectorWKIB ctgConnectorWKIB;
-	
-	@MockBean
-	private WKIBCtgRequestTrasformer wkibCtgRequestTrasformer;
-
-	@MockBean
-	private WKIBCtgResponseTansformer wkibCtgResponseTansformer;
+//	@MockBean
+//	private CTGConnectorWKIB ctgConnectorWKIB;
+//	
+//	@MockBean
+//	private WKIBCtgRequestTrasformer wkibCtgRequestTrasformer;
+//
+//	@MockBean
+//	private WKIBCtgResponseTansformer wkibCtgResponseTansformer;
 	
 	@MockBean
 	private WKIBRequest wkibRequest;

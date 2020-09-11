@@ -52,15 +52,16 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		httpHeadersCorrotto = new HttpHeaders();
 
 		httpHeadersCorrotto.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", "01025");
+		httpHeadersCorrotto.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodUnitaOperativa", "01025");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode", "");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode", "");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.OperatorInfo.UserID", "U015886");
-		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.Timestamp", "a");
+		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.Timestamp", "0");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.TransactionId", "0");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.ServiceID", "PCGESTIXME");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "00");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
-//		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
+		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "");
 	}
 	
 	

@@ -30,7 +30,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.PromozioneS
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.RigheDiStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.TitoloStampaResource;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
+//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -45,8 +45,8 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
-	@Autowired
-	private WKIBServiceBS wkibServiceBS;
+//	@Autowired
+//	private WKIBServiceBS wkibServiceBS;
 	
 	@Override
 	protected StampaResponseResource doExecute() throws Exception {
