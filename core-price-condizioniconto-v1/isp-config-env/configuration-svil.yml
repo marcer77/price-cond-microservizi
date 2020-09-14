@@ -1,0 +1,16 @@
+---   
+configuration:
+  env:
+    - name: LOG_LEVEL
+      value: DEBUG
+    - name: CNDPRICEMS_ENDPOINT
+      value: http://datapower-intra-svil.sede.corp.sanpaoloimi.com:55706/PHCP0/CNDPRICEMS
+    - name: REST2HOST_ENDPOINT
+      value: http://bridge-cond0-rest2host-v1-cond0-svil.cloudapps-test.intesasanpaolo.com
+    - name: IIBCDPRCMS_ENDPOINT
+      value: http://datapower-intra-svil.sede.corp.sanpaoloimi.com:55588/T1IB0/IIBCDPRCMS
+  oracle:
+    - name: CONDDATA
+      acronimo: COND0
+      servizio: COND0
+      user: COND_APP

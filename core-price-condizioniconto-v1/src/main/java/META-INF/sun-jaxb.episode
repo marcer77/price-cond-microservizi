@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<bindings xmlns="http://java.sun.com/xml/ns/jaxb" if-exists="true" version="2.1">
+  <!--
+
+Questo file è stato generato dall'architettura JavaTM per XML Binding (JAXB) Reference Implementation, v2.3.0 
+Vedere <a href="https://javaee.github.io/jaxb-v2/">https://javaee.github.io/jaxb-v2/</a> 
+Qualsiasi modifica a questo file andrà persa durante la ricompilazione dello schema di origine. 
+Generato il: 2019.09.03 alle 11:46:10 AM CEST 
+
+  -->
+  <bindings xmlns:tns="http://intesasanpaolo.it/" if-exists="true" scd="x-schema::tns">
+    <schemaBindings map="false">
+      <package name="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms"/>
+    </schemaBindings>
+    <bindings if-exists="true" scd="~tns:ISPWebservicesHeaderType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ISPWebservicesHeaderType"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:ParamList">
+      <typesafeEnumClass ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ParamList"/>
+    </bindings>
+  </bindings>
+  <bindings xmlns:tns="http://ws.intesasanpaolo.com/" if-exists="true" scd="x-schema::tns">
+    <schemaBindings map="false">
+      <package name="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms"/>
+    </schemaBindings>
+    <bindings if-exists="true" scd="~tns:NBP_ErrorInfoType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.NBPErrorInfoType"/>
+    </bindings>
+  </bindings>
+  <bindings xmlns:tns="http://www.intesa.org/T1IB0/IIBCDPRCMS/" if-exists="true" scd="x-schema::tns">
+    <schemaBindings map="false">
+      <package name="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms"/>
+    </schemaBindings>
+    <bindings if-exists="true" scd="~tns:IIBCDPRCMSRequestType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.IIBCDPRCMSRequestType"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:IIBCDPRCMSResponseType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.IIBCDPRCMSResponseType"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:IIBCDPRCMSSingleRequestType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.IIBCDPRCMSSingleRequestType"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:IIBCDPRCMSSingleResponseType">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.IIBCDPRCMSSingleResponseType"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:DatiApplicativi">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.DatiApplicativi"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:ParametriComuni">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ParametriComuni"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:ParametriFactory">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ParametriFactory"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:ParametriPrice">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ParametriPrice"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:CollectionDrivers">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.CollectionDrivers"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:Driver">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.Driver"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:OutOutputFactory">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.OutOutputFactory"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:OutOutputPrice">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.OutOutputPrice"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:OutValori">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.OutValori"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:AttributoValore">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.AttributoValore"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:responseNBP_ErrorInfo">
+      <class ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.ResponseNBPErrorInfo"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:InpFunctionId">
+      <typesafeEnumClass ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.InpFunctionId"/>
+    </bindings>
+    <bindings if-exists="true" scd="~tns:InpTipodriver">
+      <typesafeEnumClass ref="com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.InpTipodriver"/>
+    </bindings>
+  </bindings>
+</bindings>
