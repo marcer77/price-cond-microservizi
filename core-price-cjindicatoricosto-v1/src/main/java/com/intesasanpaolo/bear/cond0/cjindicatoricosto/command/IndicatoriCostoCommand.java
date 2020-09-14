@@ -138,27 +138,11 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				return result;
 			}).sorted().findFirst().orElse(null);
 		}
-		// solo per debug stampo gli esiti delle BS per tutte le pratiche:
-		/*returnMessage.append("\n\n\n\nRisposta BS WKCJ per pratica:");
-		indicatoriCostoPraticaList.forEach(indicatoriCostoPratica -> {
-			returnMessage.append(" [ ");
-			returnMessage.append(" Pratica:" + indicatoriCostoPratica.getPratica()).append(" Condizioni Variate: ");
-			indicatoriCostoPratica.getWkcjResponse().getOutCNFList().forEach(cnd -> returnMessage.append("-").append(cnd.getCodCnd()).append(" - "));
-			returnMessage.append(" ]");
-		});
-		returnMessage.append("Risposta BS PCUJ per pratica:");
-		indicatoriCostoPraticaList.forEach(indicatoriCostoPratica -> {
-			returnMessage.append(" [ ");
-			returnMessage.append(" -Pratica:" + indicatoriCostoPratica.getPratica()).append(" [ ");
-			returnMessage.append(" -CodEsito: " + indicatoriCostoPratica.getPcujResponse().getCodEsito());
-			returnMessage.append(" -MsgEsito: " + indicatoriCostoPratica.getPcujResponse().getMsgEsito());
-			returnMessage.append(" ] --- ");
-		});*/
-		////////////////////////////////////////
+		
 		
 		if (warningResult!=null) {
 			indicatoriCosto.setCodErrore(warningResult.getCodeBS());
-			indicatoriCosto.setDescErrore(warningResult.getDescrizione().concat(warningResult.getMsgBS()!=null?warningResult.getMsgBS():""));
+			indicatoriCosto.setDescErrore(warningResult.getMsgBS()!=null?warningResult.getMsgBS().trim():"");
 	
 		}else {
 			indicatoriCosto.setCodErrore("00");
