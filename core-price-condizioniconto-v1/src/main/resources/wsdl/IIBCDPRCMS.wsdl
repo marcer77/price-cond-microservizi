@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!--File Interfaces/self/T1IB0_IIBCDPRCMS.wsdl, application T1IB0_CS_IIBCDPRCMS, static library T1IB0_MM_IIBCDPRCMS--><wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" name="IIBCDPRCMS" targetNamespace="http://www.intesa.org/T1IB0/IIBCDPRCMS/" xmlns:intns="http://intesasanpaolo.it/" xmlns:prc="http://www.intesa.org/T1IB0/IIBCDPRCMS/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.intesasanpaolo.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+					
+  <wsdl:documentation>
+    <wsdl:appinfo source="WMQI_APPINFO">
+      <MRWSDLAppInfo imported="true">
+        <binding hasEncoding="false" imported="true" name="IIBCDPRCMS_Binding" originalBindingStyle="document"/>
+      </MRWSDLAppInfo>
+    </wsdl:appinfo>
+  </wsdl:documentation>
+  <wsdl:types>
+  	<xsd:schema>
+ 		<xsd:import namespace="http://intesasanpaolo.it/" schemaLocation="http://salcls0295.sede.corp.sanpaoloimi.com:19022/T1IB0/IIBCDPRCMS?xsd=xsd0"/> 
+ 		<xsd:import namespace="http://ws.intesasanpaolo.com/" schemaLocation="http://salcls0295.sede.corp.sanpaoloimi.com:19022/T1IB0/IIBCDPRCMS?xsd=xsd1"/>
+		<xsd:import namespace="http://www.intesa.org/T1IB0/IIBCDPRCMS/" schemaLocation="http://salcls0295.sede.corp.sanpaoloimi.com:19022/T1IB0/IIBCDPRCMS?xsd=xsd2"/>
+	</xsd:schema>
+  </wsdl:types>
+    
+  <wsdl:message name="IIBCDPRCMSRequest">
+    <wsdl:part element="prc:request" name="IIBCDPRCMSRequest"/>
+    <wsdl:part element="intns:ISPWebservicesHeader" name="header"/>
+  </wsdl:message>
+  <wsdl:message name="IIBCDPRCMSResponse">
+    <wsdl:part element="prc:response" name="IIBCDPRCMSResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IIBCDPRCMSFault">
+    <wsdl:part element="tns:NBP_ErrorInfo" name="fault"/>
+  </wsdl:message>
+  <wsdl:portType name="IIBCDPRCMS_Port">
+    <wsdl:operation name="GetIIBCDPRCMS">
+      <wsdl:input message="prc:IIBCDPRCMSRequest"/>
+      <wsdl:output message="prc:IIBCDPRCMSResponse"/>
+      <wsdl:fault message="prc:IIBCDPRCMSFault" name="fault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="IIBCDPRCMS_Binding" type="prc:IIBCDPRCMS_Port">
+  	<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+  	<wsdl:operation name="GetIIBCDPRCMS">
+  		<soap:operation soapAction="http:///www.intesasanpaolo.com/PHCP0/IIBCDPRCMS"/>
+  		<wsdl:input>
+  			<soap:body parts="IIBCDPRCMSRequest" use="literal"/>
+  			<soap:header message="prc:IIBCDPRCMSRequest" part="header" use="literal"/>
+  		</wsdl:input>
+  		<wsdl:output>
+  			<soap:body use="literal"/>
+  		</wsdl:output>
+  		<wsdl:fault name="fault">
+  			<soap:fault name="fault" use="literal"/>
+  		</wsdl:fault>
+  	</wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="IIBCDPRCMS">
+    <wsdl:port binding="prc:IIBCDPRCMS_Binding" name="IIBCDPRCMSSOAP">
+            <soap:address location="http://salcls0295.sede.corp.sanpaoloimi.com:19022/T1IB0/IIBCDPRCMS"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

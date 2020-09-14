@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:intns="http://intesasanpaolo.it/" xmlns:prc="http://www.intesasanpaolo.com/PHCP0/CNDPRICEMS/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://ws.intesasanpaolo.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CNDPRICEMS" targetNamespace="http://www.intesasanpaolo.com/PHCP0/CNDPRICEMS/">
+<wsdl:documentation>
+<wsdl:appinfo source="WMQI_APPINFO">
+<MRWSDLAppInfo imported="true">
+<binding hasEncoding="false" imported="true" name="CNDPRICEMS_Binding" originalBindingStyle="document"/>
+</MRWSDLAppInfo>
+</wsdl:appinfo>
+</wsdl:documentation>
+<wsdl:types>
+<xsd:schema>
+<xsd:import namespace="http://intesasanpaolo.it/" schemaLocation="http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/CNDPRICEMS?xsd=xsd0"/>
+<xsd:import namespace="http://ws.intesasanpaolo.com/" schemaLocation="http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/CNDPRICEMS?xsd=xsd1"/>
+<xsd:import namespace="http://www.intesasanpaolo.com/PHCP0/CNDPRICEMS/" schemaLocation="http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/CNDPRICEMS?xsd=xsd2"/>
+</xsd:schema>
+</wsdl:types>
+<wsdl:message name="CNDPRICEMSRequest">
+<wsdl:part element="prc:request" name="CNDPRICEMSRequest"/>
+<wsdl:part element="intns:ISPWebservicesHeader" name="header"/>
+</wsdl:message>
+<wsdl:message name="CNDPRICEMSResponse">
+<wsdl:part element="prc:response" name="CNDPRICEMSResponse"/>
+</wsdl:message>
+<wsdl:message name="CNDPRICEMSFault">
+<wsdl:part element="tns:NBP_ErrorInfo" name="fault"/>
+</wsdl:message>
+<wsdl:portType name="CNDPRICEMS_Port">
+<wsdl:operation name="GetCNDPRICEMS">
+<wsdl:input message="prc:CNDPRICEMSRequest"/>
+<wsdl:output message="prc:CNDPRICEMSResponse"/>
+<wsdl:fault message="prc:CNDPRICEMSFault" name="fault"/>
+</wsdl:operation>
+</wsdl:portType>
+<wsdl:binding name="CNDPRICEMS_Binding" type="prc:CNDPRICEMS_Port">
+<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+<wsdl:operation name="GetCNDPRICEMS">
+<soap:operation soapAction="http:///www.intesasanpaolo.com/PHCP0/CNDPRICEMS"/>
+<wsdl:input>
+<soap:body parts="CNDPRICEMSRequest" use="literal"/>
+<soap:header message="prc:CNDPRICEMSRequest" part="header" use="literal"/>
+</wsdl:input>
+<wsdl:output>
+<soap:body use="literal"/>
+</wsdl:output>
+<wsdl:fault name="fault">
+<soap:fault name="fault" use="literal"/>
+</wsdl:fault>
+</wsdl:operation>
+</wsdl:binding>
+<wsdl:service name="CNDPRICEMS">
+<wsdl:port binding="prc:CNDPRICEMS_Binding" name="CNDPRICEMSSOAP">
+<soap:address location="http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/CNDPRICEMS"/>
+</wsdl:port>
+</wsdl:service>
+</wsdl:definitions>
