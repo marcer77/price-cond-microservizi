@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.intesasanpaolo.bear.bear_v3.command.ControlloTipoContoCommand;
 import com.intesasanpaolo.bear.bear_v3.command.InquiryContoCndCommand;
+import com.intesasanpaolo.bear.bear_v3.command.InquiryContoCndDettaglioCommand;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoResponse;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoRequest;
+import com.intesasanpaolo.bear.bear_v3.model.inquirycontocnd.InquiryContoCndDettaglioOutput;
 import com.intesasanpaolo.bear.bear_v3.model.inquirycontocnd.InquiryContoCndOutput;
 import com.intesasanpaolo.bear.bear_v3.model.inquirycontocnd.InquiryContoCndRequest;
 import com.intesasanpaolo.bear.core.controller.StatelessController;
@@ -42,6 +44,15 @@ public class RESTController extends StatelessController {
 
 		InquiryContoCndCommand command = beanFactory.getBean(InquiryContoCndCommand.class, request);
 		InquiryContoCndOutput res = command.execute();
+		return res;
+	}
+	
+	@PostMapping(value = "/inquiryContoCndDettaglio")
+	@ResponseBody
+	public InquiryContoCndDettaglioOutput inquiryContoCndDettaglio(@RequestBody InquiryContoCndRequest request) throws Exception {
+
+		InquiryContoCndDettaglioCommand command = beanFactory.getBean(InquiryContoCndDettaglioCommand.class, request);
+		InquiryContoCndDettaglioOutput res = command.execute();
 		return res;
 	}
 
