@@ -1,0 +1,94 @@
+#server:
+#  port : 8091
+  
+spring:
+  profile: development
+  application:
+    name: "@project.artifactId@"
+    version: "@project.version@ (@env.GIT_COMMIT@)"
+
+connectors:
+  jdbcConfigurations:
+    items:
+      JDBCConnector:
+        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+        driver-class-name: oracle.jdbc.OracleDriver
+        username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
+        password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
+        connectionPoolSize: 5
+        timeout: 8000
+        enabledTracing: true
+        mocked: true
+        path: db2/
+        files:
+          - T_CP_PROD_CND.sql
+          - T_PC2_ANAG_ISTITUTI.sql
+          - T_PC_CONDIZIONE.sql
+      JDBCGenericConnector:
+        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+        driver-class-name: oracle.jdbc.OracleDriver
+        username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
+        password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
+        connectionPoolSize: 5
+        timeout: 8000
+        enabledTracing: true
+        mocked: true
+        path: db2/
+        files:
+          - T_CP_PROD_CND.sql
+          - T_PC2_ANAG_ISTITUTI.sql
+          - T_PC2_COND_LISTINO.sql
+
+        
+  restConfigurations:
+    default:
+      timeout: 5000
+      mocked: true
+    items:
+      ControlloTipoContoConnector:
+        url: ${REST2HOST_ENDPOINT:http://bridge-cond0-rest2host-v1-cond0-svil.cloudapps-test.intesasanpaolo.com}/bridge/pcmm
+        mocked: false
+        randomMock: false
+        enabledTracing: true
+                 
+  dataPowerSoapConfiguration:
+    default:
+      enableMTOM: false
+      soapVersion: 1.1
+      soapAction: dummy
+      mocked: false
+      timeout: 10000
+      timeToLive: 10000
+      authenticationType: none
+      enabledTracing: true
+    items:
+      InquiryContoCndConnector:
+        endpoint: ${IIBCDPRCMS_ENDPOINT:http://localhost:4545/T1IB0/IIBCDPRCMS}
+        contextPath: com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms
+        soapVersion: 1.0
+        soapAction: http:///www.intesasanpaolo.com/PHCP0/IIBCDPRCMS
+        header:
+          prefixInter: "test"
+          serviceID: "IIBCDPRCMS"
+          serviceVersion: "00"
+
+#### Security configuration: Everything allowed for test
+keycloak:
+  enabled: false
+  auth-server-url: http://192.168.99.100:31233/auth
+  resource: bear-app
+  realm: bear
+  public-client: true
+  ssl-required: external
+  confidential-port: 0
+  use-resource-role-mappings: true
+  securityConstraints:
+    -
+      authRoles:
+        - users
+
+      securityCollections:
+        -
+          name: users reserved stuff
+          patterns:
+            - /preferences
