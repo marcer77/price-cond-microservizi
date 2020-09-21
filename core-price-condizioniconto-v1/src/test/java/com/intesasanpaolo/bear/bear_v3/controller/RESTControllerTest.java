@@ -78,6 +78,16 @@ public class RESTControllerTest extends BaseTest {
 		Assert.assertEquals(200, stub.getResponse().getStatus());
 	}
 
+	private void stubInquiryContoCdUdmOK() {
+		StubMapping stub = stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("InquiryContoCnd-responseCdUdmOK.xml")));
+
+		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+
+		Assert.assertEquals(200, stub.getResponse().getStatus());
+	}
+
 	@Test
 	public void testContoCndDettaglio_PromozioniOK() throws Exception {
 
@@ -104,7 +114,6 @@ public class RESTControllerTest extends BaseTest {
 		Assert.assertEquals(200, status);
 		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
-
 	}
 
 	@Test
@@ -153,6 +162,27 @@ public class RESTControllerTest extends BaseTest {
 		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
 
+	}
+
+	@Test
+	public void testContoCndDettaglio_CdUdmOK() throws Exception {
+
+		stubInquiryContoCdUdmOK();
+
+		String uriString = "/condizioniconto/inquiryContoCndDettaglio";
+
+		String inputJson = mapToJson(inquiryContoCndRequest);
+
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		// Assert.assertTrue(content.contains("cdEsito\":\"00"));
+		log.info("content = {}", content);
 	}
 
 }
