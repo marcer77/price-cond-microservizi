@@ -7,6 +7,10 @@ spring:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
 
+
+tracing:
+  enabled: true
+
 connectors:
   jdbcConfigurations:
     items:

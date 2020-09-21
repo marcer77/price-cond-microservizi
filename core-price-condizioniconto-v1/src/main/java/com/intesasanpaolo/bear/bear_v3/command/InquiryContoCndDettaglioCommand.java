@@ -431,11 +431,13 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	private void buildCdRifLivello(CondizioneContoDettaglio condizione) {
 		if(condizione!=null) {
 			logger.info("Cd Tipo livello condizione: "+condizione.getCdTipoLivello());
-			if("CN".equals(condizione.getCdTipoLivello()) || "RCN".equals(condizione.getCdTipoLivello())) {
+			if("CN".equals(condizione.getCdTipoLivello())) {
 				condizione.setCdRifLivello(request.getCdConv());
-			}else if("R".equals(condizione.getCdTipoLivello())) {
+			
+			}else if("R".equals(condizione.getCdTipoLivello())||"RCN".equals(condizione.getCdTipoLivello())||"RP".equals(condizione.getCdTipoLivello())) {
 				condizione.setCdRifLivello(request.getCdRapporto());
-			}else if("P".equals(condizione.getCdTipoLivello()) || "RP".equals(condizione.getCdTipoLivello())) {
+			
+			}else if("P".equals(condizione.getCdTipoLivello())) {
 				logger.info("IndicePromozione vale: "+indicePromozione);
 				condizione.setCdRifLivello(CollectionUtils.isNotEmpty(request.getPromozioni()) 
 						&& indicePromozione<=(request.getPromozioni().size()-1) ? 
@@ -443,7 +445,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 						);
 				indicePromozione++;
 			}else {
-				condizione.setCdRifLivello(null);
+				condizione.setCdRifLivello("");
 			}
 			logger.info("Cd Rif livello condizione: "+condizione.getCdRifLivello());
 		}

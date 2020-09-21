@@ -75,9 +75,9 @@ public class JDBCService extends BaseService{
 				return cod;
 			}
 		};
-		String response = (String)jdbcStdConnector.call("SELECT COD_CODICE AS codCodice FROM COND_OWN.T_PC2_COND_LISTINO WHERE COD_CONDIZIONE = ? AND COD_ISTITUTO = ? AND" + 
-				"DATA_DECORRENZA < TO_DATE(#data#, 'YYYYMMDD') AND" + 
-				"DATA_DECADENZA > TO_DATE(#data#, 'YYYYMMDD')", jdbcStdRequestTransformer, jdbcStdResponseTransformer, config);
+		String response = (String)jdbcStdConnector.call("SELECT COD_CODICE AS codCodice FROM COND_OWN.T_PC2_COND_LISTINO WHERE COD_CONDIZIONE = ? AND COD_ISTITUTO = ? AND " + 
+				"DATA_DECORRENZA < TO_DATE(?, 'YYYYMMDD') AND " + 
+				"DATA_DECADENZA > TO_DATE(?, 'YYYYMMDD')", jdbcStdRequestTransformer, jdbcStdResponseTransformer, config);
 		return response;
 	}
 
