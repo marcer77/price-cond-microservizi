@@ -47,7 +47,7 @@ public class RESTController extends StatelessController {
 		return res;
 	}
 	
-	@PostMapping(value = "/inquiryContoCndDettaglio")
+	@PostMapping(value = "/inquiry")
 	@ResponseBody
 	public InquiryContoCndDettaglioOutput inquiryContoCndDettaglio(@RequestBody InquiryContoCndRequest request) throws Exception {
 

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import com.google.gson.Gson;
 import com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms.AttributoValore;
@@ -62,6 +62,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	
 	@Override
 	public InquiryContoCndDettaglioOutput doExecute() throws Exception {
+		
+		logger.info("Start doExecute");
+		
 		InquiryContoCndDettaglioOutput output = new InquiryContoCndDettaglioOutput();		
 		List<CondizioneContoDettaglio> condizioniStd = new ArrayList<>(); //una singola copia della lista di condizioni - per recuperare il val STD
 		List<CondizioneContoDettaglio> condizioniOut = new ArrayList<>(); //intera lista di condizioni - eventualmente ripetute per tipo livello
@@ -78,39 +81,41 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	    header.setIspBranchCode(request.getCdUO());
 	    header.setCodABI(request.getCdAbi());
 	    header.setIspCallerCompanyIDCode(jdbcService.getIstitutoFromAbi(request.getCdAbi()));
+	    logger.info("IspCallerCompanyIDCode found with cdAbi {}--->{}",request.getCdAbi(),header.getIspServiceCompanyIDCode());
 	    iibCdprcmsRequest.setHeader(header);
-	    
-	    /*
-		String prod = request.getCdProdotto();
-		List<DriverInq> driver = request.getDriver();
-		
-		String conv = request.getCdConv();
-		String rapp = request.getCdRapporto();
-		
-		List<String> promo = request.getPromozioni();
-		*/
 
 	    //RECUPERO STD
 	    reqSTD = buildCNDPRICEMSRequestSTD(request);
-	    if(reqSTD.size()>0) {
+	    if(!CollectionUtils.isEmpty(req)) {
 	    	iibCdprcmsRequest.setBody(reqSTD);
 	    	outSTD.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
+	    	logger.info("outSTD--->{}",outSTD);
 	    }
 	    condizioniStd = buildResponseFromCNDPRICEMS(outSTD,null);
 
 		String cdIstituto = jdbcService.getIstitutoFromAbi(request.getCdAbi());
+		logger.info("cdIstituto from service -->{}",cdIstituto);
 		
 		for (CondizioneContoDettaglio cond : condizioniStd) {
 			String cdCnd = cond.getCdCnd();
 			String etichetta = etichette.containsKey(cdCnd) ? etichette.get(cdCnd):"";
 			CondizioneDeroga condizioneDeroga = new CondizioneDeroga();
-			if(cdCnd!=null) 
+			if(cdCnd!=null) {
 				condizioneDeroga = jdbcService.getDatiCondizione(cdCnd);
-			if(condizioneDeroga!=null)
-				if(condizioneDeroga.getCD_UDM().equals("3"))
+				logger.info("condizioneDeroga from jdbcService-->{}",condizioneDeroga);
+			}
+			if(condizioneDeroga!=null) {
+				if(condizioneDeroga.getCD_UDM().equals("3")) {
 					condizioneDeroga.setValCodiceStandard(jdbcService.getCdSTD(condizioneDeroga.getCD_CONDIZIONE(), cdIstituto, request.getDtOperazione()));
-				else
+					logger.info("CD_UDM = 3,condizioneDeroga ValCodiceStandard from jdbcService -->{}",condizioneDeroga.getValCodiceStandard());
+				}
+					
+				else {
 					condizioneDeroga.setValNumericoStandard(jdbcService.getValSTD(condizioneDeroga.getCD_CONDIZIONE(), cdIstituto, request.getDtOperazione()));
+					logger.info("CD_UDM != 3,condizioneDeroga ValNumericoStandard from jdbcService -->{}",condizioneDeroga.getValNumericoStandard());
+				}
+			}
+				
 			cond.setCdCnd(condizioneDeroga.getCD_CONDIZIONE());
 			cond.setCdDescCnd(condizioneDeroga.getDS_CONDIZIONE());
 			cond.setCdUDM(condizioneDeroga.getCD_UDM());
@@ -126,27 +131,27 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		//RECUPERO ALTRI PREZZI
 		
 	    req = buildCNDPRICEMSRequest(request);
-	    logger.info("request:" + new Gson().toJson(req));
-	    if(req.size()>0) {
+	    logger.info("request: {}" , new Gson().toJson(req));
+	    if(!CollectionUtils.isEmpty(req)) {
 	    	iibCdprcmsRequest.setBody(req);
 	    	out.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
-		    logger.info("response:" + new Gson().toJson(out));
+		    logger.info("response: {}" , new Gson().toJson(out));
 	    }
 	    
-    	if(condizioniStd.isEmpty() || (out.size()>0 && out.get(0).getNbpErrorInfo()!=null && out.get(0).getNbpErrorInfo().size()>0)) { //ERR
+    	if(condizioniStd.isEmpty() || (!CollectionUtils.isEmpty(out) && out.get(0).getNbpErrorInfo()!=null && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo()))) { //ERR
     		output.setCdEsito(CondizioniContoUtils.ESITO_KO);
 		    output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
     	}
     	else {        	
     		output.setCdEsito(CondizioniContoUtils.ESITO_OK);
     		output.setMsgEsito("");
-    		if(out.size()>0)
+    		if(!CollectionUtils.isEmpty(out))
     			condizioniOut.addAll(buildResponseFromCNDPRICEMS(out,condizioniStd));
     	}
     	
     	// Verifico le esposizioni dei prezzi promozionati
     	indicePromozione = 0;
-    	logger.info("Lista promozioni: "+request.getPromozioni());
+    	logger.info("Lista promozioni: {}",request.getPromozioni());
     	for (CondizioneContoDettaglio condizionePromo : condizioniOut) {
 			if(condizionePromo.getCdTipoLivello().equalsIgnoreCase("P")) {
 
@@ -163,13 +168,17 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			buildCdRifLivello(condizionePromo);
 		}
 
-		output.setCondizioni(condizioniOut);		
+		output.setCondizioni(condizioniOut);	
+		
+		logger.info("End doExecute with output -->{}", output);
 		
 		return output;
 	}
 
 	private List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request){
 
+		logger.info("Start buildCNDPRICEMSRequestSTD");
+		
 	    List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
 	    	    
 	    //CASO STD
@@ -201,10 +210,14 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	    
 	    req.add(rSTD);
 	    
+	    logger.info("End buildCNDPRICEMSRequestSTD: result -->{}",stampaOggetto(rSTD));
+	    
 		return req;
 	}
 	
 	private List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequest(InquiryContoCndRequest request) {
+		
+		logger.info("Start buildCNDPRICEMSRequest");
 
 	    List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
 	    	     
@@ -316,13 +329,19 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			    req.add(r);
 		    }
 	    }
+	    
+	    logger.info("End buildCNDPRICEMSRequest with request -->{}",req);
+	    
 		return req;
 	}
 	
 	private List<CondizioneContoDettaglio> buildResponseFromCNDPRICEMS (List<IIBCDPRCMSSingleResponseType> response, List<CondizioneContoDettaglio> condizioneDip){ //se condizioneDip = null => chiamata STD
+		
+		logger.info("Start buildResponseFromCNDPRICEMS with response --> {} and condizioneDip --> {}",response,condizioneDip);
+		
 		List<CondizioneContoDettaglio> out = new ArrayList<>();
 		
-		if (response.size() > 0) {
+		if (!CollectionUtils.isEmpty(response)) {
 			for (IIBCDPRCMSSingleResponseType res : response) {
 					
 			    for (OutValori cnd : res.getValori()) {
@@ -379,11 +398,16 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				}
 			}
 		}
+		
+		logger.info("End buildResponseFromCNDPRICEMS with response--->{}", out);
+		
 		return out;
 	}
 	
 	private BigDecimal calcolaValorePromo(CondizioneConto cond, BigDecimal prezzoRif, List<CondizioneContoDettaglio> condizioneDip) {
 
+		logger.info("Start calcolaValorePromo with cond = {} and prezzoRif = {} and condizioneDip = {}",cond, prezzoRif, condizioneDip);
+		
 		BigDecimal valCalcolatoPro = BigDecimal.ZERO;
 		BigDecimal std = BigDecimal.ZERO;  	
     	
@@ -409,28 +433,37 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				else
 					valCalc = std.subtract(cond.getNrValore());
 			}
-			if(valCalc.compareTo(BigDecimal.ZERO)<0)
+			if(valCalc!= null && valCalc.compareTo(BigDecimal.ZERO)<0)
 				valCalc=BigDecimal.ZERO;
 			valCalcolatoPro = valCalc;
 		}
+		
+		logger.info("End calcolaValorePromo --->{}", valCalcolatoPro);
 		
 		return valCalcolatoPro;
 	}
 	
 	//recupero etichette
 	private HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
+		logger.info("Start getEtichette");
+		
 	    HashMap<String, String> params = new HashMap<String, String>();
 	    params.put("cdProd", request.getCdProdotto());
 		for(int i = 0; i < 10; i++) {
 		    params.put("cdDriver" + (i+1), i < request.getDriver().size()  ? request.getDriver().get(i).val : "*");			
 		}
 	    HashMap<String, String> result = jdbcService.getEtichette(params);
-		return result;
+	    
+	    logger.info("End getEtichette: result-->{}",result);
+		
+	    return result;
 	}
 	
 	private void buildCdRifLivello(CondizioneContoDettaglio condizione) {
 		if(condizione!=null) {
-			logger.info("Cd Tipo livello condizione: "+condizione.getCdTipoLivello());
+			
+			logger.info("Cd Tipo livello condizione: {}",condizione.getCdTipoLivello());
+			
 			if("CN".equals(condizione.getCdTipoLivello())) {
 				condizione.setCdRifLivello(request.getCdConv());
 			
@@ -438,8 +471,10 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				condizione.setCdRifLivello(request.getCdRapporto());
 			
 			}else if("P".equals(condizione.getCdTipoLivello())) {
-				logger.info("IndicePromozione vale: "+indicePromozione);
-				condizione.setCdRifLivello(CollectionUtils.isNotEmpty(request.getPromozioni()) 
+				
+				logger.info("IndicePromozione vale: {}",indicePromozione);
+				
+				condizione.setCdRifLivello(!CollectionUtils.isEmpty(request.getPromozioni()) 
 						&& indicePromozione<=(request.getPromozioni().size()-1) ? 
 								request.getPromozioni().get(indicePromozione) : null
 						);
@@ -447,7 +482,25 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}else {
 				condizione.setCdRifLivello("");
 			}
-			logger.info("Cd Rif livello condizione: "+condizione.getCdRifLivello());
+			logger.info("Cd Rif livello condizione: {}",condizione.getCdRifLivello());
 		}
+	}
+	
+	
+	/**
+	 * Stampa a log tutto l' oggetto
+	 * @param obj
+	 * @return
+	 */
+	private StringBuilder stampaOggetto(Object obj) {
+		StringBuilder buffer = new StringBuilder("[");
+		java.util.Arrays.asList(obj.getClass().getDeclaredFields()).forEach(f -> {
+			try {
+				buffer.append(f.getName() + " = " + f.get(obj)).append(" - ");
+			} catch (Exception e) {
+			}
+		});
+		buffer.append("]");
+		return buffer;
 	}
 }
