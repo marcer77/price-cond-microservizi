@@ -127,7 +127,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				cond.setNrValore(cond.getNrValore());
 			condizioniOut.add(cond);
 		}
-		
+	    logger.info("condizioniOut: {}" , condizioniOut);
 		//RECUPERO ALTRI PREZZI
 		
 	    req = buildCNDPRICEMSRequest(request);
@@ -138,6 +138,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		    logger.info("response: {}" , new Gson().toJson(out));
 	    }
 	    
+	    logger.info("condizioniStd: {}, out: {}" , condizioniStd, out);
     	if( condizioniStd.isEmpty() || !CollectionUtils.isEmpty(out) && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo()) ) { //ERR
     		output.setCdEsito(CondizioniContoUtils.ESITO_KO);
     		if(out.get(0).getNbpErrorInfo().get(0)!=null) {
@@ -227,6 +228,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	    	     
 	    
 	    if(request.getCdRapporto() != null && !request.getCdRapporto().equals("") && request.getCdRapporto().length()==17) { //CASO RAPP
+	    	
+			logger.info("buildCNDPRICEMSRequest aggiungo alla request il rapporto: {}", request.getCdRapporto());
+			
 	    	IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 	    	
 	    	HashMap<String, String> infoRapp = CondizioniContoUtils.getInfoRapporto(request.getCdRapporto());
@@ -263,10 +267,12 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	    }
 	    else { //CONSIDERO PROMO E CONV SOLO SE NON C'E' RAPPORTO
 	    	
-		    if(request.getPromozioni()!= null && request.getPromozioni().size()>0) { //CASO PROMO
+		    if(!CollectionUtils.isEmpty(request.getPromozioni())) { //CASO PROMO
+				logger.info("buildCNDPRICEMSRequest rapporto non presente considero le PROMO: {}", request.getPromozioni());
 			    for(String promo : request.getPromozioni()) {
 			    	
 			    	if(!promo.isEmpty()) {
+						logger.info("buildCNDPRICEMSRequest aggiungo alla request la PROMO: {}", promo);
 				    	IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 				    	
 						DatiApplicativi datiapplicativi = new DatiApplicativi();
@@ -302,6 +308,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		    }
 	
 		    if(request.getCdConv()!= null && !request.getCdConv().equals("")) { //CASO CONV
+				logger.info("buildCNDPRICEMSRequest aggiungo alla request la CONVENZIONE: {}", request.getCdConv());
 		    	IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 		    	
 				DatiApplicativi datiapplicativi = new DatiApplicativi();
@@ -364,7 +371,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					    		continue;
 							}
 						}
-			    	//c.setCdEtichetta(cnd.getEtichetta());
 			    	c.setCdEtichetta(etichette.containsKey(cnd.getCod()) ? etichette.get(cnd.getCod()):"");
 		    		c.setCdCnd(cnd.getCod());
 		    		c.setCdTipoLivello(cnd.getOrigine()!=null && !cnd.getOrigine().isEmpty() ? cnd.getOrigine() : cnd.getLiv());
@@ -464,6 +470,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	}
 	
 	private void buildCdRifLivello(CondizioneContoDettaglio condizione) {
+		logger.info("buildCdRifLivello START");
 		if(condizione!=null) {
 			
 			logger.info("Cd Tipo livello condizione: {}",condizione.getCdTipoLivello());
@@ -488,6 +495,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 			logger.info("Cd Rif livello condizione: {}",condizione.getCdRifLivello());
 		}
+		logger.info("buildCdRifLivello END");
 	}
 	
 	
