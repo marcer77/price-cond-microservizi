@@ -100,7 +100,7 @@ public class RESTControllerTest extends BaseTest {
 
 		stubInquiryContoCndOK();
 
-		String uriString = "/condizioniconto/inquiryContoCndDettaglio";
+		String uriString = "/condizioniconto/inquiry";
 
 		String inputJson = mapToJson(inquiryContoCndRequest);
 
@@ -112,8 +112,8 @@ public class RESTControllerTest extends BaseTest {
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
-		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 	}
 
 	@Test
@@ -123,7 +123,7 @@ public class RESTControllerTest extends BaseTest {
 
 		stubInquiryContoCndOK();
 
-		String uriString = "/condizioniconto/inquiryContoCndDettaglio";
+		String uriString = "/condizioniconto/inquiry";
 
 		String inputJson = mapToJson(inquiryContoCndRequest);
 
@@ -135,8 +135,8 @@ public class RESTControllerTest extends BaseTest {
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
-		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 
 	}
 
@@ -147,7 +147,7 @@ public class RESTControllerTest extends BaseTest {
 
 		stubInquiryContoCndOK();
 
-		String uriString = "/condizioniconto/inquiryContoCndDettaglio";
+		String uriString = "/condizioniconto/inquiry";
 
 		String inputJson = mapToJson(inquiryContoCndRequest);
 
@@ -159,9 +159,8 @@ public class RESTControllerTest extends BaseTest {
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
-		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
-
+		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 	}
 
 	@Test
@@ -169,7 +168,7 @@ public class RESTControllerTest extends BaseTest {
 
 		stubInquiryContoCdUdmOK();
 
-		String uriString = "/condizioniconto/inquiryContoCndDettaglio";
+		String uriString = "/condizioniconto/inquiry";
 
 		String inputJson = mapToJson(inquiryContoCndRequest);
 
@@ -181,8 +180,8 @@ public class RESTControllerTest extends BaseTest {
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
-		// Assert.assertTrue(content.contains("cdEsito\":\"00"));
 		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 	}
 
 }

@@ -138,9 +138,15 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		    logger.info("response: {}" , new Gson().toJson(out));
 	    }
 	    
-    	if(condizioniStd.isEmpty() || (!CollectionUtils.isEmpty(out) && out.get(0).getNbpErrorInfo()!=null && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo()))) { //ERR
+    	if( condizioniStd.isEmpty() || !CollectionUtils.isEmpty(out) ) { //ERR
     		output.setCdEsito(CondizioniContoUtils.ESITO_KO);
-		    output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
+    		if(out.get(0).getNbpErrorInfo()!=null 
+    				&& !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo())
+    				&& out.get(0).getNbpErrorInfo().get(0).getErrReason()!=null) {
+    			output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
+    		}else {
+    			output.setMsgEsito("Errore inquiryContoCnd Response: Impossibile verificare l'errore ");
+    		}
     	}
     	else {        	
     		output.setCdEsito(CondizioniContoUtils.ESITO_OK);
