@@ -86,7 +86,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 	    //RECUPERO STD
 	    reqSTD = buildCNDPRICEMSRequestSTD(request);
-	    if(!CollectionUtils.isEmpty(req)) {
+	    if(!CollectionUtils.isEmpty(reqSTD)) {
 	    	iibCdprcmsRequest.setBody(reqSTD);
 	    	outSTD.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
 	    	logger.info("outSTD--->{}",outSTD);
@@ -138,11 +138,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		    logger.info("response: {}" , new Gson().toJson(out));
 	    }
 	    
-    	if( condizioniStd.isEmpty() || !CollectionUtils.isEmpty(out) ) { //ERR
+    	if( condizioniStd.isEmpty() || !CollectionUtils.isEmpty(out) && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo()) ) { //ERR
     		output.setCdEsito(CondizioniContoUtils.ESITO_KO);
-    		if(out.get(0).getNbpErrorInfo()!=null 
-    				&& !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo())
-    				&& out.get(0).getNbpErrorInfo().get(0).getErrReason()!=null) {
+    		if(out.get(0).getNbpErrorInfo().get(0)!=null) {
     			output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
     		}else {
     			output.setMsgEsito("Errore inquiryContoCnd Response: Impossibile verificare l'errore ");
