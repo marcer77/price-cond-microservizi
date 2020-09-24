@@ -567,9 +567,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 */
 	private StringBuilder stampaIIBCDPRCMSSingleResponseType(List<IIBCDPRCMSSingleResponseType> outSTD,String objectName) {
 		
-		StringBuilder buffer =null;
+		StringBuilder buffer = new StringBuilder(objectName+" [");;
 		if(outSTD!=null) {
-			buffer = new StringBuilder(objectName+" [");
 			for(IIBCDPRCMSSingleResponseType elem : outSTD) {
 				buffer.append("OutputFactory: "+stampaOggetto(elem.getOutputFactory()));
 				buffer.append("OutputPrice: "+stampaOggetto(elem.getOutputPrice()));
@@ -582,9 +581,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				buffer.append("NbpErrorInfo: "+elem.getNbpErrorInfo());
 				
 			}
-			buffer.append("]");
 		}
-		
+		buffer.append("]");
 		return buffer;
 	}
 	
