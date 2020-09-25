@@ -19,7 +19,7 @@ connectors:
         timeout: 8000
         enabledTracing: true
         mocked: true
-        path: db2/
+        path: oracle/
         files:
           - T_CP_PROD_CND.sql
           - T_PC2_ANAG_ISTITUTI.sql
@@ -33,7 +33,7 @@ connectors:
         timeout: 8000
         enabledTracing: true
         mocked: true
-        path: db2/
+        path: oracle/
         files:
           - T_CP_PROD_CND.sql
           - T_PC2_ANAG_ISTITUTI.sql
