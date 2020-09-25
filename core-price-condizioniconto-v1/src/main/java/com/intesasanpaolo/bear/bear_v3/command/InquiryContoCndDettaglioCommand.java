@@ -95,7 +95,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				iibCdprcmsRequest.setBody(reqSTD);
 				outSTD.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
 				// stampa con log la lista
-				logger.info(stampaIIBCDPRCMSSingleResponseType(outSTD, "outSTD").toString());
+				//logger.info(stampaIIBCDPRCMSSingleResponseType(outSTD, "outSTD").toString());
 			}
 			condizioniStd = buildResponseFromCNDPRICEMS(outSTD, null);
 
@@ -108,7 +108,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				CondizioneDeroga condizioneDeroga = new CondizioneDeroga();
 				if (cdCnd != null) {
 					condizioneDeroga = jdbcService.getDatiCondizione(cdCnd);
-					logger.info("condizioneDeroga from jdbcService-->{}", stampaOggetto(condizioneDeroga));
+					//logger.info("condizioneDeroga from jdbcService-->{}", stampaOggetto(condizioneDeroga));
 				}
 				if (condizioneDeroga != null) {
 					if (condizioneDeroga.getCD_UDM().equals("3")) {
@@ -137,7 +137,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					cond.setNrValore(cond.getNrValore());
 				condizioniOut.add(cond);
 			}
-			logger.info("condizioniOut: {}", stampaCondizioneContoDettaglioList(condizioniOut));
+			//logger.info("condizioniOut: {}", stampaCondizioneContoDettaglioList(condizioniOut));
 
 			// RECUPERO ALTRI PREZZI
 
@@ -149,13 +149,13 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				logger.info("response: {}", new Gson().toJson(out));
 			}
 
-			logger.info("Print condizioniStd: {}", stampaCondizioneContoDettaglioList(condizioniStd));
-			logger.info(stampaIIBCDPRCMSSingleResponseType(out, "out").toString());
+			//logger.info("Print condizioniStd: {}", stampaCondizioneContoDettaglioList(condizioniStd));
+			//logger.info(stampaIIBCDPRCMSSingleResponseType(out, "out").toString());
 
 			if (condizioniStd.isEmpty()
 					|| !CollectionUtils.isEmpty(out) && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo())) { // ERR
 				output.setCdEsito(CondizioniContoUtils.ESITO_KO);
-				if (out.get(0).getNbpErrorInfo().get(0) != null) {
+				if (out.get(0).getNbpErrorInfo()!=null&&out.get(0).getNbpErrorInfo().size()>0&&out.get(0).getNbpErrorInfo().get(0) != null) {
 					output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
 				} else {
 					output.setMsgEsito("Errore inquiryContoCnd Response: Impossibile verificare l'errore ");
@@ -191,7 +191,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 			output.setCondizioni(condizioniOut);
 
-			logger.info("End doExecute with output: {}", stampaInquiryContoCndDettaglioOutput(output));
+			///logger.info("End doExecute with output: {}", stampaInquiryContoCndDettaglioOutput(output));
 
 		} catch (Exception e) {
 			logger.error("Errore in INQURY", e);
@@ -201,7 +201,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		return output;
 	}
 
-	private List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
+	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
 
 		logger.info("Start buildCNDPRICEMSRequestSTD");
 
@@ -236,12 +236,12 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 		req.add(rSTD);
 
-		logger.info("End buildCNDPRICEMSRequestSTD: {}", stampaIIBCDPRCMSSingleRequestType(rSTD));
+		//logger.info("End buildCNDPRICEMSRequestSTD: {}", stampaIIBCDPRCMSSingleRequestType(rSTD));
 
 		return req;
 	}
 
-	private List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequest(InquiryContoCndRequest request) {
+	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequest(InquiryContoCndRequest request) {
 
 		logger.info("Start buildCNDPRICEMSRequest");
 
@@ -364,17 +364,17 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 		}
 
-		logger.info("End buildCNDPRICEMSRequest with request: {}", stampaIIBCDPRCMSSingleRequestTypeList(req));
+		//logger.info("End buildCNDPRICEMSRequest with request: {}", stampaIIBCDPRCMSSingleRequestTypeList(req));
 
 		return req;
 	}
 
-	private List<CondizioneContoDettaglio> buildResponseFromCNDPRICEMS(List<IIBCDPRCMSSingleResponseType> response,
+	protected List<CondizioneContoDettaglio> buildResponseFromCNDPRICEMS(List<IIBCDPRCMSSingleResponseType> response,
 			List<CondizioneContoDettaglio> condizioneDip) { // se condizioneDip = null => chiamata STD
 
 		logger.info("Start buildResponseFromCNDPRICEMS with: ");
-		logger.info(stampaIIBCDPRCMSSingleResponseType(response, "response").toString());
-		logger.info("condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
+		//logger.info(stampaIIBCDPRCMSSingleResponseType(response, "response").toString());
+		//logger.info("condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
 
 		List<CondizioneContoDettaglio> out = new ArrayList<>();
 
@@ -435,19 +435,19 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 		}
 
-		logger.info("End buildResponseFromCNDPRICEMS with response: {}", stampaCondizioneContoDettaglioList(out));
+		//logger.info("End buildResponseFromCNDPRICEMS with response: {}", stampaCondizioneContoDettaglioList(out));
 
 		return out;
 	}
 
-	private BigDecimal calcolaValorePromo(CondizioneConto cond, BigDecimal prezzoRif,
+	protected BigDecimal calcolaValorePromo(CondizioneConto cond, BigDecimal prezzoRif,
 			List<CondizioneContoDettaglio> condizioneDip) {
 
 		logger.info("Start calcolaValorePromo with: ");
 		// stampa ogni singolo oggetto complesso
-		logger.info("1 - cond = {}", stampaOggettoWithParentClass(cond));
-		logger.info("2 - prezzoRif = {}", prezzoRif);
-		logger.info("3 - condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
+		//logger.info("1 - cond = {}", stampaOggettoWithParentClass(cond));
+		//logger.info("2 - prezzoRif = {}", prezzoRif);
+		//logger.info("3 - condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
 
 		BigDecimal valCalcolatoPro = BigDecimal.ZERO;
 		BigDecimal std = BigDecimal.ZERO;
@@ -494,7 +494,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	}
 
 	// recupero etichette
-	private HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
+	protected HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
 		logger.info("Start getEtichette");
 
 		HashMap<String, String> params = new HashMap<String, String>();
@@ -509,7 +509,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		return result;
 	}
 
-	private void buildCdRifLivello(CondizioneContoDettaglio condizione) {
+	protected void buildCdRifLivello(CondizioneContoDettaglio condizione) {
 		logger.info("buildCdRifLivello START");
 		if (condizione != null) {
 
@@ -545,7 +545,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param obj
 	 * @return
 	 */
-	private StringBuilder stampaOggetto(Object obj) {
+	/*private StringBuilder stampaOggetto(Object obj) {
 		StringBuilder buffer = new StringBuilder("[");
 		if (obj==null)
 			return new StringBuilder("");;
@@ -558,7 +558,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		});
 		buffer.append("]");
 		return buffer;
-	}
+	}*/
 
 	/**
 	 * permette di stampare i campi di un oggetto e quelli ereditati da una
@@ -567,7 +567,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param obj
 	 * @return
 	 */
-	private StringBuilder stampaOggettoWithParentClass(Object obj) {
+	/*private StringBuilder stampaOggettoWithParentClass(Object obj) {
 		StringBuilder buffer = new StringBuilder("[");
 		java.util.Arrays.asList(obj.getClass().getDeclaredFields()).forEach(f -> {
 			try {
@@ -587,7 +587,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		buffer.append("]");
 		return buffer;
 	}
-
+*/
 	/**
 	 * permette di stampare una lista di oggetti di tipo
 	 * IIBCDPRCMSSingleResponseType
@@ -596,7 +596,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param objectName
 	 * @return StringBuilder
 	 */
-	private StringBuilder stampaIIBCDPRCMSSingleResponseType(List<IIBCDPRCMSSingleResponseType> outSTD,
+	/*private StringBuilder stampaIIBCDPRCMSSingleResponseType(List<IIBCDPRCMSSingleResponseType> outSTD,
 			String objectName) {
 
 		StringBuilder buffer = new StringBuilder(objectName + " [");
@@ -616,7 +616,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		}
 		buffer.append("]");
 		return buffer;
-	}
+	}*/
 
 	/**
 	 * Permette di stampare a log l'oggetto complesso di tipo
@@ -625,7 +625,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param elem
 	 * @return
 	 */
-	private StringBuilder stampaIIBCDPRCMSSingleRequestType(IIBCDPRCMSSingleRequestType elem) {
+	/*private StringBuilder stampaIIBCDPRCMSSingleRequestType(IIBCDPRCMSSingleRequestType elem) {
 
 		StringBuilder buffer = new StringBuilder("Result: [");
 
@@ -637,7 +637,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 		return buffer;
 
-	}
+	}*/
 
 	/**
 	 * permette di stampare a log una lista di oggetti di tipo
@@ -646,7 +646,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param list
 	 * @return
 	 */
-	private StringBuilder stampaIIBCDPRCMSSingleRequestTypeList(List<IIBCDPRCMSSingleRequestType> list) {
+	/*private StringBuilder stampaIIBCDPRCMSSingleRequestTypeList(List<IIBCDPRCMSSingleRequestType> list) {
 		StringBuilder buffer = new StringBuilder("{");
 		for (IIBCDPRCMSSingleRequestType iibcdprcmsSingleRequestType : list) {
 			buffer.append(stampaIIBCDPRCMSSingleRequestType(iibcdprcmsSingleRequestType));
@@ -654,7 +654,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		buffer.append("}");
 
 		return buffer;
-	}
+	}*/
 
 	/**
 	 * permette di stampare a log un oggetto di tipo InquiryContoCndDettaglioOutput
@@ -662,7 +662,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param elem
 	 * @return
 	 */
-	private StringBuilder stampaInquiryContoCndDettaglioOutput(InquiryContoCndDettaglioOutput elem) {
+	/*private StringBuilder stampaInquiryContoCndDettaglioOutput(InquiryContoCndDettaglioOutput elem) {
 
 		StringBuilder buffer = new StringBuilder("[");
 		buffer.append(" cdEsito: " + elem.getCdEsito());
@@ -671,7 +671,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		buffer.append("]");
 
 		return buffer;
-	}
+	}*/
 
 	/**
 	 * permette di stampare a log una lista di oggetti di tipo
@@ -680,7 +680,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	 * @param lista
 	 * @return
 	 */
-	private StringBuilder stampaCondizioneContoDettaglioList(List<CondizioneContoDettaglio> lista) {
+	/*private StringBuilder stampaCondizioneContoDettaglioList(List<CondizioneContoDettaglio> lista) {
 
 		StringBuilder buffer = new StringBuilder("Condizioni ContoDettaglio: {");
 		if (lista != null) {
@@ -691,5 +691,5 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		buffer.append("}");
 
 		return buffer;
-	}
+	}*/
 }

@@ -1,0 +1,38 @@
+<NS1:Envelope xmlns:NS1="http://schemas.xmlsoap.org/soap/envelope/">
+   <NS1:Body>
+      <NS2:response xmlns:NS2="http://www.intesa.org/T1IB0/IIBCDPRCMS/">
+         <outputProdotto>
+            <outputFactory/>
+            <outputPrice>
+               <codConv/>
+               <codMotorePrice>PACXCNDMPR</codMotorePrice>
+            </outputPrice>
+            <valori>
+               <cod>03502</cod>
+               <deco>20190923</deco>
+               <deca>99991231</deca>
+               <origine>CN</origine>
+               <etichetta/>
+               <tipo>1</tipo>
+               <dim>15</dim>
+               <numdec>5</numdec>
+               <val>0.00000</val>
+               <div>EUR</div>
+               <attrCond>ZE5441</attrCond>
+               <attrVal>
+                  <attributo>DESCRIZIONE_CDZ</attributo>
+                  <valore>COSTO PREL SPORT AUTOM AL BANCHE SEPA</valore>
+               </attrVal>
+               <attrVal>
+                  <attributo>BLINDATURA_CDZ</attributo>
+                  <valore>N</valore>
+               </attrVal>
+               <attrVal>
+                  <attributo>COVENANT_CDZ</attributo>
+                  <valore>N</valore>
+               </attrVal>
+            </valori>
+         </outputProdotto>
+      </NS2:response>
+   </NS1:Body>
+</NS1:Envelope>

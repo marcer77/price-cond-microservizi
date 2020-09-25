@@ -1,0 +1,14 @@
+<NS1:Envelope xmlns:NS1="http://schemas.xmlsoap.org/soap/envelope/">
+   <NS1:Body>
+      <NS2:response xmlns:NS2="http://www.intesa.org/T1IB0/IIBCDPRCMS/">
+         <outputProdotto>
+            <outputFactory/>
+            <outputPrice>
+               <codConv/>
+               <codMotorePrice>PACXCNDMPR</codMotorePrice>
+            </outputPrice>
+          </outputProdotto>
+           
+      </NS2:response>
+   </NS1:Body>
+</NS1:Envelope>
