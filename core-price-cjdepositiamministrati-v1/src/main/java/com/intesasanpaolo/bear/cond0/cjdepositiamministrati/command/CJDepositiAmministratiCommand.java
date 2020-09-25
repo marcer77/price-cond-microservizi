@@ -52,11 +52,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	protected StampaResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		
-		StampaResponseResource stampaResponseResource = new StampaResponseResource();
-		
-		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource("00", ""));
-		
-		stampaResponseResource = buildStampaResponseResource(stampaResponseResource);
+		StampaResponseResource stampaResponseResource = buildStampaResponseResource();
 		
 		log.info("execute END");
 		return stampaResponseResource;
@@ -89,13 +85,12 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		this.stampaRequestDTO = stampaRequestDTO;
 	}
 	
-	private StampaResponseResource buildStampaResponseResource(StampaResponseResource stampaResponseResource) {
+	private StampaResponseResource buildStampaResponseResource() {
 		log.info("buildStampaResponseResource START");
 
-			WKIBResponse wkibResponse = null;
-			wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
+			WKIBResponse wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 						
-			stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
+			StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
 			.codDDS(wkibResponse.getCodDDS())
 			.codTemplate(wkibResponse.getCodTemplate())
 			.righe(new ArrayList<RigheDiStampaResource>())
