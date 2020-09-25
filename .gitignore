@@ -10,3 +10,4 @@ swagger.yaml
 *log.*
 /.gitignore
 /.sonarlint/*
+/core-price-condizioniconto-v1/CONDIZIONI_CONTO.launch
