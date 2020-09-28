@@ -35,5 +35,11 @@ public class InquiryContoCndDettaglioOutput {
 	public void setCondizioni(List<CondizioneContoDettaglio> condizioni) {
 		this.condizioni = condizioni;
 	}
+
+	@Override
+	public String toString() {
+		return "InquiryContoCndDettaglioOutput [cdEsito=" + cdEsito + ", msgEsito=" + msgEsito + ", condizioni="
+				+ condizioni + "]";
+	}
 	
 }

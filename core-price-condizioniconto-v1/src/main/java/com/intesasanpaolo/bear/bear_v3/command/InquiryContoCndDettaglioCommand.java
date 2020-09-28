@@ -65,7 +65,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		InquiryContoCndDettaglioOutput output = new InquiryContoCndDettaglioOutput();
 		
 		try {
-
+			
 			List<CondizioneContoDettaglio> condizioniStd = new ArrayList<>(); // una singola copia della lista di
 																				// condizioni - per recuperare il val
 																				// STD
@@ -78,51 +78,46 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			List<IIBCDPRCMSSingleResponseType> out = new ArrayList<>();
 			List<IIBCDPRCMSSingleResponseType> outSTD = new ArrayList<>();
 			etichette = getEtichette(request);
+			String cdIstituto = jdbcService.getIstitutoFromAbi(request.getCdAbi());
+			logger.info("cdIstituto per ABI {} -->{}",request.getCdAbi(), cdIstituto);
 
 			IIBCDPRCMSRequest iibCdprcmsRequest = new IIBCDPRCMSRequest();
 			IIBCDPRCMSHeader header = new IIBCDPRCMSHeader();
 			header.setUserID(request.getCdMatricola());
 			header.setIspBranchCode(request.getCdUO());
 			header.setCodABI(request.getCdAbi());
-			header.setIspCallerCompanyIDCode(jdbcService.getIstitutoFromAbi(request.getCdAbi()));
-			logger.info("IspCallerCompanyIDCode found with cdAbi {}--->{}", request.getCdAbi(),
-					header.getIspServiceCompanyIDCode());
+			header.setIspCallerCompanyIDCode(cdIstituto);
 			iibCdprcmsRequest.setHeader(header);
 
 			// RECUPERO STD
 			reqSTD = buildCNDPRICEMSRequestSTD(request);
+			logger.info("PRIMA INVOCAZIONE WS (RECUPERO  STD) request: {}", new Gson().toJson(reqSTD));
 			if (!CollectionUtils.isEmpty(reqSTD)) {
 				iibCdprcmsRequest.setBody(reqSTD);
 				outSTD.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
-				// stampa con log la lista
-				//logger.info(stampaIIBCDPRCMSSingleResponseType(outSTD, "outSTD").toString());
+				logger.info("PRIMA INVOCAZIONE WS (RECUPERO STD) response: {}", new Gson().toJson(outSTD));
 			}
 			condizioniStd = buildResponseFromCNDPRICEMS(outSTD, null);
 
-			String cdIstituto = jdbcService.getIstitutoFromAbi(request.getCdAbi());
-			logger.info("cdIstituto from service -->{}", cdIstituto);
-
+			logger.info("condizioniStd={}",condizioniStd);
+			
+			
 			for (CondizioneContoDettaglio cond : condizioniStd) {
 				String cdCnd = cond.getCdCnd();
 				String etichetta = etichette.containsKey(cdCnd) ? etichette.get(cdCnd) : "";
 				CondizioneDeroga condizioneDeroga = new CondizioneDeroga();
 				if (cdCnd != null) {
 					condizioneDeroga = jdbcService.getDatiCondizione(cdCnd);
-					//logger.info("condizioneDeroga from jdbcService-->{}", stampaOggetto(condizioneDeroga));
 				}
 				if (condizioneDeroga != null) {
 					if (condizioneDeroga.getCD_UDM().equals("3")) {
 						condizioneDeroga.setValCodiceStandard(jdbcService.getCdSTD(condizioneDeroga.getCD_CONDIZIONE(),
 								cdIstituto, request.getDtOperazione()));
-						logger.info("CD_UDM = 3,condizioneDeroga ValCodiceStandard from jdbcService -->{}",
-								condizioneDeroga.getValCodiceStandard());
 					}
 
 					else {
 						condizioneDeroga.setValNumericoStandard(jdbcService
 								.getValSTD(condizioneDeroga.getCD_CONDIZIONE(), cdIstituto, request.getDtOperazione()));
-						logger.info("CD_UDM != 3,condizioneDeroga ValNumericoStandard from jdbcService -->{}",
-								condizioneDeroga.getValNumericoStandard());
 					}
 				}
 
@@ -137,21 +132,18 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					cond.setNrValore(cond.getNrValore());
 				condizioniOut.add(cond);
 			}
-			//logger.info("condizioniOut: {}", stampaCondizioneContoDettaglioList(condizioniOut));
-
+			logger.info("prima elaborazione - condizioniOut={}",condizioniOut);
+			
+			
 			// RECUPERO ALTRI PREZZI
-
 			req = buildCNDPRICEMSRequest(request);
-			logger.info("request: {}", new Gson().toJson(req));
+			logger.info("SECONDA INVOCAZIONE WS (RECUPERO  ALTRI PREZZI) request: {}", new Gson().toJson(req));
 			if (!CollectionUtils.isEmpty(req)) {
 				iibCdprcmsRequest.setBody(req);
 				out.addAll(service.inquiryContoCnd(iibCdprcmsRequest));
-				logger.info("response: {}", new Gson().toJson(out));
+				logger.info("SECONDA INVOCAZIONE WS (RECUPERO  ALTRI PREZZI) response: {}", new Gson().toJson(out));
 			}
-
-			//logger.info("Print condizioniStd: {}", stampaCondizioneContoDettaglioList(condizioniStd));
-			//logger.info(stampaIIBCDPRCMSSingleResponseType(out, "out").toString());
-
+			
 			if (condizioniStd.isEmpty()
 					|| !CollectionUtils.isEmpty(out) && !CollectionUtils.isEmpty(out.get(0).getNbpErrorInfo())) { // ERR
 				output.setCdEsito(CondizioniContoUtils.ESITO_KO);
@@ -163,8 +155,10 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			} else {
 				output.setCdEsito(CondizioniContoUtils.ESITO_OK);
 				output.setMsgEsito("");
-				if (!CollectionUtils.isEmpty(out))
-					condizioniOut.addAll(buildResponseFromCNDPRICEMS(out, condizioniStd));
+				if (!CollectionUtils.isEmpty(out)) {
+					List<CondizioneContoDettaglio> ccdList=buildResponseFromCNDPRICEMS(out, condizioniStd);
+					condizioniOut.addAll(ccdList);
+				}
 			}
 
 			// Verifico le esposizioni dei prezzi promozionati
@@ -190,9 +184,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 
 			output.setCondizioni(condizioniOut);
-
-			///logger.info("End doExecute with output: {}", stampaInquiryContoCndDettaglioOutput(output));
-
+			
+			logger.info("Output finale={}",output);
+		
 		} catch (Exception e) {
 			logger.error("Errore in INQURY", e);
 			throw e;
@@ -202,8 +196,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	}
 
 	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
-
-		logger.info("Start buildCNDPRICEMSRequestSTD");
 
 		List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
 
@@ -236,21 +228,18 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 		req.add(rSTD);
 
-		//logger.info("End buildCNDPRICEMSRequestSTD: {}", stampaIIBCDPRCMSSingleRequestType(rSTD));
-
 		return req;
 	}
 
 	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequest(InquiryContoCndRequest request) {
 
-		logger.info("Start buildCNDPRICEMSRequest");
-
+		
 		List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
 
 		if (request.getCdRapporto() != null && !request.getCdRapporto().equals("")
 				&& request.getCdRapporto().length() == 17) { // CASO RAPP
 
-			logger.info("buildCNDPRICEMSRequest aggiungo alla request il rapporto: {}", request.getCdRapporto());
+		//	logger.info("buildCNDPRICEMSRequest aggiungo alla request il rapporto: {}", request.getCdRapporto());
 
 			IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 
@@ -289,12 +278,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 			if (!CollectionUtils.isEmpty(request.getPromozioni())) { // CASO PROMO
 
-				logger.info("buildCNDPRICEMSRequest rapporto non presente considero le PROMO: {}",
-						request.getPromozioni());
 				for (String promo : request.getPromozioni()) {
 
 					if (!promo.isEmpty()) {
-						logger.info("buildCNDPRICEMSRequest aggiungo alla request la PROMO: {}", promo);
 						IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 
 						DatiApplicativi datiapplicativi = new DatiApplicativi();
@@ -331,7 +317,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 			if (request.getCdConv() != null && !request.getCdConv().equals("")) { // CASO CONV
 
-				logger.info("buildCNDPRICEMSRequest aggiungo alla request la CONVENZIONE: {}", request.getCdConv());
 				IIBCDPRCMSSingleRequestType r = new IIBCDPRCMSSingleRequestType();
 
 				DatiApplicativi datiapplicativi = new DatiApplicativi();
@@ -372,10 +357,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	protected List<CondizioneContoDettaglio> buildResponseFromCNDPRICEMS(List<IIBCDPRCMSSingleResponseType> response,
 			List<CondizioneContoDettaglio> condizioneDip) { // se condizioneDip = null => chiamata STD
 
-		logger.info("Start buildResponseFromCNDPRICEMS with: ");
-		//logger.info(stampaIIBCDPRCMSSingleResponseType(response, "response").toString());
-		//logger.info("condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
-
+		
 		List<CondizioneContoDettaglio> out = new ArrayList<>();
 
 		if (!CollectionUtils.isEmpty(response)) {
@@ -434,20 +416,11 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				}
 			}
 		}
-
-		//logger.info("End buildResponseFromCNDPRICEMS with response: {}", stampaCondizioneContoDettaglioList(out));
-
 		return out;
 	}
 
 	protected BigDecimal calcolaValorePromo(CondizioneConto cond, BigDecimal prezzoRif,
 			List<CondizioneContoDettaglio> condizioneDip) {
-
-		logger.info("Start calcolaValorePromo with: ");
-		// stampa ogni singolo oggetto complesso
-		//logger.info("1 - cond = {}", stampaOggettoWithParentClass(cond));
-		//logger.info("2 - prezzoRif = {}", prezzoRif);
-		//logger.info("3 - condizioneDip: {}", stampaCondizioneContoDettaglioList(condizioneDip));
 
 		BigDecimal valCalcolatoPro = BigDecimal.ZERO;
 		BigDecimal std = BigDecimal.ZERO;
@@ -487,16 +460,13 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				valCalc = BigDecimal.ZERO;
 			valCalcolatoPro = valCalc;
 		}
-
-		logger.info("End calcolaValorePromo --->{}", valCalcolatoPro);
-
+	
 		return valCalcolatoPro;
 	}
 
 	// recupero etichette
 	protected HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
-		logger.info("Start getEtichette");
-
+		
 		HashMap<String, String> params = new HashMap<String, String>();
 		params.put("cdProd", request.getCdProdotto());
 		for (int i = 0; i < 10; i++) {
@@ -510,10 +480,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	}
 
 	protected void buildCdRifLivello(CondizioneContoDettaglio condizione) {
-		logger.info("buildCdRifLivello START");
 		if (condizione != null) {
-
-			logger.info("Cd Tipo livello condizione: {}", condizione.getCdTipoLivello());
 
 			if ("CN".equals(condizione.getCdTipoLivello())) {
 				condizione.setCdRifLivello(request.getCdConv());
@@ -534,162 +501,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			} else {
 				condizione.setCdRifLivello("");
 			}
-			logger.info("Cd Rif livello condizione: {}", condizione.getCdRifLivello());
 		}
-		logger.info("buildCdRifLivello END");
 	}
 
-	/**
-	 * Stampa a log tutto l' oggetto
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	/*private StringBuilder stampaOggetto(Object obj) {
-		StringBuilder buffer = new StringBuilder("[");
-		if (obj==null)
-			return new StringBuilder("");;
-		java.util.Arrays.asList(obj.getClass().getDeclaredFields()).forEach(f -> {
-			try {
-				f.setAccessible(true);// per rendere accessibili i campi non pubblici
-				buffer.append(f.getName() + " = " + f.get(obj)).append(" - ");
-			} catch (Exception e) {
-			}
-		});
-		buffer.append("]");
-		return buffer;
-	}*/
 
-	/**
-	 * permette di stampare i campi di un oggetto e quelli ereditati da una
-	 * superclasse
-	 * 
-	 * @param obj
-	 * @return
-	 */
-	/*private StringBuilder stampaOggettoWithParentClass(Object obj) {
-		StringBuilder buffer = new StringBuilder("[");
-		java.util.Arrays.asList(obj.getClass().getDeclaredFields()).forEach(f -> {
-			try {
-				f.setAccessible(true);// per rendere accessibili i campi non pubblici
-				buffer.append(f.getName() + " = " + f.get(obj)).append(" - ");
-			} catch (Exception e) {
-			}
-		});
-		java.util.Arrays.asList(obj.getClass().getSuperclass().getDeclaredFields()).forEach(s -> {
-			try {
-				s.setAccessible(true);// per rendere accessibili i campi non pubblici
-				buffer.append(s.getName() + " = " + s.get(obj)).append(" - ");
-			} catch (Exception e) {
-				logger.error(e.getMessage(), e);
-			}
-		});
-		buffer.append("]");
-		return buffer;
-	}
-*/
-	/**
-	 * permette di stampare una lista di oggetti di tipo
-	 * IIBCDPRCMSSingleResponseType
-	 * 
-	 * @param outSTD
-	 * @param objectName
-	 * @return StringBuilder
-	 */
-	/*private StringBuilder stampaIIBCDPRCMSSingleResponseType(List<IIBCDPRCMSSingleResponseType> outSTD,
-			String objectName) {
-
-		StringBuilder buffer = new StringBuilder(objectName + " [");
-		if (outSTD != null) {
-			for (IIBCDPRCMSSingleResponseType elem : outSTD) {
-				buffer.append("OutputFactory: " + stampaOggetto(elem.getOutputFactory()));
-				buffer.append("OutputPrice: " + stampaOggetto(elem.getOutputPrice()));
-				buffer.append("Valori: ");
-				for (OutValori val : elem.getValori()) {
-
-					buffer.append("outValore: " + stampaOggetto(val));
-
-				}
-				buffer.append("NbpErrorInfo: " + elem.getNbpErrorInfo());
-
-			}
-		}
-		buffer.append("]");
-		return buffer;
-	}*/
-
-	/**
-	 * Permette di stampare a log l'oggetto complesso di tipo
-	 * IIBCDPRCMSSingleRequestType
-	 * 
-	 * @param elem
-	 * @return
-	 */
-	/*private StringBuilder stampaIIBCDPRCMSSingleRequestType(IIBCDPRCMSSingleRequestType elem) {
-
-		StringBuilder buffer = new StringBuilder("Result: [");
-
-		buffer.append(" datiApplicativi = " + stampaOggetto(elem.getDatiApplicativi()));
-		buffer.append(" parametriComuni = " + stampaOggetto(elem.getParametriComuni()));
-		buffer.append(" parametriFactory = " + stampaOggetto(elem.getParametriFactory()));
-		buffer.append(" parametriPrice = " + stampaOggetto(elem.getParametriPrice()));
-		buffer.append("]");
-
-		return buffer;
-
-	}*/
-
-	/**
-	 * permette di stampare a log una lista di oggetti di tipo
-	 * IIBCDPRCMSSingleRequestType
-	 * 
-	 * @param list
-	 * @return
-	 */
-	/*private StringBuilder stampaIIBCDPRCMSSingleRequestTypeList(List<IIBCDPRCMSSingleRequestType> list) {
-		StringBuilder buffer = new StringBuilder("{");
-		for (IIBCDPRCMSSingleRequestType iibcdprcmsSingleRequestType : list) {
-			buffer.append(stampaIIBCDPRCMSSingleRequestType(iibcdprcmsSingleRequestType));
-		}
-		buffer.append("}");
-
-		return buffer;
-	}*/
-
-	/**
-	 * permette di stampare a log un oggetto di tipo InquiryContoCndDettaglioOutput
-	 * 
-	 * @param elem
-	 * @return
-	 */
-	/*private StringBuilder stampaInquiryContoCndDettaglioOutput(InquiryContoCndDettaglioOutput elem) {
-
-		StringBuilder buffer = new StringBuilder("[");
-		buffer.append(" cdEsito: " + elem.getCdEsito());
-		buffer.append(" MsgEsito: " + elem.getMsgEsito());
-		buffer.append(stampaCondizioneContoDettaglioList(elem.getCondizioni()));
-		buffer.append("]");
-
-		return buffer;
-	}*/
-
-	/**
-	 * permette di stampare a log una lista di oggetti di tipo
-	 * CondizioneContoDettaglio
-	 * 
-	 * @param lista
-	 * @return
-	 */
-	/*private StringBuilder stampaCondizioneContoDettaglioList(List<CondizioneContoDettaglio> lista) {
-
-		StringBuilder buffer = new StringBuilder("Condizioni ContoDettaglio: {");
-		if (lista != null) {
-			for (CondizioneContoDettaglio cond : lista) {
-				buffer.append("ContoDettaglio: " + stampaOggettoWithParentClass(cond));
-			}
-		}
-		buffer.append("}");
-
-		return buffer;
-	}*/
 }
