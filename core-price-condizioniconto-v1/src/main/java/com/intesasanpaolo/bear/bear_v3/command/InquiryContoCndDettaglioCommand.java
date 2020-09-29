@@ -481,7 +481,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 	protected void buildCdRifLivello(CondizioneContoDettaglio condizione) {
 		if (condizione != null) {
-
+			logger.info("getCdTipoLivello vale: {}", condizione.getCdTipoLivello());
 			if ("CN".equals(condizione.getCdTipoLivello())) {
 				condizione.setCdRifLivello(request.getCdConv());
 
