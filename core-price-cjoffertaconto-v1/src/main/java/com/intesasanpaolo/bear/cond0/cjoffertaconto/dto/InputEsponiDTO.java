@@ -41,5 +41,5 @@ public class InputEsponiDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
 	private Date dataRif;
  
-
+	private boolean forceMock = false;
 }

@@ -34,6 +34,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServ
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
+import com.intesasanpaolo.bear.core.properties.PropertiesManager;
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -48,9 +49,17 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	@Autowired
 	private WKIBServiceBS wkibServiceBS;
 	
+	@Autowired
+    private PropertiesManager propertiesManager;
+	
 	@Override
 	protected StampaResponseResource doExecute() throws Exception {
 		log.info("execute START");
+		
+		if(stampaRequestDTO.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "ON".equals(propertiesManager.get("CALL_MOCK", String.class, "OFF"))) {
+			logger.info("doExecute CALL MOCKED");
+			return buildStampaResponseResourceMock();
+		}
 		
 		StampaResponseResource stampaResponseResource = buildStampaResponseResource();
 		
@@ -170,4 +179,30 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		return wkibRequest;
 	}
 	
+	private StampaResponseResource buildStampaResponseResourceMock() {
+		log.info("mock START");
+		StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource("00","")).build();
+				
+		stampaResponseResource.setCodDDS("codDDS di prova");
+		stampaResponseResource.setCodTemplate("Template di prova");
+		RigheDiStampaResource riga = new RigheDiStampaResource();
+		riga.setPrgStp("123");
+		riga.setPrgStrut("1313");
+		riga.setTipoStrut(TipoStrutEnum.INTESTAZIONE.toString());
+		
+		riga.setIntestazione(new IntestazioneStampaResource(stampaRequestDTO.getIntestatario().getIntestazione(), "testo mock2", "testo mock3", "testo mock4"));
+
+		riga.setTitolo(new TitoloStampaResource("titolo mock"));
+		
+		riga.setCondizione(new CondizioneStampaResource("cod mock", DateUtils.dateToString(new Date(), DateUtils.DATE_FORMAT_DD_MM_YYYY_SLASH), "desc cond mock", "valore mock", "nota mock"));
+		
+		riga.setNota(new NotaStampaResource("1", "nota mock"));
+		
+		riga.setPromozione(new PromozioneStampaResource("Promozione mock"));
+		
+		stampaResponseResource.setRighe(new ArrayList<RigheDiStampaResource>());
+		stampaResponseResource.getRighe().add(riga);
+		log.info("mock END");
+		return stampaResponseResource;
+	}
 }
