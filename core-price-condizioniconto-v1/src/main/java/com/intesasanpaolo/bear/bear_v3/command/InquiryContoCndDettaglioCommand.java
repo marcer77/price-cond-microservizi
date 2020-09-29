@@ -53,9 +53,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	private JDBCService jdbcService;
 
 	private HashMap<String, String> etichette = new HashMap<String, String>();
-
-	private int indicePromozione;
-
+	
 	public InquiryContoCndDettaglioCommand(InquiryContoCndRequest request) {
 		this.request = request;
 	}
@@ -130,6 +128,9 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					cond.setCdValore(condizioneDeroga.getValCodiceStandard());
 				else
 					cond.setNrValore(cond.getNrValore());
+				
+				cond.setCdRifLivello("");
+					
 				condizioniOut.add(cond);
 			}
 			logger.info("prima elaborazione - condizioniOut={}",condizioniOut);
@@ -162,8 +163,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 
 			// Verifico le esposizioni dei prezzi promozionati
-			indicePromozione = 0;
-			logger.info("Lista promozioni: {}", request.getPromozioni());
 			for (CondizioneContoDettaglio condizionePromo : condizioniOut) {
 				if (condizionePromo.getCdTipoLivello().equalsIgnoreCase("P")) {
 
@@ -180,7 +179,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					condizionePromo.setNrValCalcolatoPro(calcolaValorePromo(condizionePromo,
 							prezzoRapp == null ? prezzoConv : prezzoRapp, condizioniStd));
 				}
-				buildCdRifLivello(condizionePromo);
 			}
 
 			output.setCondizioni(condizioniOut);
@@ -349,8 +347,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			}
 		}
 
-		//logger.info("End buildCNDPRICEMSRequest with request: {}", stampaIIBCDPRCMSSingleRequestTypeList(req));
-
 		return req;
 	}
 
@@ -361,6 +357,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		List<CondizioneContoDettaglio> out = new ArrayList<>();
 
 		if (!CollectionUtils.isEmpty(response)) {
+			int k=0;
 			for (IIBCDPRCMSSingleResponseType res : response) {
 
 				for (OutValori cnd : res.getValori()) {
@@ -412,8 +409,10 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 					else
 						c.setNrValore(BigDecimal.valueOf(Double.valueOf(cnd.getVal())));
 
+					buildCdRifLivello(c,k);					
 					out.add(c);
 				}
+				k++;
 			}
 		}
 		return out;
@@ -479,7 +478,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		return result;
 	}
 
-	protected void buildCdRifLivello(CondizioneContoDettaglio condizione) {
+	protected void buildCdRifLivello(CondizioneContoDettaglio condizione,int k) {
 		if (condizione != null) {
 			logger.info("getCdTipoLivello vale: {}", condizione.getCdTipoLivello());
 			if ("CN".equals(condizione.getCdTipoLivello())) {
@@ -491,13 +490,11 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 
 			} else if ("P".equals(condizione.getCdTipoLivello())) {
 
-				logger.info("IndicePromozione vale: {}", indicePromozione);
+				logger.info("IndicePromozione vale: {}", k);
 
-				condizione.setCdRifLivello(!CollectionUtils.isEmpty(request.getPromozioni())
-						&& indicePromozione <= (request.getPromozioni().size() - 1)
-								? request.getPromozioni().get(indicePromozione)
+				condizione.setCdRifLivello(!CollectionUtils.isEmpty(request.getPromozioni())&& k <= (request.getPromozioni().size() - 1)
+								? request.getPromozioni().get(k)
 								: null);
-				indicePromozione++;
 			} else {
 				condizione.setCdRifLivello("");
 			}
