@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
-import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.InputEsponiDTO;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.dto.PromozioniDTO;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.model.InPPRM;
@@ -31,19 +27,19 @@ import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriProdottoResou
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.service.ctg.PCMYServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
-import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
+import com.intesasanpaolo.bear.core.properties.PropertiesManager;
 
 
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 
-	private Logger log = Logger.getLogger(OffertaContoCommand.class);
-
-
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 
 	private InputEsponiDTO dto;
+	
+	@Autowired
+    private PropertiesManager propertiesManager;
 	
 	@Autowired
 	private PCMYServiceBS pcmyServiceBS;
@@ -56,21 +52,29 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 
 	@Override
 	public boolean canExecute() {
-		log.info("canExecute START");
-		log.info("canExecute END");
+		logger.info("canExecute START");
+		logger.info("canExecute END");
 		return true;
 	}
 
 	@Override
 	protected EsponiResponseResource doExecute() {
-		log.info("doExecute START");
+		logger.info("doExecute START");
+		EsponiResponseResource result = null;
+		if(dto.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "ON".equals(propertiesManager.get("CALL_MOCK", String.class, "OFF"))) {
+			logger.info("doExecute CALL MOCKED");
+			return getMockResponse();
+		}
+		
 		PCMYResponse response = pcmyServiceBS.callBS(buildRequest());
-		log.info("doExecute END");
-		return buildResponse(response);
+		result = buildResponse(response);
+		
+		logger.info("doExecute END");
+		return result ;
 	}
 
 	private PCMYRequest buildRequest() {
-		log.info("buildRequest START");
+		logger.info("buildRequest START");
 		List<InPPRM> inList = new ArrayList<InPPRM>();
 		if( CollectionUtils.isNotEmpty(dto.getPromozioni()) ) {
 			for(PromozioniDTO p : dto.getPromozioni()) {
@@ -82,7 +86,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 				inList.add(promozione);
 			}
 		}
-		log.info("buildRequest Promozioni in lista "+inList.size());
+		logger.info("buildRequest Promozioni in lista "+inList.size());
 		PCMYRequest request = PCMYRequest.builder()
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.codCatRapp(dto.getRapporto().getCodCategoria())
@@ -93,7 +97,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 				.tipoDA(dto.getTipoDA())
 				.inList(inList)
 				.build();
-		log.info("buildRequest END");
+		logger.info("buildRequest END");
 		return request;
 	}
 	
@@ -110,7 +114,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 						.build());
 			}
 		}
-		log.info("buildResponse lista Valori "+valori.size());
+		logger.info("buildResponse lista Valori "+valori.size());
 		return valori;
 	}
 	
@@ -124,7 +128,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 						.build());
 			}
 		}
-		log.info("buildResponse lista prodotti "+prodotti.size());
+		logger.info("buildResponse lista prodotti "+prodotti.size());
 		return prodotti;
 	}
 	
@@ -142,12 +146,12 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 						.build());
 			}
 		}
-		log.info("buildResponse lista Valori prodotto "+valoriProdotto.size());
+		logger.info("buildResponse lista Valori prodotto "+valoriProdotto.size());
 		return valoriProdotto;
 	}
 	
 	private EsponiResponseResource buildResponse(PCMYResponse res) {
-		log.info("buildResponse START");
+		logger.info("buildResponse START");
 		EsponiResponseResource response =new EsponiResponseResource();
 		
 		response.setEsito(new EsitoResource(res.getCodEsito(), ""));
@@ -160,8 +164,73 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 		
 		response.setProdotti(popolaProdotti(res));
 		
-		log.info("buildResponse END");
+		logger.info("buildResponse END");
 		return response;
+	}
+
+	//MOCK
+	private EsponiResponseResource getMockResponse() {
+		
+		EsponiResponseResource response =new EsponiResponseResource();
+		
+		response.setEsito(new EsitoResource("00", ""));
+		
+		List<ValoriOffertaResource> valori = new ArrayList<>();
+		valori.add(ValoriOffertaResource.builder().costo("13.34582")
+				.costoListino("14.034522")
+				.decorrenza("20200901")
+				.scadenza("20210303")
+				.flAgevolato("S")
+				.build());
+		
+		valori.add(ValoriOffertaResource.builder().costo("13.34582")
+				.costoListino("15.034522")
+				.decorrenza("20200901")
+				.scadenza("20210303")
+				.flAgevolato("N")
+				.build());
+		
+		OffertaResource offerta = OffertaResource.builder().codice("OFFH99C").valori(valori).build();
+		response.setOfferta(offerta);
+		
+		List<ProdottoResource> prodotti = new ArrayList<>();
+		
+		List<ValoriProdottoResource> valoriProdotto = new ArrayList<>();
+		
+		valoriProdotto.add(ValoriProdottoResource.builder()
+				.costo("16.034532")
+				.costoPromo("15")
+				.decorrenza("20201005")
+				.scadenza("20201120")
+				.flAcceso("N")
+				.flPromo("S")
+				.build());
+		
+		valoriProdotto.add(ValoriProdottoResource.builder()
+				.costo("11.034532")
+				.costoPromo("10")
+				.decorrenza("20201005")
+				.scadenza("20201120")
+				.flAcceso("S")
+				.flPromo("S")
+				.build());
+		
+		prodotti.add(ProdottoResource.builder().codice("PRNH99C")
+				.descrizione("XMESALUTE")
+				.prodotti(valoriProdotto)
+				.build());
+		
+		prodotti.add(ProdottoResource.builder().codice("PRNH94C")
+				.descrizione("XMESALUTE-FAMILY")
+				.prodotti(valoriProdotto)
+				.build());
+		
+		
+		
+		response.setProdotti(prodotti);
+		
+		return response;
+		
 	}
 
 }

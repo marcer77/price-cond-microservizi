@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -37,6 +38,7 @@ import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.OffertaResource;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ProdottoResource;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriOffertaResource;
 import com.intesasanpaolo.bear.cond0.cjoffertaconto.resource.ValoriProdottoResource;
+import com.intesasanpaolo.bear.core.properties.PropertiesManager;
 
 @RunWith(SpringRunner.class)
 public class CJOffertaContoControllerTest extends BaseTest{
@@ -110,6 +112,26 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		mockPCMYServiceBS_OK();
 		String uri = "/cjoffertaconto/esponi";
 
+		String inputJson = mapToJson(inputEsponiDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+	
+	@Test
+	public void testStampaMockOK() throws Exception {
+		mockPCMYServiceBS_OK();
+		String uri = "/cjoffertaconto/esponi";
+
+		inputEsponiDTO.setForceMock(true);
+		
 		String inputJson = mapToJson(inputEsponiDTO);
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)

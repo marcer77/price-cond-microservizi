@@ -7,7 +7,7 @@ spring:
     time-zone: Europe/Rome
   profiles:
     active: ${ISP_AMBIENTE}
-    
+CALL_MOCK: OFF
 logging:
   level:
     root: INFO
