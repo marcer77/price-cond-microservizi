@@ -5,7 +5,7 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     org.keycloak: INFO
-CALL_MOCK: ${CALL_MOCK}
+
 error-manager:
   enabled: true
 
