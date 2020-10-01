@@ -15,7 +15,7 @@ connectors:
   jdbcConfigurations:
     items:
       JDBCConnector:
-        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@pdlcbt124.syssede.systest.sanpaoloimi.com:2194/SCOND0}
         driver-class-name: oracle.jdbc.OracleDriver
         username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
         password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
@@ -23,7 +23,7 @@ connectors:
         timeout: 8000
         enabledTracing: true
       JDBCGenericConnector:
-        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+        uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@pdlcbt124.syssede.systest.sanpaoloimi.com:2194/SCOND0}
         driver-class-name: oracle.jdbc.OracleDriver
         username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
         password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
@@ -54,7 +54,7 @@ connectors:
       enabledTracing: true
     items:
       InquiryContoCndConnector:
-        endpoint: ${IIBCDPRCMS_ENDPOINT:http://datapower-intra-svil.sede.corp.sanpaoloimi.com:55588/T1IB0/IIBCDPRCMS}
+        endpoint: ${IIBCDPRCMS_ENDPOINT:http://datapower-intra-test.sede.corp.sanpaoloimi.com:5588/T1IB0/IIBCDPRCMS}
         contextPath: com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms
         soapVersion: 1.0
         soapAction: http:///www.intesasanpaolo.com/PHCP0/IIBCDPRCMS
@@ -62,6 +62,15 @@ connectors:
           prefixInter: "test"
           serviceID: "IIBCDPRCMS"
           serviceVersion: "00"
+      InquiryContoCndConnectorV2:
+        endpoint: ${IIBCDPRCMS_ENDPOINT:http://datapower-intra-test.sede.corp.sanpaoloimi.com:5588/T1IB0/IIBCDPRCMS}
+        contextPath: com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms
+        soapVersion: 1.0
+        soapAction: http:///www.intesasanpaolo.com/PHCP0/IIBCDPRCMS
+        header:
+          prefixInter: "test"
+          serviceID: "IIBCDPRCMS"
+          serviceVersion: "00"    
 
 #### Security configuration: Everything allowed for test
 keycloak:

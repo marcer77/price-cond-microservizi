@@ -71,6 +71,15 @@ connectors:
           prefixInter: "test"
           serviceID: "IIBCDPRCMS"
           serviceVersion: "00"
+      InquiryContoCndConnectorV2:
+        endpoint: ${IIBCDPRCMS_ENDPOINT:http://localhost:4545/T1IB0/IIBCDPRCMS}
+        contextPath: com.intesasanpaolo.bear.bear_v3.connector.ws.mavengen.iibcdprcms
+        soapVersion: 1.0
+        soapAction: http:///www.intesasanpaolo.com/PHCP0/IIBCDPRCMS
+        header:
+          prefixInter: "test"
+          serviceID: "IIBCDPRCMS"
+          serviceVersion: "00"
 
 #### Security configuration: Everything allowed for test
 keycloak:

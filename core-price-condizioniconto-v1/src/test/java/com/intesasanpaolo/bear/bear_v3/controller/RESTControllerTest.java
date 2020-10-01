@@ -304,7 +304,94 @@ public class RESTControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
-		Assert.assertTrue(content.contains("cdEsito\":\"01"));
 	}
+	
+	@Test
+	public void testContoCndDettaglio_PromozioniKO_1() throws Exception {
+	
+		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("InquiryContoCnd-responseKO_1.xml")));
 
+		List<String> promozioniList = new ArrayList<String>();
+		promozioniList.add("Q001852");
+		inquiryContoCndRequest.setPromozioni(promozioniList);
+
+		inquiryContoCndRequest.setCdConv("");
+		inquiryContoCndRequest.setCdRapporto("");
+
+		
+		String uriString = "/condizioniconto/inquiry";
+
+		String inputJson = mapToJson(inquiryContoCndRequest);
+
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+	}
+	@Test
+	public void testContoCndDettaglio_PromozioniKO_2() throws Exception {
+	
+		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("InquiryContoCnd-responseKO_2.xml")));
+
+		List<String> promozioniList = new ArrayList<String>();
+		promozioniList.add("Q001852");
+		inquiryContoCndRequest.setPromozioni(promozioniList);
+
+		inquiryContoCndRequest.setCdConv("");
+		inquiryContoCndRequest.setCdRapporto("");
+
+		
+		String uriString = "/condizioniconto/inquiry";
+
+		String inputJson = mapToJson(inquiryContoCndRequest);
+
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+	}
+	
+	@Test
+	public void testContoCndDettaglio_PromozioniKO_3() throws Exception {
+	
+		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
+				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
+						.withBodyFile("InquiryContoCnd-responseKO_3.xml")));
+
+		List<String> promozioniList = new ArrayList<String>();
+		promozioniList.add("Q001852");
+		inquiryContoCndRequest.setPromozioni(promozioniList);
+
+		inquiryContoCndRequest.setCdConv("");
+		inquiryContoCndRequest.setCdRapporto("");
+
+		
+		String uriString = "/condizioniconto/inquiry";
+
+		String inputJson = mapToJson(inquiryContoCndRequest);
+
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+	}
 }
