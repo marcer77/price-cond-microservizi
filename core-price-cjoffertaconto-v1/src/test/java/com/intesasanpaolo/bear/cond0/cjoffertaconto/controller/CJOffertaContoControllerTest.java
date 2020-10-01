@@ -106,7 +106,7 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "");
 	}
 	
-	
+	 
 	@Test
 	public void testStampaOK() throws Exception {
 		mockPCMYServiceBS_OK();
@@ -126,12 +126,10 @@ public class CJOffertaContoControllerTest extends BaseTest{
 	}
 	
 	@Test
-	public void testStampaMockOK() throws Exception {
-		mockPCMYServiceBS_OK();
+	public void testStampaKO() throws Exception {
+		mockPCMYServiceBS_KO();
 		String uri = "/cjoffertaconto/esponi";
 
-		inputEsponiDTO.setForceMock(true);
-		
 		String inputJson = mapToJson(inputEsponiDTO);
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -144,7 +142,6 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		log.info("content = {}", content);
 
 	}
-	
 	private void mockPCMYServiceBS_OK() {
 		PCMYResponse pcmyResponse = new PCMYResponse();
 		pcmyResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
@@ -177,6 +174,26 @@ public class CJOffertaContoControllerTest extends BaseTest{
 		).thenReturn(pcmyResponse);
 	}
 	
+	private void mockPCMYServiceBS_KO() {
+		PCMYResponse pcmyResponse = new PCMYResponse();
+		pcmyResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0016").build());
+		pcmyResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		pcmyResponse.setCodOfferta("");
+		pcmyResponse.setCodEsito("00");
+		
+		List<OutOFF> outOffList = new ArrayList<OutOFF>();
+		List<OutPRD> outPrdList = new ArrayList<OutPRD>();
+		OutPRD outPRD = new OutPRD();
+		outPrdList.add(outPRD);
+		
+		List<OutCPR> outCPRList = new ArrayList<OutCPR>();
+		outPrdList.get(0).setOutCPRList(outCPRList);		
+		pcmyResponse.setOutOffList(outOffList);
+		pcmyResponse.setOutPrdList(outPrdList);
+		Mockito.when(
+				this.ctgConnectorPCMY.call(request, pcmyCtgRequestTrasformer, pcmyCtgResponseTansformer, new Object[] {})
+		).thenReturn(pcmyResponse);
+	}
 	
 	@Test
 	public void testStampa_HeadersKO() throws Exception {
