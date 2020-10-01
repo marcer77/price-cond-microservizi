@@ -56,7 +56,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	protected StampaResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		
-		if(stampaRequestDTO.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "ON".equals(propertiesManager.get("CALL_MOCK", String.class, "OFF"))) {
+		if(stampaRequestDTO.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "S".equals(propertiesManager.get("CALL_MOCK", String.class, "N"))) {
 			logger.info("doExecute CALL MOCKED");
 			return buildStampaResponseResourceMock();
 		}

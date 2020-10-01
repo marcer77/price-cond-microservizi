@@ -61,7 +61,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 	protected EsponiResponseResource doExecute() {
 		logger.info("doExecute START");
 		EsponiResponseResource result = null;
-		if(dto.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "ON".equals(propertiesManager.get("CALL_MOCK", String.class, "OFF"))) {
+		if(dto.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "S".equals(propertiesManager.get("CALL_MOCK", String.class, "N"))) {
 			logger.info("doExecute CALL MOCKED");
 			return getMockResponse();
 		}
