@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +56,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	@Autowired
 	private JDBCService jdbcService;
 
-	private HashMap<String, String> etichette = new HashMap<String, String>();
+	private Map<String, String> etichette = new HashMap<String, String>();
 	
 	public InquiryContoCndDettaglioCommand(InquiryContoCndRequest request) {
 		this.request = request;
@@ -68,7 +69,22 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		try {
 			List<CondizioneContoDettaglio> condizioniOut = new ArrayList<>();
 			
-			etichette = getEtichette(request);
+			List<CondizioneContoDettaglio> condizioniStd = null; // una singola copia della lista di
+																// STD
+																// intera lista di condizioni -
+																// eventualmente ripetute per tipo
+																// livello
+
+			//Recupero le condizioni STD da COND0
+			condizioniStd = getCondizioniStd(request);
+			
+			if (CollectionUtils.isEmpty(condizioniStd)) {
+				throw new IIBWebServiceException("Nessuna condizione standard recuperata da WEBSERVICE IIB", null);
+			}
+			
+			//estraggo le etichette dalle condizioni standard 
+			etichette = getEtichette(condizioniStd);
+			
 			String cdIstituto = jdbcService.getIstitutoFromAbi(request.getCdAbi());
 			logger.info("cdIstituto per ABI {} -->{}",request.getCdAbi(), cdIstituto);
 
@@ -81,8 +97,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			header.setIspCallerCompanyIDCode(cdIstituto);
 			iibCdprcmsRequest.setHeader(header);
 			
-			//recupero condizioni standard
-			List<CondizioneContoDettaglio> condizioniStd=this.recuperaCondizioniStandard(iibCdprcmsRequest, request, cdIstituto);
+//			//recupero condizioni standard
+//			List<CondizioneContoDettaglio> condizioniStd=this.recuperaCondizioniStandard(iibCdprcmsRequest, request, cdIstituto);
 			logger.info("prima elaborazione - condizioniStandard={}",condizioniStd);
 			condizioniOut.addAll(condizioniStd);
 			
@@ -156,6 +172,14 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		}
 
 		return output;
+	}
+
+	private Map<String, String> getEtichette(List<CondizioneContoDettaglio> condizioniStd) {
+		Map<String, String> ret = new HashMap<String, String>(); 
+		for (CondizioneContoDettaglio condizioneContoDettaglio : condizioniStd) {
+			ret.put(condizioneContoDettaglio.getCdCnd(),condizioneContoDettaglio.getCdEtichetta());
+		}
+		return ret;
 	}
 
 	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
@@ -419,65 +443,6 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	
 	
 	
-	private List<CondizioneContoDettaglio> recuperaCondizioniStandard(IIBCDPRCMSRequest iibCdprcmsRequest,InquiryContoCndRequest request,String cdIstituto ) throws IIBWebServiceException {
-		List<IIBCDPRCMSSingleRequestType> reqSTD = new ArrayList<>();
-		List<CondizioneContoDettaglio> condizioniStd = new ArrayList<>(); // una singola copia della lista di
-		List<IIBCDPRCMSSingleResponseType> outSTD = new ArrayList<>();
-		
-		// RECUPERO STD
-		reqSTD = buildCNDPRICEMSRequestSTD(request);
-		logger.info("PRIMA INVOCAZIONE WS (RECUPERO  STD) request: {}", new Gson().toJson(reqSTD));
-		if (!CollectionUtils.isEmpty(reqSTD)) {
-			iibCdprcmsRequest.setBody(reqSTD);
-			IIBCDPRCMSResponseType res=service.inquiryContoCndV2(iibCdprcmsRequest);
-			outSTD.addAll(res.getOutputProdotto());
-			logger.info("PRIMA INVOCAZIONE WS (RECUPERO STD) response: {}", new Gson().toJson(outSTD));
-		}
-		condizioniStd = buildResponseFromCNDPRICEMS(outSTD, null);
-		if (CollectionUtils.isEmpty(condizioniStd)) {
-			throw new IIBWebServiceException("Nessuna condizione standard recuperata da WEBSERVICE IIB", null);
-		}
-		
-		logger.info("condizioniStd={}",condizioniStd);
-		
-		
-		for (CondizioneContoDettaglio cond : condizioniStd) {
-			String cdCnd = cond.getCdCnd();
-			String etichetta = etichette.containsKey(cdCnd) ? etichette.get(cdCnd) : "";
-			CondizioneDeroga condizioneDeroga = new CondizioneDeroga();
-			if (cdCnd != null) {
-				condizioneDeroga = jdbcService.getDatiCondizione(cdCnd);
-			}
-			if (condizioneDeroga != null) {
-				if (condizioneDeroga.getCD_UDM().equals("3")) {
-					condizioneDeroga.setValCodiceStandard(jdbcService.getCdSTD(condizioneDeroga.getCD_CONDIZIONE(),
-							cdIstituto, request.getDtOperazione()));
-				}
-
-				else {
-					condizioneDeroga.setValNumericoStandard(jdbcService
-							.getValSTD(condizioneDeroga.getCD_CONDIZIONE(), cdIstituto, request.getDtOperazione()));
-				}
-			}
-
-			cond.setCdCnd(condizioneDeroga.getCD_CONDIZIONE());
-			cond.setCdDescCnd(condizioneDeroga.getDS_CONDIZIONE());
-			cond.setCdUDM(condizioneDeroga.getCD_UDM());
-			cond.setCdTipoLivello("S");
-			cond.setCdEtichetta(etichetta);
-			if (cond.getCdTipoValore().equals("3"))
-				cond.setCdValore(condizioneDeroga.getValCodiceStandard());
-			else
-				cond.setNrValore(cond.getNrValore());
-			
-				
-			//condizioniOut.add(cond);
-		}
-		logger.info("prima elaborazione - condizioni standard estratte={}",condizioniStd);
-			
-		return condizioniStd;
-	}
-	
 	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestForPromo(InquiryContoCndRequest request, String promo) {		
 		List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
 
@@ -512,6 +477,24 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		return req;
 
 	}
+	protected List<CondizioneContoDettaglio> getCondizioniStd(InquiryContoCndRequest request) {
+		
+		HashMap<String, String> params = new HashMap<String, String>();
+		
+		params.put("ABI", request.getCdAbi());
+		params.put("DATA", request.getDtOperazione());
+		params.put("cdProd", request.getCdProdotto());
+		params.put("CdAttrCond",request.getCdAttrCnd());
+		
+		for (int i = 0; i < 10; i++) {
+			params.put("cdEtichetta" + (i + 1), i < request.getDriver().size() ? request.getDriver().get(i).etichetta : "?");
+			params.put("cdDriver" + (i + 1), i < request.getDriver().size() ? request.getDriver().get(i).val : "*");
+		}
+		List<CondizioneContoDettaglio> result = jdbcService.getCondizioniStd(params);
 
+		logger.info("End getEtichette: result-->{}", result);
+
+		return result;
+	}
 
 }

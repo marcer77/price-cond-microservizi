@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.intesasanpaolo.bear.bear_v3.command.ControlloTipoContoCommand;
 import com.intesasanpaolo.bear.bear_v3.command.InquiryContoCndCommand;
 import com.intesasanpaolo.bear.bear_v3.command.InquiryContoCndDettaglioCommand;
+import com.intesasanpaolo.bear.bear_v3.command.InquiryContoCndDettaglioCommand;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoResponse;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoRequest;
 import com.intesasanpaolo.bear.bear_v3.model.inquirycontocnd.InquiryContoCndDettaglioOutput;
@@ -55,5 +56,5 @@ public class RESTController extends StatelessController {
 		InquiryContoCndDettaglioOutput res = command.execute();
 		return res;
 	}
-
+	
 }
