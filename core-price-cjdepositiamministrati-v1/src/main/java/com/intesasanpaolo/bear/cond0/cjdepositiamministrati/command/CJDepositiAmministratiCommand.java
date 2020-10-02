@@ -56,7 +56,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	protected StampaResponseResource doExecute() throws Exception {
 		log.info("execute START");
 		
-		if(stampaRequestDTO.isForceMock() || propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "S".equals(propertiesManager.get("CALL_MOCK", String.class, "N"))) {
+		if(propertiesManager!=null && propertiesManager.get("CALL_MOCK")!=null && "S".equals(propertiesManager.get("CALL_MOCK", String.class, "N"))) {
 			logger.info("doExecute CALL MOCKED");
 			return buildStampaResponseResourceMock();
 		}
@@ -179,7 +179,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		return wkibRequest;
 	}
 	
-	private StampaResponseResource buildStampaResponseResourceMock() {
+	protected StampaResponseResource buildStampaResponseResourceMock() {
 		log.info("mock START");
 		StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource("00","")).build();
 				
