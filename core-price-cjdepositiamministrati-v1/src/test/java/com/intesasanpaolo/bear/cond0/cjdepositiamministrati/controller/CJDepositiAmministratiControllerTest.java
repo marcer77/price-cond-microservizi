@@ -24,6 +24,7 @@ import com.intesasanpaolo.bear.cond0.cj.lib.exception.handler.CJBaseExceptionHan
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.command.CJDepositiAmministratiCommand;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
@@ -35,6 +36,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 
 @RunWith(SpringRunner.class)
@@ -133,26 +135,6 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	}
 
 	@Test
-	public void testStampaMockOK() throws Exception {
-		mockWKIBServiceBS_OK();
-		String uri = "/cjdepositiamministrati/stampa";
-
-		stampaRequestDTO.setForceMock(true);
-		
-		String inputJson = mapToJson(stampaRequestDTO);
-
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(httpHeaders).content(inputJson)).andReturn();
-
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-	}
-
-
-	@Test
 	public void testStampaWKIBServiceBS_KO() throws Exception {
 		mockWKIBServiceBS_KO();
 		String uri = "/cjdepositiamministrati/stampa";
@@ -225,4 +207,5 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
 		.thenReturn(wkibResponse);
 	}
+	
 }

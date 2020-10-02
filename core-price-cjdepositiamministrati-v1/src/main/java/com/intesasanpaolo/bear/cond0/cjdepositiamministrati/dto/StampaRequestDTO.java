@@ -51,6 +51,5 @@ public class StampaRequestDTO {
 						|| CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)
 						|| CodProcessoEnum.CJ_CUI_DA.toString().equals(codProcesso));
 	}
-	
-	private boolean forceMock = false;
+
 }
