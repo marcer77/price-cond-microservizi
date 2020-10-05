@@ -36,7 +36,7 @@ public class DispositivaRequestDTO {
 				|| CodApplEnum.AREA_FINANZA.toString().equals(codAppl));
 	}
 	
-	@AssertTrue(message = "Il codProcesso inserito non � previsto.")
+	@AssertTrue(message = "Il codProcesso inserito non è previsto.")
 	@JsonIgnore
 	public boolean isValidCodProcesso() {
 		return (CodProcessoEnum.CJ_CARTE_AZIENDALI_PG.toString().equals(codProcesso)
