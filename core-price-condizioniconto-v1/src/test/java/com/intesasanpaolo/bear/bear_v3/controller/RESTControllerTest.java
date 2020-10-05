@@ -35,6 +35,7 @@ public class RESTControllerTest extends BaseTest {
 
 	@Before
 	public void initMocks() throws Exception {
+		//fix test: valori cambiati in base alla modifica della  nuova query
 		List<DriverInq> driverList = new ArrayList<DriverInq>();
 		inquiryContoCndRequest = new InquiryContoCndRequest();
 		inquiryContoCndRequest.setCdAbi("01025");
@@ -42,7 +43,8 @@ public class RESTControllerTest extends BaseTest {
 		inquiryContoCndRequest.setCdChiamante("CJCR0");
 		inquiryContoCndRequest.setCdMatricola("GAIMW03");
 		inquiryContoCndRequest.setCdNDG("0007467982005000");
-		inquiryContoCndRequest.setCdProdotto("ID0000XMECPL");
+		//inquiryContoCndRequest.setCdProdotto("ID0000XMECPL");
+		inquiryContoCndRequest.setCdProdotto("ID0000DACUI");
 		inquiryContoCndRequest.setCdConv("");
 		inquiryContoCndRequest.setCdRapporto("");
 
@@ -54,14 +56,17 @@ public class RESTControllerTest extends BaseTest {
 
 		DriverInq d2 = new DriverInq();
 
-		d2.etichetta = "FUNID";
-		d2.val = "CJCARTE";
+		//d2.etichetta = "FUNID";
+		d2.etichetta = "FUNCID";
+		//d2.val = "CJCARTE";
+		d2.val = "00013";
 
 		driverList.add(d1);
 		driverList.add(d2);
 
 		inquiryContoCndRequest.setDriver(driverList);
-		inquiryContoCndRequest.setDtOperazione("20200622");
+		//inquiryContoCndRequest.setDtOperazione("20200622");
+		inquiryContoCndRequest.setDtOperazione("20200925");
 
 		List<String> promozioniList = new ArrayList<String>();
 		promozioniList.add("Q001852");

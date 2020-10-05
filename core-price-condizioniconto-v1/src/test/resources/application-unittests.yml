@@ -21,9 +21,11 @@ connectors:
         mocked: true
         path: oracle/
         files:
+          - T_CP_PROD_DRIVER_POS.sql
           - T_CP_PROD_CND.sql
           - T_PC2_ANAG_ISTITUTI.sql
           - T_PC_CONDIZIONE.sql
+          - T_PC2_ANAG_CONDIZIONI.sql
       JDBCGenericConnector:
         uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
         driver-class-name: oracle.jdbc.OracleDriver
@@ -35,10 +37,11 @@ connectors:
         mocked: true
         path: oracle/
         files:
+          - T_CP_PROD_DRIVER_POS.sql
           - T_CP_PROD_CND.sql
           - T_PC2_ANAG_ISTITUTI.sql
           - T_PC2_COND_LISTINO.sql
-
+          - T_PC2_ANAG_CONDIZIONI.sql
         
   restConfigurations:
     default:
