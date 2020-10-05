@@ -182,41 +182,41 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 		return ret;
 	}
 
-	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
-
-		List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
-
-		// CASO STD
-		IIBCDPRCMSSingleRequestType rSTD = new IIBCDPRCMSSingleRequestType();
-
-		DatiApplicativi datiapplicativiSTD = new DatiApplicativi();
-		datiapplicativiSTD.setFunctionId(InpFunctionId.INQ);
-		ParametriComuni parametriComuniSTD = new ParametriComuni();
-		parametriComuniSTD.setDataoper(request.getDtOperazione());
-		parametriComuniSTD.setCallerid(CALLER_ID);
-		ParametriFactory parametriFactorySTD = new ParametriFactory();
-		parametriFactorySTD.setProductArea(PRODUCT_AREA);
-		parametriFactorySTD.setProductId(request.getCdProdotto());
-		ParametriPrice parametriPriceSTD = new ParametriPrice();
-		parametriPriceSTD.setFunctionApp(INQ_STD);
-		parametriPriceSTD.setAttrCond(request.getCdAttrCnd());
-		CollectionDrivers collectionDriversSTD = new CollectionDrivers();
-		for (DriverInq driver : request.getDriver()) {
-			Driver d = new Driver();
-			d.setEtichetta(driver.etichetta);
-			d.setVal(driver.val);
-			collectionDriversSTD.getDriver().add(d);
-		}
-		rSTD.setDatiApplicativi(datiapplicativiSTD);
-		rSTD.setParametriComuni(parametriComuniSTD);
-		rSTD.setParametriFactory(parametriFactorySTD);
-		rSTD.setParametriPrice(parametriPriceSTD);
-		rSTD.setCollectionDrivers(collectionDriversSTD);
-
-		req.add(rSTD);
-
-		return req;
-	}
+//	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequestSTD(InquiryContoCndRequest request) {
+//
+//		List<IIBCDPRCMSSingleRequestType> req = new ArrayList<IIBCDPRCMSSingleRequestType>();
+//
+//		// CASO STD
+//		IIBCDPRCMSSingleRequestType rSTD = new IIBCDPRCMSSingleRequestType();
+//
+//		DatiApplicativi datiapplicativiSTD = new DatiApplicativi();
+//		datiapplicativiSTD.setFunctionId(InpFunctionId.INQ);
+//		ParametriComuni parametriComuniSTD = new ParametriComuni();
+//		parametriComuniSTD.setDataoper(request.getDtOperazione());
+//		parametriComuniSTD.setCallerid(CALLER_ID);
+//		ParametriFactory parametriFactorySTD = new ParametriFactory();
+//		parametriFactorySTD.setProductArea(PRODUCT_AREA);
+//		parametriFactorySTD.setProductId(request.getCdProdotto());
+//		ParametriPrice parametriPriceSTD = new ParametriPrice();
+//		parametriPriceSTD.setFunctionApp(INQ_STD);
+//		parametriPriceSTD.setAttrCond(request.getCdAttrCnd());
+//		CollectionDrivers collectionDriversSTD = new CollectionDrivers();
+//		for (DriverInq driver : request.getDriver()) {
+//			Driver d = new Driver();
+//			d.setEtichetta(driver.etichetta);
+//			d.setVal(driver.val);
+//			collectionDriversSTD.getDriver().add(d);
+//		}
+//		rSTD.setDatiApplicativi(datiapplicativiSTD);
+//		rSTD.setParametriComuni(parametriComuniSTD);
+//		rSTD.setParametriFactory(parametriFactorySTD);
+//		rSTD.setParametriPrice(parametriPriceSTD);
+//		rSTD.setCollectionDrivers(collectionDriversSTD);
+//
+//		req.add(rSTD);
+//
+//		return req;
+//	}
 
 	protected List<IIBCDPRCMSSingleRequestType> buildCNDPRICEMSRequest(InquiryContoCndRequest request) {
 
@@ -409,19 +409,19 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	}
 
 	// recupero etichette
-	protected HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
-		
-		HashMap<String, String> params = new HashMap<String, String>();
-		params.put("cdProd", request.getCdProdotto());
-		for (int i = 0; i < 10; i++) {
-			params.put("cdDriver" + (i + 1), i < request.getDriver().size() ? request.getDriver().get(i).val : "*");
-		}
-		HashMap<String, String> result = jdbcService.getEtichette(params);
-
-		logger.info("End getEtichette: result-->{}", result);
-
-		return result;
-	}
+//	protected HashMap<String, String> getEtichette(InquiryContoCndRequest request) {
+//		
+//		HashMap<String, String> params = new HashMap<String, String>();
+//		params.put("cdProd", request.getCdProdotto());
+//		for (int i = 0; i < 10; i++) {
+//			params.put("cdDriver" + (i + 1), i < request.getDriver().size() ? request.getDriver().get(i).val : "*");
+//		}
+//		HashMap<String, String> result = jdbcService.getEtichette(params);
+//
+//		logger.info("End getEtichette: result-->{}", result);
+//
+//		return result;
+//	}
 
 	protected void buildCdRifLivello(CondizioneContoDettaglio condizione) {
 		if (condizione != null) {
