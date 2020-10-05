@@ -18,25 +18,25 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DispositivaRequestDTO {
 
-	@NotNull(message = "Il campo codAppl non può essere null")
-	@NotBlank(message = "Il campo codAppl non può essere vuoto")
+	@NotNull(message = "Il campo codAppl non puÃ² essere null")
+	@NotBlank(message = "Il campo codAppl non puÃ² essere vuoto")
 	private String codAppl;
 
-	@NotNull(message = "Il campo codProcesso non può essere null")
-	@NotBlank(message = "Il campo codProcesso non può essere vuoto")
+	@NotNull(message = "Il campo codProcesso non puÃ² essere null")
+	@NotBlank(message = "Il campo codProcesso non puÃ² essere vuoto")
 	private String codProcesso;
 
 	@Valid
 	private PraticaDTO praticaDTO;
 
-	@AssertTrue(message = "Il codAppl inserito non è previsto.")
+	@AssertTrue(message = "Il codAppl inserito non Ã¨ previsto.")
 	@JsonIgnore
 	public boolean isValidCodAppl() {
 		return (CodApplEnum.CARTE.toString().equals(codAppl) || CodApplEnum.FIDI.toString().equals(codAppl)
 				|| CodApplEnum.AREA_FINANZA.toString().equals(codAppl));
 	}
 	
-	@AssertTrue(message = "Il codProcesso inserito non è previsto.")
+	@AssertTrue(message = "Il codProcesso inserito non ï¿½ previsto.")
 	@JsonIgnore
 	public boolean isValidCodProcesso() {
 		return (CodProcessoEnum.CJ_CARTE_AZIENDALI_PG.toString().equals(codProcesso)
