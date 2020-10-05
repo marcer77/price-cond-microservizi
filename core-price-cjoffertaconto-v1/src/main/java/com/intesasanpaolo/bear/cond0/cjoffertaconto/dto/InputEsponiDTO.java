@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,7 +34,7 @@ public class InputEsponiDTO {
 	
 	@NotNull(message = "il campo tipoDA non puo' essere null")
 	@NotBlank(message = "Il campo tipoDA non puo' essere vuoto")
-	@Pattern(regexp = "\\bCU\\b|\\bDA\\b", message = "Il campo tipoDA puo' assumere solo i valor CU, GA")
+	@Pattern(regexp = "\\bCU\\b|\\bGA\\b", message = "Il campo tipoDA puo' assumere solo i valor CU, GA")
 	private String tipoDA;
 	
 	@Valid private List<PromozioniDTO> promozioni;
@@ -41,5 +42,5 @@ public class InputEsponiDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyyMMdd")
 	private Date dataRif;
  
-
+	
 }

@@ -15,10 +15,11 @@ logging:
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
+    com.intesasanpaolo.bear.error.handler: DEBUG
     org.keycloak: INFO
 
 error-manager:
-  enabled: false
+  enabled: true
   
 tracing:
   enabled: true

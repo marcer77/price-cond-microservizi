@@ -19,10 +19,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @SpringBootTest
-@ActiveProfiles(profiles = "test")
-@TestPropertySource({"classpath:application-unittests.yml"/*, "classpath:env/settings-dev.yml"*/})
+@ActiveProfiles(profiles = "unittests")
+@TestPropertySource({"classpath:application-unittests.yml"})
 @ContextConfiguration(classes = { CoreTestConfig.class })
 @WebAppConfiguration
 @EnableWebMvc
@@ -51,45 +53,23 @@ public class BaseTest {
 
 
 
-	/*@MockBean
-	private GetProtocolloFaseCommand getProtocolloFaseCommandMock;
-
-		
-
-	private void mockProtocolloFase() throws Exception {
-		ProtocolloFase pMock = new ProtocolloFase();
-		pMock.setStato("IN");
-		pMock.setProtocolloWf(codiceProtocolloTest);
-		Mockito.when(getProtocolloFaseCommandMock.execute()).thenReturn(pMock);
+	public ISPWebservicesHeaderType mockISPWebservicesHeaderType () {
+		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("121")
+				.callerCompanyIDCode("01")
+				.callerProgramName("121")
+				.channelIDCode("")
+				.codABI("01025")
+				.codUnitaOperativa("00700")
+				.customerID("23232")
+				.isVirtualUser("false")
+				.language("IT")
+				.serviceCompanyIDCode("01")
+				.serviceID("FL030FLA01")
+				.userID("343")
+				.transactionId("3434343")
+				.timestamp("0")
+				.serviceVersion("00").build();
+		return ispWebservicesHeaderType;
 	}
-
-	public void createDelibera() {
-		InitDeliberaDto initDeliberaDto=new InitDeliberaDto();
-		String abi="01025";
-		String nsg="1234519995125551";
-		try {
-			initDeliberaDto.setUtenteId("1234567");
-			initDeliberaDto.setUtenteCollegato("1234567");
-			initDeliberaDto.setCodTipologia("RV");
-			initDeliberaDto.setUoProponente("12345");
-			String inputJson=mapToJson(initDeliberaDto);
-			String uri="/delibera/" + abi + "/" + nsg;
-			MvcResult mvcResult=mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson)).andReturn();
-			int status=mvcResult.getResponse().getStatus();
-
-			log.info("inputJson : {}", inputJson);
-			log.info("status = " + status);
-			Assert.assertEquals(200, status);
-
-			String content=mvcResult.getResponse().getContentAsString();
-			DatiGeneraliDeliberaResource dati=mapFromJson(content, DatiGeneraliDeliberaResource.class);
-			log.info("content = {}", content);
-			this.codiceProtocolloTest=dati.getCodProtocollo();
-
-		} catch (Exception ex) {
-			log.error(ex.getMessage());
-			fail("Errore in createDelibera: " + ex.getMessage() + " " + ex.getCause());
-		}
-	}
-	*/
 }

@@ -19,6 +19,8 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
+import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 @SpringBootTest
 @ActiveProfiles(profiles = "unittests")
@@ -49,4 +51,23 @@ public class BaseTest {
 		mvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 	}
 
+	public ISPWebservicesHeaderType mockISPWebservicesHeaderType () {
+		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
+				.applicationID("121")
+				.callerCompanyIDCode("01")
+				.callerProgramName("121")
+				.channelIDCode("")
+				.codABI("01025")
+				.codUnitaOperativa("00700")
+				.customerID("23232")
+				.isVirtualUser("false")
+				.language("IT")
+				.serviceCompanyIDCode("01")
+				.serviceID("FL030FLA01")
+				.userID("343")
+				.transactionId("3434343")
+				.timestamp("0")
+				.serviceVersion("00").build();
+		return ispWebservicesHeaderType;
+	}
 }

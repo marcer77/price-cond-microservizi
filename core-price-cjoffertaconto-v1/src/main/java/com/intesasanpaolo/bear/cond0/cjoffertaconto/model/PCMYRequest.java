@@ -2,6 +2,7 @@ package com.intesasanpaolo.bear.cond0.cjoffertaconto.model;
 
 import java.util.List;
 
+import com.dsi.business.SSA_PC.integration.jdo.P_PCMYS00.INPPRM;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
 import lombok.AllArgsConstructor;

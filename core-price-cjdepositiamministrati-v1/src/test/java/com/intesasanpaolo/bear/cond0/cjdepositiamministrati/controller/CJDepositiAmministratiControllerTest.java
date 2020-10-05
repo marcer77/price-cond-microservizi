@@ -24,10 +24,11 @@ import com.intesasanpaolo.bear.cond0.cj.lib.exception.handler.CJBaseExceptionHan
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.command.CJDepositiAmministratiCommand;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.common.BaseTest;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
-//import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.IntestatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.RapportoDTO;
@@ -35,6 +36,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 
 @RunWith(SpringRunner.class)
@@ -45,6 +47,15 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	private HttpHeaders httpHeaders;
 
 	private HttpHeaders httpHeadersCorrotto;
+	
+	@MockBean
+	private CTGConnectorWKIB ctgConnectorWKIB;
+	
+	@MockBean
+	private WKIBCtgRequestTrasformer wkibCtgRequestTrasformer;
+
+	@MockBean
+	private WKIBCtgResponseTansformer wkibCtgResponseTansformer;
 	
 	@MockBean
 	private WKIBRequest wkibRequest;
@@ -108,7 +119,7 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	
 	@Test
 	public void testStampaOK() throws Exception {
-
+		mockWKIBServiceBS_OK();
 		String uri = "/cjdepositiamministrati/stampa";
 
 		String inputJson = mapToJson(stampaRequestDTO);
@@ -123,6 +134,24 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 		log.info("content = {}", content);
 	}
 
+	@Test
+	public void testStampaWKIBServiceBS_KO() throws Exception {
+		mockWKIBServiceBS_KO();
+		String uri = "/cjdepositiamministrati/stampa";
+
+		String inputJson = mapToJson(stampaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertFalse(content.contains("\"codErrore\":\"00"));
+	}
+	
 	@Test
 	public void testStampa_HeadersKO() throws Exception {
 		
@@ -139,4 +168,44 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 
 	}
 
+	private void mockWKIBServiceBS_OK() {
+		WKIBResponse wkibResponse = new WKIBResponse();
+		List<WKIBResponseRigheDiStampa> lista = new ArrayList<WKIBResponseRigheDiStampa>();
+		WKIBResponseRigheDiStampa elem = new WKIBResponseRigheDiStampa();
+		
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("C");
+		lista.add(elem);
+		
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("T");
+		lista.add(elem);
+		
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("Y");
+		lista.add(elem);
+		
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("N");
+		lista.add(elem);
+		
+		elem = new WKIBResponseRigheDiStampa();
+		elem.setTipoStrut("M");
+		lista.add(elem);
+		wkibResponse.setElenco(lista);
+		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
+		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
+		.thenReturn(wkibResponse);
+	}
+	
+
+	private void mockWKIBServiceBS_KO() {
+		WKIBResponse wkibResponse = new WKIBResponse();
+		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
+		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))
+		.thenReturn(wkibResponse);
+	}
+	
 }

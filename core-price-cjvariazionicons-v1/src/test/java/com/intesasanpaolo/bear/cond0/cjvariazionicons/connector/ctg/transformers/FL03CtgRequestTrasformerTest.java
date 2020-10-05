@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.dsi.business.SSA_FL.integration.jdo.P_FL03S00.C_FL03S00;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.common.BaseTest;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
-import com.intesasanpaolo.bear.cond0.cjvariazionicons.utils.ServiceUtil;
 import com.intesasanpaolo.bear.connector.ctg.request.CtgConnectorRequest;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
@@ -28,25 +27,9 @@ public class FL03CtgRequestTrasformerTest extends BaseTest{
 	
 	@Test
 	public void testTrasform() {
-		
 		Mockito.when(beanFactoryMock.getBean(C_FL03S00.class)).thenReturn(new C_FL03S00());
 		
-		ISPWebservicesHeaderType ispWebservicesHeaderType=ServiceUtil.buildISPWebservicesHeaderType()
-				.applicationID("121")
-				.callerCompanyIDCode("01")
-				.callerProgramName("121")
-				.channelIDCode("")
-				.codABI("01025")
-				.codUnitaOperativa("00700")
-				.customerID("23232")
-				.isVirtualUser("false")
-				.language("IT")
-				.serviceCompanyIDCode("01")
-				.serviceID("FL030FLA01")
-				.userID("343")
-				.transactionId("3434343")
-				.timestamp("0")
-				.serviceVersion("00").build();
+		ISPWebservicesHeaderType ispWebservicesHeaderType=this.mockISPWebservicesHeaderType();
 		
 		FL03Request fl03Request = FL03Request.builder()
 				.codApplic("ABC__")
@@ -55,10 +38,16 @@ public class FL03CtgRequestTrasformerTest extends BaseTest{
 				.filler("")
 				.keyOper("01U01588620200710CMOD125914")
 				.numStrKey(1)
+				
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.build();
 
-		
+		/*for (InpNDG tmp : request.getInpNDGList()) {
+			inpbst.INPNDG[index] = new INPNDG();
+			inpbst.INPNDG[index].T1SJ_I_INTESTAZ_FIRMA = ServiceUtil.ifNull(tmp.getT1SjIIntestazFirma(),"");
+			inpbst.INPNDG[index].T1SJ_I_NDG_FIRMA = ServiceUtil.ifNull(tmp.getT1SjINdgFirma(),"");
+			index++;
+		}*/
 		CtgConnectorRequest<C_FL03S00> ctgConnectorRequest = fl03CtgRequestTrasformer.transform(fl03Request, null);
 		assertTrue(ctgConnectorRequest.getConnectorClient().INPBST[0].COD_FUNZIONE.equals("UP"));
 	}

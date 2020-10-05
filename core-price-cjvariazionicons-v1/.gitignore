@@ -13,7 +13,6 @@ target/
 *.springWebflow
 .DS_Store
 /LOG_PATH_IS_UNDEFINED/
-gen/
 src/main/resources/swagger.yaml
 src/main/java/META-INF/sun-jaxb.episode
 **/sonar-report/*

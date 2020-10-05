@@ -1,0 +1,18 @@
+{
+  "request" : {
+    "urlPathPattern" : "/Gestione.svc",
+    "method" : "POST",
+    "headers" : {
+      "SOAPAction" : {
+        "contains" : "Gestione"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+ 	"jsonBody": {"status":"Error","message":"Endpoint not found"},
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

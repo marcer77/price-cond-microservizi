@@ -1,5 +1,4 @@
 spring:
-  profile: development
   application:
     name: "@project.artifactId@"
     version: "@project.version@ (@env.GIT_COMMIT@)"
@@ -14,33 +13,71 @@ logging:
     com.intesasanpaolo.bear: INFO
     com.intesasanpaolo.bear.config: INFO
     com.intesasanpaolo.bear.connector.bearcore: INFO
+    com.intesasanpaolo.bear.cond0.cjadesioneconvenzione: DEBUG
     org.keycloak: INFO
 
 error-manager:
-  enabled: false
+  enabled: true
   
 tracing:
   enabled: true
  #mocked: true
 
 controllers:
-  tracing:
-    enabled: true
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
 
-#connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
-
-
-
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+  y1j2cConfigFileProps:
+    #Y1.j2cConfigProperties: ""
+    Y1.StgY: StgA
+    Y1.ApiStage: "01"
+    Y1.Acronimo: COND0
+    Y1.ExecuteTimeout: 120000
+    Y1.displaycommArea: ${CTG_DISPLAY_COMMON_AREA}
+    Y1.CTGConnectionURL: ${CTG_COND0_HOSTNAME}
+    Y1.CTGPortNumberSSL: ${CTG_COND0_PORT}
+    Y1.CTGPortNumberTcpIP: ${CTG_COND0_PORT}
+    Y1.CTGCUserName: ${CTG_COND0_USERNAME}
+    Y1.CTGPassword: ${CTG_COND0_PASSWORD}
+    Y1.CTGSSL: ${CTG_COND0_SSL}
 
 connectors:
-  #restConfigurations:
-  #  -
-  #    name: BitCoinRestConnector
-  #    url: https://api.blockchain.info/stats
+  soapConfiguration:
+   items:
+     GetCovenantPerConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/GetCovenantPerConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
+     GetRequisitiAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_SERVICE_WS_URL}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzioniservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniService/GetRequisitiAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
 
 #### Security configuration: Everything allowed for test
 keycloak:

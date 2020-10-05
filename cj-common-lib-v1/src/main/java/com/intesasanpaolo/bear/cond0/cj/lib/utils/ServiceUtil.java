@@ -39,14 +39,13 @@ public class ServiceUtil {
 		HeaderBS headerBS = new HeaderBS();
 
 		headerBS.setIdServizio(bsTypeCall.getBsType().getIdServizio());
-		headerBS.setLunghezzaMsg(bsTypeCall.getLenArea());
-		headerBS.setCodRicTrac(bsTypeCall.getRecyclingVersion());
-		headerBS.setCodVersioneBs(bsTypeCall.getVersion());
+		//headerBS.setLunghezzaMsg(bsTypeCall.getLenArea());
+		//headerBS.setCodRicTrac(bsTypeCall.getRecyclingVersion());
+		//headerBS.setCodVersioneBs(bsTypeCall.getVersion());
 
 		// campi header nuovi per CTG
 		headerBS.setHspAcronimoProvider(bsTypeCall.getAcronimoOwnerBS());
 		headerBS.setHspAcronimo("COND0");
-		//
 		headerBS.setCodiceTipoCanale(bsTypeCall.getChannel());
 
 		// campi prelevati dall'HEADER HTTP del microservizio
@@ -57,14 +56,10 @@ public class ServiceUtil {
 		headerBS.setCodAziendaDest(ispWebservicesHeaderType.getCompanyInfo().getISPServiceCompanyIDCode());
 		headerBS.setCodiceSportello(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA));
 		headerBS.setCodiceUserid(ispWebservicesHeaderType.getOperatorInfo().getUserID());
-		// headerBS.setCodTipoLingua(ispWebservicesHeaderType.getRequestInfo().getLanguage());
 		headerBS.setCodTipoLingua("I");
 		headerBS.setCodRichCanale(ispWebservicesHeaderType.getRequestInfo().getTransactionId());
 		headerBS.setCodRisRich(ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
-		// TODO: CodiceTipoCanale va preso dagli HEADER HTTP del microservizio o da
-		// BSTypeCall?
-		// headerBS.setCodiceTipoCanale(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
-
+		
 		headerBS.setDataCont(new SimpleDateFormat("ddMMyyyy").format(new Date()));
 
 		headerBS.setCodBsm("");

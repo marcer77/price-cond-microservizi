@@ -1,0 +1,20 @@
+<S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope">
+   <S:Body>
+      <ns2:esitoInviaPropostaV2Response xmlns:ns4="http://intesasanpaolo.it/" xmlns:ns3="http://ws.price.isp.com/proposte/" xmlns:ns2="http://ws.price.isp.com/proposteCJPOS/">
+         <ns2:esito>
+            <ns2:codiceProposta>2020001835R</ns2:codiceProposta>
+            <ns2:esitoCodice>OK</ns2:esitoCodice>
+            <ns2:esitoMessaggio>Proposta inserita correttamente.</ns2:esitoMessaggio>
+            <ns2:faseIter>2</ns2:faseIter>
+            <ns2:statoIter>S</ns2:statoIter>
+            <ns2:esitoIter>D</ns2:esitoIter>
+            <ns2:condizioni>
+               <ns2:codiceCondizione>03229</ns2:codiceCondizione>
+               <ns2:codUOFacolta>1383</ns2:codUOFacolta>
+               <ns2:esitoCondizione>00</ns2:esitoCondizione>
+               <ns2:messaggioCondizione/>
+            </ns2:condizioni>
+         </ns2:esito>
+      </ns2:esitoInviaPropostaV2Response>
+   </S:Body>
+</S:Envelope>

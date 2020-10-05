@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@ToString
 public class T1SFRequest {
 
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
@@ -38,5 +40,6 @@ public class T1SFRequest {
 	private String iPropostaUsura;
 	private String iTipoFT;
 	private String iTipoOfferta;
+	private String iTipoStampa;
 
 }

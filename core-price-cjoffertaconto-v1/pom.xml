@@ -44,6 +44,11 @@
 			<scope>provided</scope>
 		</dependency>
 		
+		<dependency>
+			<groupId>com.dsi.business.SSA_PC.integration.jdo.P_PCMYS00</groupId>
+ 			 <artifactId>AD-PCMYSTCJOF</artifactId>
+ 			 <version>00.00001</version>
+		</dependency>
     </dependencies>
 
 	<build>

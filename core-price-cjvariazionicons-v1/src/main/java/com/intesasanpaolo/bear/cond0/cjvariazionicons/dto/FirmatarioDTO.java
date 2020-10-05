@@ -7,10 +7,12 @@ import javax.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class FirmatarioDTO {
 
 	@NotNull(message = "Il campo ndg non può essere null")

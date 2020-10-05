@@ -16,5 +16,95 @@ logging:
     com.intesasanpaolo.bear.connector.bearcore: INFO
     com.intesasanpaolo.bear.cond0.cjvariazionicons: DEBUG
     org.keycloak: INFO
+    
+DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjdispositiva-v1
+DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT: 10000
+DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE: 5
+ABI_SPIMI: 01025
+DATASOURCE_SPIMI_DB2_URI: test
+DATASOURCE_SPIMI_DB2_PORT: 12144
+DATASOURCE_SPIMI_DB2_DBNAME: test
+DATASOURCE_SPIMI_DB2_USERNAME: test
+DATASOURCE_SPIMI_DB2_PASSWORD: test
 
-
+connectors:
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: http://localhost:4545/ProposteCJPOS.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        soapAction: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+      StoreCovenantAdesioneConvenzioneConnector:
+        endpoint: http://localhost:4545/ConvenzioniHostService.svc
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+        soapVersion: 1.1
+        soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+        enableMTOM: false
+        mocked: false
+        enabledTracing: true
+      RollbackStoreCovenantAdesioneConvenzioneConnector:
+       endpoint: http://localhost:4545/ConvenzioniHostService.svc
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/RollbackStoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true 
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: http://localhost:4545/Gestione.svc
+        timeout: 120000
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT}
+        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE}
+        mocked: true
+        path: db2/
+        files:
+          - TB59R009.sql
+          - TB01R007.sql
+        sources:
+          - abi: ${ABI_SPIMI}
+            uri: ${DATASOURCE_SPIMI_DB2_URI}
+            port: ${DATASOURCE_SPIMI_DB2_PORT}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+  jdbcConfigurations:
+     items:
+         GenericJdbcConnector:
+           mocked: true
+           uri: test
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: COND_APP
+           password: COND_APP
+           connectionPoolSize: 30
+           timeout: 5000
+           path: oracle/
+           files:
+             - t_pr_proposta.sql
+            

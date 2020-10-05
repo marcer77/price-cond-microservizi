@@ -28,6 +28,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @EnableWebMvc
 public class BaseTest {
 	protected final Logger log=org.slf4j.LoggerFactory.getLogger(this.getClass());
+	protected String codiceProtocolloTest;
 	protected MockMvc mvc;
 
 	@Autowired

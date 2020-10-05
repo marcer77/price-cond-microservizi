@@ -1,0 +1,18 @@
+{
+  "request" : {
+    "urlPathPattern" : "/ProposteCJPOS.svc",
+    "method" : "POST",
+    "headers" : {
+      "SOAPAction" : {
+        "contains" : "RevocaProposta"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "RevocaProposta-response.xml",
+    "headers": {
+      "Content-Type": "application/xml"
+    }
+  }
+}

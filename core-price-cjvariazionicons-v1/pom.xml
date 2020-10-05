@@ -30,6 +30,12 @@
 
 	<dependencies>
 		<dependency>
+		    <groupId>com.intesasanpaolo.bear.cond0</groupId>
+		    <artifactId>cj-common-lib-v1</artifactId>
+		    <version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
 			<groupId>org.springframework.hateoas</groupId>
 			<artifactId>spring-hateoas</artifactId>
 		</dependency>
@@ -42,17 +48,16 @@
 
 		<dependency>
 			<groupId>com.dsi.business.SSA_FL.integration.jdo.P_FL03S00</groupId>
-			<artifactId>FL03</artifactId>
-			<version>00.00001</version>
-		<!-- <systemPath>${basedir}/src/main/lib/AD-FL030FLA01-00.00001.jar</systemPath>  -->	
+ 			 <artifactId>AD-FL030FLA01</artifactId>
+ 			 <version>00.00001</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00</groupId>
-			<artifactId>T1SF</artifactId>
-			<version>00.00003</version>
-			<!-- <systemPath>${basedir}/src/main/lib/T1SF-00.00003.jar</systemPath>  -->
+ 			 <artifactId>AD-T1SFSTPPEF</artifactId>
+ 			 <version>00.00004</version>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>

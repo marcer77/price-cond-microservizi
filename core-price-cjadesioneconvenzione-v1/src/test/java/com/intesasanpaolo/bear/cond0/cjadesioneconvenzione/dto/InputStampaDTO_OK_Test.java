@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.InputStampaBuilder;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.utils.JUnitUtils;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -43,9 +44,9 @@ public class InputStampaDTO_OK_Test extends JUnitUtils {
 		inputStampaDTO.setCodProcesso(codProcesso);
 
 		praticaDTO = new PraticaDTO();
-		praticaDTO.setCodSuperPratica("1234561234560");
-		praticaDTO.setCodPratica("1234561234560");
-		praticaDTO.setCodPropostaComm("1234561234560");
+		praticaDTO.setCodSuperPratica("1234561234");
+		praticaDTO.setCodPratica("1234561234");
+		praticaDTO.setCodPropostaComm("1234561234123");
 		inputStampaDTO.setPratica(praticaDTO);
 		
 		rapportoDTO = new RapportoDTO();
@@ -106,6 +107,12 @@ public class InputStampaDTO_OK_Test extends JUnitUtils {
 
 	}
 
-	
+	@Test
+	public void testBuilder() {
+		
+		InputStampaBuilder builder = new InputStampaBuilder(inputStampaDTO);
+
+		log.info("testBuilder: " + builder.build());
+	}
 
 }

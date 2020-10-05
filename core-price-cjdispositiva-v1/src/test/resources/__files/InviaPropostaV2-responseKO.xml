@@ -1,0 +1,19 @@
+<S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope">
+   <S:Header/>
+   <S:Body>
+      <ns3:Fault xmlns:ns3="http://www.w3.org/2003/05/soap-envelope" xmlns:ns2="http://schemas.xmlsoap.org/soap/envelope/">
+         <ns3:Code>
+            <ns3:Value>ns3:Receiver</ns3:Value>
+         </ns3:Code>
+         <ns3:Reason>
+            <ns3:Text xml:lang="en">com.sanpaolo.condizioni.webservice.propostews.atomicsrv.ws.AtomicServiceException</ns3:Text>
+         </ns3:Reason>
+         <ns3:Detail>
+            <ns2:NBP_ErrorInfo xmlns:ns3="http://intesasanpaolo.it/" xmlns:ns2="http://ws.price.isp.com/proposte/">
+               <ns2:id>INSERT_FAILED</ns2:id>
+               <ns2:message>Esistono errori in proposta - ERRORI SULLE CONDIZIONI - 03238: NON AMMESSA DEROGA CON VALORE MAGGIORE DELLO STANDARD</ns2:message>
+            </ns2:NBP_ErrorInfo>
+         </ns3:Detail>
+      </ns3:Fault>
+   </S:Body>
+</S:Envelope>

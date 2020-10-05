@@ -1,0 +1,16 @@
+connectors:
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_DB2_CONNECTIONTIMEOUT}
+        connectionPoolSize: ${DATASOURCE_DB2_CONNECTIONPOOLSIZE}
+        mocked: false
+        sources:
+          - abi: ${ABI_SPIMI}
+            uri: ${DATASOURCE_SPIMI_DB2_URI}
+            port: ${DATASOURCE_SPIMI_DB2_PORT}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD}

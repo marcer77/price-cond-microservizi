@@ -1,0 +1,20 @@
+configuration:         
+  env: 
+   -  name: ABI_SPIMI
+      value: "01025"
+   -  name: ABI_BKFID
+      value: "03296"
+   -  name: ABI_ISPBK
+      value: "03239"
+   -  name: ABI_BKIMI
+      value: "03249"
+   -  name: DATASOURCE_DB2_CONNECTIONTIMEOUT
+      value: 10000
+   -  name: DATASOURCE_DB2_CONNECTIONPOOLSIZE
+      value: 30
+
+  oracle:
+     - name: CONDDATA
+       acronimo: COND0
+       servizio: COND0
+       user: COND_APP

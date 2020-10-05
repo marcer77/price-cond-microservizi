@@ -1,0 +1,31 @@
+{
+    "output": {
+        "DatiDebug": {
+            "ReturnCode": "97",
+            "CodMessaggio": "",
+            "TXTMessaggio": "INDICARE COD-FIL-DIPENDENTE",
+            "CampoErrore": "",
+            "DatiErrore": {
+                "ReturnCodeLink": "01",
+                "NomeModulo": "PCQW000",
+                "FunzErrore": "",
+                "AreaErroreDB2": {
+                    "NomeTabella": "",
+                    "SQLCode": ""
+                },
+                "AreaErroreCics": {
+                    "CodErrCics": "",
+                    "CodAbendCics": ""
+                },
+                "LabelErrore": "L090-LINK-AFAINQ"
+            }
+        },
+        "AreaDati": {
+            "CodConvenzionePC": "",
+            "CodConvenzioneFT": "",
+            "FlagPerimetro": "",
+            "CodProdotto": "",
+            "FlagCambioOfferta": ""
+        }
+    }
+}

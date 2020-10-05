@@ -1,0 +1,18 @@
+<NS1:Envelope xmlns:NS1="http://schemas.xmlsoap.org/soap/envelope/">
+   <NS1:Body>
+      <NS2:response xmlns:NS2="http://www.intesa.org/T1IB0/IIBCDPRCMS/">
+
+         <outputProdotto>
+            <nbpErrorInfo xmlns:tns="http://ws.intesasanpaolo.com/">
+               <ErrCode>tns:Receiver</ErrCode>
+               <ErrSubcode>tns:InvalidRequest</ErrSubcode>
+               <ErrReason>Decision table non soddisfatta</ErrReason>
+               <ID>0016</ID>
+               <Message>Conditions-Pricing - Message: Nessuna condizione soddisfatta</Message>
+               <ErrSource>ID0000XMECPX</ErrSource>
+               <AdditionalInfo/>
+            </nbpErrorInfo>
+         </outputProdotto>
+      </NS2:response>
+   </NS1:Body>
+</NS1:Envelope>

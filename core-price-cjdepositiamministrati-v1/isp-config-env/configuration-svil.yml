@@ -1,0 +1,12 @@
+configuration:
+    env:
+     - name: AUTH_SERVER_ENDPOINT
+       value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+     - name: CALL_MOCK
+       value: N
+    ctg:
+     - name: COND0
+       acronimo: COND0
+       servizio: COND0-CTGBS
+       env: SVIL
+       user: GACONNEC

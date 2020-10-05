@@ -1,3 +1,7 @@
+DATASOURCE_DB2_ACCOUNTING_ACRONYM: cond0
+DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME: core-price-cjdispositiva-v1
+CONVENZIONI_HOST_SERVICE_WS_URL: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
+
 spring:
   profile: development
   application:
@@ -7,7 +11,7 @@ spring:
     time-zone: Europe/Rome
   profiles:
     active: ${ISP_AMBIENTE}
-    
+
 logging:
   level:
     root: INFO
@@ -18,14 +22,118 @@ logging:
 
 error-manager:
   enabled: true
-  
-tracing:
-  enabled: true
-  
-  
+
 controllers:
-  tracing:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
     enabled: true
+
+connectors:
+  db2MultiDsConfigurations:
+    items:
+      MultiDataSourceDb2Connector:
+        connectionTimeout: ${DATASOURCE_SPIMI_DB2_CONNECTIONTIMEOUT:8000}
+        connectionPoolSize: ${DATASOURCE_SPIMI_DB2_CONNECTIONPOOLSIZE:30}
+        mocked: false
+        sources:
+          - abi: ${ABI_SPIMI:01025}
+            uri: ${DATASOURCE_SPIMI_DB2_URI:db2y.mframe.sanpaoloimi.com}
+            port: ${DATASOURCE_SPIMI_DB2_PORT:5250}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:DB2YTOSG}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}  
+  soapConfiguration:
+    items:
+      ProposteCJPOSWSInviaPropostaV2Connector:
+        endpoint: ${CJPOSWS_WS_URL:http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS}
+        timeout: 60000
+        username: username
+        password: password
+        authenticationType: none
+        timeToLive: 7000
+        contextPath: "com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos"
+        soapVersion: 1.2
+        enableMTOM: false
+        mocked: false
+      StoreCovenantAdesioneConvenzioneConnector:
+       endpoint: ${CONVENZIONI_HOST_SERVICE_WS_URL:http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc}
+       timeout: 60000
+       username: username
+       password: password
+       authenticationType: none
+       timeToLive: 7000
+       contextPath: "com.intesasanpaolo.connector.ws.gen.convenzionihostservice"
+       soapVersion: 1.1
+       soapAction: "http://tempuri.org/IConvenzioniHostService/StoreCovenantAdesioneConvenzione"
+       enableMTOM: false
+       mocked: false
+       enabledTracing: true
+  restConfigurations:
+    items:
+      GestioneRestConnector:
+        url: "http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione"
+        timeout: 120000
+#  db2MultiDsConfigurations:
+#    items:
+#      MultiDataSourceDb2Connector:
+#        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT:10000}
+#        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE:5}
+#        mocked: false
+#        sources:
+#          - abi: ${ABI_SDDA:01025}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#          - abi: ${ABI_MDDA:03296}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_IDDA:03249}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:U0H7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_EDDA:10637}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
+#          - abi: ${ABI_JDDA:03239}
+#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
+#            port: ${DATASOURCE_COND0DB2_PORT:5250}
+#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
+#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
+#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
+
+  jdbcConfigurations:
+     items:
+         GenericJdbcConnector:
+           uri: ${DATASOURCE_CONDDATA_URL:jdbc:oracle:thin:@sdlvms1039.sede.corp.sanpaoloimi.com:2169/TCOND0}
+           driver-class-name: oracle.jdbc.OracleDriver
+           username: ${DATASOURCE_CONDDATA_USERNAME:COND_APP}
+           password: ${DATASOURCE_CONDDATA_PASSWORD:COND_APP}
+           connectionPoolSize: ${DATASOURCE_CONDDATA_MAX_POOL_SIZE:30}
+           timeout: ${DATASOURCE_CONDDATA_CONNECTION_TIMEOUT:5000}
 
 keycloak:
   enabled: false
