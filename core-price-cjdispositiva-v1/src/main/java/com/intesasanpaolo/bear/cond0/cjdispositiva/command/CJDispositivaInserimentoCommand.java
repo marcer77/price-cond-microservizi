@@ -179,4 +179,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		logger.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 
+	private void invokeWKCJ() {
+		
+		String tipoChiamata=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"A2":
+			CodProcessoEnum.CJ_CUI_DA.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"02":"";
+		
+		this.invokeWKCJ(ispWebservicesHeaderType, this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica(), tipoChiamata);
+	}
 }

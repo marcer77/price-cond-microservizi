@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountInput;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountOutput;
@@ -19,6 +22,8 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestarioTrasparenza;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJRequest;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJResponse;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
@@ -160,49 +165,35 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	}
 	
 	
-	protected void invokeWKCJ(String codProcesso, String codSuperPratica,String codPratica) {
+	protected void invokeWKCJ(ISPWebservicesHeaderType ispWebservicesHeaderType,String codProcesso, String codSuperPratica,String codPratica,String tipoChiamata) {
+		
 		DatiIntestarioTrasparenza datiIntestarioTrasparenza= this.coreConvenzioneService.getDatiIntestatarioPerTrasparenza(codProcesso, codSuperPratica, codPratica);
 		
+		boolean isCJDA=CodProcessoEnum.CJ_CUI_DA.toString().equals(codProcesso);
 		
-		/*
-		INVOKE WKCJ
-
-		GET dati intestatario per Trasparenza
-
-		WKCJ-INPBST-DATA-RIFER = TrasparenzaDataRiferimento
-		WKCJ-INPBST-LINGUA = ‘0’
-		WKCJ-INPBST-UTENTE = ISPWebservicesHeader.OperatorInfo.UserID
-		WKCJ-INPBST-TERMINALE = ‘CJDISPOSITIVA’	
-		WKCJ-INPBST-SUPERPRATICA = input.pratica.codSuperPratica
-
-		Se input.codProcesso == 'CJAFF'
-			se API:annulla
-				WKCJ-INPBST-TIPO-CHIAMATA = ‘A3’
-			Altrimenti
-				WKCJ-INPBST-TIPO-CHIAMATA = ‘A2’
-			Fine_se
-		Fine_se
-
-
-		Se input.codProcesso == 'CJDA'
-			se API:annulla
-				WKCJ-INPBST-TIPO-CHIAMATA = ‘03’
-			Altrimenti
-				WKCJ-INPBST-TIPO-CHIAMATA = ‘02’
-			Fine_se
-			WKCJ-INPBST-PRATICA = input.pratica.codPratica
-		WKCJ-INPBST-SETT-RAPP = ‘DA’
-		WKCJ-INPBST-FIL-RAPP = TrasparenzaFiliale
-		WKCJ-INPBST-CAT-RAPP =  TrasparenzaCategoria
-		WKCJ-INPBST-NRO-RAPP = TrasparenzaNumRapp
-		Fine_se
-
-		WKCJ-INPBST-CAT-SEC-RAPP = ‘0000’
-		WKCJ-INPBST-PARTITA-RAPP = ‘ ‘
-		WKCJ-INPBST-NDG = TrasparenzaNDG
-		WKCJ-INPBST-DT-DECO-RAPP = TrasparenzaDataRiferimento
-		WKCJ-INPBST-CAT-SEC-RAP-APPO = ‘0000’
-		*/
+		WKCJRequest wkcjRequest=WKCJRequest.builder()
+				.ispWebservicesHeaderType(ispWebservicesHeaderType)
+				.dataRifer(datiIntestarioTrasparenza.getTrasparenzaDataRiferimento())
+				.lingua("0")
+				.utente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
+				.terminale("CJDISPOSITIVA")
+				.superpratica(codSuperPratica)
+				.catSecRapp("0000")
+				.partitaRapp(" ")
+				.ndg(datiIntestarioTrasparenza.getTrasparenzaNDG())
+				.dtDecoRapp(datiIntestarioTrasparenza.getTrasparenzaDataRiferimento())
+				.catSecRapAppo("0000")
+				.tipoChiamata(tipoChiamata)
+				.pratica(isCJDA?codPratica:"")
+				.settRapp(isCJDA?"DA":"")
+				.filRapp(isCJDA?datiIntestarioTrasparenza.getTrasparenzaFiliale():"")
+				.catRapp(isCJDA?datiIntestarioTrasparenza.getTrasparenzaCategoria():"")
+				.nroRapp(isCJDA?datiIntestarioTrasparenza.getTrasparenzaNumRapp():"")
+				.build();
+		
+		WKCJResponse wkcjResponse=this.wkcjServiceBS.callBS(wkcjRequest);
+	
+		
 	}
 	
 	
