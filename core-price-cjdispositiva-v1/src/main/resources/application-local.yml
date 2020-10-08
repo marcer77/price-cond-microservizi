@@ -39,13 +39,14 @@ connectors:
         mocked: false
         sources:
           - abi: ${ABI_SPIMI:01025}
-            uri: ${DATASOURCE_SPIMI_DB2_URI:db2y.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_SPIMI_DB2_PORT:5250}
-            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:DB2YTOSG}
-            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
-            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}  
+            uri: ${DATASOURCE_SPIMI_DB2_URI:sdda.mframe.sanpaoloimi.com}
+            port: ${DATASOURCE_SPIMI_DB2_PORT:5300}
+            dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:SDDAM00S}
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}      
+
   soapConfiguration:
     items:
       ProposteCJPOSWSInviaPropostaV2Connector:

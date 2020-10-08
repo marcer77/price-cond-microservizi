@@ -11,7 +11,7 @@ import lombok.ToString;
 @Data
 @Builder
 @ToString
-public class DatiIntestarioTrasparenza {
+public class DatiIntestatarioTrasparenza {
 	private String trasparenzaNDG;
 	private String trasparenzaFiliale;
 	private String trasparenzaCategoria;

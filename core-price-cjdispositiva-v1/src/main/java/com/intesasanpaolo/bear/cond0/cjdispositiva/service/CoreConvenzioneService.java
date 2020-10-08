@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.service;
 
+import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -9,19 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.MultiDataSourceDb2Connector;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperAdesione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaAttivare;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperCovenantDaCessare;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperDatiIntestatarioTrasparenza;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperProposta;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperRapporto;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperString;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.mapper.RowMapperTasso;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.RequestDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestarioTrasparenza;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestatarioTrasparenza;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
@@ -364,60 +368,69 @@ public class CoreConvenzioneService extends BaseService {
 	
 	
 	
-	public List<String> getElencoPratiche(String codProcesso, String codSuperPratica,String codPratica) {
-		return null;
-		/*Acquisizione dell’elenco pratiche data una superPratica
+	public List<String> getElencoPratiche(String codAbi,String codProcesso, String codSuperPratica,String codPratica) {
+		
+		StringWriter sw=new StringWriter();
+		sw.append(" SELECT DISTINCT NR_PRATICA NR_PRATICA FROM FIATT.TB59R009 ")
+			.append(" WHERE ID_ENTITA  = '00002' ")
+			.append(" and NR_SUPERPRATICA = :codSuperPratica");
+		
+		if (!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)) {			
+			sw.append(" and NR_PRATICA = :codPratica ");
+		}
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);
+		if (!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)) {			
+			paramMap.put("codPratica", codPratica);			
+		}
+		List<String> resultList = (List<String>) selectDataSourceConnector.call(sw.toString(),
+				RequestDb2TransformerFactory.of(new RowMapperString("NR_PRATICA"), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
 
-		SELECT DISTINCT                              
-		       NR_PRATICA
-		  FROM FIATT.TB59R009         
-		 WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica 
-		   AND ID_ENTITA  = '00002'
-		   AND ( :input.codProcesso = 'CJAFF'
-			OR NR_PRATICA = :input.pratica.codPratica )
-		 ;
-
-				Se non trovato
-					Se input.codProcesso == 'CJAFF'
-						ERRORE: “Nessuna pratica per la superPratica “ + input.pratica.codSuperPratica
-					Altrimenti
-		ERRORE: “Pratica “ + input.pratica.codPratica + “ non trovata per la superPratica “ 
-		+ input.pratica.codSuperPratica
-		 */
+		logger.debug("Founded:", resultList);
+	
+		if (CollectionUtils.isEmpty(resultList)) {
+			
+			String msg=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)?
+					"Nessuna pratica per la superPratica {}":"Pratica {} non trovata per la superPratica {} ";
+			
+			String[] params=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)?new String[] {codSuperPratica}:new String[] {codPratica,codSuperPratica};
+			
+			throw CJDispositivaNotFoundDB2Exception.builder().messaggio(msg)
+				.param(params).build();
+		
+		}			
+		return resultList;
 	}
 	
-	public DatiIntestarioTrasparenza getDatiIntestatarioPerTrasparenza(String codProcesso, String codSuperPratica,String codPratica) {
+	public DatiIntestatarioTrasparenza getDatiIntestatarioPerTrasparenza(String codAbi,String codProcesso, String codSuperPratica,String codPratica) {		
 		
-		return null;
-		//TODO:DA IMPLEMENTARE
-
-		/*
-String TrasparenzaNDG			 	 
-     , TrasparenzaFiliale
-     , TrasparenzaCategoria
-     , TrasparenzaNumRapp 		
-     , TrasparenzaDataRiferimento
-	 
-SELECT MIN(substr(DATI_ENTITA,  1, 13 ))
-     , MIN(substr(DATI_ENTITA,116,  5 ))
-     , MIN(substr(DATI_ENTITA,121,  4 ))
-     , MIN(substr(DATI_ENTITA,125,  8 ))
-     , MIN(substr(DATI_ENTITA,133,  8 ))
- 
-  INTO :TrasparenzaNDG
-     , :TrasparenzaFiliale
-     , :TrasparenzaCategoria
-     , :TrasparenzaNumRapp 	
-     , :TrasparenzaDataRiferimento
- 
-  FROM FIATT.TB59R009
- WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica
-   AND ( :input.codProcesso = 'CJAFF'
-OR NR_PRATICA = :input.pratica.codPratica )
-   AND ID_ENTITA = 'DTADE'
-
- GROUP BY NR_SUPERPRATICA;
-*/
+		
+		StringWriter sw=new StringWriter();
+		sw.append(" SELECT MIN(substr(DATI_ENTITA,  1, 13 )) TrasparenzaNDG ");
+		sw.append(" , MIN(substr(DATI_ENTITA,116,  5 )) TrasparenzaFiliale ");
+		sw.append(" , MIN(substr(DATI_ENTITA,121,  4 )) TrasparenzaCategoria ");
+		sw.append(" , MIN(substr(DATI_ENTITA,125,  8 )) TrasparenzaNumRapp ");
+		sw.append(" , MIN(substr(DATI_ENTITA,133,  8 )) TrasparenzaDataRiferimento ");
+		sw.append(" FROM FIATT.TB59R009 WHERE  ID_ENTITA = 'DTADE' ");
+		sw.append(" and NR_SUPERPRATICA = :codSuperPratica ");
+		if (!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)) {			
+			sw.append(" and NR_PRATICA = :codPratica ");
+		}		
+		sw.append("GROUP BY NR_SUPERPRATICA ");
+		Map<String, Object> paramMap = new TreeMap<>();
+		paramMap.put("codSuperPratica", codSuperPratica);	
+		if (!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)) {
+			paramMap.put("codPratica", codPratica);
+		}
+					
+		List<DatiIntestatarioTrasparenza> resultList=(List<DatiIntestatarioTrasparenza>) selectDataSourceConnector.call(sw.toString(),
+				RequestDb2TransformerFactory.of(new RowMapperDatiIntestatarioTrasparenza(), DB2QueryType.FIND),
+				ResponseDb2TransformerFactory.of(), paramMap, codAbi);
+	
+	
+		return CollectionUtils.isNotEmpty(resultList)?resultList.get(0):null;
+		
 	}
 	
 	

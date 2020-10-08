@@ -21,7 +21,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestarioTrasparenza;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestatarioTrasparenza;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJRequest;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJResponse;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
@@ -167,7 +167,9 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	
 	protected void invokeWKCJ(ISPWebservicesHeaderType ispWebservicesHeaderType,String codProcesso, String codSuperPratica,String codPratica,String tipoChiamata) {
 		
-		DatiIntestarioTrasparenza datiIntestarioTrasparenza= this.coreConvenzioneService.getDatiIntestatarioPerTrasparenza(codProcesso, codSuperPratica, codPratica);
+		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		
+		DatiIntestatarioTrasparenza datiIntestarioTrasparenza= this.coreConvenzioneService.getDatiIntestatarioPerTrasparenza(codAbi,codProcesso, codSuperPratica, codPratica);
 		
 		boolean isCJDA=CodProcessoEnum.CJ_CUI_DA.toString().equals(codProcesso);
 		

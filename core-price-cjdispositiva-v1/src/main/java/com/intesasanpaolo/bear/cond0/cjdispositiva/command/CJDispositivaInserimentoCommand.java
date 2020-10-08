@@ -63,6 +63,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 		try {
+			//*********PROVA QUERY!!!!
+			//this.coreConvenzioneService.getElencoPratiche(codAbi , this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+			//invokeWKCJ();
+			//if (true)return new EsitoResponseResource();
+			//************
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
