@@ -18,6 +18,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestarioTrasparenza;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespRollbackStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
@@ -25,6 +26,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ConvenzioniHostServic
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.GestioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ctg.WKCJServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -44,6 +46,9 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 	
 	@Autowired
 	protected ProposteCJPOSWSService proposteCJPOSWSService;
+	
+	@Autowired
+	protected WKCJServiceBS wkcjServiceBS;
 	
 	protected ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
@@ -152,6 +157,52 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 			.descrErroreWebService(resp.getErrorDescription()).build();
 		}
 		logger.info("checkResponseRollbackCovenantAdesioneConvenzione END");
+	}
+	
+	
+	protected void invokeWKCJ(String codProcesso, String codSuperPratica,String codPratica) {
+		DatiIntestarioTrasparenza datiIntestarioTrasparenza= this.coreConvenzioneService.getDatiIntestatarioPerTrasparenza(codProcesso, codSuperPratica, codPratica);
+		
+		
+		/*
+		INVOKE WKCJ
+
+		GET dati intestatario per Trasparenza
+
+		WKCJ-INPBST-DATA-RIFER = TrasparenzaDataRiferimento
+		WKCJ-INPBST-LINGUA = ‘0’
+		WKCJ-INPBST-UTENTE = ISPWebservicesHeader.OperatorInfo.UserID
+		WKCJ-INPBST-TERMINALE = ‘CJDISPOSITIVA’	
+		WKCJ-INPBST-SUPERPRATICA = input.pratica.codSuperPratica
+
+		Se input.codProcesso == 'CJAFF'
+			se API:annulla
+				WKCJ-INPBST-TIPO-CHIAMATA = ‘A3’
+			Altrimenti
+				WKCJ-INPBST-TIPO-CHIAMATA = ‘A2’
+			Fine_se
+		Fine_se
+
+
+		Se input.codProcesso == 'CJDA'
+			se API:annulla
+				WKCJ-INPBST-TIPO-CHIAMATA = ‘03’
+			Altrimenti
+				WKCJ-INPBST-TIPO-CHIAMATA = ‘02’
+			Fine_se
+			WKCJ-INPBST-PRATICA = input.pratica.codPratica
+		WKCJ-INPBST-SETT-RAPP = ‘DA’
+		WKCJ-INPBST-FIL-RAPP = TrasparenzaFiliale
+		WKCJ-INPBST-CAT-RAPP =  TrasparenzaCategoria
+		WKCJ-INPBST-NRO-RAPP = TrasparenzaNumRapp
+		Fine_se
+
+		WKCJ-INPBST-CAT-SEC-RAPP = ‘0000’
+		WKCJ-INPBST-PARTITA-RAPP = ‘ ‘
+		WKCJ-INPBST-NDG = TrasparenzaNDG
+		WKCJ-INPBST-DT-DECO-RAPP = TrasparenzaDataRiferimento
+		WKCJ-INPBST-CAT-SEC-RAP-APPO = ‘0000’
+		*/
 	}
 	
 	

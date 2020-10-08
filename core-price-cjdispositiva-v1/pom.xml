@@ -20,7 +20,13 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version>1.0.0-SNAPSHOT</version>
 	</properties>
-
+	
+	<repositories>
+			<repository>
+				<id>maven-repository</id>
+				<url>file:///${basedir}/lib</url>
+			</repository>
+	</repositories>
 
 
 	<dependencies>
@@ -28,6 +34,12 @@
 			<groupId>com.intesasanpaolo.bear.cond0</groupId>
     		<artifactId>cj-common-lib-v1</artifactId>
 			<version>1.0.0-SNAPSHOT</version>		
+		</dependency>
+		
+		<dependency>
+			<groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKCJS00</groupId>
+ 			<artifactId>AD-WKCJCNTRZE</artifactId>
+			<version>00.00003</version>
 		</dependency>
 
 		<dependency>

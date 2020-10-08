@@ -21,6 +21,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.R
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.jdbc.transformers.ResponseDb2TransformerFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.DatiIntestarioTrasparenza;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
@@ -360,4 +361,65 @@ public class CoreConvenzioneService extends BaseService {
 		
 		return 1;
 	}
+	
+	
+	
+	public List<String> getElencoPratiche(String codProcesso, String codSuperPratica,String codPratica) {
+		return null;
+		/*Acquisizione dell’elenco pratiche data una superPratica
+
+		SELECT DISTINCT                              
+		       NR_PRATICA
+		  FROM FIATT.TB59R009         
+		 WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica 
+		   AND ID_ENTITA  = '00002'
+		   AND ( :input.codProcesso = 'CJAFF'
+			OR NR_PRATICA = :input.pratica.codPratica )
+		 ;
+
+				Se non trovato
+					Se input.codProcesso == 'CJAFF'
+						ERRORE: “Nessuna pratica per la superPratica “ + input.pratica.codSuperPratica
+					Altrimenti
+		ERRORE: “Pratica “ + input.pratica.codPratica + “ non trovata per la superPratica “ 
+		+ input.pratica.codSuperPratica
+		 */
+	}
+	
+	public DatiIntestarioTrasparenza getDatiIntestatarioPerTrasparenza(String codProcesso, String codSuperPratica,String codPratica) {
+		
+		return null;
+		//TODO:DA IMPLEMENTARE
+
+		/*
+String TrasparenzaNDG			 	 
+     , TrasparenzaFiliale
+     , TrasparenzaCategoria
+     , TrasparenzaNumRapp 		
+     , TrasparenzaDataRiferimento
+	 
+SELECT MIN(substr(DATI_ENTITA,  1, 13 ))
+     , MIN(substr(DATI_ENTITA,116,  5 ))
+     , MIN(substr(DATI_ENTITA,121,  4 ))
+     , MIN(substr(DATI_ENTITA,125,  8 ))
+     , MIN(substr(DATI_ENTITA,133,  8 ))
+ 
+  INTO :TrasparenzaNDG
+     , :TrasparenzaFiliale
+     , :TrasparenzaCategoria
+     , :TrasparenzaNumRapp 	
+     , :TrasparenzaDataRiferimento
+ 
+  FROM FIATT.TB59R009
+ WHERE NR_SUPERPRATICA = :input.pratica.codSuperPratica
+   AND ( :input.codProcesso = 'CJAFF'
+OR NR_PRATICA = :input.pratica.codPratica )
+   AND ID_ENTITA = 'DTADE'
+
+ GROUP BY NR_SUPERPRATICA;
+*/
+	}
+	
+	
+	
 }
