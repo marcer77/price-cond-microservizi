@@ -259,9 +259,9 @@ public class WsRequestFactory {
 		
 		newAccountInput.getInput().getDatiInput().getArea().setCodCanale(codCanale);
 		
-		newAccountInput.getInput().setNumSuperPratica(dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+		newAccountInput.getInput().setNumSuperPratica(dispositivaRequestDTO.getPratica().getCodSuperPratica());
 		
-		newAccountInput.getInput().setNumPratica(dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+		newAccountInput.getInput().setNumPratica(dispositivaRequestDTO.getPratica().getCodPratica());
 		
 		log.info("assemblaRequestGestione END");
 		return newAccountInput;

@@ -57,7 +57,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		praticaDTO.setCodPratica("0000655703");
 		praticaDTO.setCodPropostaComm("");
 		praticaDTO.setCodSuperPratica("0001161961");
-		dispositivaRequestDTO.setPraticaDTO(praticaDTO);
+		dispositivaRequestDTO.setPratica(praticaDTO);
 
 		httpHeaders = new HttpHeaders();
 
@@ -185,7 +185,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		stubGestioneOk();
 		
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655703");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
 		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -216,7 +216,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		for (String pratica : codPraticaList) {
 
-			dispositivaRequestDTO.getPraticaDTO().setCodPratica(pratica);
+			dispositivaRequestDTO.getPratica().setCodPratica(pratica);
 
 			String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -243,7 +243,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		stubGestioneOk();
 
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655704");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655704");
 
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -269,7 +269,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		stubGestioneOk();
 
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655705");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655705");
 
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -297,7 +297,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		stubGestioneOk();
 
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655706");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655706");
 
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -404,7 +404,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		stubGestioneOk();
 		
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655703");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
 		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
@@ -422,7 +422,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 	@Test
 	public void testAnnulloOK() throws Exception {
 		
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655713");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655713");
 		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
@@ -448,7 +448,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 	@Test
 	public void testAnnullo_WS_KO() throws Exception {
 
-		dispositivaRequestDTO.getPraticaDTO().setCodPratica("0000655713");
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655713");
 		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		
@@ -495,5 +495,58 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("content = {}", content);
 
 	}
+
+	@Test
+	public void test_ValidatorCodicePratica() throws Exception {
+
+		boolean esito = true;
+		
+		//CASI OK
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CARTE_AZIENDALI_PG.toString());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertTrue(esito);
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertTrue(esito);
+		
+		//CASI KO
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertFalse(dispositivaRequestDTO.isValidCodPratica());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica(null);
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertFalse(dispositivaRequestDTO.isValidCodPratica());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("test");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertFalse(dispositivaRequestDTO.isValidCodPratica());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("123456789");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertFalse(dispositivaRequestDTO.isValidCodPratica());
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("12345678910");
+		esito = dispositivaRequestDTO.isValidCodPratica();
+		log.info("Test codProcesso: {}, codPratica: {}, esito: {} ",dispositivaRequestDTO.getCodProcesso(),dispositivaRequestDTO.getPratica().getCodPratica(),esito);
+		Assert.assertFalse(dispositivaRequestDTO.isValidCodPratica());
+		
+	}
+	
 
 }

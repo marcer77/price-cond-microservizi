@@ -64,10 +64,10 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 		try {
 			// Recupero informazioni superpratica (…)
-			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-				final List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
-				final List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodPratica() , dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica());
+				final List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
+				final List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 
 				recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
@@ -86,8 +86,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 				//6)	Se input.codProcesso == ‘CJAFF’
 				//  •	DELETE codici proposte
 				if(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
-					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
-					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
+					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica());
 
 					if(CollectionUtils.isNotEmpty(elencoRapporti)) {
 						for (RapportoEntity rapporto : elencoRapporti) {
@@ -100,7 +100,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 				}
 			}else {
 				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
-				.param(new String[]{dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica()}).build();
+				.param(new String[]{dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica()}).build();
 			}
 
 			logger.info("execute SUCCESS ");
@@ -120,7 +120,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 			}
 		}
 
-		coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(),  dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+		coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
 		
 		
 		listaEsitoInviaPropostaV2.clear(); //rimuovo tutto in modo che se anche il revoca viene invocato più volte
@@ -134,12 +134,12 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		logger.info("creaProposta START ");
 
 		logger.info("rapporto:" + rapporto);
-		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), rapporto);
+		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica(), rapporto);
 
 		// WS COND0 GESTCJPOSV.inviaPropostaV2
 		EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
 		this.listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
-		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), dispositivaRequestDTO.getPraticaDTO().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
+		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
 
 		logger.info("creaProposta END OK ");
 		return 1;
