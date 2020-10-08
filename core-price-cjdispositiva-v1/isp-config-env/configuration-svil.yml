@@ -11,3 +11,9 @@ configuration:
        value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CJPOSWS_WS_URL
        value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS
+    ctg:
+     - name: COND0
+       acronimo: COND0
+       servizio: COND0-CTGBS
+       env: SVIL
+       user: GACONNEC       
