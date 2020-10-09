@@ -33,13 +33,6 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 	private Logger log = Logger.getLogger(CJDispositivaAnnulloCommand.class);
 
 
-
-	@Autowired
-	private DBCond0Service dbCond0Service;
-
-	@Autowired
-	private RecuperoInformazioniService recuperoInformazioniService;
-
 	@Override
 	protected EsitoResponseResource doExecute(){
 		
@@ -50,53 +43,15 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 
-	
-		List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-		if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-
-			if( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
-				
-				List<PropostaEntity> listaProposte = coreConvenzioneService.getCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
-
-				if(CollectionUtils.isNotEmpty(listaProposte)) {
-					for(PropostaEntity proposta : listaProposte) {
-						//annulla proposta sul database oracle COND0
-						dbCond0Service.annullaProposta(codAbi, proposta.getAnnoProposta(), proposta.getCodiceProposta());
-					}
-				}
-				
-				coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
-
-			}
-			
-			List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-			List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-			
-			if(CollectionUtils.isNotEmpty(covenantDaAttivare) || CollectionUtils.isNotEmpty(covenantDaCessare)) {
-				if(CollectionUtils.isNotEmpty(covenantDaAttivare) ) {
-					covenantDaAttivare = recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
-				}
-				
-				// WS VDM rollback storecovenant
-				callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId);
-			}
-	
-			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
-			callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0));
-			
-			// BS PCMK aggiorna elenco cod.prop. fittizie
-			callAggiornaCodfittizie();
-		}
+		annulloPratica(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica(),  branchCode, userId);
+		
+		invokeWKCJ();
 		
 		// return
 		return esitoResource;
 	}
 	
-	private boolean callAggiornaCodfittizie() {
-		log.info("callAggiornaCodfittizie START");
-		log.info("callAggiornaCodfittizie END");
-		return recuperoInformazioniService.aggiornaCodFittizie();
-	}
+
 
 	/*
 	private EsitoOperazioneCJPOSV2 callWsRevocaProposta(String codAbi, String annoProposta, String codiceProposta, String dataRespinta,String userId,String codUnitaOperativa ) {

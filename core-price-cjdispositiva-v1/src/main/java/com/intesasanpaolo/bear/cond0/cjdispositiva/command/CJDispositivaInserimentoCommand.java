@@ -1,10 +1,11 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.command;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
@@ -20,7 +20,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceExcepti
 import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.model.PropostaEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
@@ -49,7 +48,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
-	private List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = new ArrayList<>();
+	private Map<String,List<EsitoOperazioneCJPOSV2>> mapTranslistaEsitoInviaPropostaV2 = new HashMap<>();
 
 	@Autowired
 	private DBCond0Service dbCond0Service;
@@ -58,7 +57,9 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	private String userId; 
 	private String codUnitaOperativa;
 	private String branchCode;
-	private List<String> elencoPraticheElaborate;
+	private List<String> elencoPraticheElaborate = new ArrayList<>();
+	
+	
 	@Override
 	protected EsitoResponseResource doExecute() throws Exception{
 		logger.info("execute START");
@@ -67,61 +68,52 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		this.codUnitaOperativa = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA);
 		this.branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
 		this.userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
-		
+
 		try {
-			
 			List<String> elencoPratiche=this.coreConvenzioneService.getElencoPratiche(codAbi , this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPratica().getCodSuperPratica(), this.dispositivaRequestDTO.getPratica().getCodPratica());
-			
-			/*for (String pratica:elencoPratiche) {
-				callInTransaction(()->executeSinglePratica(pratica),
-						() -> rollbackPratiche());	
-			}*/
-		
-			
-			callInTransaction(()->{
-				
-				for (String pratica:elencoPratiche) {
-					//callInTransaction(()->executeSinglePratica(pratica),()->{return 1;});	
-					executeSinglePratica(pratica);
-				}
-				return "";
-				
-			},()->{rollbackPratiche();return new Integer("1");},"tx_2");
-			
-			
-			
-			callInTransaction(() -> invokeWKCJ(),"tx_2");
-			
-			
-		}catch(Exception ex) {
+
+			for (int i=0;i<elencoPratiche.size();i++) {
+				final String pratica= elencoPratiche.get(i);
+				final String transactionID = "TX" + i;
+				callInTransaction(()->executeSinglePratica(pratica,transactionID),()->rollbackPratica(pratica),"TX_EXTERNAL");
+			}
+			callInTransaction(() -> invokeWKCJ(),"TX_EXTERNAL");
+
+			logger.info("execute SUCCESS ");
+		}catch(BearTransactionException ex) {
 			throw (Exception)ex.getCause();
 		}
 		return esitoResource;
 	}
 
+
+	private Integer rollbackPratica(String codPratica) {
 	
+		annulloPratica(codAbi, codPratica , dispositivaRequestDTO.getPratica().getCodSuperPratica(),  branchCode, userId);
+		return 1;
+	}
 	
-	private Integer executeSinglePratica (String codPratica)  {
-		try {
+	private Integer executeSinglePratica (String codPratica,String transactionID)   {
+	
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
 				final List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 				final List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-
+				try {
 				recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
 
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 				callInTransaction(()->
 				callGestioneService( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "CAF": "CDA" , dispositivaRequestDTO, listaAdesioni.get(0))
-				,()->callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0)));
+				,()->callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0)),transactionID);
 
 
 				// WS VDM StoreCovenantAdesioneConvenzione
 				callInTransaction(()->
 				callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId)
-				,()->callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId));
+				,()->callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId),transactionID);
 
 				//6)	Se input.codProcesso == ‘CJAFF’
 				//  •	DELETE codici proposte
@@ -132,29 +124,35 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 					if(CollectionUtils.isNotEmpty(elencoRapporti)) {
 						for (RapportoEntity rapporto : elencoRapporti) {
 							callInTransaction(
-									()->creaProposta(rapporto,codAbi,codUnitaOperativa,listaAdesioni.get(0)),
-									()->revocaProposte(codAbi, userId, codUnitaOperativa));
+									()->creaProposta(rapporto,listaAdesioni.get(0),transactionID),
+									()->revocaProposte(transactionID),transactionID);
 						}
 					}
-
+				}
+				elencoPraticheElaborate.add(codPratica);
+				}catch(BearTransactionException be) {
+					throw new RuntimeException(be.getCause());
+				}catch(Exception ex) {
+					throw new RuntimeException(ex);
 				}
 			}else {
 				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
 				.param(new String[]{dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica()}).build();
 			}
 
-			logger.info("execute SUCCESS ");
-		}catch(Exception ex) {
-			throw new RuntimeException(ex.getCause());
-		}
+			
+
 		
 		return 1;
 
 		
 	}
 	
-	private Integer revocaProposte(String codAbi, String userId, String codUnitaOperativa) {
+	
+	private Integer revocaProposte(String transactionID) {
 		logger.info("revocaProposte START ");
+		
+		List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = mapTranslistaEsitoInviaPropostaV2.get(transactionID);
 		if(CollectionUtils.isNotEmpty(listaEsitoInviaPropostaV2)) {
 
 			for (EsitoOperazioneCJPOSV2 esitoOperazioneCJPOSV2 : listaEsitoInviaPropostaV2) {
@@ -162,8 +160,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 				dbCond0Service.annullaProposta(codAbi, esitoOperazioneCJPOSV2.getCodiceProposta().substring(0, 4), esitoOperazioneCJPOSV2.getCodiceProposta());
 			}
 		}
-
-		coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
+		
+		for(String codPratica:elencoPraticheElaborate) {
+		
+			coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  codPratica);
+		}
 		
 		
 		listaEsitoInviaPropostaV2.clear(); //rimuovo tutto in modo che se anche il revoca viene invocato più volte
@@ -173,7 +174,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		return 1;
 	}
 
-	private Integer creaProposta(RapportoEntity rapporto, String codAbi,String codUnitaOperativa,AdesioneEntity adesione) {
+	private Integer creaProposta(RapportoEntity rapporto, AdesioneEntity adesione,String transactionID) {
+
 		logger.info("creaProposta START ");
 
 		logger.info("rapporto:" + rapporto);
@@ -181,7 +183,13 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 		// WS COND0 GESTCJPOSV.inviaPropostaV2
 		EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
-		this.listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
+		
+		List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = mapTranslistaEsitoInviaPropostaV2.get(transactionID);
+		if(listaEsitoInviaPropostaV2 == null) {
+			listaEsitoInviaPropostaV2 = new ArrayList<>();
+			mapTranslistaEsitoInviaPropostaV2.put(transactionID,listaEsitoInviaPropostaV2);
+		}
+		listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
 		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
 
 		logger.info("creaProposta END OK ");
@@ -232,9 +240,5 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		return 1;
 	}
 	
-	private Integer rollbackPratiche() {
-		//@todo: ANNULLO PRATICA per ogni pratica
-		//this.elencoPraticheElaborate;
-		return 1;
-	}
+	
 }
