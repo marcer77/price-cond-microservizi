@@ -131,7 +131,7 @@ public class CJDispositivaAnnulloCommand extends CJDispositivaCommand {
 		String tipoChiamata=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"A3":
 			CodProcessoEnum.CJ_CUI_DA.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"03":"";
 		
-		this.invokeWKCJ(ispWebservicesHeaderType, this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica(), tipoChiamata);
+		this.invokeWKCJ(ispWebservicesHeaderType, this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPratica().getCodSuperPratica(), this.dispositivaRequestDTO.getPratica().getCodPratica(), tipoChiamata);
 	}
 	
 	
