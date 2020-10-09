@@ -53,21 +53,56 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 	@Autowired
 	private DBCond0Service dbCond0Service;
-
+	
+	private String codAbi;
+	private String userId; 
+	private String codUnitaOperativa;
+	private String branchCode;
+	private List<String> elencoPraticheElaborate;
 	@Override
 	protected EsitoResponseResource doExecute() throws Exception{
 		logger.info("execute START");
 		EsitoResponseResource esitoResource = new EsitoResponseResource("00", "OK");
-		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
-		String codUnitaOperativa = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA);
-		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
-		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
+		this.codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
+		this.codUnitaOperativa = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA);
+		this.branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
+		this.userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
+		
 		try {
-			//*********PROVA QUERY!!!!
-			//this.coreConvenzioneService.getElencoPratiche(codAbi , this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica());
-			//invokeWKCJ();
-			//if (true)return new EsitoResponseResource();
-			//************
+			
+			List<String> elencoPratiche=this.coreConvenzioneService.getElencoPratiche(codAbi , this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPratica().getCodSuperPratica(), this.dispositivaRequestDTO.getPratica().getCodPratica());
+			
+			/*for (String pratica:elencoPratiche) {
+				callInTransaction(()->executeSinglePratica(pratica),
+						() -> rollbackPratiche());	
+			}*/
+		
+			
+			callInTransaction(()->{
+				
+				for (String pratica:elencoPratiche) {
+					//callInTransaction(()->executeSinglePratica(pratica),()->{return 1;});	
+					executeSinglePratica(pratica);
+				}
+				return "";
+				
+			},()->{rollbackPratiche();return new Integer("1");},"tx_2");
+			
+			
+			
+			callInTransaction(() -> invokeWKCJ(),"tx_2");
+			
+			
+		}catch(Exception ex) {
+			throw (Exception)ex.getCause();
+		}
+		return esitoResource;
+	}
+
+	
+	
+	private Integer executeSinglePratica (String codPratica)  {
+		try {
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
@@ -109,12 +144,15 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 			}
 
 			logger.info("execute SUCCESS ");
-		}catch(BearTransactionException ex) {
-			throw (Exception)ex.getCause();
+		}catch(Exception ex) {
+			throw new RuntimeException(ex.getCause());
 		}
-		return esitoResource;
-	}
+		
+		return 1;
 
+		
+	}
+	
 	private Integer revocaProposte(String codAbi, String userId, String codUnitaOperativa) {
 		logger.info("revocaProposte START ");
 		if(CollectionUtils.isNotEmpty(listaEsitoInviaPropostaV2)) {
@@ -184,11 +222,19 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		logger.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 
-	private void invokeWKCJ() {
+	private Integer invokeWKCJ() {
 		
 		String tipoChiamata=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"A2":
 			CodProcessoEnum.CJ_CUI_DA.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"02":"";
 		
 		this.invokeWKCJ(ispWebservicesHeaderType, this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPratica().getCodSuperPratica(), this.dispositivaRequestDTO.getPratica().getCodPratica(), tipoChiamata);
+	
+		return 1;
+	}
+	
+	private Integer rollbackPratiche() {
+		//@todo: ANNULLO PRATICA per ogni pratica
+		//this.elencoPraticheElaborate;
+		return 1;
 	}
 }
