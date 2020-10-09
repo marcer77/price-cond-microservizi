@@ -37,8 +37,8 @@ public class IndicatoriCostoDTO {
 	@Valid
 	private EventoDTO evento;
 	
-	@NotNull(message = "Il campo classificazione non può essere null")
-	@NotBlank(message = "Il campo classificazione non può essere vuoto")
+	//@NotNull(message = "Il campo classificazione non può essere null")
+	//@NotBlank(message = "Il campo classificazione non può essere vuoto")
 	private String classificazione;
 
 	@AssertTrue(message = "Il codAppl inserito non è previsto.")

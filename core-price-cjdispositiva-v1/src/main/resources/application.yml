@@ -81,7 +81,28 @@ connectors:
            password: ${DATASOURCE_CONDDATA_PASSWORD}
            connectionPoolSize: ${DATASOURCE_CONDDATA_MAX_POOL_SIZE}
            timeout: ${DATASOURCE_CONDDATA_CONNECTION_TIMEOUT}
-           
+  
+  
+hostbridge:
+  # added to mock CTG call
+  mocked: false
+#  mocked: true
+  connectorFileProps:
+    ServerConfig.section: ${ISP_AMBIENTE}
+    ServerConfig.path: ""
+  y1j2cConfigFileProps:
+    #Y1.j2cConfigProperties: ""
+    Y1.StgY: StgA
+    Y1.ApiStage: "01"
+    Y1.Acronimo: COND0
+    Y1.ExecuteTimeout: 120000
+    Y1.displaycommArea: ${CTG_DISPLAY_COMMON_AREA}
+    Y1.CTGConnectionURL: ${CTG_COND0_HOSTNAME}
+    Y1.CTGPortNumberSSL: ${CTG_COND0_PORT}
+    Y1.CTGPortNumberTcpIP: ${CTG_COND0_PORT}
+    Y1.CTGCUserName: ${CTG_COND0_USERNAME}
+    Y1.CTGPassword: ${CTG_COND0_PASSWORD}
+    Y1.CTGSSL: ${CTG_COND0_SSL}           
            
 keycloak:
   enabled: false

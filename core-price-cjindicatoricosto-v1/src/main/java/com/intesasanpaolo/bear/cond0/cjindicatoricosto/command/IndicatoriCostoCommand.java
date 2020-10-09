@@ -162,6 +162,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				.tipoChiamata(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dto.getCodProcesso()) ? "A4" : "D4")
 				.dataRifer(DateUtils.dateToString(new Date(), "yyyyMMdd"))
 				.lingua("I")
+				.terminale("CJINDICATORI")
 				.build();
 
 		return wkcjServiceBS.callBS(wkcjRequest);

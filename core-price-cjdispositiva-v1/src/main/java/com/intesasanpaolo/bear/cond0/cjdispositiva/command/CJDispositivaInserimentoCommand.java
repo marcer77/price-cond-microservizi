@@ -63,6 +63,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		String branchCode = ispWebservicesHeaderType.getCompanyInfo().getISPBranchCode();
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
 		try {
+			//*********PROVA QUERY!!!!
+			//this.coreConvenzioneService.getElencoPratiche(codAbi , this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica());
+			//invokeWKCJ();
+			//if (true)return new EsitoResponseResource();
+			//************
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
@@ -179,4 +184,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		logger.info("checkResponseStoreCovenantAdesioneConvenzione END");
 	}
 
+	private void invokeWKCJ() {
+		
+		String tipoChiamata=CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"A2":
+			CodProcessoEnum.CJ_CUI_DA.toString().equals(this.dispositivaRequestDTO.getCodProcesso())?"02":"";
+		
+		this.invokeWKCJ(ispWebservicesHeaderType, this.dispositivaRequestDTO.getCodProcesso(), this.dispositivaRequestDTO.getPraticaDTO().getCodSuperPratica(), this.dispositivaRequestDTO.getPraticaDTO().getCodPratica(), tipoChiamata);
+	}
 }

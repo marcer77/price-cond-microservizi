@@ -7,3 +7,9 @@ configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
        value: https://gwad0-prod.sede.corp.sanpaoloimi.com/auth/oauth
+    ctg:
+     - name: COND0
+       acronimo: COND0
+       servizio: COND0-CTGBS
+       env: PROD
+       user: GACONNEC
