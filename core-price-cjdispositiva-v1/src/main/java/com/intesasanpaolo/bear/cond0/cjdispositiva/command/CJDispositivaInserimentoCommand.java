@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJGenericBusinessApplication;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.EsitoOperazioneCJPOSV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
@@ -92,7 +93,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		return 1;
 	}
 	
-	private Integer executeSinglePratica (String codPratica,String transactionID)   {
+	private Integer executeSinglePratica (String codPratica,String transactionID)  {
 	
 			// Recupero informazioni superpratica (…)
 			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
@@ -128,10 +129,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 						}
 					}
 				}
-				}catch(BearTransactionException be) {
-					throw new RuntimeException(be.getCause());
-				}catch(Exception ex) {
-					throw new RuntimeException(ex);
+				}catch(Exception be) {
+					throw new CJGenericBusinessApplication("99",be.getMessage(),be);
 				}
 			}else {
 				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
