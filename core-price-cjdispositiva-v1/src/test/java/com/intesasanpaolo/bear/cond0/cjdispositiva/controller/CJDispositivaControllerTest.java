@@ -6,11 +6,15 @@ import static com.github.tomakehurst.wiremock.client.WireMock.post;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 
+import java.util.ArrayList;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -21,9 +25,17 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
+import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.common.BaseTest;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ctg.CTGConnectorWKCJ;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ctg.transformers.WKCJCtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ctg.transformers.WKCJCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.PraticaDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.OutCNF;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJRequest;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ctg.WKCJResponse;
 
 @RunWith(SpringRunner.class)
 public class CJDispositivaControllerTest extends BaseTest {
@@ -36,6 +48,17 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	@Rule
 	public WireMockRule backendService = new WireMockRule(4545);
+	
+	@MockBean
+	private CTGConnectorWKCJ ctgConnectorWKCJ;
+	
+	@MockBean
+	private WKCJCtgRequestTrasformer requestTransformer;
+
+	@MockBean
+	private WKCJCtgResponseTansformer responseTransformer;
+	
+	private WKCJRequest wkcjRequest;
 
 	@Before
 	public void initMocks() throws Exception {
@@ -84,6 +107,25 @@ public class CJDispositivaControllerTest extends BaseTest {
 		httpHeadersCorrotto.add("ISPWebservicesHeader.RequestInfo.ServiceVersion", "00");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ApplicationID", "0");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode", "0");
+		
+		mock_WKCJ_OK();
+	}
+	
+	private void mock_WKCJ_OK() {
+		// MOCK WKCJ: non ritorna condizioni variate
+		WKCJResponse wkcjResponse = new WKCJResponse();
+		ArrayList<OutCNF> outCNFList = new ArrayList<OutCNF>();
+		/*
+		 * OutCNF outCNF = new OutCNF(); outCNF.setCodCnd("cndTest");
+		 * outCNFList.add(outCNF);
+		 */
+		wkcjResponse.setOutCNFList(outCNFList);
+		wkcjResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
+		wkcjResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+
+		Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, new Object[] {}))
+				.thenReturn(wkcjResponse);
+
 	}
 	
 	private void stubStoreCovenantWSKO() {

@@ -57,7 +57,6 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	private String userId; 
 	private String codUnitaOperativa;
 	private String branchCode;
-	private List<String> elencoPraticheElaborate = new ArrayList<>();
 	
 	
 	@Override
@@ -125,11 +124,10 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 						for (RapportoEntity rapporto : elencoRapporti) {
 							callInTransaction(
 									()->creaProposta(rapporto,listaAdesioni.get(0),transactionID),
-									()->revocaProposte(transactionID),transactionID);
+									()->revocaProposte(transactionID,codPratica),transactionID);
 						}
 					}
 				}
-				elencoPraticheElaborate.add(codPratica);
 				}catch(BearTransactionException be) {
 					throw new RuntimeException(be.getCause());
 				}catch(Exception ex) {
@@ -149,7 +147,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	}
 	
 	
-	private Integer revocaProposte(String transactionID) {
+	private Integer revocaProposte(String transactionID, String codPratica) {
 		logger.info("revocaProposte START ");
 		
 		List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = mapTranslistaEsitoInviaPropostaV2.get(transactionID);
@@ -161,10 +159,9 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 			}
 		}
 		
-		for(String codPratica:elencoPraticheElaborate) {
 		
-			coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  codPratica);
-		}
+		coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  codPratica);
+		
 		
 		
 		listaEsitoInviaPropostaV2.clear(); //rimuovo tutto in modo che se anche il revoca viene invocato più volte
