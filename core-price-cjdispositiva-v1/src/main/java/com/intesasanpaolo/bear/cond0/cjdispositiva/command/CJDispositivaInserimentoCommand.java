@@ -124,7 +124,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 					if(CollectionUtils.isNotEmpty(elencoRapporti)) {
 						for (RapportoEntity rapporto : elencoRapporti) {
 							callInTransaction(
-									()->creaProposta(rapporto,listaAdesioni.get(0),transactionID),
+									()->creaProposta(rapporto,listaAdesioni.get(0),codPratica,transactionID),
 									()->revocaProposte(transactionID,codPratica),transactionID);
 						}
 					}
@@ -133,13 +133,10 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 					throw new CJGenericBusinessApplication("99",be.getMessage(),be);
 				}
 			}else {
-				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica fornita [ codSuperPratica:{}, nrPratica:{} ]")
-				.param(new String[]{dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica()}).build();
+				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica [ codSuperPratica:{}, nrPratica:{} ]")
+				.param(new String[]{dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica}).build();
 			}
 
-			
-
-		
 		return 1;
 
 		
@@ -170,12 +167,12 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		return 1;
 	}
 
-	private Integer creaProposta(RapportoEntity rapporto, AdesioneEntity adesione,String transactionID) {
+	private Integer creaProposta(RapportoEntity rapporto, AdesioneEntity adesione,String codPratica,String transactionID) {
 
 		logger.info("creaProposta START ");
 
 		logger.info("rapporto:" + rapporto);
-		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica(), rapporto);
+		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica, rapporto);
 
 		// WS COND0 GESTCJPOSV.inviaPropostaV2
 		EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
@@ -186,7 +183,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 			mapTranslistaEsitoInviaPropostaV2.put(transactionID,listaEsitoInviaPropostaV2);
 		}
 		listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
-		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica(), esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
+		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica, esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
 
 		logger.info("creaProposta END OK ");
 		return 1;
