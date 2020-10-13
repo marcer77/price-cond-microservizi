@@ -215,7 +215,6 @@ public class CJDispositivaControllerTest extends BaseTest {
 		Assert.assertEquals(200, stubRest.getResponse().getStatus());
 	}
 
-
 	@Test
 	public void testInserimentoOK() throws Exception {
 
@@ -229,6 +228,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
 		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -239,7 +240,49 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		
+		inputJson = mapToJson(dispositivaRequestDTO);
 
+		mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		content = mvcResult.getResponse().getContentAsString();
+		status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+	
+	@Test
+	public void testInserimentoKO_RollbackPratica() throws Exception {
+		
+		String uri = "/cjdispositiva/inserimento";
+		
+		stubStoreCovenantWSOK();
+
+		stubInviaPropostaOK();
+		
+		stubGestioneOk();
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+
+		dispositivaRequestDTO.getPratica().setCodSuperPratica("0001161913");
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(!content.contains("codErrore\":\"00"));
+		
 	}
 
 	//vario la pratica in modo da generare eccezioni db2 le chiamate esterno sono tutte ok
@@ -255,6 +298,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		stubGestioneOk();
 
 		String[] codPraticaList = new String[] {"0000655704","0000655706"};
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
 
 		for (String pratica : codPraticaList) {
 
@@ -284,6 +329,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		stubInviaPropostaOK();
 		
 		stubGestioneOk();
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
 
 		dispositivaRequestDTO.getPratica().setCodPratica("0000655704");
 
@@ -319,7 +366,6 @@ public class CJDispositivaControllerTest extends BaseTest {
 				.headers(httpHeaders).content(inputJson)).andReturn();
 
 		String content = mvcResult.getResponse().getContentAsString();
-		System.err.println(content);
 		int status = mvcResult.getResponse().getStatus();
 		log.info("status = " + status);
 		Assert.assertEquals(200, status);
@@ -338,6 +384,8 @@ public class CJDispositivaControllerTest extends BaseTest {
 		stubInviaPropostaOK();
 		
 		stubGestioneOk();
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
 
 		dispositivaRequestDTO.getPratica().setCodPratica("0000655706");
 
@@ -462,9 +510,67 @@ public class CJDispositivaControllerTest extends BaseTest {
 	}
 
 	@Test
-	public void testAnnulloOK() throws Exception {
+	public void testAnnulloCJ_CUI_DA_OK() throws Exception {
 		
 		dispositivaRequestDTO.getPratica().setCodPratica("0000655713");
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		
+		String inputJson = mapToJson(dispositivaRequestDTO);
+		
+		String uri = "/cjdispositiva/annullo";
+
+		stubRollbackStoreCovenantWSOK();
+		
+		stubRevocaPropostaOK();
+
+		stubGestioneOk();
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+	
+	@Test
+	public void testAnnullo_CJ_AFFIDAMENTI_OK() throws Exception {
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655713");
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		
+		String inputJson = mapToJson(dispositivaRequestDTO);
+		
+		String uri = "/cjdispositiva/annullo";
+
+		stubRollbackStoreCovenantWSOK();
+		
+		stubRevocaPropostaOK();
+
+		stubGestioneOk();
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+	
+	@Test
+	public void testAnnullo_CJ_CARTE_AZIENDALI_PG_OK() throws Exception {
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655713");
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_CARTE_AZIENDALI_PG.toString());
 		
 		String inputJson = mapToJson(dispositivaRequestDTO);
 		

@@ -96,10 +96,10 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 	private Integer executeSinglePratica (String codPratica,String transactionID)  {
 	
 			// Recupero informazioni superpratica (…)
-			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
+			List<AdesioneEntity> listaAdesioni = coreConvenzioneService.acquisizioneDatiAdesione(codAbi, codPratica , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 			if(CollectionUtils.isNotEmpty(listaAdesioni)) {
-				final List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-				final List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
+				final List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, codPratica , dispositivaRequestDTO.getPratica().getCodSuperPratica());
+				final List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, codPratica , dispositivaRequestDTO.getPratica().getCodSuperPratica());
 				try {
 				recuperaInfoCovenantDaAttivare(codAbi ,covenantDaAttivare);
 
@@ -118,8 +118,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 				//6)	Se input.codProcesso == ‘CJAFF’
 				//  •	DELETE codici proposte
 				if(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
-					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
-					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), dispositivaRequestDTO.getPratica().getCodPratica());
+					coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  codPratica);
+					List<RapportoEntity> elencoRapporti = coreConvenzioneService.getElencoRapportiConTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica);
 
 					if(CollectionUtils.isNotEmpty(elencoRapporti)) {
 						for (RapportoEntity rapporto : elencoRapporti) {
