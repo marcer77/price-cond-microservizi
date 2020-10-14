@@ -75,7 +75,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 		return true;
 	}
 
-	protected NewAccountOutput callGestioneService(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) {
+	protected NewAccountOutput callGestioneService(String codFunzione, String codPratica,DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione) {
 		logger.info("callGestioneService START codFunzione:{} ", codFunzione);
 
 		HashMap<String, String> headerParams = new HashMap<String, String>();
@@ -108,10 +108,12 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 				ispWebservicesHeaderType.getTechnicalInfo().getCallerProgramName());
 		headerParams.put("ISPWebservicesHeader.TechnicalInfo.ChannelIDCode",
 				ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+		headerParams.put("ISPWebservicesHeader.TechnicalInfo.CallerServerName",
+				ispWebservicesHeaderType.getTechnicalInfo().getCallerServerName());
 
 		logger.info("- callGestioneService END");
 
-		NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(codFunzione, dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
+		NewAccountInput newAccountInput = wsRequestFactory.assemblaRequestGestione(codFunzione, codPratica ,dispositivaRequestDTO, adesione,ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_UNITA_OPERATIVA) ,ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 
 		NewAccountOutput newAccountOutput = gestioneService.gestione(newAccountInput, headerParams);
 
@@ -214,7 +216,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 
 			if( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
 
-				List<PropostaEntity> listaProposte = coreConvenzioneService.getCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
+				List<PropostaEntity> listaProposte = coreConvenzioneService.getCodiciProposte(codAbi, codSuperPratica,  codPratica);
 
 				if(CollectionUtils.isNotEmpty(listaProposte)) {
 					for(PropostaEntity proposta : listaProposte) {
@@ -222,11 +224,11 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 						dbCond0Service.annullaProposta(codAbi, proposta.getAnnoProposta(), proposta.getCodiceProposta());
 					}
 				}
-				coreConvenzioneService.deleteCodiciProposte(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(),  dispositivaRequestDTO.getPratica().getCodPratica());
+				coreConvenzioneService.deleteCodiciProposte(codAbi, codSuperPratica,  codPratica);
 			}
 
-			List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
-			List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, dispositivaRequestDTO.getPratica().getCodPratica() , dispositivaRequestDTO.getPratica().getCodSuperPratica());
+			List<CovenantEntity> covenantDaAttivare = coreConvenzioneService.getElencoCovenantDaAttivare(codAbi, codPratica , codSuperPratica);
+			List<CovenantEntity> covenantDaCessare = coreConvenzioneService.getElencoCovenantDaCessare(codAbi, codPratica , codSuperPratica);
 
 			if(CollectionUtils.isNotEmpty(covenantDaAttivare) || CollectionUtils.isNotEmpty(covenantDaCessare)) {
 				if(CollectionUtils.isNotEmpty(covenantDaAttivare) ) {
@@ -238,7 +240,7 @@ public class CJDispositivaCommand extends BaseCommand<EsitoResponseResource> {
 			}
 
 			// IIB PCK8 PCGESTIXME/Gestione rollback aggiornamento Condizioni
-			callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0));
+			callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", codPratica,dispositivaRequestDTO, listaAdesioni.get(0));
 
 			// BS PCMK aggiorna elenco cod.prop. fittizie
 			callAggiornaCodfittizie();

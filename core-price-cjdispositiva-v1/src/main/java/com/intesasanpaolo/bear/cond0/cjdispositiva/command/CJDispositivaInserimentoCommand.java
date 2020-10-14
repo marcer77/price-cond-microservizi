@@ -106,8 +106,8 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 				// IIB PCK8 PCGESTIXME/Gestione aggiornamento Condizioni
 				callInTransaction(()->
-				callGestioneService( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "CAF": "CDA" , dispositivaRequestDTO, listaAdesioni.get(0))
-				,()->callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA", dispositivaRequestDTO, listaAdesioni.get(0)),transactionID);
+				callGestioneService( CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "CAF": "CDA" ,codPratica, dispositivaRequestDTO, listaAdesioni.get(0))
+				,()->callGestioneService(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(dispositivaRequestDTO.getCodProcesso()) ? "AAF": "ADA",codPratica ,dispositivaRequestDTO, listaAdesioni.get(0)),transactionID);
 
 
 				// WS VDM StoreCovenantAdesioneConvenzione

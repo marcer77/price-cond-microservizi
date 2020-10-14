@@ -1,12 +1,18 @@
 configuration:
     oracle:
-      - name: CONDDATA
-        acronimo: COND0
-        servizio: COND0
-        user: COND_APP
+     - name: CONDDATA
+       acronimo: COND0
+       servizio: COND0
+       user: COND_APP
     env:
      - name: AUTH_SERVER_ENDPOINT
-       value: https://gwad0-prod.sede.corp.sanpaoloimi.com/auth/oauth
+       value: https://gwad0-test.syssede.systest.sanpaoloimi.com/auth/oauth
+     - name: CONVENZIONI_HOST_SERVICE_WS_URL
+       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
+     - name: CJPOSWS_WS_URL
+       value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS
+     - name: IIB_PCGESTIXME_URL
+       value: http://agnbmopclu.sede.corp.sanpaoloimi.com:80/PHCP0/PCGESTIXME/Gestione
     ctg:
      - name: COND0
        acronimo: COND0

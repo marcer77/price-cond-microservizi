@@ -11,6 +11,8 @@ configuration:
        value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CJPOSWS_WS_URL
        value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS
+     - name: IIB_PCGESTIXME_URL
+       value: http://salvms106.sede.corp.sanpaoloimi.com:8080/PHCP0/PCGESTIXME/Gestione
     ctg:
      - name: COND0
        acronimo: COND0

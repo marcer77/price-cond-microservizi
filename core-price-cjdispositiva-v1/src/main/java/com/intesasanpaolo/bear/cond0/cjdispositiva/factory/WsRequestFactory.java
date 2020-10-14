@@ -223,7 +223,7 @@ public class WsRequestFactory {
 		return request;
 	}
 
-	public NewAccountInput assemblaRequestGestione(String codFunzione, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione, String codFilDipendente, String codCanale) {
+	public NewAccountInput assemblaRequestGestione(String codFunzione, String codPratica, DispositivaRequestDTO dispositivaRequestDTO, AdesioneEntity adesione, String codFilDipendente, String codCanale) {
 		log.info("assemblaRequestGestione START");
 		NewAccountInput newAccountInput = new NewAccountInput();
 		
@@ -261,7 +261,7 @@ public class WsRequestFactory {
 		
 		newAccountInput.getInput().setNumSuperPratica(dispositivaRequestDTO.getPratica().getCodSuperPratica());
 		
-		newAccountInput.getInput().setNumPratica(dispositivaRequestDTO.getPratica().getCodPratica());
+		newAccountInput.getInput().setNumPratica(codPratica);
 		
 		log.info("assemblaRequestGestione END");
 		return newAccountInput;

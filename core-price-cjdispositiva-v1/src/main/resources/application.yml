@@ -69,7 +69,7 @@ connectors:
   restConfigurations:
     items:
       GestioneRestConnector:
-        url: http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione
+        url: ${IIB_PCGESTIXME_URL}
         timeout: 120000 
 
   jdbcConfigurations:
