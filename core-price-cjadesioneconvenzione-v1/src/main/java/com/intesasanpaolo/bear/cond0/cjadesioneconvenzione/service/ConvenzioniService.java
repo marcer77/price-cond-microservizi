@@ -24,7 +24,8 @@ public class ConvenzioniService {
 		
 		RespGetRequisitiAdesioneConvenzione response = (RespGetRequisitiAdesioneConvenzione) convenzioniServiceConnector.call(request, getRequisitiAdesioneConvenzioneRequestTransformer, getRequisitiAdesioneConvenzioneResponseTrasformer, null);
 		//gestione eccezioni applicative
-		checkWSResult(response);
+		
+		checkWSResult(response,request.getCodiceConvenzione());
 		return response;
 	}
 	
@@ -32,10 +33,10 @@ public class ConvenzioniService {
 	 * 
 	 * @param response
 	 */
-	private void checkWSResult(RespGetRequisitiAdesioneConvenzione response ) {
+	private void checkWSResult(RespGetRequisitiAdesioneConvenzione response,String codConvenzione ) {
 		boolean checkEsitoPositivo=response!=null&&response.getEsitoResultCode()!=null&&response.getEsitoResultCode().equalsIgnoreCase("OK");
 		if (!checkEsitoPositivo){
-			throw CJWebServiceException.builder().webServiceName("ConvenzioniService").codiceErroreWebService(response!=null? response.getEsitoResultCode():"").descrErroreWebService(response!=null?response.getEsitoErrorMessage():"").build();
+			throw CJWebServiceException.builder().webServiceName("ConvenzioniService, Codice Convenzione:" + codConvenzione).codiceErroreWebService(response!=null? response.getEsitoResultCode():"").descrErroreWebService(response!=null?response.getEsitoErrorMessage():"").build();
 		}
 	}
 
