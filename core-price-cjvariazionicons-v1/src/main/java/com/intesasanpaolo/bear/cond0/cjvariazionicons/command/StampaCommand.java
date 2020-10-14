@@ -77,46 +77,52 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 					.build()
 				)
 				.build();
-
+		StampaResponseResource stampaResponseResource=new StampaResponseResource();
+		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);
 
 		String docXML = "";
 		
 		String returnCode = "";
-		
-		for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
+		String codiceErrore = t1sfResponse.getOReturnCode();
+		if("00".equals(codiceErrore)) {
 			
-			if("06".equals(returnCode)) { //Esco dal ciclo quando il codice di risposta e' 06
-				break;
-			}else {
+			for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
 				
-				//chiamata alla BS FL03
-				FL03Request fl03Request = FL03Request.builder()
-						.codApplic("ABC__")
-						.codFunzione("UP")
-						.codSottoApplic("ORDIN")
-						.filler("")
-						.keyOper(t1sfResponse.getOKeyOperazione())
-						.numStrKey(1)
-						.ispWebservicesHeaderType(ispWebservicesHeaderType)
-						.build();
-		
-				FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
-				
-				docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
-				
-				returnCode = fl03Response.getRc();
-				if (returnCode.equals(""))
+				if("06".equals(returnCode)) { //Esco dal ciclo quando il codice di risposta e' 06
 					break;
+				}else {
+					
+					//chiamata alla BS FL03
+					FL03Request fl03Request = FL03Request.builder()
+							.codApplic("ABC__")
+							.codFunzione("UP")
+							.codSottoApplic("ORDIN")
+							.filler("")
+							.keyOper(t1sfResponse.getOKeyOperazione())
+							.numStrKey(1)
+							.ispWebservicesHeaderType(ispWebservicesHeaderType)
+							.build();
+			
+					FL03Response fl03Response = fL03ServiceBS.callBS(fl03Request);
+					
+					docXML = docXML+fl03Response.getStringaOut(); //Concatenazione delle response
+					
+					returnCode = fl03Response.getRc();
+					if (returnCode.equals(""))
+						break;
+				}
 			}
-		}
-				
-		StampaResponseResource stampaResponseResource=new StampaResponseResource();
+			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
+			stampaResponseResource.getEsitoStampaResource().setDescErrore("");
+		}else {
+			stampaResponseResource.getEsitoStampaResource().setCodErrore("04");
+			stampaResponseResource.getEsitoStampaResource().setDescErrore("Nessuna stampa da produrre");
+		}	
 		stampaResponseResource.setDocumento(docXML);
 		stampaResponseResource.setKeyOper("");
-		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
-		stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
-		stampaResponseResource.getEsitoStampaResource().setDescErrore("");
+
+
 		
 		return stampaResponseResource;
 		

@@ -142,7 +142,7 @@ public class CJVariazioniControllerTest extends BaseTest {
 		T1SFResponse t1sfResponse = new T1SFResponse();
 		t1sfResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0000").build());
 		t1sfResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
-		t1sfResponse.setOReturnCode("");
+		t1sfResponse.setOReturnCode("00");
 		Mockito.when(ctgConnectorT1SF.call(t1SFRequest, requestTransformer, responseTransformer, new Object[] {}))
 				.thenReturn(t1sfResponse);
 
@@ -153,7 +153,7 @@ public class CJVariazioniControllerTest extends BaseTest {
 		t1sfResponse
 				.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").mdwEsiMsg("ERRORE BS").mdwEsiAnom("ERRORE BS").build());
 		t1sfResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
-		t1sfResponse.setOReturnCode("");
+		t1sfResponse.setOReturnCode("99");
 		Mockito.when(ctgConnectorT1SF.call(t1SFRequest, requestTransformer, responseTransformer, new Object[] {}))
 				.thenReturn(t1sfResponse);
 
