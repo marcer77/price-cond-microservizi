@@ -46,7 +46,7 @@ public class ServiceUtil {
 		// campi header nuovi per CTG
 		headerBS.setHspAcronimoProvider(bsTypeCall.getAcronimoOwnerBS());
 		headerBS.setHspAcronimo("COND0");
-		headerBS.setCodiceTipoCanale(bsTypeCall.getChannel());
+		headerBS.setCodiceTipoCanale(ispWebservicesHeaderType.getTechnicalInfo().getChannelIDCode());
 
 		// campi prelevati dall'HEADER HTTP del microservizio
 		headerBS.setCodAbi(getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI));

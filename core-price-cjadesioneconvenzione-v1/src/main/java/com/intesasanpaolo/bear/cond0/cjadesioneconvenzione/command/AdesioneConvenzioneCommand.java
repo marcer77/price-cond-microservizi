@@ -144,19 +144,26 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 		String docXML = null;
 		String codiceErrore = null;
 		String descErrore = null;		
-		
-		if(codiceConvenzioneFound) {
-		// T1SJ preparazione stampa
-		T1SJResponse t1SJResponse = preparazioneStampa();
-		
-		codiceErrore = t1SJResponse.getT1SjOReturnCode(); //TODO BHO... da vericare nei test.
 
-		// chiamata alla BS FL03 - recupero
-		docXML = generazioneXML(t1SJResponse, stampaOutput);
-		stampaOutput.setDocXML(docXML);
+		if(codiceConvenzioneFound) {
+			// T1SJ preparazione stampa
+			T1SJResponse t1SJResponse = preparazioneStampa();
+
+			codiceErrore = t1SJResponse.getT1SjOReturnCode(); //TODO BHO... da vericare nei test. diverso da 0 
+			logger.debug("T1SJ response: " + t1SJResponse);
+			
+			if("00".equalsIgnoreCase(codiceErrore)) {
+				// chiamata alla BS FL03 - recupero
+				docXML = generazioneXML(t1SJResponse, stampaOutput);
+				stampaOutput.setDocXML(docXML);
+			}else {
+				codiceErrore = "04";
+				descErrore = "Nessuna stampa da produrre";
+			}
+
 		}else {
 			codiceErrore = "04";
-		    descErrore = "Nessuna stampa da produrre";
+			descErrore = "Nessuna stampa da produrre";
 		}
 		
 		stampaResponseResource.setDocumento(docXML);
@@ -277,6 +284,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				.t1SjITipoStampa(dto.getInfoStampa().getTipoStampa())
 				.t1SjIViaRes(recapito.getIndirizzo())
 				.t1SjIFunzione(dto.getCodProcesso())
+				.t1SjICodFilRapp(dto.getRapporto().getCodFiliale())
 				.inpNDGList(inpNDGList).build();
 		log.info("buildT1SJRequest END");
 		return t1SJRequest;
