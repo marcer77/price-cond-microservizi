@@ -96,6 +96,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		
 		//mock connettori CTG
 		T1SJResponse t1sjResponse=new T1SJResponse();
+		t1sjResponse.setT1SjOReturnCode("00");
 		t1sjResponse.setOutEsi(new OutEsi());
 		t1sjResponse.getOutEsi().setMdwEsiRetc("0000");
 		
