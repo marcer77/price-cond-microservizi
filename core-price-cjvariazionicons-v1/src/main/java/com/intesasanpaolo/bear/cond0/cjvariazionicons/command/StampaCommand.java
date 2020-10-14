@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cjvariazionicons.command;
 
+import java.util.stream.Collectors;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Response;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.Inpndg;
+import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.Ndg;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFRequest;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.T1SFResponse;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.resource.EsitoStampaResource;
@@ -44,18 +49,33 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 		//chiamata alla BS T1SF
 		T1SFRequest t1sfRequest = T1SFRequest.builder().
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
-				.iCodCatRapp(inputStampaDTO.getRapporto().getCodCategoria())
-				.iCodFilRapp(inputStampaDTO.getRapporto().getCodFiliale())
+				.iFunzione("CJAF")
 				.iCodLingua(inputStampaDTO.getInfoStampa().getCodLingua())
-				.iDataRiferimento(DateUtils.dateToString(inputStampaDTO.getInfoStampa().getData(),"yyyyMMdd"))
-				.iFirma(inputStampaDTO.getInfoStampa().getTipoFirma())
-				.iKeyOperazione(inputStampaDTO.getInfoStampa().getKeyOper())
-				.iNrPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodPratica()):null)
-				.iNrSuperPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodSuperPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodSuperPratica()):null)
+				.iCodFilRapp(inputStampaDTO.getRapporto().getCodFiliale())
+				.iCodCatRapp(inputStampaDTO.getRapporto().getCodCategoria())
 				.iNumProgRapp(inputStampaDTO.getRapporto().getCodProgressivo())
-				.iPropostaComm(StringUtils.isNotEmpty(inputStampaDTO.getPratica().getCodPropostaComm())?Integer.valueOf(inputStampaDTO.getPratica().getCodPropostaComm()):null)
+				.iDataRiferimento(DateUtils.dateToString(inputStampaDTO.getInfoStampa().getData(),"yyyyMMdd"))
+				.iKeyOperazione(inputStampaDTO.getInfoStampa().getKeyOper())
 				.iTipoOfferta(inputStampaDTO.getInfoStampa().getTipoOfferta())
+				.iNrSuperPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodSuperPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodSuperPratica()):null)
+				.iNrPratica(NumberUtils.isDigits(inputStampaDTO.getPratica().getCodPratica())?Integer.valueOf(inputStampaDTO.getPratica().getCodPratica()):null)
+				.iPropostaComm(StringUtils.isNotEmpty(inputStampaDTO.getPratica().getCodPropostaComm())?Integer.valueOf(inputStampaDTO.getPratica().getCodPropostaComm()):null)
+				.iFirma(inputStampaDTO.getInfoStampa().getTipoFirma())
 				.iTipoStampa(inputStampaDTO.getInfoStampa().getTipoStampa())
+				.ndg(
+					Ndg.builder()
+					.iNdgIntestatario(inputStampaDTO.getIntestatario().getNdg())
+					.iIntestaz(inputStampaDTO.getIntestatario().getIntestazione())
+					.iCodFiscale(inputStampaDTO.getIntestatario().getCodFiscale())
+					.iSpecieGiu(inputStampaDTO.getIntestatario().getSpecieGiur())
+					.build()
+				)
+				.inpndg(
+					Inpndg.builder()
+					.iNdgFirma(inputStampaDTO.getFirmatari().stream().map(FirmatarioDTO::getNdg).collect(Collectors.toList()))
+					.iIntestazFirma(inputStampaDTO.getFirmatari().stream().map(FirmatarioDTO::getIntestazione).collect(Collectors.toList()))
+					.build()
+				)
 				.build();
 
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);

@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.C_T1SFS00;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.INHEADER;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.INPBST;
+import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.INPNDG;
+import com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00.NDG;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSTypeCall;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderBS;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
@@ -65,6 +67,29 @@ public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SFRe
 		inpbst.I_TIPO_FT=ServiceUtil.ifNull(t1sfRequest.getITipoFT(), "");
 		inpbst.I_TIPO_OFFERTA=ServiceUtil.ifNull(t1sfRequest.getITipoOfferta(), "");
 		inpbst.I_TIPO_STAMPA=ServiceUtil.ifNull(t1sfRequest.getITipoStampa(), "");
+
+		inpbst.NDG = new NDG[1];
+		NDG ndg = new NDG();
+		ndg.I_NDG_INTESTATARIO = ServiceUtil.ifNull(t1sfRequest.getNdg().getINdgIntestatario(), "");
+		ndg.I_INTESTAZ = ServiceUtil.ifNull(t1sfRequest.getNdg().getIIntestaz(), "");
+		ndg.I_COD_FISCALE = ServiceUtil.ifNull(t1sfRequest.getNdg().getICodFiscale(), "");
+		ndg.I_SPECIE_GIU = ServiceUtil.ifNull(t1sfRequest.getNdg().getISpecieGiu(), "");
+		ndg.I_COMUNE_RES  = ServiceUtil.ifNull(t1sfRequest.getNdg().getIComuneRes(), "");
+		ndg.I_CAP_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getICapRes(), "");
+		ndg.I_VIA_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getIViaRes(), "");
+		ndg.I_FRAZIONE = ServiceUtil.ifNull(t1sfRequest.getNdg().getIFrazione(), "");
+		ndg.I_PROV_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getIProvRes(), "");
+		logger.debug("inpbst.NDG = {}",ServiceUtil.stampaOggetto(ndg));
+		inpbst.NDG[0] = ndg;
+		
+		inpbst.INPNDG = new INPNDG[13];
+		for(int i=0; i<13;i++) {
+			INPNDG inpndg = new INPNDG();
+			inpndg.I_NDG_FIRMA = (i<t1sfRequest.getInpndg().getINdgFirma().size()) ? t1sfRequest.getInpndg().getINdgFirma().get(i) : "";
+			inpndg.I_INTESTAZ_FIRMA = (i<t1sfRequest.getInpndg().getIIntestazFirma().size()) ? t1sfRequest.getInpndg().getIIntestazFirma().get(i) : "";
+			inpbst.INPNDG[i] = inpndg;
+			logger.debug("inpbst.INPNDG[{}] = {}",i,ServiceUtil.stampaOggetto(inpndg));
+		}
 		
 		connector.INPBST = new INPBST[1];
 		connector.INPBST[0] = inpbst;

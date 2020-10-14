@@ -41,5 +41,6 @@ public class T1SFRequest {
 	private String iTipoFT;
 	private String iTipoOfferta;
 	private String iTipoStampa;
-
+	private Ndg ndg;
+	private Inpndg inpndg;
 }
