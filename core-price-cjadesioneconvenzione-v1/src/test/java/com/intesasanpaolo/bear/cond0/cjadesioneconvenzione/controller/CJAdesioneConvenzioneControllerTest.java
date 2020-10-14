@@ -125,7 +125,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
                                 .withStatus(200)
                                 .withHeader("content-type", 
                           "text/xml")                             
-                .withBodyFile("GetRequisitiAdesioneConvenzione-response2.xml")
+                .withBodyFile("GetRequisitiAdesioneConvenzione-response3.xml")
                 )
         );
 	}

@@ -64,9 +64,9 @@ connectors:
             port: ${DATASOURCE_SPIMI_DB2_PORT:5250}
             dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:DB2YTOSG}
             readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
-            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1120}
             writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}    
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1120}    
             #puntamenti per system
             #uri: ${DATASOURCE_SPIMI_DB2_URI:sdda.mframe.sanpaoloimi.com}
             #port: ${DATASOURCE_SPIMI_DB2_PORT:5300}  U0G6425 Alma0720

@@ -13,6 +13,8 @@ import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.PaddingField;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBenefici;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.AdesioneResponseBeneficioValoreParametrato;
+import static com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil.withNoException;
+
 
 public class BeneficiBuilder implements Builder<String> {
 
@@ -83,7 +85,7 @@ public class BeneficiBuilder implements Builder<String> {
 		st.append(PaddingField.rightPadSpaceOrTruncate(adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroCodice1(), 8));
 		
 		//12 BEN-XC-PARAMETRO1  NNNNNNNN	Benefici.parametro_Perc1 * 100000
-		BigDecimal benXCParametro1= adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1().multiply(new BigDecimal(100000));
+		BigDecimal benXCParametro1=  withNoException(()->adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1().multiply(new BigDecimal(100000)),BigDecimal.ZERO);
 		st.append(PaddingField.leftPadZeroOrTruncate(benXCParametro1.toString(),8));
 		
 		//13 BEN-PARAMETRO2	CCCCCCCC	fisso a spazi
@@ -97,7 +99,7 @@ public class BeneficiBuilder implements Builder<String> {
 		st.append(PaddingField.rightPadSpaceOrTruncate(getOperatoreSpread(),1));
 		
 		//16 BEN-VAL-NUM-DRV1 SNNNNNNNNNNNNNNNNNN Benefici.driver1_ValoreNumerico * 1000
-		BigDecimal benValNumDRV1=adesioneResponseBenefici.getDriver1ValoreNumerico().multiply(new BigDecimal(1000)); 
+		BigDecimal benValNumDRV1=withNoException(()->adesioneResponseBenefici.getDriver1ValoreNumerico().multiply(new BigDecimal(1000)),BigDecimal.ZERO); 
 		String segno=benValNumDRV1.signum()<0?"-":"+";
 		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV1.toString(), 18));
 	
@@ -105,7 +107,7 @@ public class BeneficiBuilder implements Builder<String> {
 		st.append(PaddingField.rightPadSpaceOrTruncate(adesioneResponseBenefici.getDriver1ValoreCodice(), 5));
 		
 		//18 BEN-VAL-NUM-DRV2	SNNNNNNNNNNNNNNNNNN	Benefici.driver2_ValoreNumerico * 1000
-		BigDecimal benValNumDRV2=adesioneResponseBenefici.getDriver2ValoreNumerico().multiply(new BigDecimal(1000)); 
+		BigDecimal benValNumDRV2=withNoException(()->adesioneResponseBenefici.getDriver2ValoreNumerico().multiply(new BigDecimal(1000)),BigDecimal.ZERO); 
 		segno=benValNumDRV2.signum()<0?"-":"+";
 		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV2.toString(), 18));
 		
@@ -135,9 +137,9 @@ public class BeneficiBuilder implements Builder<String> {
 		BigDecimal result=null;
 		if (adesioneResponseBenefici.getBeneficioValoreParametrato() != null
 				&& adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread() != null) {
-			result= adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread().abs().multiply(new BigDecimal(100000));
+			result= withNoException(()->adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroSpread().abs().multiply(new BigDecimal(100000)),BigDecimal.ZERO);
 		} else {
-			result= adesioneResponseBenefici.getBeneficioValoreNumerico().multiply(new BigDecimal(100000));
+			result= withNoException(()->adesioneResponseBenefici.getBeneficioValoreNumerico().multiply(new BigDecimal(100000)),BigDecimal.ZERO);
 		}
 		String numero=PaddingField.leftPadZeroOrTruncate(result.toString(), 15);
 		String segno=result.intValue()>=0?"+":"-";
