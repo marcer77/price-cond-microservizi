@@ -149,7 +149,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 			// T1SJ preparazione stampa
 			T1SJResponse t1SJResponse = preparazioneStampa();
 
-			codiceErrore = t1SJResponse.getT1SjOReturnCode(); //TODO BHO... da vericare nei test. diverso da 0 
+			codiceErrore = t1SJResponse.getT1SjOReturnCode();  
 			logger.debug("T1SJ response: " + t1SJResponse);
 			
 			if("00".equalsIgnoreCase(codiceErrore)) {
@@ -163,7 +163,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 
 		}else {
 			codiceErrore = "04";
-			descErrore = "Nessuna stampa da produrre";
+			descErrore = "Nessuna convezione associata";
 		}
 		
 		stampaResponseResource.setDocumento(docXML);
