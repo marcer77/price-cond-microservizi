@@ -257,12 +257,13 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				inpNDGList.add(InpNDG.builder().t1SjIIntestazFirma(firmatario.getIntestazione()).t1SjINdgFirma(firmatario.getNdg()).build());
 			}
 		}
+		
 		T1SJRequest t1SJRequest = T1SJRequest.builder()
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.t1SjICapRes(recapito.getCap())
 				.t1SjIChiamante(dto.getCodAppl())
 				.t1SjICodCatRapp(dto.getRapporto().getCodCategoria())
-				.t1SjICodFiscale(dto.getIntestatario().getCodFiscale())
+				.t1SjICodFiscale(StringUtils.isEmpty(dto.getIntestatario().getCodFiscale()) ? dto.getIntestatario().getPIva() : dto.getIntestatario().getCodFiscale())
 				.t1SjICodiceLingua(dto.getInfoStampa().getCodLingua())
 				.t1SjICodUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.t1SjIComuneRes(recapito.getComune())

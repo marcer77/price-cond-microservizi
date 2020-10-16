@@ -47,12 +47,12 @@ public class IntestatarioDTO {
 	private List<@Valid RecapitoDTO> recapiti;
 	
 	//Controlla se specieGiur, codFiscale, pIva è valorizzato
-	@AssertTrue(message="Valorizzare almeno uno di questi campi: specieGiur, codFiscale, pIva")
-	@JsonIgnore
-	public boolean isValidIdentificativoIntestatario() {
-	    return !( StringUtils.isEmpty(specieGiur)
-	            && StringUtils.isEmpty(codFiscale)
-	            && StringUtils.isEmpty(pIva));
-	}
+//	@AssertTrue(message="Valorizzare almeno uno di questi campi: specieGiur, codFiscale, pIva")
+//	@JsonIgnore
+//	public boolean isValidIdentificativoIntestatario() {
+//	    return !( StringUtils.isEmpty(specieGiur)
+//	            && StringUtils.isEmpty(codFiscale)
+//	            && StringUtils.isEmpty(pIva));
+//	}
 	
 }
