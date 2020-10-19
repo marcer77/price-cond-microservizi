@@ -10,6 +10,7 @@ import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.INHEADER;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.INPBST;
 import com.dsi.business.SSA_T1.integration.jdo.P_T1SJS00.INPNDG;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSTypeCall;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.PaddingField;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.InpNDG;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ctg.T1SJRequest;
@@ -51,7 +52,7 @@ public class T1SJCtgRequestTrasformer implements ICtgRequestTransformer<T1SJRequ
 		inpbst.T1SJ_I_CHIAMANTE = ServiceUtil.ifNull(request.getT1SjIChiamante(),"");
 		inpbst.T1SJ_I_COD_CAT_RAPP = ServiceUtil.ifNull(request.getT1SjICodCatRapp(),"");
 		inpbst.T1SJ_I_COD_FIL_RAPP = ServiceUtil.ifNull(request.getT1SjICodFilRapp(),"");
-		inpbst.T1SJ_I_COD_FISCALE = ServiceUtil.ifNull(request.getT1SjICodFiscale(),"");
+		inpbst.T1SJ_I_COD_FISCALE = ServiceUtil.ifNull(PaddingField.right(request.getT1SjICodFiscale(),16),"");
 		inpbst.T1SJ_I_COD_UTENTE = ServiceUtil.ifNull(request.getT1SjICodUtente(),"");
 		inpbst.T1SJ_I_CODICE_LINGUA = ServiceUtil.ifNull(request.getT1SjICodiceLingua(),"");
 		inpbst.T1SJ_I_COMUNE_RES = ServiceUtil.ifNull(request.getT1SjIComuneRes(),"");
