@@ -61,7 +61,7 @@ public class InputStampaDTO_OK_Test extends JUnitUtils {
 		intestatarioDTO.setIntestazione("Intestazione di test");
 		intestatarioDTO.setSpecieGiur("PERSO");
 		intestatarioDTO.setCodFiscale("RSSMRA80A01H703F");
-		intestatarioDTO.setPIva("12345678901");
+		intestatarioDTO.setPIVA("12345678901");
 
 		ArrayList<RecapitoDTO> recapiti = new ArrayList<RecapitoDTO>();
 

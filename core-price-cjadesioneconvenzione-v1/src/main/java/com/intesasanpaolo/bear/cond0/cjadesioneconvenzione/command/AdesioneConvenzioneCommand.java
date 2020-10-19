@@ -263,7 +263,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				.t1SjICapRes(recapito.getCap())
 				.t1SjIChiamante(dto.getCodAppl())
 				.t1SjICodCatRapp(dto.getRapporto().getCodCategoria())
-				.t1SjICodFiscale(StringUtils.isEmpty(dto.getIntestatario().getCodFiscale()) ? dto.getIntestatario().getPIva() : dto.getIntestatario().getCodFiscale())
+				.t1SjICodFiscale(StringUtils.isEmpty(dto.getIntestatario().getCodFiscale()) ? dto.getIntestatario().getPIVA() : dto.getIntestatario().getCodFiscale())
 				.t1SjICodiceLingua(dto.getInfoStampa().getCodLingua())
 				.t1SjICodUtente(ispWebservicesHeaderType.getOperatorInfo().getUserID())
 				.t1SjIComuneRes(recapito.getComune())

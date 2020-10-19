@@ -40,7 +40,7 @@ public class IntestatarioDTO {
 	private String codFiscale;
 
 	@Pattern(regexp = "^$|[0-9]{11,11}", message = "Il campo pIva deve avere lunghezza 11")
-	private String pIva;
+	private String pIVA;
 
 	@NotNull(message = "La lista dei recapiti non può essere vuota")
 	@Size(min = 1)
