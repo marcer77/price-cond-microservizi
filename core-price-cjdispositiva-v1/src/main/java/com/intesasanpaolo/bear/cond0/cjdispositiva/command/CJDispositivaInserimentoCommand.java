@@ -133,7 +133,7 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 					throw new CJGenericBusinessApplication("99",be.getMessage(),be);
 				}
 			}else {
-				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Nessuna Adesione trovata per la pratica [ codSuperPratica:{}, nrPratica:{} ]")
+				throw CJDispositivaNotFoundDB2Exception.builder().messaggio("Operazione non ammessa, eseguire funzione 'Adesione a Convenzione' per la pratica  [ codSuperPratica:{}, nrPratica:{} ]")
 				.param(new String[]{dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica}).build();
 			}
 
