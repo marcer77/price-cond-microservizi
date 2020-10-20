@@ -40,7 +40,7 @@ public class IntestatarioDTO_OK_Test extends JUnitUtils {
 		intestatarioDTO.setIntestazione(intestazione);
 		intestatarioDTO.setSpecieGiur(specieGiur);
 		intestatarioDTO.setCodFiscale(codFiscale);
-		intestatarioDTO.setPIva(pIva);
+		intestatarioDTO.setPIVA(pIva);
 
 		recapiti = new ArrayList<RecapitoDTO>();
 

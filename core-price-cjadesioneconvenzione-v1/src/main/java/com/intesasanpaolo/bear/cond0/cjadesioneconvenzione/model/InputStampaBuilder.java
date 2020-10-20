@@ -40,7 +40,7 @@ public class InputStampaBuilder implements Builder<String> {
 		st.append(PaddingField.rightPadSpaceOrTruncate(inputStampa.getIntestatario().getCodFiscale(), 16));		
 		
 		//input.intestatario.pIVA	NNNNNNNNNNN	11
-		st.append(PaddingField.leftPadZeroOrTruncate(inputStampa.getIntestatario().getPIva(), 11));
+		st.append(PaddingField.leftPadZeroOrTruncate(inputStampa.getIntestatario().getPIVA(), 11));
 		
 		//input.rapporto.codFiliale	NNNNN	5
 		st.append(PaddingField.leftPadZeroOrTruncate(inputStampa.getRapporto().getCodFiliale(), 5));	
