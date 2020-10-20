@@ -40,10 +40,10 @@ connectors:
             uri: ${DATASOURCE_SPIMI_DB2_URI:sdda.mframe.sanpaoloimi.com}
             port: ${DATASOURCE_SPIMI_DB2_PORT:5300}
             dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:SDDAM00S}
-            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
-            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}
-            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}      
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0K3263}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1220}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0K3263}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1220}    
             #puntamenti per system
             #uri: ${DATASOURCE_SPIMI_DB2_URI:sdda.mframe.sanpaoloimi.com}
             #port: ${DATASOURCE_SPIMI_DB2_PORT:5300}
@@ -52,35 +52,6 @@ connectors:
             #readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}
             #writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0G6425}
             #writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma0720}    
-                    
-          
-          - abi: ${ABI_BKFID:03296}
-            uri: ${DATASOURCE_BKFID_DB2_URI:mdda.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_BKFID_DB2_PORT:18588}
-            dbName: ${DATASOURCE_BKFID_DB2_DBNAME:MDDAM00S}
-            readUsername: ${DATASOURCE_BKFID_DB2_USERNAME:U0G6425}
-            readPassword: ${DATASOURCE_BKFID_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_BKFID_DB2_USERNAME:U0G6425}
-            writePassword: ${DATASOURCE_BKFID_DB2_PASSWORD:Alma0720}    
-          
-          - abi: ${ABI_ISPBK:03239}
-            uri: ${DATASOURCE_ISPBK_DB2_URI:jdda.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_ISPBK_DB2_PORT:18607}
-            dbName: ${DATASOURCE_ISPBK_DB2_DBNAME:JDDAM00S}
-            readUsername: ${DATASOURCE_ISPBK_DB2_USERNAME:U0G6425}
-            readPassword: ${DATASOURCE_ISPBK_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_ISPBK_DB2_USERNAME:U0G6425}
-            writePassword: ${DATASOURCE_ISPBK_DB2_PASSWORD:Alma0720}    
-                    
-          - abi: ${ABI_BKIMI:03249}
-            uri: ${DATASOURCE_BKIMI_DB2_URI:idda.mframe.sanpaoloimi.com}
-            port: ${DATASOURCE_BKIMI_DB2_PORT:5449}
-            dbName: ${DATASOURCE_BKIMI_DB2_DBNAME:IDDAM00S}
-            readUsername: ${DATASOURCE_BKIMI_DB2_USERNAME:U0G6425}
-            readPassword: ${DATASOURCE_BKIMI_DB2_PASSWORD:Alma0720}
-            writeUsername: ${DATASOURCE_BKIMI_DB2_USERNAME:U0G6425}
-            writePassword: ${DATASOURCE_BKIMI_DB2_PASSWORD:Alma0720}
-            
   jdbcConfigurations:
      items:
          GenericJdbcConnector:

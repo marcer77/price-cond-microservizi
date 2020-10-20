@@ -42,10 +42,10 @@ connectors:
             uri: ${DATASOURCE_SPIMI_DB2_URI:sdda.mframe.sanpaoloimi.com}
             port: ${DATASOURCE_SPIMI_DB2_PORT:5300}
             dbName: ${DATASOURCE_SPIMI_DB2_DBNAME:SDDAM00S}
-            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
-            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}
-            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0H7129}
-            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:Alma1020}      
+            readUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0K3263}
+            readPassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1220}
+            writeUsername: ${DATASOURCE_SPIMI_DB2_USERNAME:U0K3263}
+            writePassword: ${DATASOURCE_SPIMI_DB2_PASSWORD:ALMA1220}   
 
   soapConfiguration:
     items:
@@ -78,53 +78,6 @@ connectors:
       GestioneRestConnector:
         url: "http://sklcls1295.sede.corp.sanpaoloimi.com:19024/PHCP0/PCGESTIXME/Gestione"
         timeout: 120000
-#  db2MultiDsConfigurations:
-#    items:
-#      MultiDataSourceDb2Connector:
-#        connectionTimeout: ${DATASOURCE_COND0DB2_CONNECTIONTIMEOUT:10000}
-#        connectionPoolSize: ${DATASOURCE_COND0DB2_CONNECTIONPOOLSIZE:5}
-#        mocked: false
-#        sources:
-#          - abi: ${ABI_SDDA:01025}
-#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-#            port: ${DATASOURCE_COND0DB2_PORT:5250}
-#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#          - abi: ${ABI_MDDA:03296}
-#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-#            port: ${DATASOURCE_COND0DB2_PORT:5250}
-#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-#          - abi: ${ABI_IDDA:03249}
-#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-#            port: ${DATASOURCE_COND0DB2_PORT:5250}
-#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:U0H7129}
-#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-#          - abi: ${ABI_EDDA:10637}
-#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-#            port: ${DATASOURCE_COND0DB2_PORT:5250}
-#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720
-#          - abi: ${ABI_JDDA:03239}
-#            uri: ${DATASOURCE_COND0DB2_URI:db2y.mframe.sanpaoloimi.com}
-#            port: ${DATASOURCE_COND0DB2_PORT:5250}
-#            dbName: ${DATASOURCE_COND0DB2_DBNAME:DB2YTOSG}
-#            readUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            readPassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
-#            writeUsername: ${DATASOURCE_COND0DB2_DB2_USERNAME:u0h7129}
-#            writePassword: ${DATASOURCE_COND0DB2_DB2_PASSWORD:Alma0720}
 
   jdbcConfigurations:
      items:
