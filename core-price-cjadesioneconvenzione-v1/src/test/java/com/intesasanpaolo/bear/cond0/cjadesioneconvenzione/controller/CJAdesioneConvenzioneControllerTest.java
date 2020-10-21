@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
@@ -146,6 +147,27 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
 		Assert.assertTrue(content.contains("<xml>Documento di test.</xml>"));
+
+	}
+	
+	@Test
+	public void testStampaOK2() throws Exception {
+				
+		HttpHeaders httpHeaders = mockHttpHeaders();
+
+		inputStampaDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+		
+		String inputJson = mapToJson(inputStampaDTO);
+		String uri = "/cjadesioneconvenzione/stampa";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("<flcnv01_st_banca>INTESA SANPAOLO S.P.A.</flcnv01_st_banca>"));
 
 	}
 	

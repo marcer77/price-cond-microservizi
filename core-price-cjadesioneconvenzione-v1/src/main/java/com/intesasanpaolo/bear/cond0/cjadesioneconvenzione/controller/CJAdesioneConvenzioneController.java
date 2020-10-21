@@ -1,7 +1,12 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.controller;
 
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+
 import javax.validation.Valid;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +17,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.command.AdesioneConvenzioneCommand;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
-import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.StampaOutput;
+import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.EsitoStampaResource;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.controller.CoreController;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
@@ -78,12 +84,37 @@ public class CJAdesioneConvenzioneController extends CoreController {
 				.timestamp(timestamp)
 				.serviceVersion(serviceVersion).build();
 		
-		AdesioneConvenzioneCommand cmd = beanFactory.getBean(AdesioneConvenzioneCommand.class, inputStampaDTO,ispWebservicesHeaderType);
-		StampaResponseResource response = cmd.execute();
-
 		
+		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(inputStampaDTO.getCodProcesso())) {
+			
+			//MOCK
+			StampaResponseResource stampaResponseResource = new StampaResponseResource();
+			stampaResponseResource.setKeyOper("012345678901234567890123456789");
+			stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
+			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
+			stampaResponseResource.getEsitoStampaResource().setDescErrore("");
+	   
+			try(InputStream stream1 = CJAdesioneConvenzioneController.class.getResourceAsStream("/mock/01U33146920200626GFADD121837_1.xml");
+				InputStream stream2 = CJAdesioneConvenzioneController.class.getResourceAsStream("/mock/01U33146920200626GFADD121837_1.xml");
+				) {
+					StringWriter writer1 = new StringWriter();
+					IOUtils.copy(stream1, writer1, StandardCharsets.UTF_8);
 
-		return ResponseEntity.status(HttpStatus.OK).body(response);
+					StringWriter writer2 = new StringWriter();
+					IOUtils.copy(stream2, writer2, StandardCharsets.UTF_8);
+
+					stampaResponseResource.setDocumento(writer1.toString().concat(writer2.toString()));
+			}
+
+			return ResponseEntity.status(HttpStatus.OK).body(stampaResponseResource);
+
+		}else {
+		
+			AdesioneConvenzioneCommand cmd = beanFactory.getBean(AdesioneConvenzioneCommand.class, inputStampaDTO,ispWebservicesHeaderType);
+			StampaResponseResource response = cmd.execute();
+			return ResponseEntity.status(HttpStatus.OK).body(response);
+
+		}
 
 	}
 	
