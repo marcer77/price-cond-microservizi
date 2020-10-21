@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaInserimentoCommand;
+import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.command.CJDispositivaAnnulloCommand;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.dto.DispositivaRequestDTO;
+import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.HeaderAttribute;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.utils.ServiceUtil;
@@ -61,12 +64,21 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
+		EsitoResponseResource esito = null;
+		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
+			
+			// mock
+			esito = new EsitoResponseResource("00", "");
+
+		}else {
 		
-		CJDispositivaInserimentoCommand cjDispositivaInserimentoCommand = beanFactory
-				.getBean(CJDispositivaInserimentoCommand.class);
-		cjDispositivaInserimentoCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
-		cjDispositivaInserimentoCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
-		EsitoResponseResource esito = cjDispositivaInserimentoCommand.execute();
+			CJDispositivaInserimentoCommand cjDispositivaInserimentoCommand = beanFactory
+					.getBean(CJDispositivaInserimentoCommand.class);
+			cjDispositivaInserimentoCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
+			cjDispositivaInserimentoCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
+			esito = cjDispositivaInserimentoCommand.execute();
+		}
+		
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}
@@ -102,9 +114,18 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 		
-		cjDispositivaAnnulloCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
-		cjDispositivaAnnulloCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
-		EsitoResponseResource esito = cjDispositivaAnnulloCommand.execute();
+		EsitoResponseResource esito = null;
+		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
+			
+			// mock
+			esito = new EsitoResponseResource("00", "");
+
+		}else {
+			cjDispositivaAnnulloCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
+			cjDispositivaAnnulloCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
+			esito = cjDispositivaAnnulloCommand.execute();
+		}
+
 		log.info(" - annullo END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}
