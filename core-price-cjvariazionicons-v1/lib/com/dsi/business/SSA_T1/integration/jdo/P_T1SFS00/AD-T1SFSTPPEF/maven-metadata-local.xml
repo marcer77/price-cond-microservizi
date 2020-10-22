@@ -3,10 +3,10 @@
   <groupId>com.dsi.business.SSA_T1.integration.jdo.P_T1SFS00</groupId>
   <artifactId>AD-T1SFSTPPEF</artifactId>
   <versioning>
-    <release>00.00004</release>
+    <release>00.00005</release>
     <versions>
-      <version>00.00004</version>
+      <version>00.00005</version>
     </versions>
-    <lastUpdated>20200805084425</lastUpdated>
+    <lastUpdated>20201022101017</lastUpdated>
   </versioning>
 </metadata>

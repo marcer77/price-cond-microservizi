@@ -25,8 +25,6 @@ public class InfoStampaDTO {
 	@NotBlank(message = "Il campo tipoStampa non può essere vuoto")
 	private String tipoStampa;
 
-	@NotNull(message = "Il campo tipoOfferta non può essere null")
-	@NotBlank(message = "Il campo tipoOfferta non può essere vuoto")
 	private String tipoOfferta;
 
 	@NotNull(message = "Il campo tipoFirma non può essere null")
