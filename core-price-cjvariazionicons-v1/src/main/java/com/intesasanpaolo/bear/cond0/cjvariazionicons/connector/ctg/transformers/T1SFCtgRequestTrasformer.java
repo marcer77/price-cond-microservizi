@@ -82,11 +82,13 @@ public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SFRe
 		logger.debug("inpbst.NDG = {}",ServiceUtil.stampaOggetto(ndg));
 		inpbst.NDG[0] = ndg;
 		
-		inpbst.INPNDG = new INPNDG[13];
-		for(int i=0; i<13;i++) {
+		int totFirma = t1sfRequest.getInpndg().getINdgFirma()!=null ? t1sfRequest.getInpndg().getINdgFirma().size() :0;
+		
+		inpbst.INPNDG = new INPNDG[totFirma];
+		for(int i=0; i<totFirma;i++) {
 			INPNDG inpndg = new INPNDG();
-			inpndg.I_NDG_FIRMA = (i<t1sfRequest.getInpndg().getINdgFirma().size()) ? t1sfRequest.getInpndg().getINdgFirma().get(i) : "";
-			inpndg.I_INTESTAZ_FIRMA = (i<t1sfRequest.getInpndg().getIIntestazFirma().size()) ? t1sfRequest.getInpndg().getIIntestazFirma().get(i) : "";
+			inpndg.I_NDG_FIRMA = (t1sfRequest.getInpndg().getINdgFirma().get(i));
+			inpndg.I_INTESTAZ_FIRMA = (t1sfRequest.getInpndg().getIIntestazFirma().get(i));
 			inpbst.INPNDG[i] = inpndg;
 			logger.debug("inpbst.INPNDG[{}] = {}",i,ServiceUtil.stampaOggetto(inpndg));
 		}
