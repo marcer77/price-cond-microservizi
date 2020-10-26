@@ -166,7 +166,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 			descErrore = "Nessuna convezione associata";
 		}
 		
-		stampaResponseResource.setDocumento(docXML);
+		stampaResponseResource.setDocumento( !"".contentEquals(docXML) && docXML!=null ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
 		stampaResponseResource.setKeyOper(dto.getInfoStampa().getKeyOper());
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
 		stampaResponseResource.getEsitoStampaResource().setCodErrore(codiceErrore!=null?codiceErrore:"00");

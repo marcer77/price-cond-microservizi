@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.FirmatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.dto.InputStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjvariazionicons.model.ctg.FL03Request;
@@ -46,7 +47,9 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 
 	@Override
 	protected StampaResponseResource doExecute() throws Exception {
+		
 		//chiamata alla BS T1SF
+		
 		T1SFRequest t1sfRequest = T1SFRequest.builder().
 				ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.iFunzione("CJAF")
@@ -77,14 +80,16 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 					.build()
 				)
 				.build();
+				
 		StampaResponseResource stampaResponseResource=new StampaResponseResource();
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);
-
+		
 		String docXML = "";
 		
 		String returnCode = "";
 		String codiceErrore = t1sfResponse.getOReturnCode();
+		
 		if("00".equals(codiceErrore)) {
 			
 			for(int i=0; i<20; i++) { //Ciclo per un massimo di 20 volte
@@ -119,11 +124,10 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 			stampaResponseResource.getEsitoStampaResource().setCodErrore("04");
 			stampaResponseResource.getEsitoStampaResource().setDescErrore("Nessuna stampa da produrre");
 		}	
-		stampaResponseResource.setDocumento(docXML);
+		
+		stampaResponseResource.setDocumento( !"".contentEquals(docXML) && docXML!=null ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
 		stampaResponseResource.setKeyOper("");
 
-
-		
 		return stampaResponseResource;
 		
 	}

@@ -1,5 +1,7 @@
 package com.intesasanpaolo.bear.cond0.cj.lib.utils;
 
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -10,8 +12,22 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Supplier;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
 import com.intesasanpaolo.bear.config.LoggerUtils;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
@@ -20,6 +36,8 @@ import com.intesasanpaolo.bear.core.model.ispHeaders.ObjectFactory;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 
 import lombok.Builder;
+//import net.sf.saxon.om.NamespaceConstant;
+import net.sf.saxon.lib.NamespaceConstant;
 
 public class ServiceUtil {
 
@@ -296,4 +314,63 @@ public class ServiceUtil {
 		return value!=null?value.trim():"";
 	}
 
+	// Il jdo della FL03 restituisce alcuni caratteri sporchi, ci e' stato chiesto
+	// di effettuare una sostituzione dei caratteri
+	
+	public static String sostituzioneCaratteriFL03(String docXML) {
+		
+		try {
+			
+			logger.info("START");
+			String XPATH_EXPRESSION = "//*[ends-with(name(), \"elst_fdig\")]";
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder builder = builderFactory.newDocumentBuilder();
+			System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,"net.sf.saxon.xpath.XPathFactoryImpl");
+			XPathFactory factory = XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON);
+			
+			Document document = builder.parse(new InputSource(new StringReader(docXML)));
+			XPath xpath = factory.newXPath();
+			XPathExpression expr = xpath.compile(XPATH_EXPRESSION);
+
+			// Estrapolo i tag interessati dal xml
+			NodeList nodes = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
+
+			if(nodes!=null) {
+				
+				// Ciclo i tag recuperati e verifico se sono presenti i caratteri da sostituire
+				for (int i = 0; i < nodes.getLength(); i++) {
+	
+					logger.info("Trovata stringa " + nodes.item(0).getTextContent());
+	
+					//Sostituisco il carattere c speciale
+					if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0xA2))) {
+						nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0xA2, (char) 0x5B));
+					}
+					//Sostituisco il carattere !
+					if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0x21))) {
+						nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0x21, (char) 0x5D));
+					}
+					
+				}
+			}
+
+			//Trasformo il documento modificato nella stringa da restituire
+			DOMSource domSource = new DOMSource(document);
+			StringWriter writer = new StringWriter();
+			StreamResult result = new StreamResult(writer);
+			TransformerFactory tf = TransformerFactory.newInstance();
+			Transformer transformer = tf.newTransformer();
+			transformer.transform(domSource, result);
+			
+			logger.info("END OK");
+			
+			return writer.toString();
+
+		} catch (Exception e) {
+			logger.error("errore",e);
+			return docXML;
+		}
+
+	}
+	
 }
