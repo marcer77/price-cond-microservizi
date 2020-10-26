@@ -141,7 +141,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 
 		this.superPraticaService.inserisciAdesioneConvenzione(adesioneConvenzione);
 
-		String docXML = null;
+		String docXML = "";
 		String codiceErrore = null;
 		String descErrore = null;		
 
@@ -166,7 +166,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 			descErrore = "Nessuna convezione associata";
 		}
 		
-		stampaResponseResource.setDocumento( !"".contentEquals(docXML) && docXML!=null ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
+		stampaResponseResource.setDocumento( docXML!=null && !"".contentEquals(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
 		stampaResponseResource.setKeyOper(dto.getInfoStampa().getKeyOper());
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
 		stampaResponseResource.getEsitoStampaResource().setCodErrore(codiceErrore!=null?codiceErrore:"00");
