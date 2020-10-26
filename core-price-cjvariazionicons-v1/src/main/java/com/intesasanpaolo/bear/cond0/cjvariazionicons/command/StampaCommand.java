@@ -83,12 +83,17 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 				
 		StampaResponseResource stampaResponseResource=new StampaResponseResource();
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
+		
+		logger.info("Chiamo la T1SF");
+		
 		T1SFResponse t1sfResponse = t1sfServiceBS.callBS(t1sfRequest);
 		
 		String docXML = "";
 		
 		String returnCode = "";
 		String codiceErrore = t1sfResponse.getOReturnCode();
+		
+		logger.info("Codice di ritorno da T1SF "+codiceErrore);
 		
 		if("00".equals(codiceErrore)) {
 			
@@ -118,6 +123,9 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 						break;
 				}
 			}
+			
+			logger.info("Codice di ritorno da FL03 "+returnCode);
+			
 			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
 			stampaResponseResource.getEsitoStampaResource().setDescErrore("");
 		}else {
