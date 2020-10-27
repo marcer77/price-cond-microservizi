@@ -130,6 +130,9 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 					}
 				}
 				}catch(Exception be) {
+					if(be.getCause() instanceof RuntimeException) {
+						throw (RuntimeException)be.getCause();
+					}
 					throw new CJGenericBusinessApplication("99",be.getMessage(),be);
 				}
 			}else {

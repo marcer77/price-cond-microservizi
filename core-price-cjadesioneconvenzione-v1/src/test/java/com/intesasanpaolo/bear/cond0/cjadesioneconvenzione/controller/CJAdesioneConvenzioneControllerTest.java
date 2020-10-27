@@ -23,6 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.github.tomakehurst.wiremock.http.Fault;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
@@ -246,7 +247,83 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 
 	}
 	
+	@Test
+	public void testConvenzioniServiceKOServizioNonDisponibile() throws Exception {
+				
+		HttpHeaders httpHeaders = mockHttpHeaders();
+		String inputJson = mapToJson(inputStampaDTO);
+
+		stubFor(post(urlEqualTo("/ConvenzioniService.svc"))
+                .willReturn(
+                		aResponse()
+                		.withStatus(503)
+                		.withHeader("Content-Type", "text/html")
+                		.withBody("!!! Service Unavailable !!!")
+                )
+        );
+		String uri = "/cjadesioneconvenzione/stampa";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		Assert.assertEquals(200, status);
+		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
+		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
 	
+	@Test
+	public void testConvenzioniHostServiceKOServizioNonDisponibile() throws Exception {
+				
+		HttpHeaders httpHeaders = mockHttpHeaders();
+		String inputJson = mapToJson(inputStampaDTO);
+
+		stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+                .willReturn(
+                		aResponse()
+                		.withStatus(503)
+                		.withHeader("Content-Type", "text/html")
+                		.withBody("!!! Service Unavailable !!!")
+                )
+        );
+		String uri = "/cjadesioneconvenzione/stampa";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		Assert.assertEquals(200, status);
+		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
+		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
+	
+	@Test
+	public void testConvenzioniHostServiceKOServizioNonTrovato() throws Exception {
+				
+		HttpHeaders httpHeaders = mockHttpHeaders();
+		String inputJson = mapToJson(inputStampaDTO);
+
+		stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+                .willReturn(
+                		aResponse()
+                		.withStatus(404)
+                		.withHeader("Content-Type", "text/html")
+                		.withBody("!!! Service Unavailable !!!")
+                )
+        );
+		String uri = "/cjadesioneconvenzione/stampa";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		Assert.assertEquals(200, status);
+		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
+		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
 	
 	
 	private HttpHeaders mockHttpHeaders() {

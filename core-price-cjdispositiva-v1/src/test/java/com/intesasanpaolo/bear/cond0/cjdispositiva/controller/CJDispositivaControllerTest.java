@@ -25,6 +25,7 @@ import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.github.tomakehurst.wiremock.stubbing.StubMapping;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodApplEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.enums.CodProcessoEnum;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutEsi;
 import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.common.BaseTest;
@@ -97,7 +98,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		httpHeadersCorrotto = new HttpHeaders();
 
-		httpHeadersCorrotto.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", "01025");
+//		httpHeadersCorrotto.add("ISPWebservicesHeader.AdditionalBusinessInfo.CodABI", "01025");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.CompanyInfo.ISPCallerCompanyIDCode", "");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.CompanyInfo.ISPServiceCompanyIDCode", "");
 		httpHeadersCorrotto.add("ISPWebservicesHeader.OperatorInfo.UserID", "U015886");
@@ -699,5 +700,69 @@ public class CJDispositivaControllerTest extends BaseTest {
 		
 	}
 	
+	@Test
+	public void testConvenzioniHostServiceKOServizioNonDisponibile() throws Exception {
 
+		stubInviaPropostaOK();
+
+		stubGestioneOk();
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+                .willReturn(
+                		aResponse()
+                		.withStatus(503)
+                		.withHeader("Content-Type", "text/html")
+                		.withBody("!!! Service Unavailable !!!")
+                )
+        );
+		String uri = "/cjdispositiva/inserimento";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		Assert.assertEquals(200, status);
+		content = mvcResult.getResponse().getContentAsString();
+		Assert.assertTrue(content.contains(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
+	
+	@Test
+	public void testConvenzioniHostServiceKOServizioNonTrovato() throws Exception {
+
+		stubInviaPropostaOK();
+
+		stubGestioneOk();
+		
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
+		
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+		
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
+                .willReturn(
+                		aResponse()
+                		.withStatus(404)
+                		.withHeader("Content-Type", "text/html")
+                		.withBody("!!! Service Unavailable !!!")
+                )
+        );
+		String uri = "/cjdispositiva/inserimento";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		Assert.assertEquals(200, status);
+		content = mvcResult.getResponse().getContentAsString();
+		Assert.assertTrue(content.contains(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
 }

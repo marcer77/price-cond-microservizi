@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJGenericBusinessApplication;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.GetCovenantPerConvenzioneConnector;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetCovenantPerConvenzioneRequestTrasformer;
 import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ws.transformers.GetCovenantPerConvenzioneResponseTrasformer;
@@ -13,20 +15,25 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.model.ws.RespGetCoven
 
 @Service
 public class ConvenzioniHostService {
-	
+
 	@Autowired
 	private GetCovenantPerConvenzioneConnector convenzioniHostServiceConnector;
 	@Autowired
 	private GetCovenantPerConvenzioneResponseTrasformer getCovenantPerConvenzioneResponseTrasformer;
 	@Autowired
 	private GetCovenantPerConvenzioneRequestTrasformer getCovenantPerConvenzioneRequestTrasformer;
-	
-	public List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovenantPerConvenzione(ReqGetCovenantPerConvenzione request) {	
-		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> response =(List<RespGetCovenantPerConvenzioneCovenantDaAttivare>) convenzioniHostServiceConnector.call(request, getCovenantPerConvenzioneRequestTrasformer, getCovenantPerConvenzioneResponseTrasformer, null);
-		//TODO:GESTIONE ECCEZIONI APPLICATIVE  DEL WEBSERVICE
-		//questo webservice non sembra ritornare codici di errore
-		//if (true)
-		//	throw CJWebServiceException.builder().webServiceName("getCovenantPerConvenzione").codiceErroreWebService("--cod_errore_ritornato dal WS --").descrErroreWebService("---descrizione errore ritornato dal WS").build();
+
+	public List<RespGetCovenantPerConvenzioneCovenantDaAttivare> getCovenantPerConvenzione(
+			ReqGetCovenantPerConvenzione request) {
+		List<RespGetCovenantPerConvenzioneCovenantDaAttivare> response = null;
+		try {
+			response = (List<RespGetCovenantPerConvenzioneCovenantDaAttivare>) convenzioniHostServiceConnector.call(
+					request, getCovenantPerConvenzioneRequestTrasformer, getCovenantPerConvenzioneResponseTrasformer,
+					null);
+		} catch (Exception e) {
+			throw new CJGenericBusinessApplication(CommonErrorCode.BS_SRV_EXCEPTION,
+					"ConvenzioniHostService getCovenantPerConvenzione: " + e.getMessage(), e);
+		}
 		return response;
 	}
 
