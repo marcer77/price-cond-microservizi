@@ -43,7 +43,7 @@ public class InquiryContoCndService extends BaseService{
 			String msg=response.getResponse().getNBPErrorInfo()!=null?response.getResponse().getNBPErrorInfo().getErrReason():null;
 			if (msg == null)
 				msg="Errore inquiryContoCnd Response: Impossibile verificare l'errore ";
-			throw new IIBWebServiceException(msg,null);
+			logger.warn("InquiryContoCndService inquiryContoCndV2: "+msg);
 		}
 		if (!CollectionUtils.isEmpty(response.getOutputProdotto())) {
 			//al massimo  avremo un solo elemento	

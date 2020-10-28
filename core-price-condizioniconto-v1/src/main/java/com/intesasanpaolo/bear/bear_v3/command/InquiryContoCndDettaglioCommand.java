@@ -65,7 +65,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 	@Override
 	public InquiryContoCndDettaglioOutput doExecute() throws Exception {
 		InquiryContoCndDettaglioOutput output = new InquiryContoCndDettaglioOutput();
-		
+		output.setCdEsito(CondizioniContoUtils.ESITO_OK);	
+		output.setMsgEsito("");
 		try {
 			List<CondizioneContoDettaglio> condizioniOut = new ArrayList<>();
 			
@@ -114,7 +115,8 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 							req =buildCNDPRICEMSRequestForPromo(request, promo);
 							iibCdprcmsRequest.setBody(req);
 							IIBCDPRCMSResponseType response=service.inquiryContoCndV2(iibCdprcmsRequest);
-						    condizioniPromo=buildResponseFromCNDPRICEMS(response.getOutputProdotto(), condizioniStd);
+							CondizioniContoUtils.segnalaWarning(output,response);
+							condizioniPromo=buildResponseFromCNDPRICEMS(response.getOutputProdotto(), condizioniStd);
 							if (condizioniPromo!=null)
 								condizioniPromo.forEach(cd->cd.setCdRifLivello(promo));
 							condizioniOut.addAll(condizioniPromo);
@@ -129,6 +131,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 			if (!CollectionUtils.isEmpty(req)) {
 				iibCdprcmsRequest.setBody(req);
 				IIBCDPRCMSResponseType response=service.inquiryContoCndV2(iibCdprcmsRequest);	
+				CondizioniContoUtils.segnalaWarning(output,response);
 				condizioniRapportoConvenzione=buildResponseFromCNDPRICEMS(response.getOutputProdotto(), condizioniStd);
 				condizioniOut.addAll(condizioniRapportoConvenzione);
 			}
@@ -150,8 +153,7 @@ public class InquiryContoCndDettaglioCommand extends BaseCommand<InquiryContoCnd
 				buildCdRifLivello(condizionePromo);
 			}
 			
-			output.setCdEsito(CondizioniContoUtils.ESITO_OK);
-    		output.setMsgEsito("");		
+
 			output.setCondizioni(condizioniOut);
 			
 			logger.info("Output finale={}",output);

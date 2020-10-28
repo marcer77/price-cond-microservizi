@@ -59,6 +59,7 @@ public class InquiryContoCndCommand extends BaseCommand<InquiryContoCndOutput>{
 	@Override
 	public InquiryContoCndOutput doExecute() throws Exception {
 		InquiryContoCndOutput output = new InquiryContoCndOutput();		
+		output.setMsgEsito("");
 		List<CondizioneConto> condizioniStd = new ArrayList<>(); //una singola copia della lista di condizioni - per recuperare il val STD
 		List<CondizioneConto> condizioniOut = new ArrayList<>(); //intera lista di condizioni - eventualmente ripetute per tipo livello
 
@@ -130,15 +131,13 @@ public class InquiryContoCndCommand extends BaseCommand<InquiryContoCndOutput>{
 	    }
 	    
     	if(condizioniStd.isEmpty() || (out.size()>0 && out.get(0).getNbpErrorInfo()!=null && out.get(0).getNbpErrorInfo().size()>0)) { //ERR
-    		output.setCdEsito(CondizioniContoUtils.ESITO_KO);
-		    output.setMsgEsito(out.get(0).getNbpErrorInfo().get(0).getErrReason());
-    	}
-    	else {        	
+		    CondizioniContoUtils.segnalaWarning(output, out.get(0).getNbpErrorInfo().get(0).getErrReason());
+    	}else {        	
     		output.setCdEsito(CondizioniContoUtils.ESITO_OK);
     		output.setMsgEsito("");
-    		if(out.size()>0)
-    			condizioniOut.addAll(buildResponseFromCNDPRICEMS(out,condizioniStd));
     	}
+		if(out.size()>0)
+			condizioniOut.addAll(buildResponseFromCNDPRICEMS(out,condizioniStd));
     	
     	// Verifico le esposizioni dei prezzi promozionati
     	for (CondizioneConto condizionePromo : condizioniOut) {
