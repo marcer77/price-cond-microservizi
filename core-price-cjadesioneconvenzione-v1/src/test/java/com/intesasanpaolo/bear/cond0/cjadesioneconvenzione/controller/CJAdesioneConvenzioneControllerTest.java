@@ -152,6 +152,33 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 	}
 	
 	@Test
+	public void testStampaXmlCorrotto() throws Exception {
+				
+		HttpHeaders httpHeaders = mockHttpHeaders();
+
+		String inputJson = mapToJson(inputStampaDTO);
+		String uri = "/cjadesioneconvenzione/stampa";
+
+		FL03Response fl03ResponseCorrotto=new FL03Response();
+		fl03ResponseCorrotto.setOutEsi(new OutEsi());
+		fl03ResponseCorrotto.getOutEsi().setMdwEsiRetc("0000");
+		fl03ResponseCorrotto.setRc("06");
+		fl03ResponseCorrotto.setStringaOut("<xml>Documento di test corrotto.");
+		
+		Mockito.when(ctgConnectorFL03.call(fL03Request, fl03CtgRequestTrasformer, fl03CtgResponseTansformer,new Object[] {})).thenReturn(fl03ResponseCorrotto);
+		
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("\"descErrore\":\"XML di stampa non corretto.\""));
+
+	}
+	
+	@Test
 	public void testStampaOK2() throws Exception {
 				
 		HttpHeaders httpHeaders = mockHttpHeaders();

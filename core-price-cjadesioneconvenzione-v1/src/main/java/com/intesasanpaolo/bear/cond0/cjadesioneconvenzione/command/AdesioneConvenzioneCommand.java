@@ -166,7 +166,21 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 			descErrore = "Nessuna convezione associata";
 		}
 		
-		stampaResponseResource.setDocumento( docXML!=null && !"".contentEquals(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
+		try {
+			stampaResponseResource.setDocumento( docXML!=null && !"".contentEquals(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
+		}catch (Exception e) {
+			codiceErrore = "00";
+			descErrore = "XML di stampa non corretto.";
+		}	
+		
+		
+		try {
+			docXML = StringUtils.isNotEmpty(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : docXML;
+		}catch (Exception e) {
+			codiceErrore = "00";
+			descErrore = "XML di stampa non corretto.";
+		}
+		stampaResponseResource.setDocumento(docXML);
 		stampaResponseResource.setKeyOper(dto.getInfoStampa().getKeyOper());
 		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
 		stampaResponseResource.getEsitoStampaResource().setCodErrore(codiceErrore!=null?codiceErrore:"00");

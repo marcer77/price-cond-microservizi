@@ -133,7 +133,15 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 			stampaResponseResource.getEsitoStampaResource().setDescErrore("Nessuna stampa da produrre");
 		}	
 		
-		stampaResponseResource.setDocumento( docXML!=null && !"".contentEquals(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
+		try {
+			docXML = StringUtils.isNotEmpty(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : docXML;
+		}catch (Exception e) {
+			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
+			stampaResponseResource.getEsitoStampaResource().setDescErrore("XML di stampa non corretto.");
+		}
+		
+		stampaResponseResource.setDocumento( docXML );
+
 		stampaResponseResource.setKeyOper("");
 
 		return stampaResponseResource;
