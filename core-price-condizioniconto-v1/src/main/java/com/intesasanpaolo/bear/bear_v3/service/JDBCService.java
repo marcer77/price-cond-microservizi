@@ -260,7 +260,8 @@ public class JDBCService extends BaseService{
 				") " +
 				  "SELECT DISTINCT " +
 				       "  P.CD_CND AS cdCond " +
-					   ", C.DES_CONDIZIONE AS dsCond " +
+//					   ", C.DES_CONDIZIONE AS dsCond " +
+					   ", NVL((SELECT DS_CONDIZIONE FROM COND_OWN.T_PC_CONDIZIONE I WHERE I.CD_CONDIZIONE = P.CD_CND), C.DES_CONDIZIONE) AS dsCond " +
 					   ", C.COD_UDM AS cdUDM " +
 					   ", P.CD_ETICHETTA AS etichetta " + 
 					   ", L.COD_COND_TIPO_VALORE AS cdTipoVal " +
