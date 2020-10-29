@@ -42,7 +42,7 @@ connectors:
           - T_PC2_ANAG_ISTITUTI.sql
           - T_PC2_COND_LISTINO.sql
           - T_PC2_ANAG_CONDIZIONI.sql
-        
+          - T_PC_CONDIZIONE.sql
   restConfigurations:
     default:
       timeout: 5000

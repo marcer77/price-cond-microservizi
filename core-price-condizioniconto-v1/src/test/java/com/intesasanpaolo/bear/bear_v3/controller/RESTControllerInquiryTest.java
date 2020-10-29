@@ -98,10 +98,6 @@ public class RESTControllerInquiryTest extends BaseTest {
 		StubMapping stub = stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
 						.withBody("")));
-
-		//log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
-
-		//Assert.assertEquals(200, stub.getResponse().getStatus());
 	}
 
 	@Test
@@ -179,26 +175,7 @@ public class RESTControllerInquiryTest extends BaseTest {
 		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 	}
 
-	@Test
-	public void testContoCndDettaglio_CdUdmOK() throws Exception {
 
-		stubInquiryContoCdUdmOK();
-
-		String uriString = "/condizioniconto/inquiryContoCnd";
-
-		String inputJson = mapToJson(inquiryContoCndRequest);
-
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-//		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-//		Assert.assertTrue(content.contains("cdEsito\":\"00"));
-	}
 	
 
 	@Test
@@ -281,35 +258,7 @@ public class RESTControllerInquiryTest extends BaseTest {
 		Assert.assertTrue(content.contains("cdEsito\":\"00"));
 	}
 	
-	@Test
-	public void testContoCndDettaglio_PromozioniOK4() throws Exception {
-	
-		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
-				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
-						.withBodyFile("InquiryContoCnd-responseOK4.xml")));
 
-		List<String> promozioniList = new ArrayList<String>();
-		promozioniList.add("Q001852");
-		inquiryContoCndRequest.setPromozioni(promozioniList);
-
-		inquiryContoCndRequest.setCdConv("");
-		inquiryContoCndRequest.setCdRapporto("");
-
-		
-		String uriString = "/condizioniconto/inquiryContoCnd";
-
-		String inputJson = mapToJson(inquiryContoCndRequest);
-
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-//		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-	}
 	
 	@Test
 	public void testContoCndDettaglio_PromozioniKO_1() throws Exception {
@@ -340,63 +289,7 @@ public class RESTControllerInquiryTest extends BaseTest {
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
 	}
-	@Test
-	public void testContoCndDettaglio_PromozioniKO_2() throws Exception {
+
 	
-		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
-				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
-						.withBodyFile("InquiryContoCnd-responseKO_2.xml")));
 
-		List<String> promozioniList = new ArrayList<String>();
-		promozioniList.add("Q001852");
-		inquiryContoCndRequest.setPromozioni(promozioniList);
-
-		inquiryContoCndRequest.setCdConv("");
-		inquiryContoCndRequest.setCdRapporto("");
-
-		
-		String uriString = "/condizioniconto/inquiryContoCnd";
-
-		String inputJson = mapToJson(inquiryContoCndRequest);
-
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-//		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-	}
-	
-	@Test
-	public void testContoCndDettaglio_PromozioniKO_3() throws Exception {
-	
-		stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
-				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
-						.withBodyFile("InquiryContoCnd-responseKO_3.xml")));
-
-		List<String> promozioniList = new ArrayList<String>();
-		promozioniList.add("Q001852");
-		inquiryContoCndRequest.setPromozioni(promozioniList);
-
-		inquiryContoCndRequest.setCdConv("");
-		inquiryContoCndRequest.setCdRapporto("");
-
-		
-		String uriString = "/condizioniconto/inquiryContoCnd";
-
-		String inputJson = mapToJson(inquiryContoCndRequest);
-
-		MvcResult mvcResult = mvc.perform(
-				MockMvcRequestBuilders.post(uriString).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
-				.andReturn();
-
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-//		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-	}
 }

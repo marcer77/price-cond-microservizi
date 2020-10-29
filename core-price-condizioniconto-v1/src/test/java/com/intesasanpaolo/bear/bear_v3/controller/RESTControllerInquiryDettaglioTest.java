@@ -98,10 +98,6 @@ public class RESTControllerInquiryDettaglioTest extends BaseTest {
 		StubMapping stub = stubFor(post(urlEqualTo("/T1IB0/IIBCDPRCMS")).withRequestBody(containing("<prodotto>"))
 				.willReturn(aResponse().withStatus(200).withHeader("content-type", "text/xml")
 						.withBody("")));
-
-		//log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
-
-		//Assert.assertEquals(200, stub.getResponse().getStatus());
 	}
 
 	@Test
