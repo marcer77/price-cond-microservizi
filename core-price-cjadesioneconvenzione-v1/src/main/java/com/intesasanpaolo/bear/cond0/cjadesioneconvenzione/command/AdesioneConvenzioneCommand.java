@@ -167,14 +167,6 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 		}
 		
 		try {
-			stampaResponseResource.setDocumento( docXML!=null && !"".contentEquals(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : "" );
-		}catch (Exception e) {
-			codiceErrore = "00";
-			descErrore = "XML di stampa non corretto.";
-		}	
-		
-		
-		try {
 			docXML = StringUtils.isNotEmpty(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : docXML;
 		}catch (Exception e) {
 			codiceErrore = "00";
