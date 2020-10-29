@@ -110,7 +110,7 @@ public class InputStampaDTO_OK_Test extends JUnitUtils {
 	@Test
 	public void testBuilder() {
 		
-		InputStampaBuilder builder = new InputStampaBuilder(inputStampaDTO);
+		InputStampaBuilder builder = new InputStampaBuilder(inputStampaDTO,"","");
 
 		log.info("testBuilder: " + builder.build());
 	}

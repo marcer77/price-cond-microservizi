@@ -18,9 +18,14 @@ import com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.dto.InputStampaDTO;
 public class InputStampaBuilder implements Builder<String> {
 
 	private InputStampaDTO inputStampa;
+	
+	private String codErrore;
+	private String errorMessage;
 
-	public InputStampaBuilder(InputStampaDTO inputStampa) {
+	public InputStampaBuilder(InputStampaDTO inputStampa, String codErrore , String errorMessage ) {
 		this.inputStampa = inputStampa;
+		this.codErrore = codErrore;
+		this.errorMessage = errorMessage;
 	}
 	
 	@Override
@@ -55,6 +60,11 @@ public class InputStampaBuilder implements Builder<String> {
 		
 		//input.infoStampa.keyOper	30 C	30
 		st.append(PaddingField.rightPadSpaceOrTruncate(inputStampa.getInfoStampa().getKeyOper(), 30));	
+		
+		//resultCode 2 C	2
+		st.append(PaddingField.rightPadSpaceOrTruncate(codErrore, 2));	
+		//errorMessage	50 C	50
+		st.append(PaddingField.rightPadSpaceOrTruncate(errorMessage, 50));	
 			
 		return st.toString();
 		

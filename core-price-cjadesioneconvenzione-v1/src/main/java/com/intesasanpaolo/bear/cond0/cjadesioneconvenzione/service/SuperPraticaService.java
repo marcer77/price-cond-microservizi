@@ -95,6 +95,11 @@ public class SuperPraticaService extends BaseService {
 
 		logger.info("END deleteEntita");
 	}
+	
+	@Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+	public void deleteTDATE(AdesioneConvenzione adesioneConvenzione) {
+		this.deleteEntita(adesioneConvenzione.getCodAbi(), adesioneConvenzione.getCodSuperPratica(),adesioneConvenzione.getCodPratica(), "DTADE");
+	}
 
 	private void insertEntita(String codAbi,TB59R009 entity) {
 		logger.info("START insertEntita");

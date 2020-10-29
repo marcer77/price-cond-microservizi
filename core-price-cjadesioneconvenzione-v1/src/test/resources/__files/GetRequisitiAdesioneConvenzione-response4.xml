@@ -1,0 +1,21 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+   <s:Body>
+      <GetRequisitiAdesioneConvenzioneResponse xmlns="http://tempuri.org/">
+         <GetRequisitiAdesioneConvenzioneResult xmlns:a="http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.WebServices.Common.DAL.Entities" xmlns:i="http://www.w3.org/2001/XMLSchema-instance">
+            <a:Esito>
+               <a:errorMessage>Anagrafica non presente;</a:errorMessage>
+               <a:resultCode>KO</a:resultCode>
+            </a:Esito>
+            <a:ResponseLog xmlns:b="http://schemas.datacontract.org/2004/07/IntesaSanPaolo.Pricing.Entities">
+               <b:ErrorDescription/>
+               <b:HasError>false</b:HasError>
+               <b:ResultSize>0</b:ResultSize>
+            </a:ResponseLog>
+            <a:TabellaBenefici/>
+            <a:TabellaBenefici_Length>0</a:TabellaBenefici_Length>
+            <a:TabellaRequisiti i:nil="true"/>
+            <a:TabellaRequisiti_Length>0</a:TabellaRequisiti_Length>
+         </GetRequisitiAdesioneConvenzioneResult>
+      </GetRequisitiAdesioneConvenzioneResponse>
+   </s:Body>
+</s:Envelope>

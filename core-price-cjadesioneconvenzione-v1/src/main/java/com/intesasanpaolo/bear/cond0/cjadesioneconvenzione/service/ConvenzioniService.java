@@ -34,7 +34,7 @@ public class ConvenzioniService {
 		}catch (Exception e) {
 			throw new CJGenericBusinessApplication(CommonErrorCode.BS_SRV_EXCEPTION,"ConvenzioniService getRequisitiAdesioneConvenzione: "+e.getMessage(),e);
 		}
-		checkWSResult(response,request.getCodiceConvenzione());
+//		checkWSResult(response,request.getCodiceConvenzione());
 		return response;
 	}
 	

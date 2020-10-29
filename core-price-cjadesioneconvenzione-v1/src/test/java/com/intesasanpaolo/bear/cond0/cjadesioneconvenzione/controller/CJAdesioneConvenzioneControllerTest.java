@@ -242,8 +242,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		String content = mvcResult.getResponse().getContentAsString();
 		int status = mvcResult.getResponse().getStatus();
 		Assert.assertEquals(200, status);
-//		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
-//		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase(ErrorCode.DB2_EXCEPTION));
+		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
 
 	}
 	
@@ -259,9 +258,10 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
                                 .withStatus(200)
                                 .withHeader("content-type", 
                           "text/xml")                             
-                .withBodyFile("GetRequisitiAdesioneConvenzione-response.xml")
+                .withBodyFile("GetRequisitiAdesioneConvenzione-response4.xml")
                 )
         );
+		
 		String uri = "/cjadesioneconvenzione/stampa";
 
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
@@ -270,7 +270,7 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 		int status = mvcResult.getResponse().getStatus();
 		Assert.assertEquals(200, status);
 		StampaResponseResource response=mapFromJson(content, StampaResponseResource.class);
-		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase(CommonErrorCode.BS_SRV_EXCEPTION));
+		Assert.assertTrue(response.getEsitoStampaResource().getCodErrore().equalsIgnoreCase("00"));
 
 	}
 	

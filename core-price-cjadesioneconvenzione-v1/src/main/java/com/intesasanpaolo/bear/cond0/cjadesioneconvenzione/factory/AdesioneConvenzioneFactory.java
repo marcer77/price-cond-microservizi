@@ -81,7 +81,13 @@ public class AdesioneConvenzioneFactory {
 			}
 		}
 		//
-		InputStampaBuilder inputStampaBuilder = new InputStampaBuilder(dto);
+		String errorCode = "";
+		String errorMessage = "";
+		if(getReqAdesConResp!=null) {
+			errorCode = getReqAdesConResp.getEsitoResultCode();
+			errorMessage = getReqAdesConResp.getEsitoErrorMessage();
+		}
+		InputStampaBuilder inputStampaBuilder = new InputStampaBuilder(dto,errorCode,errorMessage);
 		TB59R009 entityDTADE = TB59R009.builder()
 				.nrSuperpratica(dto.getPratica().getCodSuperPratica())
 				.nrPratica(dto.getPratica().getCodPratica())
