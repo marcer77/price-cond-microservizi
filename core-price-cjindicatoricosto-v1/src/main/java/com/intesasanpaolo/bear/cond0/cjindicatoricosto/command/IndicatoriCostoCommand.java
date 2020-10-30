@@ -110,7 +110,7 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				.filter(ele -> CollectionUtils.isNotEmpty(ele.getWkcjResponse().getOutCNFList())).collect(Collectors.toList());
 
 		if (CollectionUtils.isNotEmpty(wkcjWarningList)) {		
-			warningResult = new WarningResult("01",null,"Warning - rilevate differenze in fase di controllo",40);			
+			warningResult = new WarningResult("01","Rilevate differenze in fase di controllo","WKCJ - rilevate differenze in fase di controllo",40);			
 		} else {		
 			List<IndicatoriCostoPratica> pcujWarningList = indicatoriCostoPraticaList.stream()
 					.filter(ele -> !"00".equals(ele.getPcujResponse().getCodEsito()))
@@ -123,16 +123,16 @@ public class IndicatoriCostoCommand extends BaseCommand<IndicatoriCosto> {
 				WarningResult result=null;
 				switch (codEsito) {
 				case "01":
-					result = new WarningResult(codEsito,msgEsito,"Warning - presenti variazioni condizioni economiche",30);				
+					result = new WarningResult(codEsito,msgEsito,"PCUJ - presenti variazioni condizioni economiche",30);				
 					break;
 				case "02":
-					result = new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning - presenti variazioni TEG",20);
+					result = new WarningResult(codEsito,"Presenti variazioni TEG","PCUJ - presenti variazioni TEG",20);
 					break;
 				case "03":
-					result =new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning - presenti variazioni TAEG",10);
+					result =new WarningResult(codEsito,"Presenti variazioni TAEG","PCUJ - presenti variazioni TAEG",10);
 					break;
 				default:
-					result =new WarningResult(codEsito,ele.getPcujResponse().getMsgEsito(),"Warning generico",1);
+					result =new WarningResult(codEsito,msgEsito,"PCUJ Warning generico",1);
 				}
 				
 				return result;
