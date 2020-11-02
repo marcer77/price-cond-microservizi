@@ -162,8 +162,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				}else {
 					codiceErrore = "04";
 					descErrore = "Nessuna stampa da produrre";
-					log.error("Attenzione! Nessuna stampa da produrre.");
-					this.superPraticaService.deleteTDATE(adesioneConvenzione);
+					log.warning("Attenzione! Nessuna stampa da produrre.");
 				}
 	
 			}else {
