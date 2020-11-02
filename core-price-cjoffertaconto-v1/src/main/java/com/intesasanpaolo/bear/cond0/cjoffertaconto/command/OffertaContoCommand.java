@@ -93,7 +93,7 @@ public class OffertaContoCommand extends BaseCommand<EsponiResponseResource> {
 				.codFilRapp(dto.getRapporto().getCodFiliale())
 				.dataRiferimento(DateUtils.dateToString(dto.getDataRif(),DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID))
 				.numProgRapp(dto.getRapporto().getCodProgressivo())
-				.funzione(dto.getCodAppl())
+				.funzione(dto.getCodProcesso())
 				.tipoDA(dto.getTipoDA())
 				.inList(inList)
 				.build();
