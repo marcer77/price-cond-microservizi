@@ -162,7 +162,7 @@ public class AdesioneConvenzioneCommand extends BaseCommand<StampaResponseResour
 				}else {
 					codiceErrore = "04";
 					descErrore = "Nessuna stampa da produrre";
-					log.warning("Attenzione! Nessuna stampa da produrre.");
+					log.warn("Attenzione! Nessuna stampa da produrre.");
 				}
 	
 			}else {
