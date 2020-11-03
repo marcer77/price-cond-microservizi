@@ -62,6 +62,8 @@ public class PCMYCtgResponseTansformer implements ICtgResponseTransformer<C_PCMY
             					.costoProdottoPRM(outCPR.COSTO_PRODOTTO_PRM)
             					.decaProdotto(outCPR.DECA_PRODOTTO)
             					.decoProdotto(outCPR.DECO_PRODOTTO)
+            					.flgProdotto(outCPR.FLG_PRODOTTO)
+            					.flgValPromo(outCPR.FLG_VAL_PROMO)
             					.build();
         				
             			outCPRList.add(tmp);
