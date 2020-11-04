@@ -324,9 +324,8 @@ public class ServiceUtil {
 				String XPATH_EXPRESSION = "//*[contains(name(), \"elst_fdig\")]";
 				DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 				// disable external entities
-				builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
-				builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
-//				builderFactory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE); // compliant
+				builderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+				builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
 				
 				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,"net.sf.saxon.xpath.XPathFactoryImpl");
