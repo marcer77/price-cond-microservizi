@@ -326,6 +326,7 @@ public class ServiceUtil {
 				// disable external entities
 				builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
 				builderFactory.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, ""); // compliant
+//				builderFactory.setAttribute(XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE); // compliant
 				
 				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,"net.sf.saxon.xpath.XPathFactoryImpl");
@@ -363,7 +364,11 @@ public class ServiceUtil {
 				DOMSource domSource = new DOMSource(document);
 				StringWriter writer = new StringWriter();
 				StreamResult result = new StreamResult(writer);
-				TransformerFactory tf = TransformerFactory.newInstance();
+				TransformerFactory tf = null;
+				System.setProperty("javax.xml.transform.TransformerFactory","com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl");
+				tf = TransformerFactory.newInstance();
+				tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_DTD, ""); // Compliant
+				tf.setAttribute(XMLConstants.ACCESS_EXTERNAL_STYLESHEET, ""); // Compliant
 				Transformer transformer = tf.newTransformer();
 				transformer.transform(domSource, result);
 				
