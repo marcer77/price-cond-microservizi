@@ -18,7 +18,6 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpo
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.ws.gen.propostecjpos.InviaPropostaV2;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJDispositivaNotFoundDB2Exception;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.exception.CJWebServiceException;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.factory.WsRequestFactory;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.AdesioneEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.CovenantEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.RapportoEntity;
@@ -26,9 +25,7 @@ import com.intesasanpaolo.bear.cond0.cjdispositiva.model.TassoEntity;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.ReqStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.model.ws.RespStoreCovenantAdesioneConvenzione;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.resource.EsitoResponseResource;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.service.CoreConvenzioneService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.DBCond0Service;
-import com.intesasanpaolo.bear.cond0.cjdispositiva.service.ProposteCJPOSWSService;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.service.RecuperoInformazioniService;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
 import com.intesasanpaolo.bear.exceptions.BearTransactionException;
@@ -36,18 +33,6 @@ import com.intesasanpaolo.bear.exceptions.BearTransactionException;
 @Component
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
-
-
-	@Autowired
-	private ProposteCJPOSWSService proposteCJPOSWSService;
-
-	@Autowired
-	private RecuperoInformazioniService recuperoInformazioniService;
-
-	@Autowired
-	private CoreConvenzioneService coreConvenzioneService;
-
-	private WsRequestFactory wsRequestFactory = new WsRequestFactory();
 
 	private Map<String,List<EsitoOperazioneCJPOSV2>> mapTranslistaEsitoInviaPropostaV2 = new HashMap<>();
 
