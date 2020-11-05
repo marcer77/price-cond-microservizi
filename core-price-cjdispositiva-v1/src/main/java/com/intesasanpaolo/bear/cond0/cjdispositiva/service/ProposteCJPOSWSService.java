@@ -36,28 +36,30 @@ public class ProposteCJPOSWSService extends BaseService {
 				proposteCJPOSWSInviaPropostaV2ResponseTransformer, header);
 		EsitoOperazioneCJPOSV2 dto = new EsitoOperazioneCJPOSV2();
 		if (esitoInviaPropostaV2Response != null && esitoInviaPropostaV2Response.getEsito() != null) {
-			log.info(" - inquiry RESPONSE " + esitoInviaPropostaV2Response.getEsito());
-			dto.setCodiceProposta(esitoInviaPropostaV2Response.getEsito().getCodiceProposta());
-			dto.setEsitoCodice(esitoInviaPropostaV2Response.getEsito().getEsitoCodice());
-			dto.setEsitoIter(esitoInviaPropostaV2Response.getEsito().getEsitoIter());
-			dto.setEsitoMessaggio(esitoInviaPropostaV2Response.getEsito().getEsitoMessaggio());
-			dto.setFaseIter(esitoInviaPropostaV2Response.getEsito().getFaseIter());
-			dto.setStatoIter(esitoInviaPropostaV2Response.getEsito().getStatoIter());
+			if("OK".equals(esitoInviaPropostaV2Response.getEsito().getEsitoCodice())) {
+				log.info(" - inquiry RESPONSE " + esitoInviaPropostaV2Response.getEsito());
+				dto.setCodiceProposta(esitoInviaPropostaV2Response.getEsito().getCodiceProposta());
+				dto.setEsitoCodice(esitoInviaPropostaV2Response.getEsito().getEsitoCodice());
+				dto.setEsitoIter(esitoInviaPropostaV2Response.getEsito().getEsitoIter());
+				dto.setEsitoMessaggio(esitoInviaPropostaV2Response.getEsito().getEsitoMessaggio());
+				dto.setFaseIter(esitoInviaPropostaV2Response.getEsito().getFaseIter());
+				dto.setStatoIter(esitoInviaPropostaV2Response.getEsito().getStatoIter());
+			}else {
+				dto.setEsitoCodice(esitoInviaPropostaV2Response.getEsito().getEsitoCodice());
+				dto.setEsitoMessaggio(esitoInviaPropostaV2Response.getEsito().getEsitoMessaggio());
+				throw CJWebServiceException.builder().webServiceName("inviaPropostaV2")
+				.codiceErroreWebService(esitoInviaPropostaV2Response.getEsito().getEsitoCodice())
+				.descrErroreWebService(esitoInviaPropostaV2Response.getEsito().getEsitoMessaggio()).build();
+			}
 		} else {
 			dto.setEsitoCodice("KO");
 			dto.setEsitoMessaggio("Risposta null");
-			throw CJWebServiceException.builder().webServiceName("inviaPropostaV2").codiceErroreWebService("KO")
-			.descrErroreWebService("").build();
+			throw CJWebServiceException.builder().webServiceName("inviaPropostaV2")
+			.codiceErroreWebService("KO")
+			.descrErroreWebService("Nessun esito ricevuto dal ws.").build();
 		}
 		log.info(" - inviaPropostaV2 END");
 		return dto;
 	}
-
-	public EsitoOperazioneCJPOSV2 revocaProposta(RevocaProposta revocaProposta,
-			ISPWebservicesHeaderType ispWebservicesHeaderType) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 
 }

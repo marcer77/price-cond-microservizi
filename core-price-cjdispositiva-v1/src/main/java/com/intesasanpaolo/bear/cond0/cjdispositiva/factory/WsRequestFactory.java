@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.InputDatiInputArea;
@@ -44,8 +45,8 @@ public class WsRequestFactory {
 		propostaCJPOSV2.setRapportoReale(rapporto.getFiliale()+rapporto.getCategoria()+rapporto.getNumero());
 		
 		//Dalle verifiche sono tutti uguali quindi prendiamo il primo
-		String attributo = CollectionUtils.isNotEmpty(tassiAbbattuti) ? tassiAbbattuti.get(0).getAttributoRP() : null; 
-		
+		String attributo = StringUtils.trim(CollectionUtils.isNotEmpty(tassiAbbattuti) ? tassiAbbattuti.get(0).getAttributoRP() : null); 
+
 		propostaCJPOSV2.setAttributoRapporto(attributo); 
 		
 		AnagraficaPropostaCJPOS anagrafica = new AnagraficaPropostaCJPOS();

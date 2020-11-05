@@ -1,0 +1,10 @@
+<S:Envelope xmlns:S="http://www.w3.org/2003/05/soap-envelope">
+   <S:Body>
+      <ns2:esitoInviaPropostaV2Response xmlns:ns2="http://ws.price.isp.com/proposteCJPOS/" xmlns:ns3="http://ws.price.isp.com/proposte/" xmlns:ns4="http://intesasanpaolo.it/">
+         <ns2:esito>
+            <ns2:esitoCodice>12</ns2:esitoCodice>
+            <ns2:esitoMessaggio>Esistono errori in proposta - ERRORI SULLE CONDIZIONI - 10063: DATA DECORRENZA INCOMPATIBILE CON BLOCCO POSTERGAZIONE 10063</ns2:esitoMessaggio>
+         </ns2:esito>
+      </ns2:esitoInviaPropostaV2Response>
+   </S:Body>
+</S:Envelope>
