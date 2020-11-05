@@ -42,7 +42,11 @@ public class WsRequestFactory {
 		propostaCJPOSV2.setTipoChiamata("INS"); // costante
 		propostaCJPOSV2.setCodiceOrigine("CJ"); // costante
 		propostaCJPOSV2.setRapportoReale(rapporto.getFiliale()+rapporto.getCategoria()+rapporto.getNumero());
-		propostaCJPOSV2.setAttributoRapporto(tassiAbbattuti!=null && tassiAbbattuti.size()>0 ? tassiAbbattuti.get(0).getAttributoRP() : null); //Dalle verifiche sono tutti uguali quindi basta il primo
+		
+		//Dalle verifiche sono tutti uguali quindi prendiamo il primo
+		String attributo = CollectionUtils.isNotEmpty(tassiAbbattuti) ? tassiAbbattuti.get(0).getAttributoRP() : null; 
+		
+		propostaCJPOSV2.setAttributoRapporto(attributo); 
 		
 		AnagraficaPropostaCJPOS anagrafica = new AnagraficaPropostaCJPOS();
 		anagrafica.setCodiceAbiProposta(codAbi);
@@ -65,6 +69,9 @@ public class WsRequestFactory {
 			
 
 		}
+		
+		anagrafica.setAttributo(attributo);
+		
 		anagrafica.setAnnoProposta(annoProposta);
 		anagrafica.setCodiceTipoOperazione("N");
 		anagrafica.setCodiceOggettoProposta("01");

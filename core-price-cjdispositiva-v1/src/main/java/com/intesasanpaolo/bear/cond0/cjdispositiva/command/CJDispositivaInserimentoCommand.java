@@ -111,10 +111,11 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 
 
 				// WS VDM StoreCovenantAdesioneConvenzione
-				callInTransaction(()->
-				callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId)
-				,()->callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId),transactionID);
-
+				if(CollectionUtils.isNotEmpty(covenantDaAttivare) || CollectionUtils.isNotEmpty(covenantDaCessare)) {
+					callInTransaction(()->
+					callConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId)
+					,()->callRollbackConvenzioniHostService(listaAdesioni.get(0), covenantDaAttivare, covenantDaCessare, codAbi, dispositivaRequestDTO.getCodProcesso(),branchCode , userId),transactionID);
+				}
 				//6)	Se input.codProcesso == ‘CJAFF’
 				//  •	DELETE codici proposte
 				if(CodProcessoEnum.CJ_AFFIDAMENTI.toString().equalsIgnoreCase(dispositivaRequestDTO.getCodProcesso())) {
@@ -178,16 +179,17 @@ public class CJDispositivaInserimentoCommand extends CJDispositivaCommand {
 		List<TassoEntity> tassiAbbattuti = coreConvenzioneService.getElencoTassiAbbattuti(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica, rapporto);
 
 		// WS COND0 GESTCJPOSV.inviaPropostaV2
-		EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
-		
-		List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = mapTranslistaEsitoInviaPropostaV2.get(transactionID);
-		if(listaEsitoInviaPropostaV2 == null) {
-			listaEsitoInviaPropostaV2 = new ArrayList<>();
-			mapTranslistaEsitoInviaPropostaV2.put(transactionID,listaEsitoInviaPropostaV2);
+		if(CollectionUtils.isNotEmpty(tassiAbbattuti)) {
+			EsitoOperazioneCJPOSV2 esitoInviaPropostaV2 = callInviaPropostaV2Service(codAbi,codUnitaOperativa,adesione, rapporto,tassiAbbattuti);
+			
+			List<EsitoOperazioneCJPOSV2> listaEsitoInviaPropostaV2 = mapTranslistaEsitoInviaPropostaV2.get(transactionID);
+			if(listaEsitoInviaPropostaV2 == null) {
+				listaEsitoInviaPropostaV2 = new ArrayList<>();
+				mapTranslistaEsitoInviaPropostaV2.put(transactionID,listaEsitoInviaPropostaV2);
+			}
+			listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
+			coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica, esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
 		}
-		listaEsitoInviaPropostaV2.add(esitoInviaPropostaV2);
-		coreConvenzioneService.saveCodiceProposta(codAbi, dispositivaRequestDTO.getPratica().getCodSuperPratica(), codPratica, esitoInviaPropostaV2.getCodiceProposta(), ispWebservicesHeaderType.getOperatorInfo().getUserID());
-
 		logger.info("creaProposta END OK ");
 		return 1;
 	}
