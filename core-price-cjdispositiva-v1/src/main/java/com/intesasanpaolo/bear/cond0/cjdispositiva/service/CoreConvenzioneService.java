@@ -320,7 +320,7 @@ public class CoreConvenzioneService extends BaseService {
 				",  SUBSTR(DATI_ENTITA,51,08) 		AS decoCdzTX	    " + 
 				",  SUBSTR(DATI_ENTITA,59,08) 		AS decaCdzTX		" + 
 				",  SUBSTR(DATI_ENTITA,67,01) 		AS tipoValCdzTX		" + 
-				",  CAST(SUBSTR(DATI_ENTITA, 68, 15) AS numeric(15,5) ) / 10000  AS valoreCdzTX " + 
+				",  CAST(SUBSTR(DATI_ENTITA, 68, 15) AS numeric(15,5) ) / 100000  AS valoreCdzTX " + 
 				",  TRIM(SUBSTR(DATI_ENTITA, 84, 05)) AS cdParamTX " + 
 				",  CAST(TRIM(SUBSTR(DATI_ENTITA, 93, 10)) || '.0' AS numeric(15,5)) / 100000 AS percApplParTX " + 
 				",  SUBSTR(DATI_ENTITA, 111, 1) AS segnoSpreadTX " + 

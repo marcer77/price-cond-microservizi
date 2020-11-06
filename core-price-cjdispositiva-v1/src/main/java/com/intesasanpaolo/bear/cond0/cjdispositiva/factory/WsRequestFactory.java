@@ -93,7 +93,7 @@ public class WsRequestFactory {
 				condizione.setTipoDeroga("N");
 				condizione.setTipoValore("1");
 				condizione.setIndPresenzaValApp("S");
-				condizione.setValoreProposto(tasso.getValoreSprdTX().toString());
+				condizione.setValoreProposto(tasso.getValoreCdzTX().toString());
 				condizione.setDataInizioProposto(tasso.getDecoCdzTX());
 				condizione.setDataFineProposto(tasso.getDecaCdzTX());
 				if("P".equals(tasso.getTipoValCdzTX())) {
