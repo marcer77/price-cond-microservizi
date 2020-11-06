@@ -192,6 +192,16 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stub.getResponse().getStatus());
 	}
+	
+	private void stubInviaPropostaEsito500() {
+		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
+				.willReturn(aResponse().withStatus(500).withHeader("content-type", "application/soap+xml")
+						.withBodyFile("InviaPropostaV2-responseEsito500.xml")));
+
+		log.info("Esito invia proposta v2: " + stub.getResponse().getStatus());
+
+		Assert.assertEquals(500, stub.getResponse().getStatus());
+	}
 
 	private void stubRevocaPropostaOK() {
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("revocaProposta"))
@@ -298,6 +308,41 @@ public class CJDispositivaControllerTest extends BaseTest {
 		Assert.assertEquals(200, status);
 		log.info("content = {}", content);
 		Assert.assertTrue(content.contains("\"codErrore\":\"97\"") && content.contains("codiceErroreWebService:12"));
+	}
+	
+	@Test
+	public void testInserimentoKO500_InviaPropostaV2() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		stubStoreCovenantWSOK();
+
+		stubInviaPropostaEsito500();
+
+		stubGestioneOk();
+
+		stubRollbackStoreCovenantWSOK();
+
+		dispositivaRequestDTO.getPratica().setCodPratica("0000655703");
+
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		/*
+		 * Esito atteso 
+		 * 
+		 *  "codErrore":"97",
+		 *
+		 */
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("\"codErrore\":\"97\""));
 	}
 
 	@Test

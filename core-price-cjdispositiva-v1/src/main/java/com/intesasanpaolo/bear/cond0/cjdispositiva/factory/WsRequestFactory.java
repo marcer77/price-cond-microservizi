@@ -94,7 +94,7 @@ public class WsRequestFactory {
 				condizione.setTipoValore("1");
 				condizione.setIndPresenzaValApp("S");
 				condizione.setValoreProposto(tasso.getValoreSprdTX().toString());
-				condizione.setDataInizioProposto(tasso.getDecaCdzTX());
+				condizione.setDataInizioProposto(tasso.getDecoCdzTX());
 				condizione.setDataFineProposto(tasso.getDecaCdzTX());
 				if("P".equals(tasso.getTipoValCdzTX())) {
 					ParametroCondizioneDeroga parametroCondizioneDerogaProposto = new ParametroCondizioneDeroga();
