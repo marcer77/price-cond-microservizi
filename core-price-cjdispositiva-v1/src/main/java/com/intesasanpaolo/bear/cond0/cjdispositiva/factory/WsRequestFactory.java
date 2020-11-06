@@ -58,8 +58,8 @@ public class WsRequestFactory {
 			
 			datiCliente.setNdgCliente(adesione.getIntestatarioNDG());
 			datiCliente.setNominativoCliente(adesione.getIntestatazione());
-			datiCliente.setCfCliente(adesione.getIntestatarioCodFiscale());
-			datiCliente.setPivaCliente(adesione.getIntestatarioPIVA());
+			datiCliente.setCfCliente(StringUtils.trim(adesione.getIntestatarioCodFiscale()));
+			datiCliente.setPivaCliente(StringUtils.trim(adesione.getIntestatarioPIVA()));
 		
 			if(adesione.getInfoStampaData()!=null) {
 				annoProposta = adesione.getInfoStampaData();
