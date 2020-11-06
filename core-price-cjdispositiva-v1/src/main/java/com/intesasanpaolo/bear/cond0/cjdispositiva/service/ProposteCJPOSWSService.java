@@ -31,6 +31,8 @@ public class ProposteCJPOSWSService extends BaseService {
 	
 	public EsitoOperazioneCJPOSV2 inviaPropostaV2(InviaPropostaV2 request, ISPWebservicesHeaderType header) {
 		log.info(" - inviaPropostaV2 START");
+		//forzatura AUTODEL
+		header.getOperatorInfo().setUserID("AUTODEL");
 		EsitoInviaPropostaV2Response esitoInviaPropostaV2Response = proposteCJPOSWSInviaPropostaV2Connector.call(
 				request, proposteCJPOSWSInviaPropostaV2RequestTransformer,
 				proposteCJPOSWSInviaPropostaV2ResponseTransformer, header);
