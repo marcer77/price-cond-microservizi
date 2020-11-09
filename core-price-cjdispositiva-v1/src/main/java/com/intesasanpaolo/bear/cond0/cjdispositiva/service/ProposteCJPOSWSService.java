@@ -31,11 +31,15 @@ public class ProposteCJPOSWSService extends BaseService {
 	
 	public EsitoOperazioneCJPOSV2 inviaPropostaV2(InviaPropostaV2 request, ISPWebservicesHeaderType header) {
 		log.info(" - inviaPropostaV2 START");
+		//Conservo la user
+		String realUser =  header.getOperatorInfo().getUserID();
 		//forzatura AUTODEL
 		header.getOperatorInfo().setUserID("AUTODEL");
 		EsitoInviaPropostaV2Response esitoInviaPropostaV2Response = proposteCJPOSWSInviaPropostaV2Connector.call(
 				request, proposteCJPOSWSInviaPropostaV2RequestTransformer,
 				proposteCJPOSWSInviaPropostaV2ResponseTransformer, header);
+		//ripristino la user
+		header.getOperatorInfo().setUserID(realUser);
 		EsitoOperazioneCJPOSV2 dto = new EsitoOperazioneCJPOSV2();
 		if (esitoInviaPropostaV2Response != null && esitoInviaPropostaV2Response.getEsito() != null) {
 			if("OK".equals(esitoInviaPropostaV2Response.getEsito().getEsitoCodice())) {
