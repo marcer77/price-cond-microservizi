@@ -86,7 +86,7 @@ public class BeneficiBuilder implements Builder<String> {
 		
 		//12 BEN-XC-PARAMETRO1  NNNNNNNN	Benefici.parametro_Perc1 * 100000
 		BigDecimal benXCParametro1=  withNoException(()->adesioneResponseBenefici.getBeneficioValoreParametrato().getParametroPerc1().multiply(new BigDecimal(100000)),BigDecimal.ZERO);
-		st.append(PaddingField.leftPadZeroOrTruncate(benXCParametro1.toString(),8));
+		st.append(PaddingField.leftPadZeroOrTruncate(benXCParametro1.intValue()+"",8));
 		
 		//13 BEN-PARAMETRO2	CCCCCCCC	fisso a spazi
 		st.append(PaddingField.rightPadSpaceOrTruncate("", 8));
@@ -101,7 +101,7 @@ public class BeneficiBuilder implements Builder<String> {
 		//16 BEN-VAL-NUM-DRV1 SNNNNNNNNNNNNNNNNNN Benefici.driver1_ValoreNumerico * 1000
 		BigDecimal benValNumDRV1=withNoException(()->adesioneResponseBenefici.getDriver1ValoreNumerico().multiply(new BigDecimal(1000)),BigDecimal.ZERO); 
 		String segno=benValNumDRV1.signum()<0?"-":"+";
-		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV1.toString(), 18));
+		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV1.intValue()+"", 18));
 	
 		//17 BEN-VAL-COD-DRV1	CCCCC	Benefici.driver1_ValoreCodice  	
 		st.append(PaddingField.rightPadSpaceOrTruncate(adesioneResponseBenefici.getDriver1ValoreCodice(), 5));
@@ -109,7 +109,7 @@ public class BeneficiBuilder implements Builder<String> {
 		//18 BEN-VAL-NUM-DRV2	SNNNNNNNNNNNNNNNNNN	Benefici.driver2_ValoreNumerico * 1000
 		BigDecimal benValNumDRV2=withNoException(()->adesioneResponseBenefici.getDriver2ValoreNumerico().multiply(new BigDecimal(1000)),BigDecimal.ZERO); 
 		segno=benValNumDRV2.signum()<0?"-":"+";
-		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV2.toString(), 18));
+		st.append(segno+PaddingField.leftPadZeroOrTruncate(benValNumDRV2.intValue()+"", 18));
 		
 		//19	BEN-VAL-COD-DRV2	CCCCC	Benefici.driver2_ValoreCodice
 		st.append(PaddingField.rightPadSpaceOrTruncate(adesioneResponseBenefici.getDriver2ValoreCodice(), 5));
@@ -141,7 +141,7 @@ public class BeneficiBuilder implements Builder<String> {
 		} else {
 			result= withNoException(()->adesioneResponseBenefici.getBeneficioValoreNumerico().multiply(new BigDecimal(100000)),BigDecimal.ZERO);
 		}
-		String numero=PaddingField.leftPadZeroOrTruncate(result.toString(), 15);
+		String numero=PaddingField.leftPadZeroOrTruncate(result.intValue()+"", 15);
 		String segno=result.intValue()>=0?"+":"-";
 		return segno+numero;
 	}

@@ -43,13 +43,14 @@ public class AdesioneConvenzioneFactoryTest extends BaseTest{
 		String data = "06082020"; 
 		adesioneResponseBenefici.setDataDecorrenza(data);
 		adesioneResponseBenefici.setDataScadenza(data);
-		adesioneResponseBenefici.setBeneficioValoreNumerico(new BigDecimal(1));
+//		adesioneResponseBenefici.setBeneficioValoreNumerico(new BigDecimal(1));
+		adesioneResponseBenefici.setBeneficioValoreNumerico(new BigDecimal(0.10000));
 		AdesioneResponseBeneficioValoreParametrato beneficioValoreParametrato = new AdesioneResponseBeneficioValoreParametrato();
 		beneficioValoreParametrato.setParametroPerc1(new BigDecimal(1));
 		beneficioValoreParametrato.setParametroPerc2(new BigDecimal(1));
 		adesioneResponseBenefici.setBeneficioValoreParametrato(beneficioValoreParametrato);
-		adesioneResponseBenefici.setDriver1ValoreNumerico(new BigDecimal(1));
-		adesioneResponseBenefici.setDriver2ValoreNumerico(new BigDecimal(1));
+		adesioneResponseBenefici.setDriver1ValoreNumerico(new BigDecimal(0.02));
+		adesioneResponseBenefici.setDriver2ValoreNumerico(new BigDecimal(200));
 		getReqAdesConResp.getTabellaBenefici().add(adesioneResponseBenefici);
 		//
 		adesioneResponseBenefici = new AdesioneResponseBenefici();
@@ -64,12 +65,15 @@ public class AdesioneConvenzioneFactoryTest extends BaseTest{
 		beneficioValoreParametrato.setParametroPerc1(new BigDecimal(1));
 		beneficioValoreParametrato.setParametroPerc2(new BigDecimal(1));
 		adesioneResponseBenefici.setBeneficioValoreParametrato(beneficioValoreParametrato);
-		adesioneResponseBenefici.setDriver1ValoreNumerico(new BigDecimal(1));
-		adesioneResponseBenefici.setDriver2ValoreNumerico(new BigDecimal(1));
+		adesioneResponseBenefici.setDriver1ValoreNumerico(new BigDecimal(0.01));
+		adesioneResponseBenefici.setDriver2ValoreNumerico(new BigDecimal(100.57));
 		getReqAdesConResp.getTabellaBenefici().add(adesioneResponseBenefici);
 		
 		
 		AdesioneConvenzione model=adesioneConvenzioneFactory.createAdesioneConvenzione(mockISPWebservicesHeaderType(), inputStampaDTO, new ArrayList<RespGetCovenantPerConvenzioneCovenantDaAttivare>(), getReqAdesConResp, "1234567");
+		
+		
+		
 		assertTrue(model.getTb59r009List().size()>0);
 			
 	}
