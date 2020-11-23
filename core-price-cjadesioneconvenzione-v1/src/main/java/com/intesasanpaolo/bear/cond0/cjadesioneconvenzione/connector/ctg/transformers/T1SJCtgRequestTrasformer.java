@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjadesioneconvenzione.connector.ctg.transformers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +69,7 @@ public class T1SJCtgRequestTrasformer implements ICtgRequestTransformer<T1SJRequ
 		inpbst.T1SJ_I_NUM_PROG_RAPP = ServiceUtil.ifNull(request.getT1SjINumProgRapp(),"");
 		inpbst.T1SJ_I_PROG_STAMPA = ServiceUtil.ifNullAsInt(request.getT1SjIProgStampa(),0);
 		inpbst.T1SJ_I_PROPOSTA_COMM = ServiceUtil.ifNull(request.getT1SjIPropostaComm(),"");
-		inpbst.T1SJ_I_PROV_RES = ServiceUtil.ifNull(request.getT1SjIProvRes(),"");
+		inpbst.T1SJ_I_PROV_RES = StringUtils.isEmpty(request.getT1SjIProvRes())? "  ": request.getT1SjIProvRes();
 		inpbst.T1SJ_I_SPECIE_GIU = ServiceUtil.ifNull(request.getT1SjISpecieGiu(),"");
 		inpbst.T1SJ_I_TIPO_OFFERTA = ServiceUtil.ifNull(request.getT1SjITipoOfferta(),"");
 		inpbst.T1SJ_I_TIPO_STAMPA = ServiceUtil.ifNull(request.getT1SjITipoStampa(),"");
