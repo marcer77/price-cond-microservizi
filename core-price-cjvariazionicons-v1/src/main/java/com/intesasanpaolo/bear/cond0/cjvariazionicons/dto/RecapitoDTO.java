@@ -32,8 +32,8 @@ public class RecapitoDTO{
 	@Pattern(regexp = "^.{0,25}", message = "Il campo frazione può avere lunghezza massima 25")
 	private String frazione;
 	
-	@NotNull(message = "Il campo provincia non può essere null")
-	@NotBlank(message = "Il campo provincia non può essere vuoto")
+//	@NotNull(message = "Il campo provincia non può essere null")
+//	@NotBlank(message = "Il campo provincia non può essere vuoto")
 	@Pattern(regexp = "^.{2,2}", message = "Il campo provincia può essere solo numerico con lunghezza 2")
 	private String provincia;
 }
