@@ -10,7 +10,7 @@ configuration:
      - name: CONVENZIONI_HOST_SERVICE_WS_URL
        value: http://servizibe-vdmc0.sede.corp.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CJPOSWS_WS_URL
-       value: http://servizibe-cond0.syssede.systest.sanpaoloimi.com:7345/ProposteCJPOS
+       value: http://servizibe-cond0.sede.corp.sanpaoloimi.com:7345/ProposteCJPOS
      - name: IIB_PCGESTIXME_URL
        value: http://agnbmopclu.sede.corp.sanpaoloimi.com:80/PHCP0/PCGESTIXME/Gestione
     ctg:
