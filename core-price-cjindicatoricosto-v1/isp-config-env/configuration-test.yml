@@ -1,7 +1,7 @@
 configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
-       value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+       value: https://gwad0-test.syssede.systest.sanpaoloimi.com/auth/oauth
     ctg:
      - name: COND0
        acronimo: COND0
