@@ -16,6 +16,7 @@ import com.intesasanpaolo.bear.bear_v3.dto.utils.StrUtils;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoResponse;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ControlloTipoContoRequest;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.ListinoContoCorrente;
+import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.Promozione;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.RapportoAccessorio;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.converter.ControlloTipoContoConverter;
 import com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.converter.ControlloTipoContoRequestConverter;
@@ -93,6 +94,23 @@ public class ControlloTipoContoCommand extends BaseCommand<ControlloTipoContoRes
 			output.setNiListiniACC(output.getRapportiACC().size());
 			output.setCdEsito(CondizioniContoUtils.ESITO_OK);
 			output.setMsgEsito("OK");
+			
+			//U0K3263 RE 25_11_2020
+			output.setPromozioni(new ArrayList<>());
+			List<com.intesasanpaolo.bear.bear_v3.model.controllotipoconto.hostbridge.response.Promozione> promozioniBridge= response.body.PCMM_O_TAB_OUTPRM!=null?response.body.PCMM_O_TAB_OUTPRM:new ArrayList<>();
+			promozioniBridge.forEach(promo->{
+				Promozione p=new Promozione();
+				p.setCdPromoMulti(promo.getPCMM_O_COD_PROMO_MULTI());
+				p.setDsTitoloPromoMulti(promo.getPCMM_O_TITOLO_PROMO_MULTI());
+				p.setCdRappCategoriaMulti(promo.getPCMM_O_COD_CAT_RAPP_MULTI());
+				p.setCdRappContoMulti(promo.getPCMM_O_COD_PROG_RAPP_MULTI());
+				p.setCdRappFilialeMulti(promo.getPCMM_O_COD_FIL_RAPP_MULTI());
+				p.setDtDecorrenzaPromoMulti(promo.getPCMM_O_DECO_PROMO_MULTI());
+				p.setDtScadenzaPromoMulti(promo.getPCMM_O_DECA_PROMO_MULTI());
+				output.getPromozioni().add(p);
+			});
+			//
+			
 			logger.info("CONTROLLO TIPO CONTO RESPONSE:\n" + gson.toJson(output));
 			return output;
 		}catch(Exception e) {
