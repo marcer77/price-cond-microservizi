@@ -78,7 +78,8 @@ public class T1SFCtgRequestTrasformer  implements  ICtgRequestTransformer<T1SFRe
 		ndg.I_CAP_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getICapRes(), "");
 		ndg.I_VIA_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getIViaRes(), "");
 		ndg.I_FRAZIONE = ServiceUtil.ifNull(t1sfRequest.getNdg().getIFrazione(), "");
-		ndg.I_PROV_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getIProvRes(), "");
+		//In caso di provincia assente, passare 2 spazi
+		ndg.I_PROV_RES = ServiceUtil.ifNull(t1sfRequest.getNdg().getIProvRes(), "  ");
 		logger.debug("inpbst.NDG = {}",ServiceUtil.stampaOggetto(ndg));
 		inpbst.NDG[0] = ndg;
 		
