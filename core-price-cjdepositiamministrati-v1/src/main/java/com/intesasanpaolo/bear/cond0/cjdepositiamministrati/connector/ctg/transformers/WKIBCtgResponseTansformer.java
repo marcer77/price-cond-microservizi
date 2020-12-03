@@ -41,7 +41,7 @@ public class WKIBCtgResponseTansformer implements ICtgResponseTransformer<C_WKIB
         OUTESI outEsi = hasSomething(connector.OUTESI) ? connector.OUTESI[0] : new OUTESI();
         OUTSEG outSeg = hasSomething(connector.OUTSEG) ? connector.OUTSEG[0] : new OUTSEG();
         
-		List<WKIBResponseRigheDiStampa> elenco = new ArrayList<WKIBResponseRigheDiStampa>();
+		List<WKIBResponseRigheDiStampa> elenco = new ArrayList<>();
 		if (hasSomething(outbst.OUTSTP)) {
 			Arrays.asList(outbst.OUTSTP).forEach(out -> {
 
@@ -50,6 +50,7 @@ public class WKIBCtgResponseTansformer implements ICtgResponseTransformer<C_WKIB
 				.prgStrut(out.PROG_STRUT+"")
 				.tipoStrut(out.TIPO_STRUT)
 				.flContinua(out.FL_CONTINUA)
+				.tipoSezione(out.TIPO_SEZ)
 				.build();
 				
 				OUTRC4 outrc4 = hasSomething(out.OUTRC4) ? out.OUTRC4[0] : new OUTRC4();
@@ -62,18 +63,27 @@ public class WKIBCtgResponseTansformer implements ICtgResponseTransformer<C_WKIB
 				OUTRTS outrts = hasSomething(out.OUTRTS) ? out.OUTRTS[0] : new OUTRTS();
 				
 				wkibResponseRigheDiStampa.setTesto(outrts.TESTO);
+				wkibResponseRigheDiStampa.setEvidTesto(outrts.EVID_TESTO);
 				
 				OUTRCZ outrcz = hasSomething(out.OUTRCZ) ? out.OUTRCZ[0] : new OUTRCZ();
 				
 				wkibResponseRigheDiStampa.setCodCond(outrcz.COD_COND);
 				wkibResponseRigheDiStampa.setDataDeco(outrcz.DATA_DECO);
-				wkibResponseRigheDiStampa.setDescrCond(outrcz.DESCR_CND);
-				wkibResponseRigheDiStampa.setValore(outrcz.VALORE);
-				wkibResponseRigheDiStampa.setIndNota(outrcz.IND_NOTA);
+				wkibResponseRigheDiStampa.setEvidDtDeco(outrcz.EVID_DTDEC);
 				
+				wkibResponseRigheDiStampa.setDescrCond(outrcz.DESCR_CND);
+				wkibResponseRigheDiStampa.setEvidDescr(outrcz.EVID_DESCR);
+				wkibResponseRigheDiStampa.setValore(outrcz.VALORE);
+				wkibResponseRigheDiStampa.setEvidValore(outrcz.EVID_VAL);
+				wkibResponseRigheDiStampa.setIndNota(outrcz.IND_NOTA);
+				wkibResponseRigheDiStampa.setEvidNota(outrcz.EVID_NOTA);
 				OUTRNO outrno = hasSomething(out.OUTRNO) ? out.OUTRNO[0] : new OUTRNO();
 				
 				wkibResponseRigheDiStampa.setNum(outrno.NUM_NOTA);
+				wkibResponseRigheDiStampa.setEvidNrNota(outrno.EVID_NR_NOTA);
+				wkibResponseRigheDiStampa.setEvidTxNota(outrno.EVID_TX_NOTA);
+				
+				
 				wkibResponseRigheDiStampa.setTestoNota(outrno.TESTO_NOTA);
 				
 				OUTRPR outrpr = hasSomething(out.OUTRPR) ? out.OUTRPR[0] : new OUTRPR();

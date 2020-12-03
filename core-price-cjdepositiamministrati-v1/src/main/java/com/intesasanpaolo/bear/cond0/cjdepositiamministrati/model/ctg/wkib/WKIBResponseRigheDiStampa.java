@@ -13,6 +13,7 @@ public class WKIBResponseRigheDiStampa {
 	private String prgStp;
 	private String prgStrut;
 	private String tipoStrut;
+	private String tipoSezione;
 
 	private String flContinua;
 	
@@ -22,15 +23,21 @@ public class WKIBResponseRigheDiStampa {
 	private String testo4;
 	
 	private String testo;
+	private String evidTesto;
 	
 	private String codCond;
 	private String dataDeco;
+	private String evidDtDeco;
 	private String descrCond;
+	private String evidDescr;
 	private String valore;
+	private String evidValore;
 	private String indNota;
+	private String evidNota;
 	
 	private String num;
+	private String evidNrNota;
 	private String testoNota;
-	
+	private String evidTxNota;
 	private String testoPromozione;
 }

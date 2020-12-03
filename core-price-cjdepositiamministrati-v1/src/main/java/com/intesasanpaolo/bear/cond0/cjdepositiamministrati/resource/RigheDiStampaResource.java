@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 public class RigheDiStampaResource {
 	
 	private String prgStp;
+	private String tipoSezione;
 	private String prgStrut;
 	private String tipoStrut;
 

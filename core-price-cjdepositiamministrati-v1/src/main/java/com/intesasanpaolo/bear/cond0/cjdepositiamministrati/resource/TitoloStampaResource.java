@@ -12,5 +12,6 @@ import lombok.NoArgsConstructor;
 public class TitoloStampaResource {
 	
 	private String testo;
+	private String evidTesto;
 		
 }

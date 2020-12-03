@@ -44,7 +44,7 @@
 		<dependency>
 			 <groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00</groupId>
  			 <artifactId>AD-WKIBSTAMP1</artifactId>
-			<version>00.00005</version>
+			<version>00.00006</version>
 		</dependency>
     </dependencies>
 

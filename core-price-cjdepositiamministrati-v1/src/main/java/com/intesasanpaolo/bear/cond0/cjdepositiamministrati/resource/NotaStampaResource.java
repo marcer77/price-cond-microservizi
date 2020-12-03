@@ -13,5 +13,7 @@ public class NotaStampaResource {
 	
 	private String num;
 	private String testo;
+	private String evidNum;
+	private String evidTesto;
 		
 }

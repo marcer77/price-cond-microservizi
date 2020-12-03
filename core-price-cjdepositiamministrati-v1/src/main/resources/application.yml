@@ -8,6 +8,13 @@ spring:
 
 error-manager:
   enabled: true
+ 
+controllers:
+    tracing:
+        enabled: true
+        bodyMaxLength: 10000
+tracing:
+    enabled: true
 
 hostbridge:
   # added to mock CTG call

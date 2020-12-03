@@ -124,19 +124,30 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 								.build());
 					}
 					if("T".equals(riga.getTipoStrut())) {
-						rigaStampa.setTitolo(TitoloStampaResource.builder().testo(riga.getTesto()).build());
+					rigaStampa.setTitolo(TitoloStampaResource.builder()
+							.testo(riga.getTesto())
+							.evidTesto(riga.getEvidTesto()).build());
 					}
 					if("Y".equals(riga.getTipoStrut())) {
 						rigaStampa.setCondizione(CondizioneStampaResource.builder()
 								.codCond(riga.getCodCond())
 								.dataDeco(riga.getDataDeco())
+								.evidDataDeco(riga.getEvidDtDeco())
 								.descrCond(riga.getDescrCond())
+								.evidDescrCond(riga.getEvidDescr())
 								.valore(riga.getValore())
+								.evidValore(riga.getEvidValore())
 								.indNota(riga.getIndNota())
+								.evidNota(riga.getEvidNota())
 								.build());
 					}
 					if("N".equals(riga.getTipoStrut())) {
-						rigaStampa.setNota(NotaStampaResource.builder().num(riga.getNum()).testo(riga.getTestoNota()).build());
+						rigaStampa.setNota(NotaStampaResource.builder()
+								.num(riga.getNum())
+								.testo(riga.getTestoNota())
+								.evidNum(riga.getEvidNrNota())
+								.evidTesto(riga.getEvidTesto())
+								.build());
 					}
 					if("M".equals(riga.getTipoStrut())) {
 						rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
@@ -192,11 +203,11 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		
 		riga.setIntestazione(new IntestazioneStampaResource(stampaRequestDTO.getIntestatario().getIntestazione(), "testo mock2", "testo mock3", "testo mock4"));
 
-		riga.setTitolo(new TitoloStampaResource("titolo mock"));
+		riga.setTitolo(new TitoloStampaResource("titolo mock","1"));
 		
-		riga.setCondizione(new CondizioneStampaResource("cod mock", DateUtils.dateToString(new Date(), DateUtils.DATE_FORMAT_DD_MM_YYYY_SLASH), "desc cond mock", "valore mock", "nota mock"));
+		riga.setCondizione(new CondizioneStampaResource("cod mock", DateUtils.dateToString(new Date(), DateUtils.DATE_FORMAT_DD_MM_YYYY_SLASH), "desc cond mock", "valore mock", "nota mock","1","0","1","0"));
 		
-		riga.setNota(new NotaStampaResource("1", "nota mock"));
+		riga.setNota(new NotaStampaResource("1", "nota mock","1","0"));
 		
 		riga.setPromozione(new PromozioneStampaResource("Promozione mock"));
 		

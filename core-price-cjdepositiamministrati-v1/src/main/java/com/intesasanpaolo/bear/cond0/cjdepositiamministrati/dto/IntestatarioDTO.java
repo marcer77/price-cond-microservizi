@@ -17,9 +17,9 @@ import lombok.ToString;
 @ToString
 public class IntestatarioDTO {
 
-	@NotNull(message = "Il campo ndg non può essere null")
-	@NotBlank(message = "Il campo ndg non può essere vuoto")
-	@Pattern(regexp = "[0-9]{13,13}", message = "Il campo ndg può solo numerico con lunghezza 13")
+//	@NotNull(message = "Il campo ndg non può essere null")
+//	@NotBlank(message = "Il campo ndg non può essere vuoto")
+	@Pattern(regexp = "^$|[0-9]{13,13}", message = "Il campo ndg può solo numerico con lunghezza 13")
 	private String ndg;
 
 	@Pattern(regexp = "^.{1,70}", message = "Il campo intestazione può avere lunghezza massima 70")

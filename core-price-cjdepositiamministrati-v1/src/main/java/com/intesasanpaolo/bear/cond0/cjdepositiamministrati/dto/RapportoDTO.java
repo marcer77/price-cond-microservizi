@@ -29,8 +29,8 @@ public class RapportoDTO {
 	@Pattern(regexp = "[0-9]{8,8}", message = "Il campo codProgressivo può essere solo numerico con lunghezza 8")
 	private String codProgressivo;
 	
-	@NotNull(message = "Il campo codProgressivo non può essere vuoto!")
-	@NotBlank(message = "Il campo codProgressivo non può essere stringa vuota!")
+//	@NotNull(message = "Il campo attributo non può essere vuoto!")
+//	@NotBlank(message = "Il campo attributo non può essere stringa vuota!")
 	private String attributo;
 
 }

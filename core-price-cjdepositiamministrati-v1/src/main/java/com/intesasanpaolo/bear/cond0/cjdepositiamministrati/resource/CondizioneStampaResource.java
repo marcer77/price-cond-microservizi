@@ -16,5 +16,9 @@ public class CondizioneStampaResource {
 	private String descrCond;
 	private String valore;
 	private String indNota;
+	private String evidDataDeco;
+	private String evidNota;
+	private String evidValore;
+	private String evidDescrCond;
 	
 }
