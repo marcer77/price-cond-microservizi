@@ -35,8 +35,8 @@ public enum BSTypeCall {
 			, "T1999" // Acronimo proprietario BS
 			),
 	
-	WKIBS00_CALL(
-			BSType.WKIBS00
+	WKNBS00_CALL(
+			BSType.WKNBS00
 			,"31" //canale
 			, "WK999" // Acronimo proprietario BS
 			),

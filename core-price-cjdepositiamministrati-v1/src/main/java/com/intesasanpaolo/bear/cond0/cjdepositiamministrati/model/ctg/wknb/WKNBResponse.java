@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib;
+package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WKIBResponse {
+public class WKNBResponse {
 	
 	private OutEsi outEsi;
 	private OutSeg outSeg;
@@ -25,6 +25,6 @@ public class WKIBResponse {
 	private String codDDS;
 	private String codTemplate;
 	
-	private List<WKIBResponseRigheDiStampa> elenco;
+	private List<WKNBResponseRigheDiStampa> elenco;
 
 }

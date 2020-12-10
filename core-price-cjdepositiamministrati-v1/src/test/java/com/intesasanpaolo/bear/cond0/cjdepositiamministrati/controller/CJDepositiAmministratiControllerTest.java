@@ -26,16 +26,16 @@ import com.intesasanpaolo.bear.cond0.cj.lib.model.OutSeg;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.BSType;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.command.CJDepositiAmministratiCommand;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.common.BaseTest;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKIB;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgRequestTrasformer;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKIBCtgResponseTansformer;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.CTGConnectorWKNB;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKNBCtgRequestTrasformer;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.connector.ctg.transformers.WKNBCtgResponseTansformer;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.InfoStampaDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.IntestatarioDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.RapportoDTO;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBRequest;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBResponse;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.core.resource.BaseResource;
 
@@ -49,16 +49,16 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	private HttpHeaders httpHeadersCorrotto;
 	
 	@MockBean
-	private CTGConnectorWKIB ctgConnectorWKIB;
+	private CTGConnectorWKNB ctgConnectorWKIB;
 	
 	@MockBean
-	private WKIBCtgRequestTrasformer wkibCtgRequestTrasformer;
+	private WKNBCtgRequestTrasformer wkibCtgRequestTrasformer;
 
 	@MockBean
-	private WKIBCtgResponseTansformer wkibCtgResponseTansformer;
+	private WKNBCtgResponseTansformer wkibCtgResponseTansformer;
 	
 	@MockBean
-	private WKIBRequest wkibRequest;
+	private WKNBRequest wkibRequest;
 	
 	@Before
 	public void initMocks() throws Exception {
@@ -169,27 +169,27 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	}
 
 	private void mockWKIBServiceBS_OK() {
-		WKIBResponse wkibResponse = new WKIBResponse();
-		List<WKIBResponseRigheDiStampa> lista = new ArrayList<WKIBResponseRigheDiStampa>();
-		WKIBResponseRigheDiStampa elem = new WKIBResponseRigheDiStampa();
+		WKNBResponse wkibResponse = new WKNBResponse();
+		List<WKNBResponseRigheDiStampa> lista = new ArrayList<WKNBResponseRigheDiStampa>();
+		WKNBResponseRigheDiStampa elem = new WKNBResponseRigheDiStampa();
 		
-		elem = new WKIBResponseRigheDiStampa();
+		elem = new WKNBResponseRigheDiStampa();
 		elem.setTipoStrut("C");
 		lista.add(elem);
 		
-		elem = new WKIBResponseRigheDiStampa();
+		elem = new WKNBResponseRigheDiStampa();
 		elem.setTipoStrut("T");
 		lista.add(elem);
 		
-		elem = new WKIBResponseRigheDiStampa();
+		elem = new WKNBResponseRigheDiStampa();
 		elem.setTipoStrut("Y");
 		lista.add(elem);
 		
-		elem = new WKIBResponseRigheDiStampa();
+		elem = new WKNBResponseRigheDiStampa();
 		elem.setTipoStrut("N");
 		lista.add(elem);
 		
-		elem = new WKIBResponseRigheDiStampa();
+		elem = new WKNBResponseRigheDiStampa();
 		elem.setTipoStrut("M");
 		lista.add(elem);
 		wkibResponse.setElenco(lista);
@@ -201,7 +201,7 @@ public class CJDepositiAmministratiControllerTest extends BaseTest {
 	
 
 	private void mockWKIBServiceBS_KO() {
-		WKIBResponse wkibResponse = new WKIBResponse();
+		WKNBResponse wkibResponse = new WKNBResponse();
 		wkibResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
 		wkibResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
 		Mockito.when(ctgConnectorWKIB.call(wkibRequest, wkibCtgRequestTrasformer, wkibCtgResponseTansformer, new Object[] {}))

@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib;
+package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WKIBResponseRigheDiStampa {
+public class WKNBResponseRigheDiStampa {
 	private String prgStp;
 	private String prgStrut;
 	private String tipoStrut;

@@ -42,9 +42,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			 <groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKIBS00</groupId>
- 			 <artifactId>AD-WKIBSTAMP1</artifactId>
-			<version>00.00006</version>
+			 <groupId>com.dsi.business.SSA_WK.integration.jdo.P_WKNBS00</groupId>
+ 			 <artifactId>AD-WKNBSTAMP1</artifactId>
+			<version>00.00001</version>
 		</dependency>
     </dependencies>
 

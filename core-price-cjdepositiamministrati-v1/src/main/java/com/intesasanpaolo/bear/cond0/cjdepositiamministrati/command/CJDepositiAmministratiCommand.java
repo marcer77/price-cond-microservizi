@@ -16,12 +16,9 @@ import com.intesasanpaolo.bear.cond0.cj.lib.enums.TipoStrutEnum;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cj.lib.utils.ServiceUtil;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.dto.StampaRequestDTO;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBRequest;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponse;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib.WKIBResponseRigheDiStampa;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBRequest;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBResponse;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb.WKNBResponseRigheDiStampa;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.CondizioneStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.EsitoStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.IntestazioneStampaResource;
@@ -30,7 +27,7 @@ import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.PromozioneS
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.RigheDiStampaResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.StampaResponseResource;
 import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.resource.TitoloStampaResource;
-import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKIBServiceBS;
+import com.intesasanpaolo.bear.cond0.cjdepositiamministrati.service.ctg.WKNBServiceBS;
 import com.intesasanpaolo.bear.core.command.BaseCommand;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 import com.intesasanpaolo.bear.core.model.ispHeaders.ParamList;
@@ -47,7 +44,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;
 	
 	@Autowired
-	private WKIBServiceBS wkibServiceBS;
+	private WKNBServiceBS wkibServiceBS;
 	
 	@Autowired
     private PropertiesManager propertiesManager;
@@ -97,7 +94,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	private StampaResponseResource buildStampaResponseResource() {
 		log.info("buildStampaResponseResource START");
 
-			WKIBResponse wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
+			WKNBResponse wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
 						
 			StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
 			.codDDS(wkibResponse.getCodDDS())
@@ -106,7 +103,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 			.build();
 		
 			if(CollectionUtils.isNotEmpty(wkibResponse.getElenco())) {
-				for(WKIBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
+				for(WKNBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
 					
 					RigheDiStampaResource rigaStampa = new RigheDiStampaResource();
 					
@@ -161,7 +158,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		return stampaResponseResource;
 	}
 
-	private WKIBRequest buildWKIBRequest() {
+	private WKNBRequest buildWKIBRequest() {
 		log.info("buildWKIBRequest START");
 		String codAbi = ServiceUtil.getAdditionalBusinessInfo(ispWebservicesHeaderType, ParamList.COD_ABI);
 		String userId = ispWebservicesHeaderType.getOperatorInfo().getUserID();
@@ -171,7 +168,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 		cal.add(Calendar.YEAR, 5);
 		Date dataFine = cal.getTime();
 		
-		WKIBRequest wkibRequest = WKIBRequest.builder()
+		WKNBRequest wkibRequest = WKNBRequest.builder()
 				.ispWebservicesHeaderType(ispWebservicesHeaderType)
 				.tipoFunzione("04")
 				.codAbi(codAbi)

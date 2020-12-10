@@ -6,7 +6,7 @@ public enum BSType {
 	WKCJS00("WKCJ", "Stampa contratto carte in Customer Journey", "WKCJCNTRZE"),
 	PCUJS00("PCUJ", "Calcolo / Controllo TEG e TAEG", "PCUJCJAFFI"),
 	T1SFS00("T1SF", "Stampa Bersani da PEF", "T1SFSTPPEF"),
-	WKIBS00("WKIB", "Stampa depositi amministrati", "WKIBSTAMP1"),
+	WKNBS00("WKNB", "Stampa depositi amministrati", "WKNBSTAMP1"),
 	PCMYS00("PCMY","Esposizione modale di un XME Conto in CJ DA","PCMYSTCJOF");
 	
 	private final String code;

@@ -1,4 +1,4 @@
-package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wkib;
+package com.intesasanpaolo.bear.cond0.cjdepositiamministrati.model.ctg.wknb;
 
 import com.intesasanpaolo.bear.core.model.ispHeaders.ISPWebservicesHeaderType;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WKIBRequest {
+public class WKNBRequest {
 
 	private ISPWebservicesHeaderType ispWebservicesHeaderType;	
 	
