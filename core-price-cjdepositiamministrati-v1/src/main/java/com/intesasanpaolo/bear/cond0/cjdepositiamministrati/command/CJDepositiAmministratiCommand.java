@@ -111,6 +111,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 					rigaStampa.setPrgStrut(riga.getPrgStrut());
 					rigaStampa.setTipoStrut(riga.getTipoStrut());
 					rigaStampa.setFlContinua(riga.getFlContinua());
+					rigaStampa.setTipoSezione(riga.getTipoSezione());
 					
 					if("C".equals(riga.getTipoStrut())) {
 						rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
@@ -143,7 +144,7 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 								.num(riga.getNum())
 								.testo(riga.getTestoNota())
 								.evidNum(riga.getEvidNrNota())
-								.evidTesto(riga.getEvidTesto())
+								.evidTesto(riga.getEvidTxNota())
 								.build());
 					}
 					if("M".equals(riga.getTipoStrut())) {
