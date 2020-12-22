@@ -52,6 +52,7 @@ public class GetCovenantPerConvenzioneResponseTrasformer implements
 					.beneficioIngressoPresente(withNoException(()-> element.getBeneficioIngressoPresente().getValue(),null))
 					.codCondizione(withNoException(()-> element.getCodCondizione().getValue(),null))
 					.codiceTemplate(withNoException(()-> element.getCodiceTemplate().getValue(),null))
+					.versioneTemplate(withNoException(()-> element.getVersioneTemplate().getValue(),null))
 					.covenantDataFine(withNoException(()-> element.getCovenantDataFine().getValue(),null))
 					.covenantDataInizio(withNoException(()-> element.getCovenantDataInizio().getValue(),null))
 					.flagEffettoRilevato(withNoException(()-> element.getFlagEffettoRilevato().getValue(),null))
