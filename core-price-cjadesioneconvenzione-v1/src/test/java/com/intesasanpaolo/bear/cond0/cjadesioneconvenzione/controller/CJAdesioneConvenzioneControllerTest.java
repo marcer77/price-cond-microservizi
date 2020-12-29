@@ -352,6 +352,62 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 
 	}
 	
+	@Test
+	public void testGetRequisitiAdesioneOK() throws Exception {
+		
+		HttpHeaders httpHeaders = mockHttpHeaders();
+		
+		String inputJson = "{\n" + 
+				"  \"cdAbi\":\"01025\",\n" + 
+				"  \"cdNDG\":\"0784215158000\",\n" + 
+				"  \"cdFilialeRapp\":\"\",\n" + 
+				"  \"cdCategoriaRapp\":\"\",\n" + 
+				"  \"cdNumeroRapp\":\"\",\n" + 
+				"  \"cdConvenzione\":\"0317005\",\n" + 
+				"  \"cdChiamata\":\"5\",\n" + 
+				"  \"dtRiferimento\":\"20201117\",\n" + 
+				"  \"cdUtente\":\"U035393\",\n" + 
+				"  \"cdApplicazione\":\"CJCON\",\n" + 
+				"  \"flTipoCliente\":\"G\",\n" + 
+				"  \"nrRequisiti\": 2,\n" + 
+				"  \"listaRequisiti\": [\n" + 
+				"      {\n" + 
+				"        \"cdTipoRequisito\": \"MERCEOL\",\n" + 
+				"        \"valRequisito\": \"COMMERCIANTI\"\n" + 
+				"      },\n" + 
+				"      {\n" + 
+				"        \"cdTipoRequisito\": \"DATACOST\",\n" + 
+				"        \"valRequisito\": \"20022006\"\n" + 
+				"      }\n" + 
+				"  ]\n" + 
+				"}";
+
+		String uri = "/cjadesioneconvenzione/getRequisitiAdesione";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
+		log.debug("status =  {}", mvcResult.getResponse().getStatus());
+		Assert.assertEquals(200, mvcResult.getResponse().getStatus());
+		log.debug("content = {}", mvcResult.getResponse().getContentAsString());
+		Assert.assertNotNull(mvcResult.getResponse().getContentAsString());
+	}
+	
+	@Test
+	public void testGetRequisitiAdesioneKOErroreFormale() throws Exception {
+		
+		HttpHeaders httpHeaders = mockHttpHeaders();
+		
+		String inputJson = "{}";
+
+		String uri = "/cjadesioneconvenzione/getRequisitiAdesione";
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+		
+		log.debug("status =  {}", mvcResult.getResponse().getStatus());
+		Assert.assertEquals(400, mvcResult.getResponse().getStatus());
+	}	
 	
 	private HttpHeaders mockHttpHeaders() {
 		HttpHeaders httpHeaders = new HttpHeaders();
