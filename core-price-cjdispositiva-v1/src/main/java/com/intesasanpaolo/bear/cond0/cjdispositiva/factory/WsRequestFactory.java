@@ -174,9 +174,9 @@ public class WsRequestFactory {
 				covenant.setCovenantDataInizio(covenantEntity.getCovenantDataInizio());
 				covenant.setFlagEntitaPrincipale(covenantEntity.getFlagEntitaPrincipale());
 				covenant.setProgressivo(covenantEntity.getProgressivo());
-				covenant.setRapportoCategoria(covenantEntity.getRapportoCategoria());
-				covenant.setRapportoConto(covenantEntity.getRapportoConto());
-				covenant.setRapportoFiliale(covenantEntity.getRapportoFiliale());
+				covenant.setRapportoCategoria(adesione.getRapportoCodCategoria());// Per i covenant da attivare i tre parametri categoria,conto e filiale sono presi dalla select di estrazione dell'adesione.
+				covenant.setRapportoConto(adesione.getRapportoCodProgressivo());
+				covenant.setRapportoFiliale(adesione.getRapportoCodFiliale());
 				covenant.setCodiceTemplate(covenantEntity.getCodiceTemplate());
 				covenant.setCondizioniFiglie(covenantEntity.getCondizioniFiglie());
 				covenant.setLivelloGerarchia(covenantEntity.getLivelloGerarchia());
@@ -191,6 +191,7 @@ public class WsRequestFactory {
 		
 		if(CollectionUtils.isNotEmpty(covenantDaCessare)) {
 			log.info("Covenant da CESSARE: "+ covenantDaCessare.size());
+			
 			for(CovenantEntity covenantEntity :covenantDaCessare) {
 				
 				Covenant covenant = new Covenant();
