@@ -128,6 +128,18 @@ public class CJDispositivaControllerTest extends BaseTest {
 				.thenReturn(wkcjResponse);
 
 	}
+	
+	private void mock_WKCJ_KO() {
+		WKCJResponse wkcjResponse = new WKCJResponse();
+		ArrayList<OutCNF> outCNFList = new ArrayList<OutCNF>();
+		wkcjResponse.setOutCNFList(outCNFList);
+		wkcjResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
+		wkcjResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+
+		Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, new Object[] {}))
+				.thenReturn(wkcjResponse);
+
+	}
 
 	private void stubStoreCovenantWSKO() {
 		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
@@ -348,6 +360,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 	@Test
 	public void testInserimentoKO_RollbackPratica() throws Exception {
 
+		//simuliamo errore in fase di invocazione della wkcj
+		mock_WKCJ_KO();
+		
 		String uri = "/cjdispositiva/inserimento";
 
 		stubStoreCovenantWSOK();
