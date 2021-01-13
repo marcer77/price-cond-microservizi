@@ -178,26 +178,26 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 
 	}
 	
-	@Test
-	public void testStampaOK2() throws Exception {
-				
-		HttpHeaders httpHeaders = mockHttpHeaders();
-
-		inputStampaDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
-		
-		String inputJson = mapToJson(inputStampaDTO);
-		String uri = "/cjadesioneconvenzione/stampa";
-
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
-				.headers(httpHeaders).content(inputJson)).andReturn();
-		String content = mvcResult.getResponse().getContentAsString();
-		int status = mvcResult.getResponse().getStatus();
-		log.info("status = " + status);
-		Assert.assertEquals(200, status);
-		log.info("content = {}", content);
-		Assert.assertTrue(content.contains("<flcnv01_st_banca>INTESA SANPAOLO S.P.A.</flcnv01_st_banca>"));
-
-	}
+//	@Test
+//	public void testStampaOK2() throws Exception {
+//				
+//		HttpHeaders httpHeaders = mockHttpHeaders();
+//
+//		inputStampaDTO.setCodProcesso(CodProcessoEnum.CJ_CUI_DA.toString());
+//		
+//		String inputJson = mapToJson(inputStampaDTO);
+//		String uri = "/cjadesioneconvenzione/stampa";
+//
+//		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+//				.headers(httpHeaders).content(inputJson)).andReturn();
+//		String content = mvcResult.getResponse().getContentAsString();
+//		int status = mvcResult.getResponse().getStatus();
+//		log.info("status = " + status);
+//		Assert.assertEquals(200, status);
+//		log.info("content = {}", content);
+//		Assert.assertTrue(content.contains("<flcnv01_st_banca>INTESA SANPAOLO S.P.A.</flcnv01_st_banca>"));
+//
+//	}
 	
 	@Test
 	public void testStampaKOErroreT1SJ() throws Exception {

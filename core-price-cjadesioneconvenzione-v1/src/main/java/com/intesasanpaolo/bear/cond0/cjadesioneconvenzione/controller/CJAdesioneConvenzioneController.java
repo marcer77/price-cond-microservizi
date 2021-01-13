@@ -89,36 +89,10 @@ public class CJAdesioneConvenzioneController extends CoreController {
 				.serviceVersion(serviceVersion).build();
 		
 		
-		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(inputStampaDTO.getCodProcesso())) {
-			
-			//MOCK
-			StampaResponseResource stampaResponseResource = new StampaResponseResource();
-			stampaResponseResource.setKeyOper("012345678901234567890123456789");
-			stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource());
-			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
-			stampaResponseResource.getEsitoStampaResource().setDescErrore("");
-	   
-			try(InputStream stream1 = CJAdesioneConvenzioneController.class.getResourceAsStream("/mock/01U33146920200626GFADD121837_1.xml");
-				InputStream stream2 = CJAdesioneConvenzioneController.class.getResourceAsStream("/mock/01U33146920200626GFADD121837_1.xml");
-				) {
-					StringWriter writer1 = new StringWriter();
-					IOUtils.copy(stream1, writer1, StandardCharsets.UTF_8);
-
-					StringWriter writer2 = new StringWriter();
-					IOUtils.copy(stream2, writer2, StandardCharsets.UTF_8);
-
-					stampaResponseResource.setDocumento(writer1.toString().concat(writer2.toString()));
-			}
-
-			return ResponseEntity.status(HttpStatus.OK).body(stampaResponseResource);
-
-		}else {
-		
 			AdesioneConvenzioneCommand cmd = beanFactory.getBean(AdesioneConvenzioneCommand.class, inputStampaDTO,ispWebservicesHeaderType);
 			StampaResponseResource response = cmd.execute();
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 
-		}
 
 	}
 	

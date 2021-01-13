@@ -64,20 +64,14 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 
-		EsitoResponseResource esito = null;
-		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
-			
-			// mock
-			esito = new EsitoResponseResource("00", "");
-
-		}else {
+		   EsitoResponseResource esito = null;
 		
 			CJDispositivaInserimentoCommand cjDispositivaInserimentoCommand = beanFactory
 					.getBean(CJDispositivaInserimentoCommand.class);
 			cjDispositivaInserimentoCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
 			cjDispositivaInserimentoCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
 			esito = cjDispositivaInserimentoCommand.execute();
-		}
+		
 		
 		log.info(" - inviaPropostaV2 END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
