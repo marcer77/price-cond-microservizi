@@ -1,5 +1,6 @@
 package com.intesasanpaolo.bear.cond0.cjdispositiva.factory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +8,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CJGenericBusinessApplication;
+import com.intesasanpaolo.bear.cond0.cj.lib.exception.CommonErrorCode;
+import com.intesasanpaolo.bear.cond0.cj.lib.utils.DateUtils;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.InputDatiInputArea;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.InputDatiInputAreaRapportoAccessorio;
 import com.intesasanpaolo.bear.cond0.cjdispositiva.connector.rest.client.pcgestixme.NewAccountDatiInput;
@@ -264,7 +268,18 @@ public class WsRequestFactory {
 		
 		newAccountInput.getInput().getDatiInput().getArea().setCodFilDipendente(codFilDipendente);
 		
-		newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(adesione.getInfoStampaData());
+		//fix per formato data riferimento in  input al servizio GESTIONE: dovviamo convertire dal formato 
+		//aaaammdd al formato gg.mm.aaaa 	
+		String dataRiferimentoAdesione=adesione.getInfoStampaData()!=null?adesione.getInfoStampaData().trim():null;
+		if (StringUtils.isNotEmpty(dataRiferimentoAdesione)) {
+			try {
+				dataRiferimentoAdesione=DateUtils.convertiDate(dataRiferimentoAdesione,DateUtils.DATE_FORMAT_YYYY_MM_DD_SOLID ,DateUtils.DATE_FORMAT_DD_MM_YYYY_DOTS);
+			} catch (ParseException e) {
+				throw new CJGenericBusinessApplication(CommonErrorCode.GENERIC_EXCEPTION,e.getMessage());
+			}
+		}	
+		//newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(adesione.getInfoStampaData());
+		newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(dataRiferimentoAdesione);
 		
 		newAccountInput.getInput().getDatiInput().getArea().setCodCanale(codCanale);
 		
