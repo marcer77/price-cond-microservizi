@@ -278,8 +278,10 @@ public class WsRequestFactory {
 				throw new CJGenericBusinessApplication(CommonErrorCode.GENERIC_EXCEPTION,e.getMessage());
 			}
 		}	
-		//newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(adesione.getInfoStampaData());
 		newAccountInput.getInput().getDatiInput().getArea().setDataRiferimento(dataRiferimentoAdesione);
+		
+		//fix 20/01/2021 per origine chiamante
+		newAccountInput.getInput().getDatiInput().getArea().setOrigineChiamante(dispositivaRequestDTO.getCodAppl());
 		
 		newAccountInput.getInput().getDatiInput().getArea().setCodCanale(codCanale);
 		
