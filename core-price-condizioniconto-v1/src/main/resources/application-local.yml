@@ -37,7 +37,7 @@ connectors:
       mocked: true
     items:
       ControlloTipoContoConnector:
-        url: ${REST2HOST_ENDPOINT:http://bridge-cond0-rest2host-v1-cond0-svil.cloudapps-test.intesasanpaolo.com}/bridge/pcmm
+        url: ${REST2HOST_ENDPOINT:http://bridge-cond0-rest2host-v1-cond0-test.cloudapps-test.intesasanpaolo.com}/bridge/pcmm
         mocked: false
         randomMock: false
         enabledTracing: true

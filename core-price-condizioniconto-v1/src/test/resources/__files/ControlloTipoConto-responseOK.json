@@ -1,0 +1,73 @@
+{
+  "header": {
+    "RETCODE": 0,
+    "CODICESTATO": "0010",
+    "ID_SERVIZIO": "PCMMINCMOD",
+    "CODICE_TIPO_CANALE": "44",
+    "CODICE_SOCIETA": "01",
+    "CODICE_SPORTELLO": "     ",
+    "CODICE_UO_RICH": "     ",
+    "CODICE_USERID": "U015886 ",
+    "MQM_NAME_DEST": "                                                ",
+    "COD_RIS_RICH": "                        ",
+    "COD_RICH_CANALE": "44                                              ",
+    "DATA_CONT": "25112020",
+    "LUNGHEZZA_MSG": 443,
+    "IND_MQ_SINCRONO": " ",
+    "COD_TIPO_LINGUA": " ",
+    "TIPO_SIC_APPL_INP": "  ",
+    "TIPO_SIC_APPL_OUT": "  ",
+    "IND_COMPRESS_INP": " ",
+    "IND_COMPRESS_OUT": " ",
+    "IND_ROUTING_MSG": " ",
+    "COD_SSA_SERVIZIO": "   ",
+    "IND_INOLTRO_REPLY": " ",
+    "COD_ABI": "01025",
+    "COD_AZIENDA_DEST": "  ",
+    "COD_OPERATIVITA": " ",
+    "FLAG_PAPERLESS": " ",
+    "FLAG_RACF": " ",
+    "COD_RIC_TRAC": "00006",
+    "COD_BSM": "6304442020-11-2517.10.15440045069SDM3SDQ1       ",
+    "SIC_TIMESTAMP": "                ",
+    "SIC_KEY": "                ",
+    "SIC_MAC": "                ",
+    "COD_VERS_SIC": "    ",
+    "COD_CLI_RICH": "                 ",
+    "COD_TERM_CICS": "    ",
+    "COD_VERSIONE_BS": "02"
+  },
+  "body": {
+    "PCMM_O_FLG_CM": "O",
+    "PCMM_O_COD_PRODOTTO": "C0003",
+    "PCMM_O_FLAG_CRUSCOTTO": " ",
+    "PCMM_O_COD_CONV_RF": "       ",
+    "PCMM_O_LISTA_COMPLETA_CC": "S",
+    "PCMM_O_LISTA_COMPLETA_ACC": " ",
+    "PCMM_O_COD_CONV": "       ",
+    "PCMM_O_DESC_CONV": "                                        ",
+    "PCMM_O_DATA_DECO_CONV": "        ",
+    "PCMM_O_DATA_DECA_CONV": "        ",
+    "PCMM_O_COD_PROMO": "       ",
+    "PCMM_O_DATA_DECO_PROMO": "        ",
+    "PCMM_O_DATA_DECA_PROMO": "        ",
+    "PCMM_O_TAB_OUTPRM": [
+      {
+        "PCMM_O_COD_FIL_RAPP_MULTI": "00700",
+        "PCMM_O_COD_CAT_RAPP_MULTI": "5699",
+        "PCMM_O_COD_PROG_RAPP_MULTI": "05154286",
+        "PCMM_O_COD_PROMO_MULTI": "Q002239",
+        "PCMM_O_TITOLO_PROMO_MULTI": "                                                  ",
+        "PCMM_O_DECO_PROMO_MULTI": "20201119",
+        "PCMM_O_DECA_PROMO_MULTI": "20211130"
+      }
+    ]
+  },
+  "outcome": {
+    "ESITO": "Y1000 RICHIESTA ESEGUITA                                                        "
+  },
+  "report": {
+    "LIVELLO_SEGNALAZIONE": "N",
+    "TXT_SEGNALAZIONE": "00    FUNZIONE ESEGUITA CORRETTAMENTE                                           "
+  }
+}

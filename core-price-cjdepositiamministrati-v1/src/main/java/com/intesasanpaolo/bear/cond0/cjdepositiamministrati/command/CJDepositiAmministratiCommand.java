@@ -94,67 +94,68 @@ public class CJDepositiAmministratiCommand extends BaseCommand<StampaResponseRes
 	private StampaResponseResource buildStampaResponseResource() {
 		log.info("buildStampaResponseResource START");
 
-			WKNBResponse wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
-						
-			StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
-			.codDDS(wkibResponse.getCodDDS())
-			.codTemplate(wkibResponse.getCodTemplate())
-			.righe(new ArrayList<RigheDiStampaResource>())
-			.build();
-		
-			if(CollectionUtils.isNotEmpty(wkibResponse.getElenco())) {
-				for(WKNBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
-					
-					RigheDiStampaResource rigaStampa = new RigheDiStampaResource();
-					
-					rigaStampa.setPrgStp(riga.getPrgStp());
-					rigaStampa.setPrgStrut(riga.getPrgStrut());
-					rigaStampa.setTipoStrut(riga.getTipoStrut());
-					rigaStampa.setFlContinua(riga.getFlContinua());
-					rigaStampa.setTipoSezione(riga.getTipoSezione());
-					
-					if("C".equals(riga.getTipoStrut())) {
-						rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
-								.testo1(riga.getTesto1())
-								.testo2(riga.getTesto2())
-								.testo3(riga.getTesto3())
-								.testo4(riga.getTesto4())
-								.build());
-					}
-					if("T".equals(riga.getTipoStrut())) {
+		WKNBResponse wkibResponse = wkibServiceBS.callBS(buildWKIBRequest());
+
+		StampaResponseResource stampaResponseResource = StampaResponseResource.builder().esitoStampaResource(new EsitoStampaResource(wkibResponse.getCodErrore(),wkibResponse.getMsgErrore()))
+				.codDDS(wkibResponse.getCodDDS())
+				.codTemplate(wkibResponse.getCodTemplate())
+				.righe(new ArrayList<RigheDiStampaResource>())
+				.build();
+
+		if(CollectionUtils.isNotEmpty(wkibResponse.getElenco())) {
+			for(WKNBResponseRigheDiStampa riga : wkibResponse.getElenco()) {
+
+				RigheDiStampaResource rigaStampa = new RigheDiStampaResource();
+
+				rigaStampa.setPrgStp(riga.getPrgStp());
+				rigaStampa.setPrgStrut(riga.getPrgStrut());
+				rigaStampa.setTipoStrut(riga.getTipoStrut());
+				rigaStampa.setFlContinua(riga.getFlContinua());
+				rigaStampa.setTipoSezione(riga.getTipoSezione());
+
+				if("C".equals(riga.getTipoStrut())) {
+					rigaStampa.setIntestazione(IntestazioneStampaResource.builder()
+							.testo1(riga.getTesto1())
+							.testo2(riga.getTesto2())
+							.testo3(riga.getTesto3())
+							.testo4(riga.getTesto4())
+							.build());
+				}
+				if("T".equals(riga.getTipoStrut())) {
 					rigaStampa.setTitolo(TitoloStampaResource.builder()
 							.testo(riga.getTesto())
 							.evidTesto(riga.getEvidTesto()).build());
-					}
-					if("Y".equals(riga.getTipoStrut())) {
-						rigaStampa.setCondizione(CondizioneStampaResource.builder()
-								.codCond(riga.getCodCond())
-								.dataDeco(riga.getDataDeco())
-								.evidDataDeco(riga.getEvidDtDeco())
-								.descrCond(riga.getDescrCond())
-								.evidDescrCond(riga.getEvidDescr())
-								.valore(riga.getValore())
-								.evidValore(riga.getEvidValore())
-								.indNota(riga.getIndNota())
-								.evidNota(riga.getEvidNota())
-								.build());
-					}
-					if("N".equals(riga.getTipoStrut())) {
-						rigaStampa.setNota(NotaStampaResource.builder()
-								.num(riga.getNum())
-								.testo(riga.getTestoNota())
-								.evidNum(riga.getEvidNrNota())
-								.evidTesto(riga.getEvidTxNota())
-								.build());
-					}
-					if("M".equals(riga.getTipoStrut())) {
-						rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
-					}
-					stampaResponseResource.getRighe().add(rigaStampa);
 				}
-				
+				if("Y".equals(riga.getTipoStrut())) {
+					rigaStampa.setCondizione(CondizioneStampaResource.builder()
+							.codCond(riga.getCodCond())
+							.dataDeco(riga.getDataDeco())
+							.evidDataDeco(riga.getEvidDtDeco())
+							.descrCond(riga.getDescrCond())
+							.evidDescrCond(riga.getEvidDescr())
+							.valore(riga.getValore())
+							.evidValore(riga.getEvidValore())
+							.indNota(riga.getIndNota())
+							.evidNota(riga.getEvidNota())
+							.build());
+				}
+				if("N".equals(riga.getTipoStrut())) {
+					rigaStampa.setNota(NotaStampaResource.builder()
+							.num(riga.getNum())
+							.testo(riga.getTestoNota())
+							.evidNum(riga.getEvidNrNota())
+							.evidTesto(riga.getEvidTxNota())
+							.build());
+				}
+				if("M".equals(riga.getTipoStrut())) {
+					rigaStampa.setPromozione(PromozioneStampaResource.builder().testo(riga.getTestoPromozione()).build());
+				}
+				stampaResponseResource.getRighe().add(rigaStampa);
 			}
-			
+
+		}
+
+		stampaResponseResource.setEsitoStampaResource(new EsitoStampaResource("00", ""));
 		log.info("buildStampaResponseResource END");
 		return stampaResponseResource;
 	}

@@ -42,7 +42,8 @@ public class CJIndicatoriCostoController extends CoreController {
 	@Autowired
 	private BeanFactory beanFactory;
 
-
+	@Autowired
+	private PCUJServiceBS testService;
 
 	@Autowired
 	private IndicatoriCostoResourceAssembler indicatoriCostoResourceAssembler;

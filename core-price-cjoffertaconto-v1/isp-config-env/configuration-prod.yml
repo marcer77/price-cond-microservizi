@@ -1,7 +1,7 @@
 configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
-       value: https://gwad0-prod.gtm.corp.sanpaoloimi.com/auth/oauth
+       value: https://gwad0-prod.sede.corp.sanpaoloimi.com/auth/oauth
      - name: CALL_MOCK
        value: N
     ctg:
