@@ -26,6 +26,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
@@ -313,6 +314,50 @@ public class ServiceUtil {
 		
 		return value!=null?value.trim():"";
 	}
+	
+	private static NodeList getNodesFromDocument(Document document,String XPATH_EXPRESSION) throws Exception {
+		NodeList nodes = null;
+		if(document !=null) {
+			
+			//String XPATH_EXPRESSION = "//*[contains(name(), \"elst_fdig\")]";
+			DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+			// disable external entities
+			builderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+			
+			XPathFactory factory = XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON);
+
+			XPath xpath = factory.newXPath();
+			XPathExpression expr = xpath.compile(XPATH_EXPRESSION);
+
+			// Estrapolo i tag interessati dal xml
+			nodes = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
+			
+		}
+		return nodes;
+	}
+	
+	private static void sostituisceCaratteriSpeciali(NodeList nodes) {
+		if(nodes != null) {
+			for (int i = 0; i < nodes.getLength(); i++) {
+
+				String nodo = nodes.item(i).getTextContent();
+
+				//Sostituisco il carattere ¢ speciale con [
+				if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0xA2))) {
+					nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0xA2, (char) 0x5B));
+
+				}
+				//Sostituisco il carattere ! con ]
+				if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0x21))) {
+					nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0x21, (char) 0x5D));
+				}
+
+				logger.info("Nodo "+nodes.item(i).getNodeName()+" PRIMA "+nodo+" DOPO " + nodes.item(i).getTextContent());
+
+			}
+		}
+	}
 
 	// Il jdo della FL03 restituisce alcuni caratteri sporchi, ci e' stato chiesto
 	// di effettuare una sostituzione dei caratteri
@@ -321,44 +366,23 @@ public class ServiceUtil {
 			
 			if(StringUtils.isNotEmpty(docXML)) {
 				
-				String XPATH_EXPRESSION = "//*[contains(name(), \"elst_fdig\")]";
 				DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-				// disable external entities
+				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				builderFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 				builderFactory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-				
-				DocumentBuilder builder = builderFactory.newDocumentBuilder();
 				System.setProperty("javax.xml.xpath.XPathFactory:" + NamespaceConstant.OBJECT_MODEL_SAXON,"net.sf.saxon.xpath.XPathFactoryImpl");
-				XPathFactory factory = XPathFactory.newInstance(NamespaceConstant.OBJECT_MODEL_SAXON);
-				
+			
 				Document document = builder.parse(new InputSource(new StringReader(docXML)));
-				XPath xpath = factory.newXPath();
-				XPathExpression expr = xpath.compile(XPATH_EXPRESSION);
-	
+				
+				String xpathExpression1 = "//*[contains(name(), \"elst_fdig\")]";
+				String xpathExpression2 = "//*[contains(name(), \"nota_leg\")]";
+				
+				NodeList nodiElstFdig = getNodesFromDocument(document,xpathExpression1);
+				NodeList nodiNotaLeg = getNodesFromDocument(document,xpathExpression2);
+				sostituisceCaratteriSpeciali(nodiElstFdig);
+				sostituisceCaratteriSpeciali(nodiNotaLeg);
 				// Estrapolo i tag interessati dal xml
-				NodeList nodes = (NodeList) expr.evaluate(document, XPathConstants.NODESET);
-				if(nodes!=null) {
-					
-					// Ciclo i tag recuperati e verifico se sono presenti i caratteri da sostituire
-					for (int i = 0; i < nodes.getLength(); i++) {
-		
-						String nodo = nodes.item(i).getTextContent();
-
-						//Sostituisco il carattere c speciale
-						if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0xA2))) {
-							nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0xA2, (char) 0x5B));
-
-						}
-						//Sostituisco il carattere !
-						if (nodes.item(i).getTextContent().contains(String.valueOf((char) 0x21))) {
-							nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace((char) 0x21, (char) 0x5D));
-						}
-						
-						logger.info("Nodo "+nodes.item(i).getNodeName()+" PRIMA "+nodo+" DOPO " + nodes.item(i).getTextContent());
-						
-					}
-				}
-	
+				
 				//Trasformo il documento modificato nella stringa da restituire
 				DOMSource domSource = new DOMSource(document);
 				StringWriter writer = new StringWriter();
