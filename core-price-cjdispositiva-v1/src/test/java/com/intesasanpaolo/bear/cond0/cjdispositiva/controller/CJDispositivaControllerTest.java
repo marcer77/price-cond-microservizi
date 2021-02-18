@@ -129,6 +129,18 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	}
 
+	private void mock_WKCJ_KO() {
+		WKCJResponse wkcjResponse = new WKCJResponse();
+		ArrayList<OutCNF> outCNFList = new ArrayList<OutCNF>();
+		wkcjResponse.setOutCNFList(outCNFList);
+		wkcjResponse.setOutEsi(OutEsi.builder().mdwEsiRetc("0012").build());
+		wkcjResponse.setOutSeg(OutSeg.builder().livelloSegnalazione("").txtSegnalazione("").build());
+
+		Mockito.when(ctgConnectorWKCJ.call(wkcjRequest, requestTransformer, responseTransformer, new Object[] {}))
+				.thenReturn(wkcjResponse);
+
+	}
+
 	private void stubStoreCovenantWSKO() {
 		StubMapping stubConvenzione = stubFor(post(urlEqualTo("/ConvenzioniHostService.svc"))
 				.withRequestBody(containing("StoreCovenantAdesioneConvenzione"))
@@ -192,7 +204,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 		Assert.assertEquals(200, stub.getResponse().getStatus());
 	}
-	
+
 	private void stubInviaPropostaEsito500() {
 		StubMapping stub = stubFor(post(urlEqualTo("/ProposteCJPOS.svc")).withRequestBody(containing("inviaPropostaV2"))
 				.willReturn(aResponse().withStatus(500).withHeader("content-type", "application/soap+xml")
@@ -296,10 +308,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(httpHeaders).content(inputJson)).andReturn();
 		/*
-		 * Esito atteso 
+		 * Esito atteso
 		 * 
-		 *  "codErrore":"97",
-		 *  codiceErroreWebService:12 
+		 * "codErrore":"97", codiceErroreWebService:12
 		 *
 		 */
 		String content = mvcResult.getResponse().getContentAsString();
@@ -309,7 +320,7 @@ public class CJDispositivaControllerTest extends BaseTest {
 		log.info("content = {}", content);
 		Assert.assertTrue(content.contains("\"codErrore\":\"97\"") && content.contains("codiceErroreWebService:12"));
 	}
-	
+
 	@Test
 	public void testInserimentoKO500_InviaPropostaV2() throws Exception {
 
@@ -332,9 +343,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.headers(httpHeaders).content(inputJson)).andReturn();
 		/*
-		 * Esito atteso 
+		 * Esito atteso
 		 * 
-		 *  "codErrore":"97",
+		 * "codErrore":"97",
 		 *
 		 */
 		String content = mvcResult.getResponse().getContentAsString();
@@ -347,6 +358,9 @@ public class CJDispositivaControllerTest extends BaseTest {
 
 	@Test
 	public void testInserimentoKO_RollbackPratica() throws Exception {
+
+		// simuliamo errore in fase di invocazione della wkcj
+		mock_WKCJ_KO();
 
 		String uri = "/cjdispositiva/inserimento";
 
@@ -846,6 +860,70 @@ public class CJDispositivaControllerTest extends BaseTest {
 		Assert.assertEquals(200, status);
 		content = mvcResult.getResponse().getContentAsString();
 		Assert.assertTrue(content.contains(CommonErrorCode.BS_SRV_EXCEPTION));
+
+	}
+
+	// 20_01_2021: nuovo test per segnalazione su formato data riferimento passato
+	// in input al servizio GESTIONE
+	@Test
+	public void testInserimentoOKDataRiferimento() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		stubStoreCovenantWSOK();
+
+		stubInviaPropostaOK();
+
+		stubGestioneOk();
+
+		dispositivaRequestDTO.getPratica().setCodPratica("6000655703");
+		dispositivaRequestDTO.getPratica().setCodSuperPratica("9001161999");
+
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+
+	}
+
+	// 20_01_2021: nuovo test per segnalazione su formato data riferimento passato
+	// in input al servizio GESTIONE
+	@Test
+	public void testInserimentoKODataRiferimento() throws Exception {
+
+		String uri = "/cjdispositiva/inserimento";
+
+		stubStoreCovenantWSOK();
+
+		stubInviaPropostaOK();
+
+		stubGestioneOk();
+
+		dispositivaRequestDTO.getPratica().setCodPratica("6000655703");
+		dispositivaRequestDTO.getPratica().setCodSuperPratica("9001161998");
+
+		dispositivaRequestDTO.setCodProcesso(CodProcessoEnum.CJ_AFFIDAMENTI.toString());
+
+		String inputJson = mapToJson(dispositivaRequestDTO);
+
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE)
+				.headers(httpHeaders).content(inputJson)).andReturn();
+
+		String content = mvcResult.getResponse().getContentAsString();
+		int status = mvcResult.getResponse().getStatus();
+		log.info("status = " + status);
+		Assert.assertEquals(200, status);
+		log.info("content = {}", content);
+		Assert.assertTrue(content.contains("codErrore\":\"100"));
+
 
 	}
 }

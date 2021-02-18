@@ -372,7 +372,7 @@ public class CoreConvenzioneService extends BaseService {
 		
 		StringWriter sw=new StringWriter();
 		sw.append(" SELECT DISTINCT NR_PRATICA NR_PRATICA FROM FIATT.TB59R009 ")
-			.append(" WHERE ID_ENTITA  = '00002' ")
+			.append(" WHERE ID_ENTITA  = 'DTADE' ")
 			.append(" and NR_SUPERPRATICA = :codSuperPratica");
 		
 		if (!CodProcessoEnum.CJ_AFFIDAMENTI.toString().equals(codProcesso)) {			

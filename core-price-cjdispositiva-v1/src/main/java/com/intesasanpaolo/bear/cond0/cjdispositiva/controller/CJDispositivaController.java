@@ -108,18 +108,11 @@ public class CJDispositivaController extends CoreController {
 				.language(language).serviceCompanyIDCode(serviceCompanyIDCode).serviceID(serviceID).userID(userID)
 				.transactionId(transactionId).timestamp(timestamp).serviceVersion(serviceVersion).build();
 		
-		EsitoResponseResource esito = null;
-		if(CodProcessoEnum.CJ_CUI_DA.toString().equals(dispositivaRequestDTO.getCodProcesso())) {
-			
-			// mock
-			esito = new EsitoResponseResource("00", "");
-
-		}else {
-			cjDispositivaAnnulloCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
-			cjDispositivaAnnulloCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
-			esito = cjDispositivaAnnulloCommand.execute();
-		}
-
+		
+		cjDispositivaAnnulloCommand.setDispositivaRequestDTO(dispositivaRequestDTO);
+		cjDispositivaAnnulloCommand.setIspWebservicesHeaderType(ispWebservicesHeaderType);
+		EsitoResponseResource esito = cjDispositivaAnnulloCommand.execute();
+		
 		log.info(" - annullo END: esito {" + esito.toString() + "}");
 		return ResponseEntity.ok(esito);
 	}
