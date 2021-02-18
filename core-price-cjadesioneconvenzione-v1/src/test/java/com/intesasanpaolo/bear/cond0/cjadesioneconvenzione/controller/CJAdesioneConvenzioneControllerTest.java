@@ -369,15 +369,15 @@ public class CJAdesioneConvenzioneControllerTest extends BaseTest {
 				"  \"cdUtente\":\"U035393\",\n" + 
 				"  \"cdApplicazione\":\"CJCON\",\n" + 
 				"  \"flTipoCliente\":\"G\",\n" + 
-				"  \"nrRequisiti\": 2,\n" + 
-				"  \"listaRequisiti\": [\n" + 
+				"  \"nrDati\": 2,\n" + 
+				"  \"listaDati\": [\n" + 
 				"      {\n" + 
-				"        \"cdTipoRequisito\": \"MERCEOL\",\n" + 
-				"        \"valRequisito\": \"COMMERCIANTI\"\n" + 
+				"        \"cdTipoDato\": \"MERCEOL\",\n" + 
+				"        \"valDato\": \"COMMERCIANTI\"\n" + 
 				"      },\n" + 
 				"      {\n" + 
-				"        \"cdTipoRequisito\": \"DATACOST\",\n" + 
-				"        \"valRequisito\": \"20022006\"\n" + 
+				"        \"cdTipoDato\": \"DATACOST\",\n" + 
+				"        \"valDato\": \"20022006\"\n" + 
 				"      }\n" + 
 				"  ]\n" + 
 				"}";

@@ -42,8 +42,8 @@ public class InputRequisitiAdesioneDTO {
 	@NotNull(message = "Il campo flTipoCliente non puo' essere null")
 	@NotBlank(message = "Il campo flTipoCliente non puo' essere vuoto")
 	private String flTipoCliente;
-	@NotNull(message = "Il campo nrRequisiti non puo' essere null")
-	private Long nrRequisiti;	
-	private List<RequisitoDTO> listaRequisiti;
+	@NotNull(message = "Il campo nrDati non puo' essere null")
+	private Long nrDati;	
+	private List<DatoDTO> listaDati;
 
 }

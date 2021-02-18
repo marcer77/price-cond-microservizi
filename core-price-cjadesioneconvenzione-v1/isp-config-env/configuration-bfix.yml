@@ -1,11 +1,57 @@
 configuration:
     env:
      - name: AUTH_SERVER_ENDPOINT
-       value: https://gwad0-svil.syssede.systest.sanpaoloimi.com/auth/oauth
+       value: https://gwad0-test.syssede.systest.sanpaoloimi.com/auth/oauth
      - name: CONVENZIONI_HOST_SERVICE_WS_URL
        value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniHostService.svc
      - name: CONVENZIONI_SERVICE_WS_URL
-       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc 
+       value: http://servizibe-vdmc0.syssede.systest.sanpaoloimi.com:9018/ConvenzioniService.svc
+       
+     - name: DATASOURCE_SPIMI_DB2_URI
+       value: sdda.mframe.sanpaoloimi.com
+     - name: DATASOURCE_SPIMI_DB2_PORT
+       value: 5300    
+     - name: DATASOURCE_SPIMI_DB2_DBNAME 
+       value: SDDAM00S
+     - name: DATASOURCE_BKFID_DB2_URI 
+       value: mdda.mframe.sanpaoloimi.com
+     - name: DATASOURCE_BKFID_DB2_PORT 
+       value: 18588
+     - name: DATASOURCE_BKFID_DB2_DBNAME
+       value: MDDAM00S
+     - name: DATASOURCE_ISPBK_DB2_URI
+       value: jdda.mframe.sanpaoloimi.com
+     - name:  DATASOURCE_ISPBK_DB2_PORT
+       value: 18607
+     - name:  DATASOURCE_ISPBK_DB2_DBNAME
+       value: JDDAM00S  
+     - name: DATASOURCE_BKIMI_DB2_URI 
+       value: idda.mframe.sanpaoloimi.com 
+     - name: DATASOURCE_BKIMI_DB2_PORT 
+       value: 5449 
+     - name: DATASOURCE_BKIMI_DB2_DBNAME  
+       value: IDDAM00S 
+     - name: DATASOURCE_DB2_ACCOUNTING_ACRONYM  
+       value: COND0 
+     - name: DATASOURCE_DB2_ACCOUNTING_SERVICE_NAME  
+       value: core-price-CJindicatoriCosto-v1       
+     
+     - name: DATASOURCE_SPIMI_DB2_USERNAME
+       value: U0K9999  
+     - name: DATASOURCE_SPIMI_DB2_PASSWORD 
+       value: test       
+     - name: DATASOURCE_BKFID_DB2_USERNAME 
+       value: U0K9999      
+     - name: DATASOURCE_BKFID_DB2_PASSWORD 
+       value: test 
+     - name: DATASOURCE_ISPBK_DB2_USERNAME 
+       value: U0K9999       
+     - name: DATASOURCE_ISPBK_DB2_PASSWORD 
+       value: test       
+     - name: DATASOURCE_BKIMI_DB2_USERNAME 
+       value: U0K9999       
+     - name: DATASOURCE_BKIMI_DB2_PASSWORD 
+       value: test 
     ctg:
      - name: COND0
        acronimo: COND0

@@ -22,40 +22,58 @@ public class RequisitiAdesioneFactory {
 		
 		RequisitoAdesione req1 = RequisitoAdesione.builder()
 				.flRequisito("OK")
-				.cdRequisito("30")
-				.dsRequisito("Famiglia merceologica")
+				.cdRequisito("01")
+				.dsRequisito("Tipo Portafoglio")
 				.valNumericoRequisito("")
-				.valAlfanumericoRequisito("COMMERCIANTI")
+				.valAlfanumericoRequisito("03")
 				.build();
 									
 		RequisitoAdesione req2 = RequisitoAdesione.builder()
 				.flRequisito("OK")
-				.cdRequisito("31")
-				.dsRequisito("Rating")
+				.cdRequisito("02")
+				.dsRequisito("Portafoglio")
 				.valNumericoRequisito("")
-				.valAlfanumericoRequisito("0202")
+				.valAlfanumericoRequisito("6")
 				.build();
 		
 		RequisitoAdesione req3 = RequisitoAdesione.builder()
 				.flRequisito("OK")
-				.cdRequisito("32")
-				.dsRequisito("Tipo portafoglio")
+				.cdRequisito("03")
+				.dsRequisito("Rating")
 				.valNumericoRequisito("")
-				.valAlfanumericoRequisito("03")
+				.valAlfanumericoRequisito("21")
 				.build();
 		
 		RequisitoAdesione req4 = RequisitoAdesione.builder()
-				.flRequisito("OK")
-				.cdRequisito("33")
-				.dsRequisito("Data accensione")
+				.flRequisito("WA")
+				.cdRequisito("06")
+				.dsRequisito("Data validità documento")
 				.valNumericoRequisito("")
-				.valAlfanumericoRequisito("D20200101-")
+				.valAlfanumericoRequisito(null)
 				.build();					
-		
+
+		RequisitoAdesione req5 = RequisitoAdesione.builder()
+				.flRequisito("ND")
+				.cdRequisito("07")
+				.dsRequisito("Accredito dello stipendio")
+				.valNumericoRequisito("")
+				.valAlfanumericoRequisito(null)
+				.build();					
+
+		RequisitoAdesione req6 = RequisitoAdesione.builder()
+				.flRequisito("WA")
+				.cdRequisito("22")
+				.dsRequisito("Requisito generico")
+				.valNumericoRequisito("")
+				.valAlfanumericoRequisito("Start up innovative*cliente non presente in lista Imprese iscritte alla sezione speciale per Start Up Innovative del R.I*")
+				.build();					
+
 		listaRequisiti.add(req1);
 		listaRequisiti.add(req2);
 		listaRequisiti.add(req3);
 		listaRequisiti.add(req4);
+		listaRequisiti.add(req5);
+		listaRequisiti.add(req6);
 		
 		return RequisitiAdesione.builder()			
 				.cdEsito("OK")
