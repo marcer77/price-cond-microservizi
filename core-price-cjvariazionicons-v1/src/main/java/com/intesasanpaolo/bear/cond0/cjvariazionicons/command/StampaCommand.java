@@ -134,7 +134,7 @@ public class StampaCommand extends BaseCommand<StampaResponseResource> {
 		}	
 		
 		try {
-			docXML = StringUtils.isNotEmpty(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML) : docXML;
+			docXML = StringUtils.isNotEmpty(docXML) ? ServiceUtil.sostituzioneCaratteriFL03(docXML,inputStampaDTO.getCodProcesso()) : docXML;
 		}catch (Exception e) {
 			stampaResponseResource.getEsitoStampaResource().setCodErrore("00");
 			stampaResponseResource.getEsitoStampaResource().setDescErrore("XML di stampa non corretto.");

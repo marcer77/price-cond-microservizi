@@ -358,10 +358,42 @@ public class ServiceUtil {
 			}
 		}
 	}
+	
+	private static void replaceString(NodeList nodes,String da,String a) {
+		if(nodes != null) {
+			for (int i = 0; i < nodes.getLength(); i++) {
+
+				String nodo = nodes.item(i).getTextContent();
+
+				//Sostituisco il carattere da con a
+				if (nodes.item(i).getTextContent().contains(da)) {
+					nodes.item(i).setTextContent(nodes.item(i).getTextContent().replace(da, a));
+
+				}
+				logger.info("Nodo "+nodes.item(i).getNodeName()+" PRIMA "+nodo+" DOPO " + nodes.item(i).getTextContent());
+
+			}
+		}
+	}
+	
+	private static void sostituzioneContenturi(Document document) throws Exception {
+		
+		if(document!=null) {
+			
+			String xpathTemplate = "//*[template='FL_CONV.xdp']";
+			NodeList nodiTemplate = getNodesFromDocument(document,xpathTemplate);
+			if(nodiTemplate != null && nodiTemplate.getLength()>0) {
+				String xpathExpressionContenturi = "//*[contains(name(), \"contenturi\")]";
+				NodeList nodiContenturi = getNodesFromDocument(document,xpathExpressionContenturi);
+				replaceString(nodiContenturi,"\\\\","\\"); //sostituisco il \\ con il \
+			}
+		}
+		
+	}
 
 	// Il jdo della FL03 restituisce alcuni caratteri sporchi, ci e' stato chiesto
 	// di effettuare una sostituzione dei caratteri
-	public static String sostituzioneCaratteriFL03(String docXML) throws Exception {
+	public static String sostituzioneCaratteriFL03(String docXML,String codProcesso) throws Exception {
 			logger.info("START");
 			
 			if(StringUtils.isNotEmpty(docXML)) {
@@ -377,10 +409,17 @@ public class ServiceUtil {
 				String xpathExpression1 = "//*[contains(name(), \"elst_fdig\")]";
 				String xpathExpression2 = "//*[contains(name(), \"nota_leg\")]";
 				
+				
 				NodeList nodiElstFdig = getNodesFromDocument(document,xpathExpression1);
 				NodeList nodiNotaLeg = getNodesFromDocument(document,xpathExpression2);
+				
 				sostituisceCaratteriSpeciali(nodiElstFdig);
 				sostituisceCaratteriSpeciali(nodiNotaLeg);
+				
+				if("CJDA".equalsIgnoreCase(codProcesso)) {
+					sostituzioneContenturi(document);
+				}
+			
 				// Estrapolo i tag interessati dal xml
 				
 				//Trasformo il documento modificato nella stringa da restituire
@@ -402,5 +441,6 @@ public class ServiceUtil {
 			}
 				
 	}
+	
 	
 }
